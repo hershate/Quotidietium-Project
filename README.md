@@ -1,0 +1,2 @@
+# Quotidietium-Project
+该仓库中包含Quotidietium平日之事服务器逐渐开源的素材
