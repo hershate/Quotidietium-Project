@@ -1,0 +1,488 @@
+# 该配置文件由ZTF3制作（均为MC正版ID）
+# To simplify the customisation and the translation process please check out the editor: https://ptp.pcgamingfreaks.at
+Language:
+  NotFromConsole: "&c这个命令不能在控制台里执行!"
+  # Global Wildcards: <heart> and <smallheart>
+  Ingame:
+    NoPermission: "&c你没有权限执行这个操作."
+    NaN: "&c你输入的根本不是一个数字!"
+    NotMarried: "&c你仍然单身."
+    PartnerOffline: "&c你的另一半不在线上."
+    PartnerNotInRange: "&c你的另一半离你太远了."
+    TargetPartnerNotFound: "&c找不到你指定的伴侣!"
+    PlayerNotMarried: "&c\"{PlayerName}\" 仍然单身!"
+    PlayerNotFound: "&c找不到 \"{PlayerName}\"!"
+    PlayerNotOnline: "&c\"{PlayerName}\" 已经下线了!"
+    PlayersNotMarried: "&c这个玩家还没结婚呢!"
+    MarriageNotExact: "&c很抱歉，但有多个婚姻匹配您的请求!"
+    JoinLeaveInfo:
+      # Only used for players with 1 partner
+      PartnerOnline: "&a你的伴侣上线了."
+      # Only used for players with 1 partner
+      PartnerOffline: "&7你的伴侣下线了."
+      # Only used for players with more than 1 partner
+      AllPartnersOffline: "&7你所有的伴侣都下线了."
+      # Only used for players with more than 1 partner
+      PartnerOnlineMulti: "&a以下这些伴侣仍然在线: &r&f{OnlinePartners}"
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      MultiOnlineFormat: "{DisplayName}"
+      # No JSON!!!
+      MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOnline: "&a你的伴侣现在上线了."
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOffline: "&7你的伴侣现在下线了."
+    Backpack:
+      OnlyInSurvival: "&c你只能在生存模式下访问伴侣的背包."
+      ShareOn: "&a你现在已经将背包与伴侣共享了."
+      ShareOff: "&c从现在开始你拒绝和伴侣共享背包."
+      Opened: "&a你的伴侣打开了你的背包."
+      ShareDenied: "&c你的伴侣不让你访问他们的背包."
+    Chat:
+      Joined: "&a已经进入情侣悄悄话模式."
+      Left: "&a你已经回到公开频道."
+      ListeningStarted: "&a你现在正在听情侣悄悄话."
+      ListeningStopped: "&a你已经退出情侣悄悄话了."
+      TargetSet: "&a已设定私密聊天目标."
+      DisplayNameAll: "所有的伴侣们"
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
+      Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
+    Gift:
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedSender: "&c你不能在当前游戏模式送礼物."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedReceiver: "&c你的伴侣不能在当前游戏模式收受礼物."
+      NoItemInHand: "&c你手上啥都没拿."
+      PartnerInvFull: "&c伴侣的物品栏里没有空间了."
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemSent: "[{\"text\":\"你已经把以下物品送给了你的伴侣 \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemReceived: "[{\"text\":\"你的 \",\"color\":\"green\"},{\"text\":\"伴侣\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{DisplayName}\"}},{\"text\":\" 已经把这些东西送给你了 \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      WorldNotAllowed: "&c你伴侣所在的世界禁止收受礼物."
+      ItemNotAllowed: "&c你已经把 {ItemName} &c作为礼物送给了你的伴侣!"
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r 想要送给你 \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". 使用后面的命令以接受礼物 \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 或者使用该命令以拒绝 \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "礼物请求已经发送给你的伴侣."
+        Denied: "你拒绝了来自伴侣的礼物."
+        DeniedPartner: "你的伴侣拒绝了你的礼物，该礼物已退回你的库存."
+        Canceled: "你取消了你的礼物请求."
+        CanceledPartner: "你的伴侣取消了礼物请求，礼物已退回你的库存."
+        CanceledDisconnectRequester: "你的伴侣下线了，已自动取消礼物请求，礼物已退回你的库存."
+        CanceledDisconnectTarget: "你的伴侣已经下线，已自动取消礼物请求."
+        RefundInvFull: "&c你的物品栏满了，多余的物品将掉在地上!"
+        PartnerAlreadyHasAnOpenRequest: "&c你的伴侣已经开始了一次请求，请等待对方接受或拒绝."
+    Home:
+      Deleted: "&a已成功删除温馨小家."
+      PlayerNoHome: "&c这个玩家还没有建立爱巢."
+      NoHome: "&c你还没有自己的小家."
+      TPed: "&a你已传送至爱巢."
+      Set: "&a已经保存爱巢位置."
+      BlockedFrom: "&c你不能从这里传送回家."
+      BlockedTo: "&c你不能传送回家，请寻找可能的阻碍"
+    Kiss:
+      Kissed: "&e你亲了你的伴侣一口!"
+      Kissed_SendMethod: "action_bar"
+      GotKissed: "&e你的伴侣亲了你一口!( •̀ ω •́ )✧"
+      GotKissed_SendMethod: "action_bar"
+      TooFarAway: "&c你距离你的伴侣太远了，亲不到. (最远距离是 {Distance} 个方块)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&c刚刚才亲过，请等 {Time} 秒后再亲吧，稍微节制点(●'◡'●)."
+    Hug:
+      Hugged: "&e你给了你的伴侣一个大大的拥抱!"
+      Hugged_SendMethod: "action_bar"
+      GotHugged: "&e你的伴侣拥抱了你!"
+      GotHugged_SendMethod: "action_bar"
+      TooFarAway: "&c离得这么远怎么抱你的伴侣？. (最远距离是 {Distance} 个方块)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&c不要老是抱在一起，先登上 {Time} 秒后再说吧━━(￣ー￣*|||━━."
+    Seen:
+      # Placeholders: {Name}, {DisplayName}
+      CurrentlyOnline: "{DisplayName}&r 现在状态为 &a在线&r."
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
+      LastSeen: "[\"\",{\"text\":\"{Name} 最后一次上线的时间为 \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} 以前\"}},{\"text\":\".\"}]}]"
+      # No Json!!!
+      DateFormat: "yyyy-MM-dd 'at' HH:mm:ss"
+    List:
+      # Placeholders: {Player1Name}, {Player1DisplayName}, {Player2Name}, {Player2DisplayName}, {Surname}, {MagicHeart}
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
+      NoMarriedPlayers: "&c没有玩家结婚！大家都是单身狗……."
+      Headline: "&e看看都有哪些家伙脱单了&r&f - &r&6正在展示第 {CurrentPage} 页/共 {MaxPage} 页"
+      Footer: "[\"\",{\"text\":\"<<< 上一页 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 正在展示第 {CurrentPage} 页/共 {MaxPage} 页 \",\"color\":\"gold\"},{\"text\":\">>> 下一页 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    Partners:
+      Headline: "&e看看 {DisplayName} 都和谁结婚了:"
+      Footer: "&e##############################"
+      NotMarried: "{DisplayName}&e 还是单身狗."
+      # Player1 is the player that was queried. Player2 is the partner
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "&c当前没有在线的证婚人."
+      Headline: "&e在线证婚人&r&f - &r&6正在展示第 {CurrentPage}/{MaxPage} 页"
+      Footer: "[\"\",{\"text\":\"<<< 上一页 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 下一页 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    PvP:
+      IsDisabled: "&c如果你关闭了PVP模式，那么你就不能伤害你的另一半."
+      IsDisabled_SendMethod: "action_bar"
+      On: "&a你现在可以和你的另一半友♂好♀切磋了."
+      Off: "&a还是舍不得吧，现在可不能PVP了呦（￣︶￣）↗　."
+    TP:
+      PartnerVanished: "&c如果你的伴侣隐身或者是消失了，那就不能传送到Ta身边."
+      Teleport: "&a正在将你传送至伴侣身边..."
+      TeleportTo: "&a你的伴侣正迎面扑来..."
+      Unsafe: "&c传送被取消了! 因为处境危险!"
+      ToUnsafe: "&c因为危险因素，传送被取消了!"
+      WorldNotAllowed: "&c你的伴侣所在的世界不允许传送."
+      Moved: "&c你怎么能在传送的时候乱动呢？因为空间乱流，传送取消!"
+      DontMove: "&c传送将在 {Time} 秒后进行! 别乱动哦!"
+      BlockedFrom: "&c你不能在这里传送."
+      BlockedTo: "&c伴侣所在的位置不能传送."
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r 想要传送到你这里. 使用以下命令接受传送 \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 或者使用以下命令以拒绝 \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "请等待你的伴侣接受传送请求."
+        Denied: "你拒绝了伴侣的传送申请."
+        DeniedPartner: "你的伴侣拒绝了传送请求."
+        Canceled: "你取消了传送申请."
+        CanceledPartner: "你的伴侣取消了传送申请."
+        CanceledDisconnectRequester: "你的伴侣已下线，已自动取消传送请求."
+        CanceledDisconnectTarget: "你的伴侣已下线，已自动取消传送请求."
+    SetColor:
+      UnknownColor: "&c没办法识别该颜色，请检查输入是否正确 '{Input}'!"
+      Set: "已成功设定颜色."
+      Selection: '["",{"text":"请选择一个你喜欢的❤:"},{"text":"\n"},{"text":" ❤ ","color":"dark_red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_red"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &4暗红色&r."}},{"text":" ❤ ","color":"red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} red"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &c红色&r."}},{"text":" ❤ ","color":"gold","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gold"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &6金色&r."}},{"text":" ❤ ","color":"yellow","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} yellow"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &e黄色&r."}},{"text":" ❤ ","color":"dark_green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_green"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &2深绿色&r."}},{"text":" ❤ ","color":"green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} green"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &a绿色&r."}},{"text":" ❤ ","color":"aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} aqua"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &b水绿色&r."}},{"text":" ❤ ","color":"dark_aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_aqua"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &3暗水绿色&r."}},{"text":" ❤ ","color":"dark_blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_blue"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &1深蓝色&r."}},{"text":" ❤ ","color":"blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} blue"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &9蓝色&r."}},{"text":" ❤ ","color":"light_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} light_purple"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &d亮紫色&r."}},{"text":" ❤ ","color":"dark_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_purple"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &5暗紫色&r."}},{"text":" ❤ ","color":"white","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} white"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &f白色&r."}},{"text":" ❤ ","color":"gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gray"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &7灰色&r."}},{"text":" ❤ ","color":"dark_gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_gary"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 &8深灰色&r."}},{"text":" ❤ ","color":"black","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} black"},"hoverEvent":{"action":"show_text","value":"将爱心的颜色设置为 黑色."}}]'
+    SetPriest:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      MadeYouAPriest: "{DisplayName}&r&a 将你设置为证婚人了."
+      YouMadeAPriest: "{DisplayName}&r&a 现在是一个证婚人了."
+      FiredYou: "{DisplayName}&r&c 被开除了，已经不再是证婚人了."
+      YouFiredAPriest: "{DisplayName}&r&a 已经不再是证婚人了."
+      PerPermission: "{DisplayName}&r&c 根据权限设置为神职人员，无法通过命令解雇."
+    Surname:
+      SetSuccessful: "&a成功修改了姓氏."
+      SetFailed: "&c修改失败."
+      ToShort: "&c输入的姓氏太短了. 至少应该有 {MinLength} 个字符的长度."
+      ToLong: "&cThe 输入的姓氏太长了. 最长也不应该超过 {MaxLength} 个字符的长度."
+      AlreadyUsed: "&c输入的姓氏已经被使用了!"
+      Banned: "&c输入的姓氏已被加入黑名单."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" 想要把你的姓氏从\",\"color\":\"white\"},{\"text\":\"{Surname}&r\"},{\"text\":\" 改成 \",\"color\":\"white\"},{\"text\":\"{NewSurname}&r\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"当前姓氏: {Surname}\"}},{\"text\":\". 使用以下命令接受婚姻 \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 或者使用以下命令以拒绝 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      PlayerOff: "{DisplayName}&r 现在已经下线，取消了修改姓氏的请求."
+      PriestOff: "证婚人 {DisplayName}&r 已经下线, 取消了形式修改."
+      PlayerCancelled: "&c&r&c{PlayerDisplayName}&r&c 已取消将姓氏修改成 {NewSurname}&r&c!"
+      PriestCancelled: "&c&r&c{PriestDisplayName}&r&c 已取消将姓氏修改成 {NewSurname}&r&c!"
+      YouCancelled: "&a你已取消将姓氏修改成 {NewSurname}&r&a!"
+      YouCancelledPriest: "&a你取消了将 &r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a 的姓氏修改为 {NewSurname}&r&a 的请求!"
+      Deny: "{DisplayName}&r&c 拒绝了姓氏的修改!"
+      YouDeny: "&a你拒绝将姓氏修改为 {NewSurname}&r&a."
+      PlayerOffline: "&c无法在玩家离线时检查是否同意修改姓氏."
+    Requests:
+      NothingToAccept: "&c没有待接收的请求."
+      NothingToDeny: "&c没有待拒绝的请求."
+      NothingToCancel: "&c没有待取消的请求."
+    Marry:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      NotWithHimself: "&c你不能让 &r&c{DisplayName}&r&c 和自己结婚."
+      AlreadySamePair: "&c你不能让已婚玩家再次结婚. &r&c{Player1DisplayName}&r&c 已经与 &r&c{Player2DisplayName}&r&c 结婚，出轨是不允许的(╬▔皿▔)╯."
+      AlreadyMarried: "&cY你不能让已婚玩家再次结婚. &r&c{DisplayName}&r&c 目前处于已婚状态."
+      SurnameNeeded: "&c你们需要一个姓氏才能结婚."
+      Married: "&a目前 &r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a 已经结婚."
+      HasMarried: "{PriestDisplayName}&r&a 以将你和 &r{PartnerDisplayName}&r&a证婚."
+      Broadcast: "{PriestDisplayName}&r&a 已为 {Player1DisplayName}&r&a 和 &r{Player2DisplayName}&r&a证婚."
+      NotInRange: "&cThe players are not in range! They need to be within {Range} blocks!"
+      AlreadyOpenRequest: "{DisplayName}&r&c 已经有一个未做出回应的结婚请求了."
+      YouCalledOff: "你已经取消了婚礼."
+      PlayerCalledOff: "{DisplayName}&r 取消了婚礼."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" 想要你和 \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r 结婚\"},{\"text\":\". 接受结婚请使用 \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 拒绝结婚请使用 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      PriestOff: "证婚人 {DisplayName}&r 已离线, 婚礼已取消."
+      PlayerOff: "{DisplayName}&r 现在已经离线，婚礼已取消."
+      MaxPartnersReached: "{DisplayName}&r 已经达到了最大允许的伴侣数量 ({MaxPartnerCount})."
+      Self:
+        NotYourself: "&c你不能和自己结婚."
+        NotInRange: "&c你们隔得太远了! 你们应当在 {Range} 个方块的距离之内!"
+        AlreadySamePair: "&c你已经和 &r&c{DisplayName}&r&c结婚了!"
+        AlreadyMarried: "&c你已经和 &r&c{DisplayName}&r&c结婚了!"
+        OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c 已经结婚了!"
+        AlreadyOpenRequest: "&c你已经有一个未回答的结婚请求了."
+        Married: "&a你与 &r&a{DisplayName}&r&a结婚了."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a结婚了."
+        YouCalledOff: "你取消了婚礼."
+        PlayerCalledOff: "{DisplayName}&r 取消了婚礼."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" 想要和你结婚. 接受这段婚姻请使用 \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 拒绝这段婚姻请使用 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        RequestSent: "结婚请求已发送."
+        PlayerOff: "{DisplayName}&r 已经下线, 婚礼已取消."
+        NotOnYourOwn: "&c你不能主持自己的婚礼. 请找证婚人帮你主持."
+        MaxPartnersReached: "你已经达到了允许的最大伴侣数量 ({MaxPartnerCount})."
+        MaxPartnersReachedOther: "{DisplayName}&r 已经达到了最大允许的伴侣数量 ({MaxPartnerCount})."
+    Divorce:
+      Broadcast: "&a&r&a{PriestDisplayName}&r&a 已确认 &r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a离婚."
+      DivorcedPlayer: "&a&r&a{PriestDisplayName}&r&a 已确认了你和 &r&a{PartnerDisplayName}&r&a的离婚."
+      Divorced: "&a你已确认 &r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a离婚了."
+      PlayerOff: "{DisplayName}&r 已经下线，离婚已取消."
+      PriestOff: "证婚人 {DisplayName}&r已下线, 离婚已取消."
+      PlayerCancelled: "&c&r&c{PlayerDisplayName}&r&c 取消了与 &r&c{PartnerDisplayName}&r&c的离婚!"
+      PriestCancelled: "&c&r&c{PriestDisplayName}&r&c 取消了你和 &r&c{PartnerDisplayName}&r&c的离婚!"
+      YouCancelled: "&a你取消了和 &r&a{DisplayName}&r&a的离婚!"
+      YouCancelledPriest: "&a你已取消 &r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a的离婚!"
+      Deny: "{DisplayName}&r&c 拒绝了离婚请求!"
+      YouDeny: "&a你拒绝了与 &r&a{DisplayName}&r&a离婚."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" 想要你与 \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName} 离婚\"},{\"text\":\". 接受离婚请求请输入 \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 拒绝离婚请输入 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      NotInRange: "&a玩家隔得太远了! 应当在 {Range} 个方块内的距离!"
+      Self:
+        Divorced: "&a你离开了 &r&a{DisplayName}&r&a. 你现在不再受这段婚姻约束了."
+        DivorcedPlayer: "{DisplayName}&r&a 离你而去. 你现在不再受这段婚姻约束了."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a 和 &r&a{Player2DisplayName}&r&a离婚了."
+        PlayerOff: "{DisplayName}&r 现在已经离线，离婚已取消."
+        RequestSent: "离婚请求已发送给 {DisplayName}&r."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" 想要和你离婚. 接受离婚请求请输入 \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 拒绝离婚请输入 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        Deny: "{DisplayName}&r&c 拒绝了你的离婚请求!"
+        YouDeny: "&a你拒绝了 &r&a{DisplayName}&r&a的离婚请求."
+        Cancelled: "{DisplayName}&r&c 取消了他们的离婚请求!"
+        YouCancelled: "&a你已取消与 &r&a{DisplayName}&r&a的离婚请求!"
+        NotInRange: "&a你的伴侣不在范围之内! 你们之间的距离不应该超过 {Range} 个方块!"
+    Economy:
+      NotEnough: "&c你没有足够的钱! 你需要 {Cost} {CurrencyName}."
+      PartnerNotEnough: "&c你的伴侣没有足够的钱!"
+      PriestMarryNotEnough: "&c你想要与之结婚的玩家没有足够的钱."
+      PriestDivorceNotEnough: "&c你想要与之离婚的玩家没有足够的钱."
+      MarriagePaid: "&a你为婚礼花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      DivorcePaid: "&a你为解除婚姻花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      HomeTPPaid: "&a传送回家花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      SetHomePaid: "&a设置家花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      TpPaid: "&a传送花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      GiftPaid: "&a为伴侣购买礼物花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+      SurnameChangePaid: "&a修改姓氏花费了 {Cost} {CurrencyName} (剩余资金为 {Remaining} {CurrencyName} )."
+    Admin:
+      Reloading: "&1正在重载中 ..."
+      Reloaded: "&1重载完毕!"
+      ReloadingDatabase: '&b正在重新加载数据库 &6.&r&c.&r&a.&r'
+      CheckingForUpdates: "&1正在检查更新 ..."
+      Updated: "&e插件已经更新，将在下一次启动时被加载."
+      NoUpdate: "&6目前没有可用的更新."
+      UpdateFail: "&c更新失败，请在控制台里检查相关日志!"
+      # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
+      UpdateAvailable: "[{\"text\":\"存在可用更新! 请访问 \\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\"}},{\"text\":\"\\\" 以下载!\"}]"
+    Help:
+      Header: "&6### Marriage Master Commands ###"
+      Footer: "&6#############################"
+      # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
+      CustomHelp:
+        # Will be used if the player is married
+        Married:
+          - " &3__&b&lMarry Commands&r&3__"
+          - ""
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" 亲一口你的另一半","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" 传送到你的另一半","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" 与你的伴侣进行私密聊天","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" 给你的伴侣赠送礼物","color":"aqua"}]'
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 获得命令的完整列表"}]'
+        # Will be used if the player is a priest
+        Priest:
+          - " &3__&b&lMarry&r&3__"
+          - "&b 通过以下命令操办婚礼 /marry marry <player1> <player2>"
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 获得完整帮助"}]'
+        # Will be used if the player is neither married nor a priest
+        Default:
+          - " &3__&b&lMarry&r&3__"
+          - "&c你必须先结婚才能使用此命令"
+
+  Commands:
+    HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
+    # No color codes please
+    PlayerNameVariable: "player_name"
+    PartnerNameVariable: "partner_name"
+    SurnameVariable: "surname"
+    MessageVariable: "message"
+    Description:
+      Backpack: "打开伴侣的背包."
+      BackpackOn: "允许伴侣使用你的背包."
+      BackpackOff: "拒绝伴侣使用你的背包."
+      Chat: "与伴侣进行私密聊天."
+      ChatSetTarget: "修改私密聊天的对象t. 如果不修改的话你的所有伴侣都将得到消息."
+      ChatToggle: "切换你的聊天为与伴侣的私密聊天."
+      ChatListen: "显示已婚玩家发送给其伴侣的所有聊天消息."
+      Gift: "将手中的物品送给你的伴侣."
+      Home: "传送回爱巢."
+      HomeOther: "传送回其他已婚玩家的爱巢."
+      SetHome: "设置你的小家."
+      SetHomeOther: "为一名已婚玩家设置小家."
+      DelHome: "删除你的小家."
+      DelHomeOther: "删除一名已婚玩家的小家."
+      Help: "展示所有可用指令以及他们的描述."
+      List: "列出所有已婚玩家."
+      ListPriests: "列出目前所有在线的证婚人."
+      Partners: "列出一个玩家的所有伴侣"
+      PvP: "更改与伴侣的PVP状态."
+      PvPOn: "启用与伴侣的PVP."
+      PvPOff: "关闭与伴侣的PVP."
+      Tp: "传送到你的伴侣."
+      Kiss: "亲吻你的伴侣."
+      Hug: "拥抱你的伴侣."
+      Seen: "显示你伴侣最后一次在线的时间."
+      Marry: "使两个玩家结婚."
+      MarrySelf: "向另一个玩家发送结婚请求."
+      Divorce: "使两个玩家离婚."
+      DivorceSelf: "与你的伴侣离婚."
+      Surname: "更改一对夫妻的姓氏."
+      SurnameSelf: "修改你和伴侣的姓氏."
+      Update: "C检查是否存在可用更新并自动下载."
+      Accept: "接受一个待处理的请求."
+      Cancel: "取消一个待处理的请求."
+      Deny: "拒绝一个待处理的请求."
+      SetColor: "设置婚姻的特殊色调."
+      SetPriest: "聘请/解聘玩家为证婚人."
+      Reload: "重载插件的相关配置."
+      Version: "输出有关插件的版本详细信息及其依赖项."
+# The fist option in the list will be the one displayed in the commands help
+Command:
+  Switches:
+    On:
+      - on
+      - true
+      - yes
+    Off:
+      - off
+      - false
+      - no
+    Toggle:
+      - toggle
+      - switch
+    All:
+      - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
+  Main:
+    - marry
+  Backpack:
+    - backpack
+    - bp
+  Chat:
+    - chat
+  ChatSetTarget:
+    - settarget
+    - target
+  ChatToggle:
+    - chattoggle
+  ChatListen:
+    - listenchat
+    - chatlisten
+  Gift:
+    - gift
+    - send
+    - give
+  Help:
+    - help
+  Home:
+    - home
+  SetHome:
+    - sethome
+    - definehome
+    - savehome
+  DelHome:
+    - delhome
+    - deletehome
+    - unsethome
+  PvP:
+    - pvp
+  Kiss:
+    - kiss
+  Hug:
+    - hug
+  Seen:
+    - seen
+    - lastOnline
+  PvPOn:
+    - pvpon
+  PvPOff:
+    - pvpoff
+  List:
+    - list
+  ListPriests:
+    - listpriests
+  Partners:
+    - partners
+    - listpartners
+    - partnerlist
+  Tp:
+    - tp
+  SetColor:
+    - setcolor
+  Marry:
+    - marry
+  Divorce:
+    - divorce
+  SetPriest:
+    - setpriest
+  Update:
+    - update
+  Version:
+    - version
+  Accept:
+    - accept
+  Cancel:
+    - cancel
+  Deny:
+    - deny
+Dialog:
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
+  DoYouWant: " {Player1Name}, 你愿意在这个服务器上与 {Player2Name} 结婚吗?"
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
+  AndDoYouWant: " {Player2Name}, 你愿意在这个服务器上与 {Player1Name} 结婚吗?"
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
+  Married: "我现在宣布 {Player1Name} 和 {Player2Name} 在这个服务器上结为夫妻! 先亲一口看看( •̀ ω •́ )✧."
+  YesIWant: "我愿意!"
+  NoIDontWant: "不，我不愿意!"
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "未婚"
+    NoHome: "无家可归"
+    Separator: "&r, "
+    NoPartnerForSlot: ""
+    Years: "&6{years}&ey "
+    Months: "&6{months}&eM "
+    Days: "&6{days}&ed "
+    Hours: "&6{hours}&eh "
+    Minutes: "&6{minutes}&em"
+    TimeMain: "{years}{months}{days}{hours}{minutes}"
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+
+
+# The name of the language represented by the language file
+LanguageName: "中文/Chinese"
+# The author of the language file
+Author: "ZTF3"
+
+# Language file version. Don't touch it!
+Version: 114
+Revision: 1
