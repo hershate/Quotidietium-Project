@@ -4,7 +4,7 @@
 
 该菜单基于GUIPlus插件创建，使用了如下插件的命令：
 ```
-CMI;    MyPet； GUIPlus；   TAB；   Trademe；   PAPI
+CMI;    MyPet； GUIPlus；   TAB；   Trademe；   PAPI；  Iris
 ```
 若要用于其他插件请自行使用AI转换
 
