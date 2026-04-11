@@ -1,0 +1,917 @@
+id: 通知
+rows: 6
+type: chest
+title: 通知
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"704304285","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,108B,-84B,101B,-63B,-125B,69B,17B,-95B,-120B,-44B,82B,40B,34B,97B,-110B,-116B,-23B,-30B,102B,35B,-69B,27B,-87B,-107B,-4B,123B,55B,73B,5B,-95B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,11B,-53B,-95B,-17B,9B,75B,57B,-121B,-7B,-13B,-28B,45B,90B,-65B,76B,22B,-53B,-39B,52B,-102B,63B,77B,-42B,-21B,104B,53B,89B,-50B,60B,-52B,-117B,82B,57B,92B,-32B,25B,-46B,2B,-91B,-8B,-92B,-76B,-37B,-84B,120B,0B,-29B,49B,-121B,66B,103B,-67B,-72B,-36B,-17B,-123B,-19B,9B,117B,36B,101B,11B,125B,-22B,45B,28B,96B,109B,49B,-39B,59B,-48B,20B,45B,-66B,-110B,54B,-94B,80B,28B,-62B,-5B,81B,-32B,102B,34B,-27B,-112B,11B,69B,-119B,-58B,-99B,-27B,-103B,-58B,83B,100B,44B,-70B,65B,26B,101B,18B,-115B,-119B,14B,-88B,-56B,-31B,-110B,-53B,-15B,-70B,-52B,15B,-123B,114B,-4B,-90B,-66B,12B,87B,-21B,73B,105B,108B,-111B,71B,10B,115B,-30B,-48B,57B,-45B,-121B,-43B,-56B,55B,12B,-40B,-42B,-73B,-82B,-31B,-116B,85B,-99B,-37B,43B,-87B,-109B,86B,-81B,92B,75B,12B,-121B,-61B,-48B,95B,-107B,-79B,20B,-55B,99B,99B,-21B,21B,101B,73B,-122B,-97B,89B,86B,-118B,-125B,44B,13B,-49B,72B,-111B,70B,-21B,-76B,-118B,-108B,113B,54B,-22B,-121B,119B,-3B,112B,-16B,48B,100B,85B,115B,-57B,36B,-17B,-108B,99B,116B,-68B,88B,14B,-102B,-124B,-69B,42B,-74B,-35B,95B,-17B,93B,-103B,59B,-77B,-101B,50B,25B,-1B,-97B,-54B,-86B,-14B,127B,18B,-44B,-47B,56B,-126B,75B,50B,78B,-28B,85B,54B,-107B,-33B,-90B,28B,-8B,-18B,43B,-20B,-49B,-81B,-44B,97B,-74B,-122B,-38B,-68B,-31B,-69B,-107B,-123B,-90B,-42B,-96B,-93B,-17B,4B,-99B,-10B,75B,7B,-52B,-88B,-3B,31B,64B,74B,18B,79B,28B,6B,-3B,-90B,-85B,-15B,28B,54B,77B,13B,-80B,109B,73B,118B,18B,51B,-45B,78B,-73B,94B,-87B,98B,77B,-72B,-57B,88B,58B,-32B,14B,-91B,33B,-17B,11B,52B,127B,124B,-24B,-76B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1938674189","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,90B,109B,117B,-63B,-125B,69B,17B,-95B,-120B,-44B,34B,20B,-111B,48B,73B,-58B,116B,113B,-77B,-111B,-35B,-115B,-44B,74B,-2B,-67B,-101B,-92B,-126B,80B,75B,123B,-101B,25B,-34B,-68B,121B,-17B,-115B,-111B,-71B,-27B,-48B,-11B,-124B,-91B,-116B,-61B,-20B,101B,-4B,22B,-82B,94B,-57B,-13B,-59B,116B,18B,-50B,-98B,-57B,-85B,85B,-72B,28B,47B,-90B,30B,102B,121B,-95B,28B,46B,-16B,12B,105B,-127B,82B,124B,82B,-46B,-82B,87B,60B,-128B,-47B,-120B,67B,-82B,-45B,78B,84B,-20B,-9B,-62B,118B,-124B,58B,-110B,-78B,-71B,62B,117B,-26B,14B,-80B,-78B,24B,-17B,29B,104B,-126B,22B,-41B,-92B,-115B,-56B,21B,-121B,-34B,-61B,99B,-32B,102B,34B,-31B,-112B,9B,69B,-79B,-58B,-99B,-27B,-87B,-58B,83B,104B,44B,-70B,65B,18B,-90B,18B,-115B,9B,15B,-88B,-56B,-31B,-30B,-53B,-15B,-86B,-52B,14B,-71B,114B,-4B,-90B,-70B,12B,87B,-21B,113B,97B,108B,-98B,-123B,10B,51B,-30B,-48B,58B,-45B,-121B,-43B,-56B,55B,12B,-40B,-42B,-73B,-82B,-31B,-116B,-107B,-83B,-37B,43B,-119B,-109B,86B,-83B,92B,75B,-20B,-11B,-5B,61B,127B,89B,68B,82B,-60B,79B,-75B,-83B,53B,-54B,-126B,12B,63B,-77B,-76B,16B,7B,89B,24B,-98B,-110B,34B,-115B,-42B,105B,21B,9B,-29B,44B,24B,-34B,15B,30B,30B,123B,-63B,96B,-56B,-54B,-6B,-112B,-119B,-33B,41B,-61B,-16B,120B,-15B,28B,-44B,17B,-73B,85B,100B,-37B,-65B,30B,-68B,114B,119B,102B,55B,117B,50B,-2B,63B,-103B,101B,-23B,-1B,36B,-88B,-78B,113B,4B,-105B,104B,-100B,-56B,-85B,112B,74B,-65B,-119B,57B,-16B,-35B,91B,-40B,-97B,111B,-87B,-46B,108B,12B,53B,-127B,-61B,119B,43B,115B,77B,-115B,65B,71B,-33B,10B,90B,-51B,-101B,14B,-104B,82B,-13B,64B,-128B,-124B,36B,-98B,56B,-36B,117B,-21B,-82B,-62B,115B,-40B,-44B,53B,-64B,-74B,33B,-39B,73B,76B,77B,51B,-35B,122B,-123B,-118B,52B,-31B,30B,35B,-23B,-128B,59B,-108B,-122B,-68B,47B,-82B,41B,-92B,59B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '3':
+        slot: 2
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1740066222","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-120B,31B,-80B,-32B,-63B,-94B,-120B,80B,68B,106B,17B,-118B,72B,-104B,36B,99B,-70B,-72B,-39B,-56B,-18B,70B,106B,37B,-1B,-67B,-101B,-92B,66B,-96B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,115B,-53B,-95B,-17B,9B,75B,25B,-121B,-27B,-53B,-20B,45B,-36B,-66B,-50B,86B,-21B,-59B,60B,92B,62B,-49B,-74B,-37B,112B,51B,91B,47B,60B,-52B,-14B,66B,57B,92B,-32B,25B,-46B,2B,-91B,-8B,-92B,-92B,91B,-81B,120B,0B,-45B,41B,-121B,92B,-89B,-67B,-88B,56B,-99B,-124B,-19B,9B,117B,33B,101B,115B,125B,-19B,-83B,28B,96B,107B,49B,62B,57B,-48B,28B,45B,-18B,72B,27B,-111B,43B,14B,-61B,-15B,36B,112B,51B,-111B,112B,-56B,-124B,-94B,88B,-29B,-47B,-14B,84B,-29B,53B,52B,22B,-35B,32B,9B,83B,-119B,-58B,-124B,103B,84B,-28B,112B,-15B,-3B,120B,85B,102B,-25B,92B,57B,126B,83B,93B,-122B,-42B,122B,92B,24B,-101B,103B,-95B,-62B,-116B,56B,116B,110B,-12B,97B,53B,-14B,61B,3B,118B,-16B,-83B,107B,56B,99B,101B,-25B,-15B,74B,-30B,-92B,85B,43B,109B,-119B,-61B,-47B,104B,-24B,111B,-118B,72B,-118B,-8B,-87B,-74B,-75B,67B,89B,-112B,-31B,55B,-106B,22B,-30B,44B,11B,-61B,83B,82B,-92B,-47B,58B,-83B,34B,97B,-100B,5B,-109B,97B,-65B,63B,30B,15B,6B,3B,86B,-42B,-121B,76B,-4B,78B,25B,-122B,-105B,-69B,-25B,-96B,-114B,-72B,-85B,34B,-37B,-3B,-11B,96B,-53B,-35B,-115B,61B,-44B,-55B,-8B,-1B,100B,-106B,-91B,-1B,-109B,-96B,-54B,-58B,17B,-36B,-93B,113B,34B,91B,-31B,-108B,126B,19B,115B,-32B,-69B,-73B,-80B,63B,-33B,82B,-91B,-39B,24B,106B,2B,-121B,-17B,86B,-26B,-102B,26B,-125B,-114B,-66B,19B,116B,-102B,55B,-99B,49B,-91B,-26B,-127B,0B,9B,73B,-68B,114B,24B,-12B,-21B,-82B,-62B,115B,-40B,-41B,53B,-64B,-95B,33B,57B,74B,76B,77B,51B,61B,120B,-123B,-118B,52B,-31B,9B,35B,-23B,-128B,71B,-108B,-122B,-68B,47B,-123B,79B,-123B,60B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '4':
+        slot: 3
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1610119716","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,74B,-61B,64B,16B,-67B,-25B,43B,-122B,-67B,-12B,-110B,-106B,-82B,-44B,-118B,11B,30B,42B,-118B,8B,82B,-118B,-107B,-126B,-108B,18B,38B,-55B,52B,46B,-39B,108B,-62B,-18B,70B,-84B,37B,-1B,-18B,38B,-79B,16B,-80B,-94B,-73B,-103B,-31B,-51B,-101B,-9B,-34B,88B,85B,58B,1B,-45B,64B,58B,42B,4B,60B,60B,47B,94B,-93B,-11B,-53B,-30B,113B,121B,127B,23B,61B,60B,45B,-42B,-21B,104B,-75B,88B,-34B,7B,88B,-108B,-75B,-10B,56B,30B,88B,50B,18B,-107B,-4B,-92B,116B,-36B,-83B,4B,0B,55B,55B,2B,74B,-109B,77B,-30B,58B,-49B,-91B,-101B,72B,-3B,78B,-38B,-107B,-26B,48B,121B,-12B,-128B,-75B,-61B,36B,-9B,-96B,59B,116B,-72B,33B,99B,101B,-87B,5B,-52B,-26B,87B,-36B,-49B,100B,42B,-96B,-112B,-102B,18B,-125B,123B,39B,50B,-125B,-121B,-56B,58B,-12B,-125B,52B,-54B,20B,90B,27B,85B,-88B,-55B,-29B,-110B,-45B,-15B,-74B,44B,-86B,82B,123B,126B,-37B,94B,-122B,-63B,122B,82B,91B,87B,22B,-111B,-58B,-126B,4B,-116B,-114B,-12B,-31B,12B,-118B,45B,3B,-74B,11B,-99B,111B,4B,99B,-51B,-24B,-4B,74B,-22B,-91B,-75B,43B,67B,-119B,-77B,-53B,-53B,89B,-72B,-86B,99B,37B,-109B,-37B,-50B,-42B,6B,85B,77B,86B,28B,89B,86B,-53B,74B,-43B,86B,100B,-92B,-55B,-96B,-13B,90B,101B,-54B,4B,-29B,115B,62B,-27B,-4B,-6B,-118B,-49B,89B,-45B,29B,-78B,-55B,27B,21B,24B,-67B,-97B,60B,-13B,46B,-30B,-79B,-114B,-35B,-8B,-41B,-125B,3B,119B,71B,118B,86B,39B,19B,-1B,-109B,-39B,52B,-31B,79B,-126B,54B,27B,79B,112B,-118B,-58B,-117B,28B,-124B,-45B,-124B,125B,-52B,60B,-12B,111B,97B,127B,-66B,-91B,77B,-77B,55B,-44B,7B,14B,-33B,-83B,42B,13B,-11B,6B,61B,-3B,-120B,-113B,-6B,55B,85B,-104B,81B,-1B,64B,-128B,-108B,20B,30B,4B,92B,76B,-69B,-82B,-59B,11B,-40B,118B,53B,-64B,-82B,39B,-39B,43B,-52B,108B,63B,-35B,5B,-75B,-114B,13B,97B,-114B,-79B,-14B,-64B,61B,42B,75B,-63B,23B,-93B,36B,-7B,-121B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '5':
+        slot: 4
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1334176250","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-8B,9B,11B,30B,44B,-118B,8B,69B,-92B,22B,-95B,-120B,-124B,73B,50B,-90B,-117B,-101B,-115B,-20B,110B,-92B,86B,-14B,-33B,-69B,73B,42B,8B,-75B,-76B,-73B,-103B,-31B,-51B,-101B,-9B,-34B,24B,-103B,91B,14B,93B,79B,88B,-54B,56B,44B,94B,-90B,111B,-31B,-26B,117B,-70B,92B,-51B,103B,-31B,-30B,121B,-70B,-39B,-124B,-21B,-23B,106B,-18B,97B,-106B,23B,-54B,-31B,2B,-49B,-112B,22B,40B,-59B,39B,37B,-19B,122B,-59B,3B,-104B,76B,56B,-28B,58B,-19B,68B,-59B,-15B,40B,108B,71B,-88B,51B,41B,-101B,-21B,75B,103B,-23B,0B,27B,-117B,-15B,-47B,-127B,102B,104B,113B,75B,-38B,-120B,92B,113B,24B,-116B,-58B,-127B,-101B,-119B,-124B,67B,38B,20B,-59B,26B,15B,-106B,-89B,26B,47B,-95B,-79B,-24B,6B,73B,-104B,74B,52B,38B,60B,-95B,34B,-121B,-117B,111B,-57B,-85B,50B,59B,-27B,-54B,-15B,-101B,-22B,50B,-36B,-83B,-57B,-123B,-79B,121B,22B,42B,-52B,-120B,67B,-21B,74B,31B,86B,35B,-33B,49B,96B,123B,-33B,-70B,-122B,51B,86B,-74B,30B,-81B,36B,78B,90B,-75B,114B,47B,113B,48B,28B,14B,-4B,117B,17B,73B,17B,63B,-43B,-74B,-74B,40B,11B,50B,-4B,-54B,-46B,66B,-100B,100B,97B,120B,74B,-118B,52B,90B,-89B,85B,36B,-116B,-77B,-96B,-33B,31B,4B,-29B,81B,111B,-40B,101B,101B,125B,-56B,-60B,-17B,-108B,97B,120B,-66B,121B,14B,-22B,-120B,-37B,42B,-78B,-19B,95B,15B,-34B,-71B,-69B,-78B,-121B,58B,25B,-1B,-97B,-52B,-78B,-12B,127B,18B,84B,-39B,56B,-126B,91B,52B,78B,-28B,93B,56B,-91B,-33B,-60B,28B,-8B,-18B,45B,-20B,-49B,-73B,84B,105B,54B,-122B,-102B,-64B,-31B,-69B,-107B,-71B,-90B,-58B,-96B,-93B,111B,5B,-83B,-26B,77B,39B,76B,-87B,121B,32B,64B,66B,18B,47B,28B,122B,-35B,-70B,-85B,-16B,28B,118B,117B,13B,-80B,111B,72B,14B,18B,83B,-45B,76B,-9B,94B,-95B,34B,77B,120B,-60B,72B,58B,-32B,1B,-91B,33B,-17B,11B,-97B,-78B,-70B,-118B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '6':
+        slot: 5
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"456229945","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,86B,-33B,107B,-36B,56B,16B,126B,-33B,-65B,-62B,-8B,37B,47B,118B,-80B,100B,-55B,-106B,93B,-6B,-112B,-91B,-91B,20B,-114B,82B,46B,71B,-31B,8B,97B,-47B,-18B,58B,123B,38B,94B,111B,-80B,-67B,-27B,114B,33B,-1B,-5B,-51B,55B,35B,37B,-127B,-10B,-72B,66B,-69B,-111B,71B,-93B,-103B,111B,-66B,-7B,33B,-51B,-61B,105B,105B,-109B,98B,-43B,47B,-35B,-79B,77B,62B,-3B,126B,-11B,-25B,-26B,-6B,-113B,-85B,-49B,95B,62B,126B,-40B,124B,-6B,-19B,-22B,-6B,122B,-13B,-11B,-22B,-53B,-57B,-107B,63B,-98B,-50B,35B,-23B,-87B,-43B,-36B,77B,-67B,31B,-6B,127B,-70B,125B,-50B,71B,86B,73B,-14B,-2B,125B,-101B,-100B,-90B,-61B,-27B,-10B,124B,127B,-33B,47B,-105B,-3B,-8B,-67B,27B,-105B,-45B,-12B,120B,-7B,-103B,20B,-82B,23B,-65B,-69B,39B,-91B,15B,126B,-15B,-33B,-70B,105B,-18B,79B,99B,-101B,-104B,-86B,86B,36B,-21B,-9B,109B,114B,-20B,-57B,110B,55B,-7B,-69B,-91B,61B,76B,-2B,113B,51B,47B,-98B,4B,-5B,-51B,97B,-16B,-13B,-68B,121B,-16B,99B,71B,122B,-69B,-24B,28B,-53B,-29B,-61B,105B,36B,-5B,51B,60B,39B,111B,-114B,-17B,-50B,-13B,114B,58B,110B,70B,127B,-20B,-38B,-28B,-30B,-87B,-5B,123B,-103B,124B,123B,-109B,38B,-23B,109B,-74B,-48B,71B,-101B,-90B,-49B,23B,63B,63B,-78B,39B,104B,56B,-14B,22B,-94B,-79B,-42B,100B,95B,-49B,-37B,-95B,-33B,-83B,57B,-84B,111B,126B,56B,119B,115B,-5B,-108B,30B,-50B,-3B,-61B,112B,-98B,-37B,67B,55B,118B,-109B,95B,8B,107B,-65B,79B,-37B,-44B,-40B,74B,-21B,-90B,49B,54B,-51B,94B,85B,-50B,-3B,6B,36B,81B,84B,-89B,-55B,31B,-70B,-76B,-67B,89B,-65B,43B,-43B,58B,-53B,-107B,-86B,-41B,-103B,91B,103B,-59B,15B,-1B,114B,-39B,-74B,-76B,-115B,85B,85B,-82B,51B,85B,84B,88B,-23B,117B,86B,25B,-6B,-30B,15B,58B,-98B,107B,82B,50B,37B,-44B,-75B,14B,50B,-91B,-39B,-124B,106B,-42B,89B,67B,-26B,75B,-46B,109B,72B,-46B,96B,31B,7B,-101B,74B,-20B,86B,-76B,105B,104B,-93B,36B,-125B,121B,109B,25B,75B,-43B,-56B,-127B,-70B,98B,19B,-76B,107B,96B,6B,14B,32B,86B,-123B,-61B,15B,-119B,-39B,124B,105B,-61B,73B,81B,85B,26B,-120B,16B,85B,73B,106B,-71B,-61B,2B,78B,-39B,88B,-93B,34B,100B,-85B,-96B,10B,19B,16B,-79B,119B,64B,-55B,27B,-20B,97B,97B,99B,-88B,74B,97B,83B,35B,96B,93B,6B,-103B,-125B,69B,-117B,120B,-40B,25B,57B,-81B,-40B,-75B,-115B,-108B,89B,82B,55B,-40B,51B,16B,1B,18B,115B,87B,-23B,72B,57B,-120B,-86B,-101B,-88B,0B,52B,-128B,11B,-118B,32B,5B,106B,-74B,-93B,-40B,34B,-36B,54B,100B,-47B,1B,4B,-3B,7B,-114B,64B,-80B,-114B,-79B,33B,35B,70B,-119B,11B,-61B,91B,77B,-128B,65B,-54B,37B,4B,-100B,-77B,-94B,8B,33B,-28B,13B,76B,27B,114B,-22B,26B,-63B,106B,-124B,110B,82B,-81B,-107B,68B,-58B,1B,87B,76B,28B,-23B,-44B,-100B,-128B,70B,36B,56B,-51B,-50B,-63B,60B,7B,74B,-122B,-99B,123B,73B,90B,64B,106B,81B,43B,117B,12B,-102B,-23B,-121B,-101B,-102B,-108B,67B,-127B,56B,81B,0B,-35B,108B,-49B,-123B,44B,75B,-66B,72B,-96B,93B,-52B,1B,124B,114B,104B,-26B,-91B,-64B,92B,33B,-44B,51B,-115B,111B,106B,-114B,126B,43B,41B,36B,11B,124B,28B,111B,25B,-115B,26B,41B,40B,54B,67B,127B,53B,-95B,-78B,-75B,-44B,38B,59B,-78B,-88B,54B,56B,84B,5B,-41B,86B,40B,35B,87B,-60B,-56B,-14B,18B,84B,-104B,87B,21B,-76B,18B,87B,95B,-91B,36B,11B,82B,5B,-100B,91B,28B,0B,0B,16B,90B,59B,-119B,7B,21B,-58B,57B,-106B,-12B,-111B,53B,93B,5B,79B,66B,29B,108B,114B,-103B,-62B,15B,-23B,88B,-18B,46B,78B,30B,87B,-115B,-85B,98B,93B,112B,-66B,-72B,66B,117B,32B,44B,71B,-58B,-71B,29B,73B,19B,-4B,-26B,-107B,10B,24B,-111B,-18B,92B,-79B,14B,16B,23B,16B,25B,-31B,-119B,113B,-26B,66B,47B,126B,-72B,123B,-104B,42B,-56B,-83B,13B,125B,-53B,118B,109B,-16B,-87B,4B,1B,2B,-105B,-42B,-126B,15B,30B,6B,49B,-47B,-86B,48B,-95B,122B,4B,49B,-70B,13B,125B,-61B,-51B,35B,117B,-56B,-36B,65B,13B,-32B,-76B,-119B,53B,-56B,-96B,-103B,103B,-57B,-66B,11B,45B,-119B,1B,46B,-123B,-108B,113B,66B,-75B,11B,11B,33B,-125B,-69B,90B,2B,9B,67B,-121B,107B,-119B,45B,48B,111B,92B,27B,58B,18B,-81B,-22B,-120B,-124B,85B,85B,-127B,-17B,50B,-10B,79B,-47B,-124B,-34B,-26B,73B,-24B,-72B,12B,0B,83B,-117B,4B,96B,42B,-38B,-43B,77B,76B,-73B,76B,34B,-38B,-26B,-44B,65B,-50B,35B,-91B,52B,-127B,106B,87B,74B,-114B,-59B,-78B,-27B,80B,95B,-90B,85B,94B,-59B,-127B,-109B,115B,126B,-124B,97B,24B,-31B,-48B,5B,-101B,115B,33B,72B,29B,79B,96B,98B,-72B,38B,48B,-56B,51B,6B,68B,-16B,4B,-85B,-92B,-34B,-104B,10B,41B,83B,-64B,85B,-22B,-59B,-113B,44B,57B,-47B,74B,106B,14B,-27B,35B,84B,-40B,-96B,-60B,3B,-114B,45B,-16B,-96B,-28B,-58B,-123B,2B,79B,-28B,58B,20B,18B,-73B,66B,17B,-54B,85B,46B,9B,36B,6B,115B,23B,122B,86B,5B,-26B,-59B,33B,71B,-53B,-15B,48B,-107B,-62B,39B,18B,95B,-85B,23B,80B,-88B,-90B,48B,-73B,92B,116B,-119B,-68B,-14B,64B,14B,-28B,-15B,116B,-30B,90B,97B,-56B,-24B,109B,29B,46B,-81B,-37B,-41B,-85B,-81B,-97B,55B,-72B,-86B,-89B,110B,-98B,59B,-70B,30B,-117B,-19B,51B,-33B,-66B,-13B,-18B,-81B,-18B,-24B,55B,-33B,-29B,67B,64B,-15B,-69B,35B,31B,-73B,75B,-2B,-97B,-73B,-16B,-101B,43B,-1B,41B,-3B,-23B,-27B,-99B,-74B,-65B,118B,119B,63B,63B,103B,63B,26B,-64B,-125B,-127B,12B,-60B,-9B,2B,-127B,124B,-13B,98B,120B,-50B,-28B,-19B,-95B,50B,122B,-85B,-92B,-1B,-5B,86B,-63B,19B,67B,2B,-110B,87B,72B,18B,62B,-121B,-45B,-44B,73B,-128B,100B,-2B,66B,93B,-56B,-37B,-27B,-127B,-98B,4B,-14B,-86B,73B,-110B,125B,55B,-8B,-57B,54B,-47B,5B,127B,65B,-65B,77B,110B,120B,-99B,36B,-73B,98B,-28B,110B,-16B,-121B,89B,-92B,-73B,-85B,-13B,-72B,-99B,58B,127B,-17B,-73B,3B,41B,-34B,-7B,97B,-18B,86B,-1B,2B,-54B,92B,-11B,-53B,-54B,9B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '7':
+        slot: 6
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"181767120","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,68B,107B,89B,-16B,96B,81B,68B,40B,34B,-75B,8B,69B,36B,76B,-110B,49B,93B,-36B,108B,100B,119B,35B,-75B,-110B,127B,-17B,38B,-87B,16B,-88B,-91B,-67B,-51B,12B,111B,-34B,-68B,-9B,-58B,-56B,-36B,114B,-24B,123B,-62B,82B,-58B,97B,-15B,50B,125B,11B,55B,-81B,-45B,-27B,106B,62B,11B,23B,-49B,-45B,-51B,38B,92B,79B,87B,115B,15B,-77B,-68B,80B,14B,23B,120B,-122B,-76B,64B,41B,62B,41B,-23B,-42B,43B,30B,-64B,100B,-62B,33B,-41B,105B,47B,42B,-114B,71B,97B,123B,66B,-99B,73B,-39B,92B,95B,122B,75B,7B,-40B,88B,-116B,-113B,14B,52B,67B,-117B,91B,-46B,70B,-28B,-118B,-61B,-16B,97B,28B,-72B,-103B,72B,56B,100B,66B,81B,-84B,-15B,96B,121B,-86B,-15B,18B,26B,-117B,110B,-112B,-124B,-87B,68B,99B,-62B,19B,42B,114B,-72B,-8B,118B,-68B,42B,-77B,83B,-82B,28B,-65B,-87B,46B,67B,107B,61B,46B,-116B,-51B,-77B,80B,97B,70B,28B,58B,87B,-6B,-80B,26B,-7B,-114B,1B,-37B,-5B,-42B,53B,-100B,-79B,-78B,115B,127B,37B,113B,-46B,-86B,-107B,-74B,-60B,-31B,104B,52B,-12B,-41B,69B,36B,69B,-4B,84B,-37B,-38B,-94B,44B,-56B,-16B,43B,75B,11B,113B,-110B,-123B,-31B,41B,41B,-46B,104B,-99B,86B,-111B,48B,-50B,-126B,-57B,96B,-20B,92B,13B,-6B,-84B,-84B,-17B,-104B,-8B,-99B,50B,12B,-49B,55B,-53B,65B,-99B,112B,87B,69B,-74B,-5B,-21B,-67B,-106B,-71B,43B,-69B,43B,-109B,-15B,-1B,-87B,44B,75B,-1B,39B,65B,21B,-115B,35B,-72B,37B,-29B,68B,-74B,-78B,41B,-3B,38B,-27B,-64B,119B,95B,97B,127B,126B,-91B,10B,-77B,49B,-44B,-28B,13B,-33B,-83B,-52B,53B,53B,6B,29B,125B,39B,-24B,52B,95B,58B,97B,74B,-51B,-1B,0B,18B,-110B,120B,-31B,48B,-24B,-41B,93B,-123B,-25B,-80B,-85B,107B,-128B,125B,67B,114B,-112B,-104B,-102B,102B,-70B,-9B,10B,21B,105B,-62B,35B,70B,-46B,1B,15B,40B,13B,121B,95B,46B,127B,0B,-119B,-76B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '8':
+        slot: 7
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1247369457","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,-38B,-88B,116B,-95B,7B,75B,69B,-124B,34B,82B,-117B,80B,68B,-62B,36B,25B,-45B,-59B,-51B,70B,118B,55B,82B,43B,-7B,-9B,110B,-110B,10B,-127B,-74B,-76B,-73B,-103B,-31B,-51B,-101B,-9B,-34B,24B,89B,88B,14B,67B,79B,88B,-54B,57B,-52B,-97B,-89B,-81B,-47B,-6B,101B,-70B,88B,-50B,30B,-93B,-7B,-45B,116B,-67B,-114B,86B,-45B,-27B,-52B,-61B,-68B,40B,-107B,-61B,5B,-98B,33B,45B,80B,-118B,15B,74B,-5B,-51B,-118B,7B,112B,127B,-49B,-95B,-48B,-39B,32B,46B,15B,7B,97B,7B,66B,-99B,72B,-39B,66B,-97B,7B,11B,7B,88B,91B,76B,14B,14B,-12B,-120B,22B,55B,-92B,-115B,40B,20B,-121B,112B,60B,9B,-36B,76B,-92B,28B,114B,-95B,40B,-47B,-72B,-73B,60B,-45B,120B,-114B,-116B,69B,55B,72B,-93B,76B,-94B,49B,-47B,17B,21B,57B,92B,114B,61B,94B,-105B,-7B,-79B,80B,-114B,-33B,-44B,-105B,-95B,-77B,-98B,-108B,-58B,22B,121B,-92B,48B,39B,14B,-67B,11B,-67B,91B,-115B,124B,-53B,-128B,-19B,124B,-21B,26B,-50B,88B,-43B,-5B,121B,37B,117B,-46B,-22B,-107B,-82B,-60B,112B,52B,10B,-3B,85B,25B,75B,-111B,60B,52B,-74B,54B,40B,75B,50B,-4B,-62B,-78B,82B,28B,101B,105B,120B,70B,-118B,52B,90B,-89B,85B,-92B,-116B,-77B,-32B,38B,-100B,-36B,-114B,-17B,-62B,-47B,-124B,85B,-51B,33B,-109B,-68B,81B,-114B,-47B,-23B,-22B,57B,104B,34B,-18B,-85B,-40B,-10B,127B,61B,-40B,113B,119B,97B,63B,-22B,100B,-4B,127B,50B,-85B,-54B,-1B,78B,80B,103B,-29B,8B,-82B,-47B,56B,-111B,-99B,112B,42B,-65B,-115B,57B,-16B,-35B,91B,-40B,-97B,111B,-87B,-45B,108B,13B,-75B,-127B,-61B,87B,43B,11B,77B,-83B,65B,71B,-33B,11B,122B,-19B,-101B,-114B,-104B,81B,-5B,64B,-128B,-108B,36B,-98B,57B,-36B,12B,-101B,-82B,-58B,115B,-40B,54B,53B,-64B,-82B,37B,-39B,75B,-52B,76B,59B,-35B,121B,-91B,-118B,53B,-31B,1B,99B,-23B,-128B,123B,-108B,-122B,-68B,79B,-31B,-93B,-40B,52B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '9':
+        slot: 8
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1835555512","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,-84B,-74B,101B,-63B,-125B,69B,17B,-95B,-120B,-44B,34B,20B,-111B,48B,73B,-58B,116B,113B,-77B,-111B,-35B,-115B,-44B,74B,-2B,-67B,-101B,-92B,66B,-96B,-106B,118B,79B,59B,-61B,-101B,55B,-17B,-67B,49B,50B,-73B,28B,-6B,-98B,-80B,-108B,113B,-104B,-65B,76B,-34B,-62B,-11B,-21B,100B,-79B,-100B,77B,-61B,-7B,-13B,100B,-67B,14B,87B,-109B,-27B,-52B,-61B,44B,47B,-108B,-61B,5B,-98B,33B,45B,80B,-118B,79B,74B,-70B,-11B,-120B,7B,48B,30B,115B,-56B,117B,-38B,-117B,-118B,-61B,65B,-40B,-98B,80B,39B,82B,54B,-41B,-25B,-34B,-62B,1B,-42B,22B,-29B,-125B,3B,77B,-47B,-30B,-122B,-76B,17B,-71B,-30B,48B,-68B,127B,8B,92B,79B,36B,28B,50B,-95B,40B,-42B,-72B,-73B,60B,-43B,120B,14B,-115B,69B,-41B,72B,-62B,84B,-94B,49B,-31B,17B,21B,57B,92B,124B,93B,94B,125B,-77B,99B,-82B,28B,-65B,-87B,54B,67B,107B,60B,46B,-116B,-51B,-77B,80B,97B,70B,28B,58B,23B,-6B,-80B,26B,-7B,-106B,1B,-37B,-7B,-42B,21B,-100B,-79B,-78B,115B,123B,36B,113B,-46B,-86B,-111B,-74B,-60B,-31B,104B,52B,-12B,87B,69B,36B,69B,-4B,84B,-37B,-38B,-96B,44B,-56B,-16B,11B,75B,11B,113B,-108B,-123B,-31B,41B,41B,-46B,104B,-99B,86B,-111B,48B,-50B,-126B,-57B,-69B,81B,-11B,-126B,1B,43B,-21B,69B,38B,126B,-89B,12B,-61B,-45B,-43B,115B,80B,71B,-36B,85B,-111B,-19B,-2B,-70B,-80B,-27B,-18B,-62B,110B,-22B,100B,-4B,127B,50B,-53B,-46B,-1B,73B,80B,101B,-29B,8B,-82B,-47B,56B,-111B,-83B,112B,74B,-65B,-119B,57B,-16B,-35B,89B,-40B,-97B,103B,-87B,-46B,108B,12B,53B,-127B,-61B,119B,41B,115B,77B,-115B,65B,71B,-33B,9B,58B,-51B,-103B,-114B,-104B,82B,115B,64B,-128B,-124B,36B,-98B,57B,12B,-6B,117B,85B,-31B,57B,108B,-21B,63B,-64B,-82B,33B,-39B,75B,76B,77B,-45B,-35B,121B,-123B,-118B,52B,-31B,1B,35B,-23B,-128B,123B,-108B,-122B,-68B,47B,74B,-59B,105B,-122B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '10':
+        slot: 9
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"2022732585","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,82B,-83B,101B,-63B,-125B,69B,17B,-95B,-120B,-44B,82B,40B,34B,97B,-110B,-116B,-23B,-30B,102B,35B,-69B,27B,-87B,-107B,-4B,123B,55B,73B,5B,-95B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,11B,-53B,-95B,-17B,9B,75B,57B,-121B,-7B,-13B,-28B,45B,90B,-65B,76B,22B,-53B,-39B,52B,-102B,63B,77B,-42B,-21B,104B,53B,89B,-50B,60B,-52B,-117B,82B,57B,92B,-32B,25B,-46B,2B,-91B,-8B,-92B,-76B,-37B,-84B,120B,0B,-29B,49B,-121B,66B,103B,-67B,-72B,-36B,-17B,-123B,-19B,9B,117B,36B,101B,11B,125B,-22B,45B,28B,96B,109B,49B,-39B,59B,-48B,20B,45B,-66B,-110B,54B,-94B,80B,28B,6B,-9B,-93B,-64B,-51B,68B,-54B,33B,23B,-118B,18B,-115B,59B,-53B,51B,-115B,-89B,-56B,88B,116B,-125B,52B,-54B,36B,26B,19B,29B,80B,-111B,-61B,37B,-105B,-29B,117B,-103B,31B,10B,-27B,-8B,77B,125B,25B,-82B,-42B,-109B,-46B,-40B,34B,-113B,20B,-26B,-60B,-95B,115B,-90B,15B,-85B,-111B,111B,24B,-80B,-83B,111B,93B,-61B,25B,-85B,58B,-73B,87B,82B,39B,-83B,94B,-71B,-106B,56B,24B,14B,7B,-2B,-86B,-116B,-91B,72B,30B,27B,91B,-81B,40B,75B,50B,-4B,-52B,-78B,82B,28B,100B,105B,120B,70B,-118B,52B,90B,-89B,85B,-92B,-116B,-77B,-80B,31B,-122B,-93B,-69B,112B,-8B,48B,100B,85B,115B,-56B,36B,-17B,-108B,99B,116B,-68B,120B,14B,-102B,-120B,-69B,42B,-74B,-35B,95B,15B,94B,-71B,59B,-77B,-101B,58B,25B,-1B,-97B,-52B,-86B,-14B,127B,18B,-44B,-39B,56B,-126B,75B,52B,78B,-28B,85B,56B,-107B,-33B,-58B,28B,-8B,-18B,45B,-20B,-49B,-73B,-44B,105B,-74B,-122B,-38B,-64B,-31B,-69B,-107B,-123B,-90B,-42B,-96B,-93B,-17B,4B,-99B,-10B,77B,7B,-52B,-88B,125B,32B,64B,74B,18B,79B,28B,-62B,126B,-45B,-43B,120B,14B,-101B,-90B,6B,-40B,-74B,36B,59B,-119B,-103B,105B,-89B,91B,-81B,84B,-79B,38B,-36B,99B,44B,29B,112B,-121B,-46B,-112B,-9B,5B,71B,101B,59B,99B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '11':
+        slot: 10
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '12':
+        slot: 11
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '13':
+        slot: 12
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '14':
+        slot: 13
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '15':
+        slot: 14
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '16':
+        slot: 15
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '17':
+        slot: 16
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '18':
+        slot: 17
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"246856768","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-120B,95B,44B,120B,-80B,40B,34B,20B,-111B,90B,-124B,34B,18B,38B,-55B,-104B,46B,110B,54B,-78B,-69B,-111B,90B,-55B,127B,-17B,38B,-87B,32B,-44B,-46B,-34B,102B,-122B,55B,111B,-34B,123B,99B,100B,110B,57B,116B,61B,97B,41B,-29B,-80B,120B,-103B,-66B,-123B,-101B,-41B,-23B,114B,53B,-97B,-123B,-117B,-25B,-23B,102B,19B,-82B,-89B,-85B,-71B,-121B,89B,94B,40B,-121B,11B,60B,67B,90B,-96B,20B,-97B,-108B,-76B,-21B,21B,15B,96B,50B,-31B,-112B,-21B,-76B,19B,21B,-57B,-93B,-80B,29B,-95B,-50B,-92B,108B,-82B,47B,-99B,-91B,3B,108B,44B,-58B,71B,7B,-102B,-95B,-59B,45B,105B,35B,114B,-59B,-95B,63B,28B,5B,110B,38B,18B,14B,-103B,80B,20B,107B,60B,88B,-98B,106B,-68B,-124B,-58B,-94B,27B,36B,97B,42B,-47B,-104B,-16B,-124B,-118B,28B,46B,-66B,29B,-81B,-54B,-20B,-108B,43B,-57B,111B,-86B,-53B,112B,-73B,30B,23B,-58B,-26B,89B,-88B,48B,35B,14B,-83B,43B,125B,88B,-115B,124B,-57B,-128B,-19B,125B,-21B,26B,-50B,88B,-39B,122B,-68B,-110B,56B,105B,-43B,-54B,-67B,-60B,-2B,96B,-48B,-9B,-41B,69B,36B,69B,-4B,84B,-37B,-38B,-94B,44B,-56B,-16B,43B,75B,11B,113B,-110B,-123B,-31B,41B,41B,-46B,104B,-99B,86B,-111B,48B,-50B,122B,-3B,-31B,120B,48B,28B,13B,-57B,-84B,-84B,-17B,-104B,-8B,-99B,50B,12B,-49B,55B,-53B,65B,-99B,112B,91B,69B,-74B,-3B,-21B,-67B,59B,115B,87B,-10B,80B,38B,-29B,-1B,83B,89B,-106B,-2B,79B,-126B,42B,26B,71B,112B,75B,-58B,-119B,-68B,-53B,-90B,-12B,-101B,-108B,3B,-33B,125B,-123B,-3B,-7B,-107B,42B,-52B,-58B,80B,-109B,55B,124B,-73B,50B,-41B,-44B,24B,116B,-12B,-83B,-96B,-43B,124B,-23B,-124B,41B,53B,-1B,3B,72B,72B,-30B,-123B,67B,-81B,91B,119B,21B,-98B,-61B,-82B,-82B,1B,-10B,13B,-55B,65B,98B,106B,-102B,-23B,-34B,43B,84B,-92B,9B,-113B,24B,73B,7B,60B,-96B,52B,-28B,125B,1B,83B,9B,-86B,-31B,-76B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '19':
+        slot: 18
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"658288730","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,88B,-65B,88B,-16B,96B,81B,68B,40B,34B,-75B,20B,-118B,72B,-104B,36B,99B,-70B,-72B,-39B,-56B,-18B,70B,106B,37B,-1B,-67B,-101B,-92B,-126B,80B,75B,123B,-101B,25B,-34B,-68B,121B,-17B,-115B,-111B,-71B,-27B,-48B,-11B,-124B,-91B,-116B,-61B,-30B,121B,-6B,22B,110B,94B,-90B,-53B,-43B,124B,22B,46B,-98B,-90B,-101B,77B,-72B,-98B,-82B,-26B,30B,102B,121B,-95B,28B,46B,-16B,12B,105B,-127B,82B,124B,82B,-46B,-82B,87B,60B,-128B,-55B,-124B,67B,-82B,-45B,78B,84B,28B,14B,-62B,118B,-124B,58B,-111B,-78B,-71B,62B,119B,-106B,14B,-80B,-79B,24B,31B,28B,104B,-122B,22B,95B,73B,27B,-111B,43B,14B,-3B,-31B,40B,112B,51B,-111B,112B,-56B,-124B,-94B,88B,-29B,-34B,-14B,84B,-29B,57B,52B,22B,-35B,32B,9B,83B,-119B,-58B,-124B,71B,84B,-28B,112B,-15B,-11B,120B,85B,102B,-57B,92B,57B,126B,83B,93B,-122B,-101B,-11B,-72B,48B,54B,-49B,66B,-123B,25B,113B,104B,93B,-24B,-61B,106B,-28B,91B,6B,108B,-25B,91B,-41B,112B,-58B,-54B,-42B,-3B,-107B,-60B,73B,-85B,86B,110B,37B,-10B,7B,-125B,-66B,-65B,46B,34B,41B,-30B,-57B,-38B,-42B,43B,-54B,-126B,12B,-65B,-80B,-76B,16B,71B,89B,24B,-98B,-110B,34B,-115B,-42B,105B,21B,9B,-29B,108B,56B,24B,-9B,-58B,-29B,-47B,67B,-105B,-107B,-11B,29B,19B,-65B,83B,-122B,-31B,-23B,106B,57B,-88B,19B,110B,-85B,-56B,-74B,127B,-67B,119B,99B,-18B,-62B,-18B,-54B,100B,-4B,127B,42B,-53B,-46B,-1B,73B,80B,69B,-29B,8B,-82B,-55B,56B,-111B,55B,-39B,-108B,126B,-109B,114B,-32B,-69B,-81B,-80B,63B,-65B,82B,-123B,-39B,24B,106B,-14B,-122B,-17B,86B,-26B,-102B,26B,-125B,-114B,-66B,21B,-76B,-102B,47B,29B,49B,-91B,-26B,127B,0B,9B,73B,60B,115B,-24B,117B,-21B,-82B,-62B,115B,-40B,-42B,53B,-64B,-82B,33B,-39B,75B,76B,77B,51B,-35B,121B,-123B,-118B,52B,-31B,1B,35B,-23B,-128B,123B,-108B,-122B,-68B,47B,-30B,110B,-96B,113B,-76B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '20':
+        slot: 19
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '21':
+        slot: 20
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '22':
+        slot: 21
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '23':
+        slot: 22
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '24':
+        slot: 23
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '25':
+        slot: 24
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '26':
+        slot: 25
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '27':
+        slot: 26
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1410593861","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-55B,37B,-118B,105B,-75B,31B,11B,30B,44B,-118B,8B,69B,-92B,22B,-95B,-120B,-124B,73B,50B,-90B,-117B,-101B,-115B,-20B,110B,-92B,86B,-14B,-33B,-69B,73B,42B,8B,-75B,-76B,-73B,-103B,-31B,-51B,-101B,-9B,-34B,24B,89B,88B,14B,61B,79B,88B,-54B,57B,76B,95B,70B,111B,-47B,-14B,117B,52B,-101B,79B,-58B,-47B,-12B,121B,-76B,92B,70B,-117B,-47B,124B,-30B,97B,94B,-108B,-54B,-31B,66B,-49B,-112B,22B,40B,-59B,39B,-91B,-99B,102B,-59B,3B,24B,14B,57B,20B,58B,-21B,-58B,-27B,110B,39B,108B,87B,-88B,3B,41B,91B,-24B,99B,119B,-26B,0B,75B,-117B,-55B,-50B,-127B,-58B,104B,113B,69B,-38B,-120B,66B,113B,-24B,-33B,-35B,-121B,110B,38B,82B,14B,-71B,80B,-108B,104B,-36B,90B,-98B,105B,60B,70B,-58B,-94B,27B,-92B,81B,38B,-47B,-104B,104B,-113B,-118B,28B,46B,57B,31B,-81B,-53B,124B,95B,40B,-57B,111B,-22B,-53B,112B,-79B,-98B,-108B,-58B,22B,121B,-92B,48B,39B,14B,-2B,-119B,62B,-84B,70B,-66B,102B,-64B,54B,-127B,117B,13B,103B,-84B,-14B,-81B,-81B,-92B,78B,90B,-67B,114B,41B,-79B,63B,24B,-12B,-125B,69B,25B,75B,-111B,60B,53B,-74B,86B,40B,75B,50B,-4B,-60B,-78B,82B,-20B,101B,105B,120B,70B,-118B,52B,90B,-89B,85B,-92B,-116B,-77B,-80B,31B,-10B,6B,-113B,-73B,15B,119B,33B,-85B,-102B,67B,38B,121B,-89B,28B,-93B,-61B,-39B,115B,-40B,68B,-36B,81B,-79B,-19B,-4B,122B,-16B,-62B,-35B,-119B,93B,-43B,-55B,-8B,-1B,100B,86B,85B,-16B,-109B,-96B,-50B,-58B,17B,-100B,-93B,113B,34B,47B,-62B,-87B,-126B,54B,-26B,48B,112B,111B,97B,127B,-66B,-91B,78B,-77B,53B,-44B,6B,14B,-33B,-83B,44B,52B,-75B,6B,29B,-67B,31B,-6B,-19B,-101B,-10B,-104B,81B,-5B,64B,-128B,-108B,36B,30B,57B,-36B,-12B,-102B,-82B,-58B,115B,88B,55B,53B,-64B,-90B,37B,-39B,74B,-52B,76B,59B,-35B,120B,-91B,-118B,53B,-31B,14B,99B,-23B,-128B,91B,-108B,-122B,-68B,47B,-23B,-58B,84B,108B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '28':
+        slot: 27
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"302047940","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,-112B,79B,107B,-62B,64B,16B,-59B,-17B,-7B,20B,75B,46B,-71B,-88B,36B,54B,86B,-70B,-32B,33B,69B,17B,-95B,-120B,52B,69B,40B,-91B,-124B,73B,50B,-90B,75B,54B,-69B,97B,-1B,8B,86B,-14B,-35B,-69B,38B,21B,60B,-76B,-76B,-73B,-103B,-31B,-51B,-68B,-33B,60B,-51B,-91B,-95B,36B,-12B,-104B,-63B,-122B,-110B,-11B,115B,-14B,-102B,-91B,47B,-55B,102B,-69B,90B,102B,-21B,-89B,36B,77B,-77B,93B,-78B,93B,121B,-48B,72B,43B,-100B,46B,-14B,52B,42B,6B,-100B,125B,98B,57B,-18B,87B,60B,66B,22B,11B,74B,-92B,-86B,38B,-71B,-83B,107B,102B,38B,76B,28B,81B,24B,-87B,78B,-109B,-115B,19B,-92B,6B,-118B,-38B,-119B,-106B,96B,96B,-113B,74B,51B,41B,40B,-119B,-17B,-25B,-111B,-101B,-79B,-110B,-110B,-122B,9B,44B,20B,28B,12B,-83B,20B,-100B,50B,109B,-64B,13B,-54B,-84B,-30B,-96B,117B,-42B,-126B,64B,-89B,43B,-82B,-26B,-105B,-78B,105B,-91B,112B,-9B,-11B,-59B,-103B,-36B,-84B,23B,86B,27B,-39B,100B,-91B,-13B,-95B,36B,56B,-33B,-6B,-59B,-77B,89B,60B,-38B,-39B,-100B,-77B,-30B,-79B,103B,-36B,3B,-73B,-88B,-23B,-39B,-81B,44B,107B,-71B,-43B,-76B,66B,-127B,10B,-116B,51B,102B,-91B,79B,-3B,-69B,112B,26B,-58B,-13B,-121B,56B,-12B,-69B,46B,112B,62B,-70B,-8B,-64B,6B,-78B,-29B,-107B,63B,-22B,-29B,26B,-117B,-36B,-116B,127B,-11B,-69B,33B,61B,-5B,63B,98B,-6B,-12B,127B,-108B,93B,-41B,-115B,-122B,8B,-94B,-111B,-117B,-52B,-1B,51B,50B,-33B,65B,15B,-128B,-48B,-96B,-125B,-5B,-18B,-72B,84B,56B,-16B,-70B,-105B,-126B,40B,24B,18B,108B,-95B,-62B,33B,91B,66B,74B,-28B,112B,-94B,100B,26B,-10B,-35B,69B,79B,-55B,91B,95B,19B,-14B,62B,28B,57B,112B,-88B,-12B,48B,125B,-9B,-84B,-56B,21B,66B,13B,57B,119B,-62B,3B,112B,-115B,-34B,23B,112B,63B,-76B,-9B,80B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ''
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '29':
+        slot: 28
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '30':
+        slot: 29
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '31':
+        slot: 30
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '32':
+        slot: 31
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '33':
+        slot: 32
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '34':
+        slot: 33
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '35':
+        slot: 34
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '36':
+        slot: 35
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1504781267","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-120B,31B,101B,-63B,-125B,69B,17B,-95B,-120B,-44B,34B,20B,-111B,48B,73B,-58B,116B,113B,-77B,-111B,-35B,-115B,-44B,74B,-2B,123B,55B,73B,-123B,64B,91B,-38B,-37B,-52B,-16B,-26B,-51B,123B,111B,-116B,-52B,45B,-121B,-66B,39B,44B,101B,28B,-106B,-49B,-77B,-41B,112B,-5B,50B,91B,-83B,23B,-13B,112B,-7B,52B,-37B,110B,-61B,-51B,108B,-67B,-16B,48B,-53B,11B,-27B,112B,-127B,103B,72B,11B,-108B,-30B,-125B,-110B,110B,-67B,-30B,1B,76B,-89B,28B,114B,-99B,-10B,-94B,-30B,116B,18B,-74B,39B,-44B,-123B,-108B,-51B,-11B,-75B,-73B,114B,-128B,-83B,-59B,-8B,-28B,64B,115B,-76B,-72B,35B,109B,68B,-82B,56B,12B,-57B,-109B,-64B,-51B,68B,-62B,33B,19B,-118B,98B,-115B,71B,-53B,83B,-115B,-41B,-48B,88B,116B,-125B,36B,76B,37B,26B,19B,-98B,81B,-111B,-61B,-59B,-9B,-29B,85B,-103B,-99B,115B,-27B,-8B,77B,117B,25B,90B,-21B,113B,97B,108B,-98B,-123B,10B,51B,-30B,-48B,-71B,-47B,-69B,-43B,-56B,-9B,12B,-40B,-63B,-73B,-82B,-31B,-116B,-107B,-99B,-97B,87B,18B,39B,-83B,90B,105B,75B,28B,-114B,70B,67B,127B,83B,68B,82B,-60B,-113B,-75B,-83B,29B,-54B,-126B,12B,-65B,-79B,-76B,16B,103B,89B,24B,-98B,-110B,34B,-115B,-42B,105B,21B,9B,-29B,44B,24B,-11B,-121B,-109B,-121B,96B,48B,-98B,-80B,-78B,62B,100B,-30B,55B,-54B,48B,-68B,-36B,61B,7B,117B,-60B,93B,21B,-39B,-18B,-81B,7B,91B,-18B,110B,-20B,71B,-99B,-116B,-1B,79B,102B,89B,-6B,-33B,9B,-86B,108B,28B,-63B,61B,26B,39B,-78B,21B,78B,-23B,55B,49B,7B,-66B,123B,11B,-5B,-13B,45B,85B,-102B,-115B,-95B,38B,112B,-8B,106B,101B,-82B,-87B,49B,-24B,-24B,59B,65B,-89B,121B,-45B,25B,83B,106B,30B,8B,-112B,-112B,-60B,43B,-121B,65B,-65B,-18B,42B,60B,-121B,125B,93B,3B,28B,26B,-110B,-93B,-60B,-44B,52B,-45B,-125B,87B,-88B,72B,19B,-98B,48B,-110B,14B,120B,68B,105B,-56B,-5B,4B,5B,-105B,-128B,-96B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '37':
+        slot: 36
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1600904447","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,-110B,-108B,84B,-23B,-126B,7B,75B,-117B,8B,-91B,72B,45B,66B,17B,9B,-109B,100B,76B,23B,55B,27B,-39B,-35B,72B,-83B,-28B,-33B,-69B,73B,42B,4B,106B,105B,111B,51B,-61B,-101B,55B,-17B,-67B,49B,-78B,-76B,28B,2B,79B,88B,42B,56B,-52B,95B,102B,111B,-15B,-22B,117B,-74B,120B,126B,124B,-120B,-25B,79B,-77B,-43B,42B,94B,-50B,-98B,31B,61B,44B,-54B,74B,57B,92B,-24B,25B,-46B,2B,-91B,-8B,-92B,108B,-40B,-82B,120B,0B,-45B,41B,-121B,82B,-25B,-93B,-92B,-38B,-17B,-123B,29B,9B,117B,36B,101B,75B,125B,26B,45B,28B,96B,101B,49B,-35B,59B,-48B,3B,90B,92B,-109B,54B,-94B,84B,28B,-94B,-15B,36B,116B,51B,-111B,113B,40B,-124B,-94B,84B,-29B,-50B,-14B,92B,-29B,41B,54B,22B,-35B,32B,-117B,115B,-119B,-58B,-60B,7B,84B,-28B,112B,-23B,-27B,120B,83B,22B,-121B,82B,57B,126B,-45B,92B,-122B,-34B,122B,90B,25B,91B,22B,-79B,-62B,-126B,56B,12B,-50B,-12B,97B,53B,-14B,13B,3B,-74B,-11B,-83B,107B,56B,99B,-11B,-32B,-6B,74B,-26B,-92B,53B,43B,125B,-119B,-47B,-19B,109B,-28B,47B,-85B,68B,-118B,-12B,-66B,-75B,-75B,70B,89B,-111B,-31B,103B,-106B,87B,-30B,32B,43B,-61B,115B,82B,-92B,-47B,58B,-83B,34B,99B,-100B,-123B,-29B,32B,-72B,11B,-94B,40B,-102B,-80B,-70B,61B,100B,-46B,119B,42B,48B,62B,94B,60B,-121B,109B,-60B,67B,-107B,-40B,-31B,-81B,7B,123B,-18B,-50B,-20B,-86B,78B,-58B,-1B,39B,-77B,-82B,-3B,-97B,4B,77B,54B,-114B,-32B,18B,-115B,19B,-39B,11B,-89B,-10B,-69B,-104B,67B,-33B,-67B,-123B,-3B,-7B,-106B,38B,-51B,-50B,80B,23B,56B,124B,-73B,-78B,-44B,-44B,25B,116B,-12B,-125B,112B,-48B,-67B,-23B,-128B,57B,117B,15B,4B,-56B,72B,-30B,-119B,-61B,77B,-48B,118B,13B,-98B,-61B,-90B,-83B,1B,-74B,29B,-55B,78B,98B,110B,-70B,-23B,-42B,-85B,84B,-94B,9B,-9B,-104B,72B,7B,-36B,-95B,52B,-28B,125B,1B,43B,28B,71B,58B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '38':
+        slot: 37
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '39':
+        slot: 38
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '40':
+        slot: 39
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '41':
+        slot: 40
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '42':
+        slot: 41
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '43':
+        slot: 42
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '44':
+        slot: 43
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '45':
+        slot: 44
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1657291883","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,88B,-65B,-70B,-32B,-63B,-94B,20B,-95B,72B,105B,-118B,80B,68B,-62B,36B,25B,-45B,-59B,-51B,70B,118B,55B,-91B,86B,-14B,-33B,-69B,73B,42B,8B,109B,105B,111B,51B,-61B,-101B,55B,-17B,-67B,49B,-78B,-80B,28B,-6B,-98B,-80B,-108B,115B,-72B,127B,-102B,-65B,68B,-31B,-13B,124B,-75B,94B,46B,-94B,-5B,-121B,121B,24B,70B,-113B,-13B,-11B,-46B,-61B,-68B,40B,-107B,-61B,5B,-98B,33B,45B,80B,-118B,15B,74B,-69B,-51B,-118B,7B,48B,-101B,113B,40B,116B,-42B,-117B,-53B,-61B,65B,-40B,-98B,80B,111B,-92B,108B,-95B,79B,-67B,-107B,3B,-124B,22B,-109B,-125B,3B,45B,-48B,-30B,-122B,-76B,17B,-123B,-30B,48B,28B,79B,2B,55B,19B,41B,-121B,92B,40B,74B,52B,-18B,45B,-49B,52B,-98B,34B,99B,-47B,13B,-46B,40B,-109B,104B,76B,116B,68B,69B,14B,-105B,92B,-114B,-41B,101B,126B,44B,-108B,-29B,55B,-11B,101B,-72B,90B,79B,74B,99B,-117B,60B,82B,-104B,19B,-121B,-50B,-103B,-34B,-83B,70B,-66B,101B,-64B,118B,-66B,117B,13B,103B,-84B,-22B,-4B,-68B,-110B,58B,105B,-11B,-54B,-75B,-60B,-31B,104B,52B,-12B,31B,-53B,88B,-118B,-28B,-82B,-79B,-75B,65B,89B,-110B,-31B,103B,-106B,-107B,-30B,40B,75B,-61B,51B,82B,-92B,-47B,58B,-83B,34B,101B,-100B,5B,-29B,-47B,100B,112B,27B,76B,-89B,55B,-84B,106B,14B,-103B,-28B,-107B,114B,-116B,-34B,46B,-98B,-125B,38B,-30B,-82B,-118B,109B,-9B,-41B,-125B,87B,-18B,-50B,-20B,71B,-99B,-116B,-1B,79B,102B,85B,-7B,-33B,9B,-22B,108B,28B,-63B,37B,26B,39B,-14B,42B,-100B,-54B,111B,99B,14B,124B,-9B,22B,-10B,-25B,91B,-22B,52B,91B,67B,109B,-32B,-16B,-43B,-54B,66B,83B,107B,-48B,-47B,119B,-126B,78B,-5B,-90B,35B,102B,-44B,62B,16B,32B,37B,-119B,39B,14B,-125B,126B,-45B,-43B,120B,14B,-37B,-90B,6B,-40B,-75B,36B,123B,-119B,-103B,105B,-89B,59B,-81B,84B,-79B,38B,60B,96B,44B,29B,112B,-113B,-46B,-112B,-9B,9B,-27B,-86B,82B,56B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '46':
+        slot: 45
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1058015991","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,-28B,18B,-59B,20B,109B,-21B,-126B,7B,-117B,34B,66B,17B,-87B,69B,40B,34B,97B,-110B,-116B,-23B,-30B,102B,35B,-69B,27B,-87B,-107B,-4B,123B,55B,73B,5B,-95B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,11B,-53B,-95B,-25B,9B,75B,57B,-121B,-39B,-53B,-8B,45B,90B,-67B,-114B,-25B,-117B,-23B,36B,-102B,61B,-113B,87B,-85B,104B,57B,94B,76B,61B,-52B,-117B,82B,57B,92B,-24B,25B,-46B,2B,-91B,-8B,-92B,-76B,-45B,-84B,120B,0B,-93B,17B,-121B,66B,103B,-35B,-72B,-36B,-17B,-123B,-19B,10B,117B,36B,101B,11B,125B,-22B,-50B,29B,96B,101B,49B,-39B,59B,-48B,4B,45B,-82B,73B,27B,81B,40B,14B,-3B,-5B,-121B,-48B,-51B,68B,-54B,33B,23B,-118B,18B,-115B,59B,-53B,51B,-115B,-89B,-56B,88B,116B,-125B,52B,-54B,36B,26B,19B,29B,80B,-111B,-61B,37B,-105B,-29B,117B,-103B,31B,10B,-27B,-8B,77B,125B,25B,-82B,-42B,-109B,-46B,-40B,34B,-113B,20B,-26B,-60B,-63B,63B,-45B,-121B,-43B,-56B,55B,12B,-40B,54B,-80B,-82B,-31B,-116B,85B,-2B,-19B,-107B,-44B,73B,-85B,87B,-82B,37B,-10B,7B,-125B,126B,-80B,44B,99B,41B,-110B,-89B,-58B,-42B,26B,101B,73B,-122B,-97B,89B,86B,-118B,-125B,44B,13B,-49B,72B,-111B,70B,-21B,-76B,-118B,-108B,113B,22B,-10B,6B,-113B,-67B,112B,48B,28B,-122B,-84B,106B,14B,-103B,-28B,-99B,114B,-116B,-114B,23B,-49B,97B,19B,113B,71B,-59B,-74B,-13B,-21B,-63B,43B,119B,103B,118B,83B,39B,-29B,-1B,-109B,89B,85B,-63B,79B,-126B,58B,27B,71B,112B,-119B,-58B,-119B,-68B,10B,-89B,10B,-38B,-104B,-61B,-64B,-67B,-123B,-3B,-7B,-106B,58B,-51B,-42B,80B,27B,56B,124B,-73B,-78B,-48B,-44B,26B,116B,-12B,126B,-24B,-73B,111B,58B,96B,70B,-19B,3B,1B,82B,-110B,120B,-30B,112B,-41B,107B,-70B,26B,-49B,97B,-45B,-44B,0B,-37B,-106B,100B,39B,49B,51B,-19B,116B,-21B,-107B,42B,-42B,-124B,123B,-116B,-91B,3B,-18B,80B,26B,-14B,-66B,0B,-1B,120B,103B,8B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '47':
+        slot: 46
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1517212205","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,-126B,86B,88B,-16B,96B,81B,68B,40B,34B,-75B,8B,-91B,72B,-104B,36B,99B,-70B,100B,-77B,-111B,-35B,-115B,-44B,74B,-2B,-67B,-101B,-92B,-126B,80B,75B,123B,-101B,25B,-34B,-68B,121B,-17B,-115B,-111B,-91B,-27B,48B,-12B,-124B,-91B,-126B,-61B,-14B,121B,-10B,26B,109B,95B,102B,-85B,-11B,98B,30B,45B,-97B,102B,-37B,109B,-76B,-103B,-83B,23B,30B,22B,101B,-91B,28B,46B,-16B,12B,105B,-127B,82B,124B,82B,-38B,111B,87B,60B,-128B,-23B,-108B,67B,-87B,-77B,65B,92B,-27B,-71B,-80B,3B,-95B,78B,-92B,108B,-87B,-49B,-125B,-107B,3B,108B,45B,38B,-71B,3B,-51B,-47B,-30B,-114B,-76B,17B,-91B,-30B,48B,122B,-104B,4B,110B,38B,82B,14B,-123B,80B,-108B,104B,60B,88B,-98B,105B,60B,71B,-58B,-94B,27B,-92B,81B,38B,-47B,-104B,-24B,-120B,-118B,28B,46B,-71B,30B,111B,-54B,-30B,88B,42B,-57B,111B,-102B,-53B,112B,-77B,-98B,84B,-58B,-106B,69B,-92B,-80B,32B,14B,-67B,11B,125B,88B,-115B,-4B,-115B,1B,-37B,-5B,-42B,53B,-100B,-79B,-70B,119B,127B,37B,117B,-46B,-102B,-107B,91B,-119B,-93B,-15B,120B,-28B,111B,-86B,88B,-118B,-28B,-79B,-75B,-75B,67B,89B,-111B,-31B,23B,-106B,85B,-30B,40B,43B,-61B,51B,82B,-92B,-47B,58B,-83B,34B,101B,-100B,5B,-29B,96B,18B,6B,97B,56B,28B,-77B,-70B,61B,100B,-110B,119B,42B,48B,58B,93B,61B,7B,109B,-60B,125B,21B,-37B,-2B,-81B,7B,111B,-36B,93B,-40B,93B,-99B,-116B,-1B,79B,102B,93B,-5B,63B,9B,-102B,108B,28B,-63B,53B,26B,39B,-14B,38B,-100B,-38B,-17B,98B,14B,124B,-9B,22B,-10B,-25B,91B,-102B,52B,59B,67B,93B,-32B,-16B,-35B,-54B,82B,83B,103B,-48B,-47B,-9B,-126B,94B,-9B,-90B,35B,102B,-44B,61B,16B,32B,37B,-119B,103B,14B,-31B,-80B,-19B,26B,60B,-121B,-73B,-74B,6B,-40B,119B,36B,7B,-119B,-103B,-23B,-90B,123B,-81B,82B,-79B,38B,-52B,49B,-106B,14B,120B,64B,105B,-56B,-5B,2B,-113B,-69B,-33B,-118B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '48':
+        slot: 47
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1991715930","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,90B,-83B,-72B,-32B,-63B,-94B,-120B,80B,68B,106B,41B,20B,-111B,48B,73B,-58B,116B,113B,-77B,-111B,-35B,-115B,-44B,74B,-2B,-67B,-101B,-92B,66B,-96B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,115B,-53B,-95B,-17B,9B,75B,25B,-121B,-59B,-13B,-12B,45B,-36B,-68B,76B,-105B,-85B,-7B,44B,92B,60B,77B,55B,-101B,112B,61B,93B,-51B,61B,-52B,-14B,66B,57B,92B,-32B,25B,-46B,2B,-91B,-8B,-92B,-92B,91B,-81B,120B,0B,-109B,9B,-121B,92B,-89B,-67B,-88B,56B,28B,-124B,-19B,9B,117B,34B,101B,115B,125B,-18B,45B,29B,96B,99B,49B,62B,56B,-48B,12B,45B,-66B,-110B,54B,34B,87B,28B,6B,15B,-93B,-64B,-51B,68B,-62B,33B,19B,-118B,98B,-115B,123B,-53B,83B,-115B,-25B,-48B,88B,116B,-125B,36B,76B,37B,26B,19B,30B,81B,-111B,-61B,-59B,-41B,-29B,85B,-103B,29B,115B,-27B,-8B,77B,117B,25B,90B,-21B,113B,97B,108B,-98B,-123B,10B,51B,-30B,-48B,-71B,-48B,-121B,-43B,-56B,-73B,12B,-40B,-50B,-73B,-82B,-31B,-116B,-107B,-99B,-37B,43B,-119B,-109B,86B,-83B,-76B,37B,14B,-122B,-61B,-127B,-65B,46B,34B,41B,-30B,-57B,-38B,-42B,43B,-54B,-126B,12B,-65B,-80B,-76B,16B,71B,89B,24B,-98B,-110B,34B,-115B,-42B,105B,21B,9B,-29B,44B,24B,-113B,-125B,81B,48B,28B,-33B,-9B,89B,89B,31B,50B,-15B,59B,101B,24B,-98B,-82B,-98B,-125B,58B,-30B,-82B,-118B,108B,-9B,-41B,-125B,45B,119B,23B,118B,83B,39B,-29B,-1B,-109B,89B,-106B,-2B,79B,-126B,42B,27B,71B,112B,-115B,-58B,-119B,108B,-123B,83B,-6B,77B,-52B,-127B,-17B,-34B,-62B,-2B,124B,75B,-107B,102B,99B,-88B,9B,28B,-66B,91B,-103B,107B,106B,12B,58B,-6B,78B,-48B,105B,-34B,116B,-60B,-108B,-102B,7B,2B,36B,36B,-15B,-52B,-31B,-82B,95B,119B,21B,-98B,-61B,-74B,-82B,1B,118B,13B,-55B,94B,98B,106B,-102B,-23B,-50B,43B,84B,-92B,9B,15B,24B,73B,7B,-36B,-93B,52B,-28B,125B,1B,-1B,-115B,-120B,-81B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '49':
+        slot: 48
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1995044407","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,74B,-84B,-72B,-32B,-63B,-94B,-120B,80B,68B,106B,17B,-118B,72B,-104B,36B,99B,-70B,-72B,-39B,-56B,-18B,70B,106B,37B,-1B,-34B,77B,82B,65B,-88B,-91B,-67B,-51B,12B,111B,-34B,-68B,-9B,-58B,-56B,-62B,114B,-24B,123B,-62B,82B,-50B,97B,-2B,50B,121B,-117B,-42B,-81B,-109B,-59B,114B,54B,-115B,-26B,-49B,-109B,-11B,58B,90B,77B,-106B,51B,15B,-13B,-94B,84B,14B,23B,120B,-122B,-76B,64B,41B,62B,41B,-19B,54B,43B,30B,-64B,120B,-52B,-95B,-48B,89B,47B,46B,15B,7B,97B,123B,66B,-99B,72B,-39B,66B,-97B,123B,11B,7B,88B,91B,76B,14B,14B,52B,69B,-117B,27B,-46B,70B,20B,-118B,67B,-8B,56B,12B,-36B,76B,-92B,28B,114B,-95B,40B,-47B,-72B,-73B,60B,-45B,120B,-114B,-116B,69B,55B,72B,-93B,76B,-94B,49B,-47B,17B,21B,57B,92B,114B,61B,94B,-105B,-7B,-79B,80B,-114B,-33B,-44B,-105B,-31B,102B,61B,41B,-115B,45B,-14B,72B,97B,78B,28B,58B,23B,-6B,-80B,26B,-7B,-106B,1B,-37B,-7B,-42B,53B,-100B,-79B,-86B,115B,127B,37B,117B,-46B,-22B,-107B,91B,-119B,-31B,96B,16B,-6B,-85B,50B,-106B,34B,121B,106B,108B,109B,80B,-106B,100B,-8B,-123B,101B,-91B,56B,-54B,-46B,-16B,-116B,20B,105B,-76B,78B,-85B,72B,25B,103B,-63B,104B,52B,-24B,-121B,97B,-40B,31B,-78B,-86B,57B,100B,-110B,119B,-54B,49B,58B,93B,61B,7B,77B,-60B,93B,21B,-37B,-18B,-81B,7B,111B,-36B,93B,-40B,93B,-99B,-116B,-1B,79B,102B,85B,-7B,63B,9B,-22B,108B,28B,-63B,53B,26B,39B,-14B,38B,-100B,-54B,111B,99B,14B,124B,-9B,22B,-10B,-25B,91B,-22B,52B,91B,67B,109B,-32B,-16B,-35B,-54B,66B,83B,107B,-48B,-47B,119B,-126B,78B,-5B,-90B,35B,102B,-44B,62B,16B,32B,37B,-119B,103B,14B,15B,-3B,-90B,-85B,-15B,28B,-74B,77B,13B,-80B,107B,73B,-10B,18B,51B,-45B,78B,119B,94B,-87B,98B,77B,120B,-64B,88B,58B,-32B,30B,-91B,33B,-17B,11B,51B,-62B,106B,35B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '50':
+        slot: 49
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"73086039","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-44B,-113B,-74B,11B,30B,44B,-118B,8B,69B,-92B,22B,-95B,-120B,-124B,73B,50B,-90B,-117B,-101B,-115B,-20B,110B,-92B,86B,-14B,-33B,-69B,73B,42B,8B,-75B,-76B,-73B,-103B,-31B,-51B,-101B,-9B,-34B,24B,-103B,91B,14B,93B,79B,88B,-54B,56B,-52B,94B,-58B,111B,-31B,-22B,117B,60B,95B,76B,39B,-31B,-20B,121B,-68B,90B,-123B,-53B,-15B,98B,-22B,97B,-106B,23B,-54B,-31B,2B,-49B,-112B,22B,40B,-59B,39B,37B,-19B,122B,-59B,3B,24B,-115B,56B,-28B,58B,-19B,68B,-59B,126B,47B,108B,71B,-88B,35B,41B,-101B,-21B,83B,103B,-18B,0B,43B,-117B,-15B,-34B,-127B,38B,104B,113B,77B,-38B,-120B,92B,113B,-24B,15B,-17B,3B,55B,19B,9B,-121B,76B,40B,-118B,53B,-18B,44B,79B,53B,-98B,66B,99B,-47B,13B,-110B,48B,-107B,104B,76B,120B,64B,69B,14B,23B,95B,-114B,87B,101B,118B,-56B,-107B,-29B,55B,-43B,101B,-72B,90B,-113B,11B,99B,-13B,44B,84B,-104B,17B,-121B,-42B,-103B,62B,-84B,70B,-66B,97B,-64B,-74B,-66B,117B,13B,103B,-84B,108B,-35B,94B,73B,-100B,-76B,106B,-27B,90B,98B,127B,48B,-24B,-5B,-53B,34B,-110B,34B,126B,-86B,109B,-83B,81B,22B,100B,-8B,-103B,-91B,-123B,56B,-56B,-62B,-16B,-108B,20B,105B,-76B,78B,-85B,72B,24B,103B,-9B,-67B,-18B,-61B,-80B,-37B,123B,100B,101B,125B,-58B,-60B,-17B,-108B,97B,120B,-68B,56B,14B,-22B,-128B,-37B,42B,-78B,-19B,95B,-49B,93B,121B,59B,-77B,-101B,42B,25B,-1B,-97B,-56B,-78B,-12B,127B,18B,84B,-55B,56B,-126B,75B,48B,78B,-28B,85B,52B,-91B,-33B,-124B,28B,-8B,-18B,41B,-20B,-49B,-89B,84B,89B,54B,-122B,-102B,-72B,-31B,-69B,-107B,-71B,-90B,-58B,-96B,-93B,111B,5B,-83B,-26B,73B,7B,76B,-87B,121B,31B,64B,66B,18B,79B,28B,-18B,-70B,117B,87B,-31B,57B,108B,-22B,26B,96B,-37B,-112B,-20B,36B,-90B,-90B,-103B,110B,-67B,66B,69B,-102B,112B,-113B,-111B,116B,-64B,29B,74B,67B,-34B,23B,-72B,125B,-22B,-66B,-77B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '51':
+        slot: 50
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1748880925","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,68B,-85B,93B,-16B,96B,81B,68B,40B,34B,-75B,8B,69B,36B,76B,-110B,49B,93B,-36B,108B,100B,119B,35B,-75B,-110B,127B,-17B,38B,-87B,32B,-44B,-46B,-34B,102B,-122B,55B,111B,-34B,123B,99B,100B,110B,57B,116B,61B,97B,41B,-29B,48B,127B,-103B,-68B,-123B,-21B,-41B,-55B,98B,57B,-101B,-122B,-13B,-25B,-55B,122B,29B,-82B,38B,-53B,-103B,-121B,89B,94B,40B,-121B,11B,60B,67B,90B,-96B,20B,-97B,-108B,-76B,-21B,21B,15B,96B,60B,-26B,-112B,-21B,-76B,19B,21B,-121B,-125B,-80B,29B,-95B,78B,-92B,108B,-82B,-49B,-99B,-123B,3B,-84B,45B,-58B,7B,7B,-102B,-94B,-59B,13B,105B,35B,114B,-59B,-95B,-1B,48B,12B,-36B,76B,36B,28B,50B,-95B,40B,-42B,-72B,-73B,60B,-43B,120B,14B,-115B,69B,55B,72B,-62B,84B,-94B,49B,-31B,17B,21B,57B,92B,124B,61B,94B,-107B,-39B,49B,87B,-114B,-33B,84B,-105B,-31B,102B,61B,46B,-116B,-51B,-77B,80B,97B,70B,28B,90B,23B,-6B,-80B,26B,-7B,-106B,1B,-37B,-7B,-42B,53B,-100B,-79B,-78B,117B,127B,37B,113B,-46B,-86B,-107B,91B,-119B,-3B,-63B,-96B,-17B,-81B,-118B,72B,-118B,-8B,-87B,-74B,-75B,65B,89B,-112B,-31B,23B,-106B,22B,-30B,40B,11B,-61B,83B,82B,-92B,-47B,58B,-83B,34B,97B,-100B,5B,-61B,-2B,104B,52B,-22B,62B,-10B,6B,-84B,-84B,15B,-103B,-8B,-99B,50B,12B,79B,87B,-49B,65B,29B,113B,91B,69B,-74B,-3B,-21B,-63B,27B,119B,23B,118B,87B,39B,-29B,-1B,-109B,89B,-106B,-2B,79B,-126B,42B,27B,71B,112B,-115B,-58B,-119B,-68B,9B,-89B,-12B,-101B,-104B,3B,-33B,-67B,-123B,-3B,-7B,-106B,42B,-51B,-58B,80B,19B,56B,124B,-73B,50B,-41B,-44B,24B,116B,-12B,-83B,-96B,-43B,-68B,-23B,-120B,41B,53B,15B,4B,72B,72B,-30B,-103B,67B,-81B,91B,119B,21B,-98B,-61B,-74B,-82B,1B,118B,13B,-55B,94B,98B,106B,-102B,-23B,-50B,43B,84B,-92B,9B,15B,24B,73B,7B,-36B,-93B,52B,-28B,125B,1B,-2B,-58B,-59B,53B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '52':
+        slot: 51
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1732431884","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,-63B,106B,-62B,64B,16B,-67B,-25B,43B,-122B,-67B,120B,-119B,98B,52B,-42B,-78B,-32B,-63B,-94B,-120B,80B,68B,106B,41B,-108B,34B,97B,-110B,-116B,-23B,-30B,102B,35B,-69B,27B,-87B,-107B,-4B,123B,55B,73B,5B,-95B,-106B,-10B,54B,51B,-68B,121B,-13B,-34B,27B,35B,11B,-53B,-95B,-17B,9B,75B,57B,-121B,-59B,-45B,-12B,53B,-38B,60B,79B,-105B,-85B,-7B,44B,90B,60B,78B,55B,-101B,104B,61B,93B,-51B,61B,-52B,-117B,82B,57B,92B,-32B,25B,-46B,2B,-91B,-8B,-92B,-76B,-37B,-84B,120B,0B,-109B,9B,-121B,66B,103B,-67B,-72B,-36B,-17B,-123B,-19B,9B,117B,36B,101B,11B,125B,-22B,45B,29B,96B,99B,49B,-39B,59B,-48B,12B,45B,-66B,-112B,54B,-94B,80B,28B,-62B,-69B,113B,-32B,102B,34B,-27B,-112B,11B,69B,-119B,-58B,-99B,-27B,-103B,-58B,83B,100B,44B,-70B,65B,26B,101B,18B,-115B,-119B,14B,-88B,-56B,-31B,-110B,-53B,-15B,-70B,-52B,15B,-123B,114B,-4B,-90B,-66B,12B,87B,-21B,73B,105B,108B,-111B,71B,10B,115B,-30B,-48B,57B,-45B,-121B,-43B,-56B,-33B,24B,-80B,-83B,111B,93B,-61B,25B,-85B,58B,-73B,87B,82B,39B,-83B,94B,-71B,-106B,24B,-114B,70B,-95B,-65B,46B,99B,41B,-110B,-121B,-58B,-42B,11B,-54B,-110B,12B,63B,-77B,-84B,20B,7B,89B,26B,-98B,-111B,34B,-115B,-42B,105B,21B,41B,-29B,44B,24B,15B,7B,-31B,48B,-72B,-65B,15B,89B,-43B,28B,50B,-55B,59B,-27B,24B,29B,47B,-98B,-125B,38B,-30B,-82B,-118B,109B,-9B,-41B,-125B,87B,-18B,-50B,-20B,-90B,78B,-58B,-1B,39B,-77B,-86B,-4B,-97B,4B,117B,54B,-114B,-32B,18B,-115B,19B,121B,21B,78B,-27B,-73B,49B,7B,-66B,123B,11B,-5B,-13B,45B,117B,-102B,-83B,-95B,54B,112B,-8B,110B,101B,-95B,-87B,53B,-24B,-24B,59B,65B,-89B,125B,-45B,1B,51B,106B,31B,8B,-112B,-110B,-60B,19B,-121B,65B,-65B,-23B,106B,60B,-121B,-73B,-90B,6B,-40B,-74B,36B,59B,-119B,-103B,105B,-89B,91B,-81B,84B,-79B,38B,-36B,99B,44B,29B,112B,-121B,-46B,-112B,-9B,5B,-29B,50B,-89B,-83B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '53':
+        slot: 52
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gray_stained_glass_pane
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[" "],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1410751063","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-115B,81B,77B,107B,-62B,64B,16B,-67B,-25B,87B,12B,123B,-15B,18B,-59B,-76B,126B,-64B,-126B,7B,-117B,34B,66B,17B,-87B,69B,40B,34B,97B,-110B,-116B,-23B,-30B,102B,35B,-69B,27B,-87B,-107B,-4B,-9B,110B,-110B,10B,-127B,90B,-38B,-37B,-52B,-16B,-26B,-51B,123B,111B,-116B,-52B,45B,-121B,-66B,39B,44B,101B,28B,22B,47B,-45B,-73B,112B,-13B,58B,93B,-82B,-26B,-77B,112B,-15B,60B,-35B,108B,-62B,-11B,116B,53B,-9B,48B,-53B,11B,-27B,112B,-127B,103B,72B,11B,-108B,-30B,-109B,-110B,110B,-67B,-30B,1B,76B,38B,28B,114B,-99B,-10B,-94B,-30B,120B,20B,-74B,39B,-44B,-103B,-108B,-51B,-11B,-91B,-73B,116B,-128B,-115B,-59B,-8B,-24B,64B,51B,-76B,-72B,37B,109B,68B,-82B,56B,12B,70B,-29B,-64B,-51B,68B,-62B,33B,19B,-118B,98B,-115B,7B,-53B,83B,-115B,-105B,-48B,88B,116B,-125B,36B,76B,37B,26B,19B,-98B,80B,-111B,-61B,-59B,-73B,-29B,85B,-103B,-99B,114B,-27B,-8B,77B,117B,25B,90B,-21B,113B,97B,108B,-98B,-123B,10B,51B,-30B,-48B,-71B,-46B,-121B,-43B,-56B,119B,12B,-40B,-34B,-73B,-82B,-31B,-116B,-107B,-99B,-5B,43B,-119B,-109B,86B,-83B,-76B,37B,14B,-122B,-61B,-127B,-65B,46B,34B,41B,-30B,-89B,-38B,-42B,22B,101B,65B,-122B,95B,89B,90B,-120B,-109B,44B,12B,79B,73B,-111B,70B,-21B,-76B,-118B,-124B,113B,22B,12B,-126B,-2B,120B,24B,-12B,71B,-113B,-84B,-84B,15B,-103B,-8B,-99B,50B,12B,-49B,55B,-49B,65B,29B,113B,87B,69B,-74B,-5B,-21B,-63B,-106B,-69B,43B,-69B,-85B,-109B,-15B,-1B,-55B,44B,75B,-1B,39B,65B,-107B,-115B,35B,-72B,69B,-29B,68B,-74B,-62B,41B,-3B,38B,-26B,-64B,119B,111B,97B,127B,-66B,-91B,74B,-77B,49B,-44B,4B,14B,-33B,-83B,-52B,53B,53B,6B,29B,125B,39B,-24B,52B,111B,58B,97B,74B,-51B,3B,1B,18B,-110B,120B,-31B,-16B,-48B,-81B,-69B,10B,-49B,97B,87B,-41B,0B,-5B,-122B,-28B,32B,49B,53B,-51B,116B,-17B,21B,42B,-46B,-124B,71B,-116B,-92B,3B,30B,80B,26B,-14B,-66B,0B,-114B,-106B,-23B,-39B,-75B,2B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:["
+          "],text:""}},count:1,id:"minecraft:gray_stained_glass_pane"}'
+        item-name: ' '
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '54':
+        slot: 53
+        item: PAPER
+        amount: 1
+        click-events:
+          3744eddd-e3f9-4c08-9063-356a7e9c2e0f:
+            type: command
+            commands:
+            - gui open 菜单
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"862993753","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-79B,110B,-37B,48B,20B,-36B,-11B,21B,4B,-121B,122B,-111B,12B,-55B,-111B,98B,-117B,64B,-122B,22B,-55B,-48B,37B,49B,-38B,34B,75B,96B,24B,20B,-11B,44B,19B,-110B,72B,-127B,-92B,-46B,-72B,-122B,63B,-95B,-24B,-110B,78B,45B,-6B,29B,5B,58B,-12B,103B,26B,32B,-97B,81B,-110B,-78B,1B,35B,77B,-127B,110B,-35B,-88B,-29B,-15B,120B,-17B,120B,-46B,-115B,52B,4B,-59B,1B,55B,-48B,18B,52B,127B,57B,-65B,120B,19B,-48B,86B,-10B,-62B,-94B,73B,-64B,26B,-50B,-22B,8B,110B,65B,24B,77B,2B,-124B,-14B,73B,76B,-117B,98B,58B,-117B,-14B,41B,75B,-94B,52B,-55B,-14B,40B,-121B,12B,-94B,-84B,-100B,-107B,105B,-102B,21B,-15B,-84B,72B,29B,15B,33B,-77B,-23B,-128B,32B,38B,-37B,-106B,-118B,-46B,35B,-5B,-75B,30B,-10B,35B,84B,-11B,28B,-55B,14B,4B,122B,-4B,-12B,-11B,-31B,-29B,103B,-113B,106B,48B,87B,29B,65B,43B,-38B,104B,24B,14B,57B,3B,-17B,-68B,-42B,-27B,-43B,-27B,-123B,-57B,-32B,14B,88B,111B,-72B,20B,-25B,-48B,-48B,-115B,53B,63B,-114B,3B,13B,-118B,-45B,-122B,127B,-128B,50B,-14B,-109B,88B,-30B,-39B,25B,65B,82B,85B,-29B,-94B,-81B,107B,110B,-58B,92B,-72B,41B,-92B,-38B,-116B,95B,91B,-62B,91B,67B,89B,109B,73B,-25B,-44B,-48B,107B,80B,-38B,-86B,17B,-108B,-98B,78B,19B,-117B,-15B,-110B,-96B,-106B,11B,96B,-118B,-82B,12B,-23B,104B,7B,42B,112B,-10B,-9B,-103B,-8B,73B,58B,41B,14B,-103B,-96B,35B,50B,-21B,-75B,-111B,-19B,82B,-48B,-42B,26B,30B,109B,-31B,-50B,40B,74B,110B,-74B,-123B,108B,74B,18B,23B,33B,-109B,-115B,84B,4B,-65B,95B,91B,-113B,56B,-28B,-58B,58B,102B,14B,-105B,-59B,-86B,-41B,-116B,26B,-16B,44B,109B,20B,-81B,-63B,-84B,-107B,-20B,-85B,-75B,3B,-116B,-43B,33B,-8B,-15B,-25B,-3B,-61B,-105B,111B,-65B,-66B,-1B,24B,-14B,-62B,97B,47B,74B,80B,-115B,-67B,-37B,-99B,-38B,45B,-10B,52B,-68B,27B,61B,111B,-86B,-76B,-93B,58B,83B,-57B,35B,-89B,89B,-106B,-122B,-13B,-66B,-80B,62B,94B,-7B,-104B,-82B,105B,-45B,-125B,38B,91B,108B,95B,-89B,107B,122B,77B,42B,16B,-96B,-100B,-77B,37B,47B,49B,-63B,-77B,-45B,73B,-98B,-97B,76B,-77B,19B,-68B,-13B,-9B,104B,-74B,-122B,-106B,46B,111B,15B,17B,38B,-66B,72B,-111B,40B,76B,-12B,-41B,-5B,-114B,-30B,-37B,-30B,103B,109B,98B,-14B,111B,46B,119B,-69B,-16B,79B,1B,23B,-66B,21B,-8B,63B,-39B,-17B,-62B,-95B,39B,73B,104B,91B,-124B,-97B,-76B,-56B,61B,-51B,16B,-49B,-48B,-113B,23B,-85B,39B,-70B,-5B,109B,107B,20B,-122B,-8B,108B,-62B,-93B,100B,52B,-76B,-84B,-93B,21B,12B,-3B,67B,-88B,28B,-102B,63B,-119B,-3B,-105B,-29B,19B,116B,-29B,-41B,8B,45B,6B,-111B,85B,67B,43B,61B,-96B,-117B,-96B,23B,-123B,2B,90B,-45B,-94B,-127B,-61B,-33B,-11B,27B,70B,-26B,89B,123B,-7B,3B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&f返回主菜单'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false

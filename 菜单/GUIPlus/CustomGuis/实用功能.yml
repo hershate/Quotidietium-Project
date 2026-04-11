@@ -1,0 +1,168 @@
+id: 实用功能
+rows: 1
+type: chest
+title: 实用功能
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: CRAFTING_TABLE
+        amount: 1
+        click-events:
+          a30280ff-ed96-441a-a2bf-21360844618b:
+            type: money-remove
+            amount: '20'
+            clickType: NONE
+            executionDelay: 0.0
+          5b613b29-d02d-4501-8cc1-a4b43dd5d794:
+            type: console_command
+            commands:
+            - workbench %player_name%
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:crafting_table
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"随身工作台",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1547019163"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"随身工作台",underlined:0b}],text:""}},count:1,id:"minecraft:crafting_table"}'
+        item-name: '&a随身工作台'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f点击花费20金币打开工作台
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: ANVIL
+        amount: 1
+        click-events:
+          90121076-615d-49dc-8e15-82a0b6620ff3:
+            type: money-remove
+            amount: '50'
+            clickType: NONE
+            executionDelay: 0.0
+          ea2e737b-6252-4355-bbf3-43f191f748ee:
+            type: console_command
+            commands:
+            - anvil %player_name%
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:anvil
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"随身铁砧",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"120750156"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"随身铁砧",underlined:0b}],text:""}},count:1,id:"minecraft:anvil"}'
+        item-name: '&a随身铁砧'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f点击花费50金币打开铁砧
+        item-flags: [
+          ]
+        unbreakable: false
+      '3':
+        slot: 2
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '4':
+        slot: 3
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '5':
+        slot: 4
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '6':
+        slot: 5
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '7':
+        slot: 6
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '8':
+        slot: 7
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '9':
+        slot: 8
+        item: PAPER
+        amount: 1
+        click-events:
+          53730b71-6f44-41e2-8d96-151e1563299b:
+            type: command
+            commands:
+            - gui open 菜单
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"796194836"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&f返回主菜单'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false

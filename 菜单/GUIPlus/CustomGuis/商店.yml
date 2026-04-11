@@ -1,0 +1,175 @@
+id: 商店
+rows: 1
+type: chest
+title: 商店
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: GOLD_INGOT
+        amount: 1
+        click-events:
+          13fc0dc2-0289-4a93-b745-a9e0fd8e52b7:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+          e230f87d-7fdf-4d10-984e-15cd7487af52:
+            type: command
+            commands:
+            - worthlist
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gold_ingot
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"回收价格公示",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1458990840","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-63B,110B,19B,49B,16B,-67B,-25B,43B,-84B,61B,-112B,-53B,58B,-38B,77B,119B,27B,-81B,-91B,94B,80B,81B,85B,9B,53B,72B,84B,-67B,84B,85B,-28B,-11B,78B,54B,86B,-68B,118B,100B,123B,-37B,-122B,40B,71B,-2B,-128B,27B,18B,-30B,-64B,-111B,51B,72B,-64B,-25B,-48B,-14B,27B,120B,-67B,13B,42B,106B,-111B,-32B,-60B,-51B,-98B,121B,126B,-13B,102B,-26B,-39B,74B,-19B,40B,74B,6B,-62B,65B,67B,-47B,-47B,-12B,-7B,-31B,-20B,-8B,-28B,104B,122B,58B,96B,-115B,110B,-107B,79B,-91B,3B,46B,5B,95B,98B,-72B,4B,-27B,44B,29B,32B,-60B,-85B,106B,82B,100B,57B,-63B,-112B,-89B,99B,-100B,101B,-68B,-64B,-116B,84B,4B,-105B,44B,7B,32B,100B,-78B,-73B,71B,72B,-121B,67B,-56B,-83B,87B,64B,17B,-105B,-38B,2B,22B,-86B,35B,-48B,102B,29B,50B,-127B,-13B,52B,-92B,79B,-90B,39B,-49B,66B,12B,-82B,-127B,-73B,78B,104B,117B,8B,-110B,-83B,-67B,-88B,81B,-46B,85B,43B,-118B,50B,75B,-58B,9B,38B,-100B,-52B,113B,86B,-26B,21B,38B,-7B,62B,-57B,69B,-58B,39B,99B,50B,41B,-9B,115B,-62B,127B,-85B,-90B,-101B,-122B,-87B,-86B,-81B,-46B,-97B,109B,-97B,-57B,-24B,74B,27B,-73B,-112B,-62B,-70B,112B,-73B,-32B,-90B,43B,-118B,-26B,76B,90B,-8B,39B,81B,22B,-116B,96B,82B,-68B,-126B,10B,-121B,-79B,121B,-32B,-63B,1B,69B,-38B,-44B,-93B,-78B,93B,46B,-123B,27B,-3B,106B,118B,116B,-20B,1B,47B,29B,-29B,75B,15B,58B,100B,-114B,-99B,-127B,-79B,-98B,-115B,-94B,108B,127B,-110B,-6B,-104B,-88B,40B,106B,-124B,2B,110B,-40B,-36B,-47B,90B,-53B,106B,38B,84B,-83B,59B,-123B,124B,-73B,-128B,-48B,-56B,74B,-85B,-35B,2B,-48B,-67B,23B,-68B,-75B,78B,55B,51B,-59B,26B,-81B,122B,-72B,-127B,107B,103B,24B,61B,-33B,-108B,-98B,-120B,38B,101B,-52B,-75B,-44B,-122B,70B,107B,-112B,82B,95B,69B,-79B,112B,94B,55B,-17B,18B,-70B,-100B,-73B,-106B,51B,7B,1B,102B,-99B,17B,75B,112B,11B,-93B,-37B,122B,-47B,5B,-100B,39B,-94B,-47B,-51B,-37B,119B,-73B,111B,62B,125B,-1B,-6B,-7B,-10B,-3B,-73B,-101B,-41B,31B,127B,124B,-8B,18B,-59B,-83B,-86B,-64B,72B,95B,-65B,123B,-72B,-67B,-72B,67B,70B,-37B,-31B,-29B,-62B,42B,-33B,115B,39B,-20B,126B,-17B,89B,-98B,103B,-15B,-117B,-74B,-12B,82B,-98B,-122B,121B,-99B,49B,-39B,-126B,-91B,-101B,-88B,110B,-59B,74B,-74B,-106B,-42B,-96B,-64B,116B,-30B,102B,-94B,-118B,104B,-108B,122B,-73B,21B,69B,66B,-78B,36B,-38B,-122B,66B,-106B,47B,-96B,97B,-77B,-53B,-35B,48B,-45B,-32B,95B,-84B,74B,-121B,-1B,88B,-16B,-34B,12B,55B,-47B,-93B,58B,35B,-6B,119B,50B,-73B,-37B,-8B,33B,65B,-73B,1B,79B,-16B,-1B,22B,-80B,-115B,123B,-61B,-92B,-79B,-9B,84B,-12B,-104B,-89B,-70B,37B,-11B,115B,-22B,-35B,-14B,4B,30B,-14B,-33B,33B,-68B,104B,-24B,71B,-23B,-89B,61B,76B,-121B,-67B,-19B,86B,-84B,-122B,-34B,-112B,8B,85B,-3B,127B,24B,39B,-31B,-42B,-31B,41B,58B,15B,103B,-124B,46B,122B,-110B,-71B,100B,-75B,-19B,-93B,23B,-125B,86B,-107B,6B,-40B,-110B,-107B,18B,118B,127B,-18B,39B,-22B,-42B,-58B,-37B,124B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"回收价格公示",underlined:0b}],text:""}},count:1,id:"minecraft:gold_ingot"}'
+        item-name: '&e回收价格公示'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: COMPASS
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:compass
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"查询物品价格",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"863711589","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,-109B,79B,107B,19B,65B,24B,-58B,-17B,-5B,41B,-122B,57B,-104B,-53B,38B,102B,53B,105B,-22B,64B,15B,-2B,-71B,120B,16B,11B,-111B,94B,74B,9B,-77B,-69B,111B,54B,67B,102B,103B,-62B,-52B,108B,53B,-122B,61B,120B,-80B,80B,-93B,120B,104B,111B,45B,42B,66B,81B,79B,21B,4B,21B,44B,10B,126B,-106B,110B,-38B,-101B,95B,-63B,-39B,-99B,84B,2B,-87B,-32B,-51B,-37B,-18B,59B,-49B,62B,-17B,111B,-98B,-9B,93B,-51B,-91B,33B,-88B,-23B,49B,3B,41B,65B,-73B,-17B,-33B,91B,-65B,-39B,-19B,122B,52B,-107B,-103B,-80B,-11B,-64B,-45B,-96B,24B,-27B,-20B,49B,-60B,-11B,74B,-30B,33B,-76B,-74B,70B,-112B,84B,73B,35B,-52B,-122B,67B,102B,26B,76B,108B,-125B,48B,82B,-115B,27B,119B,-83B,-96B,107B,104B,52B,-76B,-94B,59B,-44B,-48B,13B,80B,-102B,73B,65B,80B,107B,-91B,19B,-40B,26B,-117B,9B,74B,-103B,-128B,72B,-47B,-66B,33B,-111B,76B,71B,84B,107B,91B,-113B,46B,-102B,-107B,-113B,-23B,72B,10B,-21B,-89B,-53B,78B,104B,81B,-98B,105B,35B,-45B,-98B,-96B,41B,16B,84B,-101B,-64B,35B,-93B,40B,-39B,-100B,-124B,-110B,-57B,-92B,25B,-6B,-111B,-28B,82B,17B,-100B,40B,58B,-58B,62B,51B,22B,57B,42B,-53B,50B,-20B,103B,58B,-94B,6B,42B,-111B,54B,-118B,13B,-63B,12B,-108B,-52B,-110B,65B,89B,48B,-42B,-122B,-32B,-39B,-21B,-93B,-13B,-29B,-73B,103B,-69B,31B,-118B,-67B,39B,-89B,-33B,-66B,-52B,-34B,-100B,96B,63B,19B,49B,40B,110B,-69B,-105B,31B,-26B,91B,115B,37B,-50B,107B,-105B,99B,-59B,-10B,-70B,37B,-42B,-30B,-75B,91B,-19B,118B,-53B,95B,-49B,66B,-117B,114B,-85B,-118B,106B,-125B,-14B,12B,52B,-103B,-32B,36B,99B,35B,-98B,105B,-110B,-128B,0B,85B,-62B,-11B,88B,-116B,9B,94B,93B,-71B,-34B,9B,-126B,-10B,-22B,13B,-100B,87B,125B,116B,52B,-128B,-108B,-10B,-74B,47B,98B,12B,-86B,41B,-43B,69B,104B,-22B,127B,-19B,-73B,16B,-32B,4B,95B,-118B,-119B,-55B,-65B,81B,-26B,-71B,-65B,108B,80B,-58B,111B,13B,-2B,87B,-6B,-71B,-17B,118B,37B,-16B,-19B,46B,-31B,-91B,93B,42B,-57B,-29B,34B,114B,91B,114B,-91B,-77B,108B,62B,87B,88B,94B,112B,41B,-38B,-96B,107B,65B,-51B,-83B,-37B,-120B,38B,-32B,22B,17B,-95B,24B,56B,29B,19B,116B,-83B,89B,-67B,-107B,122B,-89B,-87B,-93B,-97B,-17B,104B,-15B,113B,-57B,-103B,-50B,-90B,63B,-118B,-61B,-9B,-77B,-35B,-23B,-23B,-41B,103B,-65B,78B,-98B,-97B,127B,-33B,43B,-98B,30B,93B,125B,40B,-107B,25B,20B,47B,62B,21B,47B,-113B,45B,-63B,-39B,-31B,-44B,-119B,-117B,-125B,87B,-77B,-3B,-49B,-114B,-61B,97B,-12B,57B,77B,52B,65B,-101B,-42B,121B,-53B,-53B,68B,-88B,-128B,14B,105B,-56B,45B,68B,-97B,114B,13B,94B,21B,116B,61B,5B,-57B,-55B,101B,12B,118B,12B,-30B,-49B,-15B,66B,-23B,-127B,-78B,63B,-98B,-51B,107B,126B,-14B,27B,78B,-31B,-106B,-46B,-40B,3B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"查询物品价格",underlined:0b}],text:""}},count:1,id:"minecraft:compass"}'
+        item-name: '&7查询物品价格'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §a将物品拿在手上，输入/worth即可查看物品回收价格
+        item-flags: [
+          ]
+        unbreakable: false
+        extra-meta:
+          lodestone: false
+          lodestoneTracked: false
+      '3':
+        slot: 2
+        item: SPRUCE_HANGING_SIGN
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:spruce_hanging_sign
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"卖出手持物品",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"457325259","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,82B,-49B,-117B,-45B,64B,24B,-67B,-9B,-81B,24B,114B,-80B,-105B,-76B,-74B,-75B,-75B,56B,-80B,7B,127B,81B,123B,41B,-117B,-59B,-67B,44B,75B,-104B,36B,-45B,116B,-56B,100B,82B,102B,38B,-117B,107B,41B,-76B,-53B,-30B,82B,108B,-23B,-63B,69B,-92B,40B,20B,60B,-72B,-18B,-63B,61B,-20B,-91B,72B,69B,-16B,111B,105B,-78B,122B,-22B,-65B,-32B,36B,-23B,74B,97B,87B,-15B,38B,-28B,-112B,124B,121B,-33B,-9B,-34B,-9B,-66B,39B,-88B,47B,33B,40B,100B,-120B,-60B,30B,4B,-51B,-19B,-89B,-49B,30B,62B,54B,-98B,-36B,111B,-44B,-22B,-115B,-102B,-47B,-84B,-41B,26B,25B,-28B,-7B,1B,83B,-104B,98B,70B,96B,78B,16B,37B,47B,-80B,-99B,75B,-32B,25B,0B,-74B,-74B,32B,-16B,-71B,-109B,55B,3B,-41B,37B,50B,79B,-40B,62B,102B,-46B,-25B,7B,-7B,-70B,2B,52B,37B,-78B,92B,5B,122B,-124B,36B,-38B,-63B,92B,16B,-97B,65B,80B,-66B,91B,45B,-86B,26B,-79B,33B,-16B,8B,-61B,22B,71B,45B,9B,69B,-121B,7B,22B,54B,-38B,-120B,57B,-124B,57B,-122B,32B,14B,83B,24B,-21B,-118B,56B,126B,-11B,58B,62B,83B,-77B,69B,-52B,10B,54B,90B,-83B,64B,72B,-33B,51B,24B,-14B,48B,4B,-39B,46B,126B,46B,57B,-126B,-69B,93B,-45B,-89B,54B,44B,-104B,-70B,-27B,83B,-97B,67B,-51B,70B,-36B,53B,56B,-74B,53B,-99B,72B,-75B,-126B,21B,-1B,-14B,-51B,86B,32B,44B,36B,113B,2B,20B,-110B,19B,23B,-53B,54B,-9B,3B,-89B,29B,23B,-92B,26B,5B,-75B,112B,-4B,38B,60B,-2B,18B,13B,95B,69B,-93B,-63B,-27B,-16B,83B,-8B,122B,-96B,-23B,1B,-77B,49B,-89B,74B,65B,-36B,-40B,-37B,91B,35B,-75B,94B,-10B,102B,105B,-74B,90B,63B,-106B,-74B,105B,67B,-71B,82B,41B,-21B,-37B,-127B,-87B,-92B,60B,72B,-84B,-37B,65B,52B,-64B,2B,118B,53B,39B,32B,29B,26B,8B,-24B,96B,-122B,121B,44B,-50B,32B,-74B,6B,-75B,114B,-91B,122B,-89B,84B,41B,85B,-18B,105B,-67B,-124B,71B,88B,109B,-20B,33B,99B,-1B,-54B,-42B,98B,114B,-63B,28B,51B,101B,-18B,-113B,124B,27B,38B,118B,-75B,27B,101B,106B,-16B,-33B,84B,-10B,122B,-6B,-11B,1B,-15B,9B,-44B,-128B,-1B,121B,-127B,-98B,-98B,102B,-90B,-88B,-85B,124B,105B,127B,-51B,87B,124B,-82B,-44B,-78B,52B,57B,-73B,-54B,-41B,-119B,-42B,8B,-91B,31B,-89B,-82B,42B,-29B,-77B,-59B,108B,26B,-63B,14B,114B,112B,26B,78B,0B,108B,76B,-47B,1B,4B,-91B,66B,-14B,21B,-29B,83B,76B,14B,124B,-1B,88B,-114B,46B,78B,-93B,-93B,-55B,106B,49B,93B,-113B,-98B,30B,-3B,60B,-4B,-80B,-100B,-9B,-93B,-39B,34B,-100B,-67B,12B,39B,51B,85B,-119B,-122B,-3B,-24B,-35B,48B,101B,13B,-33B,31B,47B,23B,83B,37B,37B,60B,-7B,-68B,90B,-116B,126B,-12B,71B,-53B,-7B,56B,122B,123B,30B,78B,-50B,-46B,-94B,-22B,93B,-50B,-49B,86B,-117B,-127B,122B,126B,-45B,84B,55B,-123B,47B,-65B,126B,-69B,60B,57B,-67B,45B,48B,-91B,-31B,-8B,34B,-100B,-100B,-89B,-115B,-23B,58B,45B,-118B,28B,1B,-63B,-82B,106B,-35B,-53B,4B,-52B,-28B,24B,-71B,-56B,-92B,106B,-103B,22B,-94B,2B,103B,126B,1B,31B,-111B,-83B,53B,19B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"卖出手持物品",underlined:0b}],text:""}},count:1,id:"minecraft:spruce_hanging_sign"}'
+        item-name: '&4卖出手持物品'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §4注意：手持的那一格堆叠的所有物品均会出售，而不是只出售一个！！
+            - §7手持物品使用/sell即可出售
+        item-flags: [
+          ]
+        unbreakable: false
+      '4':
+        slot: 3
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '5':
+        slot: 4
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '6':
+        slot: 5
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '7':
+        slot: 6
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '8':
+        slot: 7
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '9':
+        slot: 8
+        item: PAPER
+        amount: 1
+        click-events:
+          8770324c-1929-4bc6-aad5-deac614b823f:
+            type: command
+            commands:
+            - gui open 菜单
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1396846120","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-67B,110B,-37B,48B,24B,-36B,-11B,20B,4B,-121B,122B,-111B,12B,-55B,-111B,-19B,-120B,64B,-122B,22B,-55B,-48B,37B,49B,-38B,34B,75B,96B,24B,20B,-11B,73B,38B,76B,-111B,2B,127B,-46B,-72B,-122B,30B,-95B,-24B,-110B,78B,45B,-6B,28B,5B,58B,-12B,101B,26B,32B,-113B,81B,74B,-78B,1B,35B,77B,-127B,110B,-35B,-88B,-29B,-15B,120B,-33B,-15B,100B,-124B,-78B,4B,-59B,1B,-73B,80B,19B,-76B,120B,-71B,-72B,120B,19B,-48B,90B,57B,-23B,-47B,36B,96B,-126B,-77B,77B,4B,-73B,32B,-83B,33B,1B,66B,-109B,73B,70B,-89B,101B,122B,18B,-51B,-25B,121B,22B,-91B,89B,26B,71B,52B,63B,-51B,-93B,-84B,-100B,-47B,-7B,52B,46B,89B,22B,-89B,29B,15B,33B,-69B,109B,-128B,32B,-90B,-22B,-102B,-54B,-94B,71B,-10B,107B,51B,-20B,71B,-88B,114B,28B,-87B,6B,36B,122B,-4B,-12B,-11B,-31B,-29B,-25B,30B,53B,96B,-81B,26B,-126B,74B,42B,12B,12B,-121B,58B,3B,-17B,122B,-83B,-53B,-85B,-53B,-117B,30B,-125B,59B,96B,-50B,114B,37B,-49B,65B,-48B,-83B,55B,63B,-114B,3B,3B,-102B,83B,-63B,63B,64B,17B,-11B,-109B,120B,-30B,-39B,25B,65B,74B,87B,-29B,-36B,109B,54B,-36B,-114B,-71B,-20B,-90B,80B,122B,59B,126B,-19B,9B,111B,45B,101B,27B,79B,58B,-89B,-106B,94B,-125B,54B,94B,-115B,-96B,116B,54B,79B,60B,-58B,11B,-126B,106B,46B,-127B,105B,90B,90B,-46B,-48B,6B,116B,-48B,-39B,-33B,103B,-46B,79B,-46B,40B,121B,-56B,4B,29B,-111B,-103B,51B,86B,-43B,43B,73B,107B,111B,120B,-76B,-125B,59B,-85B,41B,-71B,-39B,-27B,74B,20B,36B,-50B,67B,-90B,-124B,-46B,4B,-65B,95B,123B,-113B,56B,-28B,-42B,59B,102B,29B,-82B,-14B,-46B,25B,70B,45B,-12B,44B,99B,53B,-33B,-128B,93B,107B,-27B,-86B,117B,7B,88B,-81B,67B,-16B,-29B,-49B,-5B,-121B,47B,-33B,126B,125B,-1B,49B,-28B,-123B,67B,39B,11B,-48B,-62B,-33B,-35B,-99B,106B,-105B,123B,26B,110B,71B,-49B,-101B,42B,-4B,-88B,-99B,-87B,-29B,-111B,-45B,-23B,52B,13B,23B,46B,-9B,62B,94B,-11B,49B,93B,83B,-31B,-64B,-112B,29B,-10B,-81B,-45B,8B,103B,72B,5B,18B,116B,-25B,108B,-59B,11B,76B,112B,114B,-110B,-51B,78B,-45B,89B,50B,-119B,113B,-37B,95B,100B,-40B,26B,106B,-70B,-70B,61B,100B,-104B,-12B,77B,-118B,100B,110B,-93B,-65B,94B,120B,-108B,-33B,14B,63B,-21B,19B,-109B,127B,-77B,-39B,-74B,-31B,-97B,2B,93B,-6B,94B,-32B,-1B,-124B,-33B,-122B,67B,81B,-110B,-48B,-41B,8B,63B,-87B,81B,-9B,54B,67B,60B,67B,65B,94B,-108B,79B,116B,-9B,-37B,-34B,40B,12B,-15B,-7B,-124B,71B,-55B,104B,-88B,89B,67B,43B,24B,10B,-120B,80B,49B,84B,127B,18B,-9B,95B,29B,-97B,-96B,-101B,126B,-115B,-48B,114B,16B,41B,5B,-83B,-52B,-128B,46B,3B,39B,115B,13B,116B,67B,115B,1B,-121B,-33B,-21B,55B,96B,5B,25B,-77B,-6B,3B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&f返回主菜单'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false

@@ -1,0 +1,375 @@
+id: 宠物
+rows: 1
+type: chest
+title: 宠物
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: GOLD_INGOT
+        amount: 1
+        click-events:
+          6230b6d3-a68b-4924-984f-068b264a188e:
+            type: command
+            commands:
+            - mypet:petshop
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:gold_ingot
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"点击打开宠物商店",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1845654649","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,77B,-117B,-37B,48B,20B,-68B,-5B,87B,8B,29B,-102B,-117B,29B,-20B,-60B,73B,-70B,-126B,-67B,-108B,-108B,101B,-95B,36B,-123B,46B,123B,89B,66B,-112B,-27B,23B,71B,88B,-106B,-116B,37B,109B,55B,13B,-122B,-46B,67B,-53B,-98B,75B,-23B,-75B,-41B,94B,122B,-17B,-57B,-33B,73B,-9B,111B,84B,-74B,19B,8B,52B,11B,-67B,-11B,96B,-112B,-97B,70B,-13B,-26B,-115B,70B,90B,40B,67B,80B,-24B,113B,3B,5B,65B,23B,-13B,23B,-45B,-27B,-27B,-20B,98B,126B,-27B,-47B,66B,89B,-23B,-74B,34B,-113B,9B,-50B,-14B,0B,110B,65B,26B,77B,60B,-124B,88B,58B,26B,-124B,48B,24B,6B,19B,54B,-116B,-126B,-104B,-47B,36B,-96B,103B,105B,28B,76B,-122B,41B,27B,-48B,36B,-116B,-128B,-82B,26B,28B,66B,102B,83B,2B,65B,76B,21B,5B,-107B,105B,91B,-39B,-81B,117B,-73B,31B,-96B,-62B,33B,12B,113B,-97B,94B,-85B,-78B,-83B,105B,48B,-13B,-110B,-96B,21B,21B,26B,-70B,35B,77B,-5B,-85B,-106B,105B,54B,-97B,61B,111B,107B,112B,7B,-52B,26B,-82B,-28B,20B,4B,-35B,56B,-3B,-3B,-48B,-45B,80B,113B,42B,-8B,27B,72B,-125B,118B,24B,7B,60B,63B,39B,72B,85B,89B,63B,-79B,121B,-50B,77B,-97B,-53B,102B,6B,85B,109B,-6B,-105B,14B,-16B,-54B,80B,-106B,59B,-48B,-108B,26B,122B,13B,-107B,118B,108B,4B,-59B,-29B,73B,-28B,106B,60B,37B,-88B,-32B,18B,88B,69B,87B,-122B,100B,74B,-92B,75B,46B,51B,101B,-102B,-23B,15B,-74B,-76B,-61B,-108B,74B,30B,108B,65B,71B,39B,-104B,-43B,70B,21B,75B,73B,11B,-89B,-70B,-73B,-123B,59B,83B,81B,114B,-77B,77B,28B,17B,9B,19B,-97B,41B,-95B,42B,-126B,55B,32B,-124B,122B,-115B,125B,110B,-100B,110B,-42B,108B,-88B,100B,101B,53B,-93B,6B,90B,-104B,54B,21B,-49B,-63B,-84B,43B,101B,-77B,117B,83B,48B,-114B,-120B,-32B,-121B,119B,-33B,119B,31B,126B,-2B,-66B,-1B,-72B,-5B,-11B,118B,-9B,-19B,-53B,-61B,-3B,-41B,-35B,-89B,-9B,-69B,31B,-97B,-79B,111B,101B,10B,-107B,112B,42B,-102B,-29B,-11B,98B,-113B,-57B,117B,-17B,-76B,-68B,-44B,77B,-34B,-56B,59B,118B,32B,30B,-115B,98B,-1B,-91B,77B,-100B,-96B,103B,-83B,107B,-41B,84B,88B,-48B,100B,-117B,51B,-53B,75B,97B,53B,-55B,64B,66B,-43B,72B,92B,-14B,20B,19B,28B,61B,-115B,71B,-29B,81B,60B,-114B,-49B,112B,-35B,54B,-46B,108B,13B,5B,93B,-34B,30B,44B,-115B,-38B,108B,5B,50B,49B,-63B,-93B,13B,-113B,-100B,-36B,-30B,-109B,58B,49B,-7B,55B,-103B,117B,-19B,-1B,77B,-48B,-36B,-125B,35B,-8B,-33B,-41B,80B,-5B,93B,120B,34B,-33B,-27B,11B,-97B,-54B,87B,115B,85B,-99B,91B,93B,114B,-98B,-64B,99B,93B,-10B,56B,55B,0B,116B,-74B,58B,-25B,123B,81B,-81B,11B,98B,73B,51B,-24B,34B,-118B,80B,-38B,-67B,-112B,65B,-40B,-2B,53B,120B,-126B,110B,-38B,53B,66B,-117B,-114B,100B,37B,104B,-90B,-69B,-22B,-62B,-77B,50B,-87B,-128B,-26B,52B,17B,112B,120B,-123B,127B,0B,38B,-124B,68B,-15B,36B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"点击打开宠物商店",underlined:0b}],text:""}},count:1,id:"minecraft:gold_ingot"}'
+        item-name: '&e点击打开宠物商店'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: NAME_TAG
+        amount: 1
+        click-events:
+          d8fc47c2-6c3e-46bd-afa4-956087d2693c:
+            type: command
+            commands:
+            - petname
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:name_tag
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"重命名宠物",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1816948588","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-49B,107B,19B,65B,24B,-67B,-17B,95B,49B,-20B,-63B,92B,118B,67B,-74B,-51B,-90B,-55B,64B,15B,-107B,22B,-15B,96B,43B,88B,122B,41B,37B,-52B,-18B,126B,-69B,25B,-78B,59B,19B,102B,102B,75B,99B,-56B,73B,-79B,-12B,80B,-94B,32B,8B,-94B,-48B,-125B,-59B,31B,-120B,10B,-126B,7B,49B,23B,-1B,22B,55B,-42B,-109B,-1B,-126B,51B,-69B,-119B,4B,91B,-63B,-101B,-73B,-99B,-17B,123B,-13B,-66B,-9B,-67B,125B,35B,83B,-82B,48B,106B,88B,84B,65B,-122B,-47B,-10B,-58B,-83B,-83B,-18B,-18B,-58B,13B,-117B,100B,60B,103B,-70B,-31B,89B,97B,74B,-61B,-66B,11B,-121B,-64B,-108B,-60B,22B,66B,13B,15B,26B,30B,-119B,-102B,110B,107B,117B,-83B,-19B,54B,33B,-10B,-35B,78B,-68B,74B,92B,-65B,3B,126B,-36B,-126B,-74B,-65B,-30B,-75B,12B,14B,33B,53B,28B,0B,70B,33B,-49B,50B,-62B,-94B,-78B,50B,-1B,-106B,85B,-33B,69B,3B,80B,-116B,100B,80B,-98B,36B,-88B,-99B,1B,70B,49B,73B,101B,85B,40B,7B,-17B,-106B,28B,-37B,59B,-37B,91B,101B,13B,-114B,32B,-52B,21B,-27B,108B,19B,82B,50B,-44B,-70B,-21B,13B,75B,-126B,-96B,36B,-91B,119B,33B,114B,-53B,37B,52B,112B,125B,29B,35B,46B,-110B,122B,-112B,-9B,-5B,84B,-43B,41B,51B,-22B,-71B,24B,-42B,111B,106B,-64B,29B,69B,-62B,-66B,6B,109B,18B,69B,-10B,64B,72B,-51B,-122B,81B,-77B,-75B,-26B,-23B,26B,-115B,48B,-54B,40B,-125B,80B,-112B,88B,97B,-93B,-83B,-85B,72B,98B,25B,-27B,115B,59B,-54B,37B,6B,-100B,45B,-20B,64B,75B,-8B,48B,-105B,-118B,103B,93B,115B,13B,-93B,-38B,8B,-114B,-108B,32B,120B,127B,20B,-16B,52B,-62B,-115B,-64B,9B,121B,-54B,5B,-74B,19B,1B,-64B,108B,-121B,42B,45B,58B,52B,117B,30B,-60B,-71B,12B,-119B,-126B,18B,37B,-107B,-96B,125B,80B,61B,-63B,-13B,-92B,103B,10B,74B,-13B,96B,-5B,-57B,-15B,105B,-15B,104B,90B,60B,60B,45B,-34B,-99B,125B,63B,121B,109B,59B,57B,-117B,64B,-92B,122B,-74B,-71B,53B,62B,-104B,-61B,-20B,113B,-19B,106B,81B,-111B,-34B,-42B,-120B,90B,-34B,-70B,-23B,-5B,77B,-25B,118B,30B,104B,29B,-41B,75B,-89B,-10B,72B,-102B,-125B,-60B,35B,59B,-55B,-23B,32B,-51B,37B,78B,-128B,-127B,48B,-54B,-70B,52B,-78B,-79B,-19B,-75B,-67B,86B,-89B,-39B,-10B,-37B,109B,123B,92B,14B,-110B,97B,15B,50B,-46B,61B,92B,-40B,-24B,-107B,57B,114B,89B,-96B,-36B,-65B,14B,92B,-14B,111B,100B,95B,-87B,-45B,-58B,-1B,38B,115B,60B,118B,46B,19B,24B,-9B,53B,-63B,-1B,49B,127B,-20B,84B,65B,-15B,28B,-99B,36B,-5B,114B,-110B,-52B,-17B,-87B,28B,-86B,50B,114B,-115B,-4B,65B,61B,111B,107B,-83B,80B,57B,-88B,77B,-82B,121B,-75B,42B,105B,3B,-110B,64B,-107B,65B,-124B,-94B,-22B,1B,-84B,52B,-54B,-109B,-63B,47B,30B,-43B,-41B,-105B,-15B,-20B,-29B,-85B,-39B,-3B,-55B,-49B,47B,79B,-117B,-55B,-101B,-39B,-77B,-109B,111B,-45B,-77B,-30B,-61B,-125B,106B,64B,49B,121B,91B,60B,126B,81B,28B,127B,-98B,61B,63B,-97B,61B,-7B,52B,59B,57B,-67B,-72B,55B,-3B,45B,-30B,-30B,-3B,121B,5B,-85B,100B,-60B,41B,73B,36B,70B,-5B,-102B,-7B,-64B,-54B,89B,32B,-128B,-12B,73B,-112B,-62B,-30B,-103B,-2B,2B,44B,42B,-41B,77B,61B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"重命名宠物",underlined:0b}],text:""}},count:1,id:"minecraft:name_tag"}'
+        item-name: '&a重命名宠物'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f注意：只有你将宠物召唤出来时才能重命名该宠物
+        item-flags: [
+          ]
+        unbreakable: false
+      '3':
+        slot: 2
+        item: CHEST_MINECART
+        amount: 1
+        click-events:
+          c125d421-29bd-4235-be1f-34d1efb8f439:
+            type: command
+            commands:
+            - petstore
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:chest_minecart
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"存储当前宠物",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1344042668","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,61B,111B,19B,65B,16B,-19B,-17B,87B,-84B,-82B,-64B,-51B,-99B,-27B,51B,-25B,-81B,-107B,82B,64B,98B,-119B,20B,56B,-120B,88B,105B,-94B,-56B,-38B,-37B,29B,-97B,87B,-9B,-79B,-42B,-18B,94B,20B,99B,-71B,-95B,0B,-91B,-96B,50B,5B,-94B,-94B,3B,10B,16B,18B,29B,95B,5B,-65B,37B,7B,-4B,12B,-10B,-10B,108B,-55B,82B,18B,-119B,-114B,-18B,102B,-10B,-51B,-52B,-101B,119B,111B,84B,42B,52B,70B,45B,-121B,107B,-56B,48B,-38B,127B,48B,60B,30B,79B,30B,30B,-114B,-122B,-5B,-9B,30B,-113B,29B,-110B,-119B,34B,55B,-49B,-127B,67B,83B,78B,19B,31B,-50B,33B,-41B,10B,59B,8B,13B,-38B,3B,26B,-75B,-125B,-48B,103B,-108B,80B,63B,-20B,-12B,2B,63B,98B,-84B,-29B,15B,122B,-35B,126B,-56B,-62B,14B,27B,-76B,-5B,21B,14B,33B,-67B,-104B,3B,70B,84B,100B,25B,-55B,-103B,-51B,108B,-66B,85B,-3B,-18B,-93B,57B,104B,-91B,-123B,4B,27B,42B,-48B,71B,115B,-116B,-90B,36B,85B,117B,-62B,78B,30B,-37B,38B,-93B,-93B,-47B,-48B,-26B,-32B,2B,104B,-95B,-71B,-56B,15B,32B,37B,11B,67B,-65B,-39B,114B,20B,72B,78B,82B,-2B,4B,-104B,111B,119B,49B,-64B,-67B,61B,-116B,-124B,-116B,-101B,81B,-111B,36B,92B,55B,121B,94B,-47B,23B,114B,-47B,60B,52B,-128B,99B,77B,104B,98B,64B,7B,68B,-109B,19B,-112B,-54B,116B,-61B,40B,-20B,-10B,2B,-109B,-29B,12B,-93B,-116B,-25B,64B,37B,-103B,106B,76B,103B,-96B,-12B,-60B,-58B,68B,106B,-89B,90B,96B,-93B,-118B,-35B,101B,46B,-14B,-83B,42B,104B,-73B,-86B,48B,75B,101B,-109B,-100B,100B,-122B,121B,99B,9B,23B,90B,18B,124B,-70B,-116B,68B,-54B,112B,43B,-14B,-88B,72B,-123B,-60B,110B,108B,66B,-41B,-29B,-38B,48B,-89B,85B,90B,68B,-45B,66B,81B,-94B,-63B,-126B,-108B,-106B,60B,1B,61B,-109B,-94B,-120B,103B,85B,66B,-101B,54B,-40B,45B,63B,-68B,42B,-97B,-66B,43B,-65B,-81B,-53B,-53B,23B,-27B,-57B,55B,-65B,47B,-33B,-69B,94B,-111B,51B,-112B,-87B,-103B,94B,21B,-82B,-50B,54B,72B,119B,-43B,-72B,-103B,22B,51B,91B,87B,-76B,118B,-73B,15B,59B,-99B,-48B,123B,84B,68B,-122B,-54B,125B,-85B,-40B,9B,73B,11B,80B,120B,-23B,-58B,5B,-97B,-89B,-123B,-62B,49B,-28B,32B,43B,114B,19B,-50B,92B,-20B,6B,119B,-61B,-80B,21B,-74B,-69B,-35B,-66B,-69B,-78B,-125B,-108B,-111B,42B,35B,-109B,-13B,-83B,-100B,-127B,-75B,-107B,-97B,71B,-38B,-65B,117B,-32B,-114B,-126B,75B,-9B,70B,-98B,46B,-2B,55B,-102B,-85B,-107B,119B,-67B,65B,-91B,-65B,105B,-16B,-65B,-28B,95B,121B,-75B,89B,2B,-49B,120B,-54B,-67B,-51B,83B,-43B,111B,-86B,-107B,-86B,-35B,114B,-89B,123B,125B,-58B,6B,97B,104B,67B,45B,-90B,-47B,-69B,17B,52B,106B,-37B,-51B,73B,12B,-75B,33B,17B,98B,-11B,77B,-76B,91B,54B,-86B,-16B,-37B,67B,-5B,-7B,118B,122B,-11B,-19B,117B,-7B,-23B,-39B,110B,-33B,95B,47B,127B,-4B,121B,-2B,-7B,-22B,-21B,-70B,-4B,-78B,-82B,71B,76B,83B,18B,43B,-116B,78B,77B,-43B,-103B,83B,-28B,-111B,4B,-110B,-112B,40B,-123B,-19B,85B,-2B,5B,124B,-22B,-10B,-82B,51B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"存储当前宠物",underlined:0b}],text:""}},count:1,id:"minecraft:chest_minecart"}'
+        item-name: '&6存储当前宠物'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f会将当前宠物放至仓库
+        item-flags: [
+          ]
+        unbreakable: false
+      '4':
+        slot: 3
+        item: CHEST
+        amount: 1
+        click-events:
+          70ac3c62-19c9-445b-922d-fcc6980049b0:
+            type: command
+            commands:
+            - petswitch
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:chest
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"dark_green",italic:0b,obfuscated:0b,strikethrough:0b,text:"查看/取出仓库内宠物",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"115585702","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-51B,83B,-79B,110B,-44B,64B,16B,-19B,-3B,21B,43B,23B,92B,99B,31B,-25B,-109B,-99B,-69B,-84B,-108B,6B,18B,9B,-102B,4B,41B,81B,-102B,-24B,116B,26B,-81B,-57B,-66B,-107B,-41B,-69B,-42B,-18B,58B,36B,-100B,-82B,4B,-124B,40B,40B,34B,81B,33B,65B,67B,65B,-61B,7B,-124B,-33B,-31B,-56B,111B,-80B,-74B,-17B,-92B,19B,4B,68B,73B,-25B,-99B,125B,126B,-13B,-26B,-51B,91B,35B,-108B,-91B,100B,-28B,113B,-117B,21B,37B,-113B,-97B,28B,-99B,-98B,121B,80B,-87B,70B,-70B,106B,-28B,49B,-63B,89B,25B,-30B,37B,74B,107B,-88B,71B,72B,-76B,7B,-29B,104B,60B,-99B,-122B,49B,-117B,-77B,48B,-122B,116B,26B,2B,64B,26B,-62B,36B,-33B,79B,-109B,52B,-50B,-89B,-47B,126B,-117B,35B,-60B,94B,-41B,72B,9B,83B,85B,5B,50B,-21B,42B,-101B,111B,-45B,-33B,-121B,-92B,70B,107B,-98B,115B,-53B,22B,-35B,-39B,-96B,61B,-87B,41B,-55B,65B,24B,-20B,-31B,109B,-21B,-77B,-114B,-27B,-8B,-28B,-8B,-88B,-85B,-31B,21B,-78B,-58B,114B,37B,15B,81B,-64B,-75B,-109B,61B,28B,121B,6B,53B,7B,-63B,95B,96B,22B,118B,51B,56B,-32B,-63B,1B,37B,74B,23B,-61B,-76B,41B,75B,110B,-121B,92B,-74B,-6B,-107B,-66B,30B,62B,117B,-128B,83B,11B,-84B,116B,-96B,67B,-80B,112B,-114B,-38B,56B,54B,74B,-30B,-67B,73B,-28B,106B,60B,-93B,-92B,-30B,18B,-103B,-122B,-36B,82B,-74B,64B,99B,-67B,86B,-8B,-58B,-115B,110B,-122B,90B,-55B,-83B,27B,100B,23B,-36B,24B,-85B,-86B,-71B,-124B,-54B,9B,30B,44B,-15B,-54B,106B,-96B,23B,-53B,84B,-119B,-116B,-114B,-46B,-128B,41B,-95B,52B,-11B,51B,-48B,-27B,-68B,-48B,-120B,-46B,15B,-72B,117B,-78B,89B,123B,-87B,-46B,-68B,49B,12B,44B,118B,80B,99B,53B,47B,-47B,46B,-76B,106B,-118B,69B,91B,-80B,-114B,-116B,-6B,63B,62B,126B,-66B,-5B,-16B,-10B,-31B,-6B,-35B,-5B,-11B,-21B,-37B,-17B,-33B,110B,-42B,-73B,55B,-21B,87B,47B,-41B,95B,63B,-35B,-67B,-7B,-30B,7B,-115B,-52B,80B,11B,-89B,-90B,-91B,88B,-51B,54B,-1B,-8B,-85B,-63B,-3B,50B,51B,55B,124B,43B,115B,-41B,-124B,56B,73B,-30B,-32B,89B,-109B,58B,81B,-113B,58B,-29B,-50B,65B,52B,104B,-24B,-46B,47B,26B,94B,-117B,-58B,-48B,2B,37B,-22B,86B,-26B,-100B,103B,62B,-11B,-93B,40B,73B,-90B,-55B,100B,52B,-10B,87B,93B,31B,-29B,12B,-85B,96B,126B,-71B,53B,53B,-22B,66B,21B,-54B,-44B,-122B,127B,-20B,-73B,99B,-24B,-46B,-65B,87B,-90B,79B,-1B,77B,-27B,106B,21B,-4B,78B,-48B,-82B,-61B,17B,-4B,47B,-37B,88B,5B,125B,-106B,-94B,-64B,37B,-51B,-1B,37B,105B,-19B,-78B,122B,-61B,-6B,12B,61B,24B,-1B,-83B,-55B,6B,-21B,-26B,-64B,-34B,93B,-73B,-128B,65B,52B,-24B,99B,89B,67B,-127B,125B,96B,9B,-55B,-6B,-89B,50B,30B,117B,-89B,22B,79B,-55B,69B,-9B,77B,-56B,-84B,39B,-55B,5B,20B,-90B,-81B,-50B,-68B,70B,-90B,26B,-95B,-124B,84B,-32B,-10B,57B,-2B,4B,-14B,123B,-38B,98B,36B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"dark_green",italic:0b,obfuscated:0b,strikethrough:0b,text:"查看/取出仓库内宠物",underlined:0b}],text:""}},count:1,id:"minecraft:chest"}'
+        item-name: '&2查看/取出仓库内宠物'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '5':
+        slot: 4
+        item: LEAD
+        amount: 1
+        click-events:
+          6ede102c-3913-4406-a73a-7198c58d1cc0:
+            type: command
+            commands:
+            - petcall
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:lead
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"召唤宠物到身边",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"129713233","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-65B,111B,-45B,64B,20B,-34B,-13B,87B,-100B,60B,-112B,-59B,-114B,-20B,36B,77B,-108B,-109B,58B,-128B,-46B,1B,9B,-75B,72B,-96B,46B,85B,21B,61B,-97B,-97B,-99B,83B,-50B,62B,-29B,-69B,-85B,26B,-94B,72B,-64B,-64B,-113B,-119B,-123B,-119B,-87B,3B,18B,66B,32B,-44B,-75B,80B,49B,-16B,-73B,-44B,106B,-7B,47B,56B,-37B,9B,10B,34B,72B,108B,108B,-66B,-25B,-17B,-34B,-9B,-67B,-17B,125B,-89B,-124B,-44B,-108B,-8B,45B,-82B,49B,-91B,-28B,-34B,-34B,-19B,113B,11B,82B,105B,50B,91B,12B,90B,76B,112B,54B,-13B,-16B,4B,51B,-83B,104B,-117B,-112B,17B,96B,-105B,-19B,116B,-47B,11B,71B,61B,-16B,-6B,8B,-52B,27B,-59B,62B,-13B,-6B,-61B,-63B,96B,-32B,-77B,97B,28B,-29B,-80B,-62B,17B,-94B,-25B,57B,82B,-62B,100B,-102B,66B,22B,-43B,-107B,-43B,-73B,106B,-2B,123B,36B,71B,-51B,64B,-120B,-6B,-92B,80B,31B,-28B,-108B,-60B,32B,20B,54B,-32B,-118B,-8B,97B,-35B,99B,-1B,96B,127B,-81B,-82B,-31B,41B,50B,-93B,-71B,-52B,-58B,40B,96B,110B,53B,119B,-4B,-106B,-62B,-126B,-125B,-32B,-113B,49B,-14B,-22B,1B,44B,112B,119B,-105B,18B,89B,36B,-99B,-48B,-52B,102B,92B,119B,120B,86B,-87B,-105B,-59B,-68B,115B,-41B,2B,30B,104B,96B,51B,11B,26B,-125B,-122B,67B,44B,-108B,-19B,70B,73B,127B,48B,12B,108B,-115B,71B,-108B,-92B,60B,67B,86B,64B,-84B,-87B,64B,-88B,116B,-77B,-75B,21B,-11B,0B,-71B,-52B,-42B,86B,-112B,13B,44B,51B,74B,-53B,116B,-110B,65B,106B,-11B,-74B,23B,120B,-86B,11B,-96B,71B,-117B,80B,-118B,-120B,-6B,-95B,-53B,-92B,-112B,5B,117B,-32B,-111B,1B,-57B,-27B,-38B,-22B,101B,85B,89B,-122B,-79B,81B,12B,52B,-42B,32B,-91B,11B,62B,67B,61B,45B,-92B,73B,-90B,85B,65B,-37B,54B,-44B,41B,95B,127B,42B,-33B,-68B,43B,63B,-97B,93B,-65B,-6B,80B,-66B,60B,-65B,-7B,-14B,-15B,-26B,-37B,-123B,-29B,-102B,44B,-62B,66B,88B,1B,-43B,-35B,-27B,-15B,10B,-20B,44B,-37B,-37B,-107B,69B,118B,-36B,74B,-39B,-26B,-40B,-3B,-99B,-99B,-66B,123B,-33B,-124B,86B,-51B,-99B,-38B,-86B,67B,16B,6B,21B,93B,56B,-119B,-31B,-71B,48B,-118B,38B,-104B,97B,81B,-23B,-101B,-16B,-56B,-95B,78B,-48B,29B,13B,-125B,94B,-73B,-41B,115B,-106B,53B,-113B,98B,83B,76B,97B,114B,-78B,-74B,49B,-88B,51B,-28B,101B,-95B,-10B,-2B,-54B,-73B,-31B,-31B,-62B,-39B,42B,-45B,-95B,-1B,-90B,114B,-71B,116B,-1B,108B,80B,109B,-64B,54B,-8B,-113B,11B,88B,-70B,77B,98B,2B,-41B,-58B,-55B,-7B,61B,78B,-43B,122B,26B,-117B,-102B,-96B,-36B,10B,-73B,54B,95B,-127B,-84B,100B,108B,-116B,-76B,94B,-73B,-125B,118B,19B,-70B,28B,18B,108B,-30B,72B,72B,-44B,-68B,-125B,-82B,95B,-97B,42B,-4B,-6B,109B,125B,127B,31B,95B,63B,-69B,40B,95B,124B,-67B,-70B,124B,91B,-98B,63B,111B,8B,-82B,46B,-49B,126B,60B,121B,-6B,-117B,-90B,97B,-119B,5B,36B,-118B,-110B,35B,123B,-15B,-72B,101B,-78B,-80B,64B,-104B,65B,40B,112B,-3B,24B,127B,2B,30B,-70B,49B,-62B,31B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"召唤宠物到身边",underlined:0b}],text:""}},count:1,id:"minecraft:lead"}'
+        item-name: '&b召唤宠物到身边'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f点击会将宠物传送到身边
+        item-flags: [
+          ]
+        unbreakable: false
+      '6':
+        slot: 5
+        item: WRITABLE_BOOK
+        amount: 1
+        click-events:
+          ffcef8bd-7010-4767-bcfa-eb1b51304aec:
+            type: command
+            commands:
+            - petchooseskilltree
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:writable_book
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"修改宠物技能树",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"376350169","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,61B,107B,27B,65B,16B,-19B,-11B,43B,-106B,43B,-94B,-26B,78B,-36B,-23B,-12B,17B,47B,-72B,-120B,-80B,11B,-109B,96B,-123B,-60B,56B,-123B,49B,98B,111B,111B,116B,90B,110B,-17B,86B,-20B,-18B,-39B,86B,-124B,-64B,-112B,52B,14B,-92B,8B,73B,-107B,-54B,93B,72B,-29B,62B,-123B,9B,-28B,-73B,-60B,114B,126B,70B,118B,-9B,-92B,32B,-120B,12B,-23B,-46B,-35B,-51B,-68B,-103B,-9B,-26B,-51B,-84B,-30B,66B,99B,20B,54B,-104B,-122B,2B,-93B,87B,47B,14B,-114B,-98B,12B,-98B,-19B,-113B,6B,-61B,-31B,-45B,6B,41B,68B,85B,-102B,108B,-44B,-96B,-100B,-47B,60B,-128B,51B,40B,-75B,-62B,13B,-124B,-30B,40B,-22B,-10B,104B,55B,13B,66B,18B,-89B,65B,39B,-34B,-95B,1B,9B,-45B,118B,-48B,78B,-30B,-57B,105B,-73B,-97B,68B,16B,-9B,45B,14B,33B,61B,-101B,2B,70B,84B,20B,5B,41B,83B,23B,89B,125B,-85B,58B,31B,-96B,41B,104B,58B,17B,66B,-127B,-54B,25B,-25B,90B,2B,-72B,-124B,2B,61B,-100B,98B,52B,38B,92B,-43B,1B,-89B,-31B,-56B,-75B,59B,28B,30B,-18B,-69B,24B,92B,0B,-83B,52B,19B,-27B,30B,112B,50B,51B,115B,-76B,-62B,-122B,2B,-55B,8B,103B,-81B,33B,13B,-36B,80B,6B,-72B,-69B,-117B,-111B,-112B,89B,43B,-87B,-14B,-100B,-23B,22B,43B,-19B,32B,66B,-50B,90B,7B,6B,-16B,82B,19B,-102B,27B,-48B,30B,-47B,-28B,24B,-92B,50B,-35B,48B,-22B,-12B,-6B,-111B,-119B,-79B,20B,-93B,-126B,-107B,64B,37B,25B,107B,124B,46B,-103B,38B,9B,-121B,81B,34B,-124B,-83B,-96B,107B,123B,-36B,80B,83B,81B,-82B,-19B,65B,27B,69B,-76B,82B,90B,20B,-93B,-110B,20B,70B,120B,115B,14B,23B,90B,18B,124B,50B,79B,4B,79B,113B,-104B,-8B,84B,112B,33B,-79B,55B,3B,-50B,-59B,-71B,-25B,27B,2B,51B,-90B,77B,-120B,100B,92B,41B,74B,52B,56B,-104B,-46B,-110B,-27B,-96B,39B,82B,84B,-39B,-60B,6B,-76B,105B,-124B,-67B,-97B,-33B,111B,-106B,-97B,-66B,-35B,-35B,92B,-33B,95B,125B,93B,-66B,-69B,-4B,-11B,-26B,118B,121B,-3B,-63B,-13B,-85B,50B,5B,-55B,-115B,4B,91B,-69B,56B,93B,-127B,-67B,69B,115B,-69B,-74B,-44B,76B,110B,-75B,109B,58B,-48B,-23B,118B,59B,-2B,-13B,42B,49B,106B,6B,-50B,-75B,99B,-62B,43B,80B,120B,-18B,101B,21B,-101B,-14B,74B,-31B,12B,74B,-112B,86B,-33B,-120B,-91B,30B,-10B,-30B,126B,47B,-18B,-122B,81B,111B,-57B,91B,56B,30B,69B,39B,80B,-112B,-47B,-39B,-38B,-47B,-56B,-99B,88B,80B,38B,58B,120B,-112B,111B,-61B,-59B,-71B,-73B,85B,-90B,-121B,-1B,77B,-27B,98B,-31B,-1B,-35B,-64B,-18B,-64B,52B,-8B,-81B,43B,88B,-8B,-11B,-43B,68B,-66B,-71B,45B,-17B,-127B,-37B,-78B,-101B,-86B,-35B,-86B,-81B,-26B,17B,108B,101B,89B,-127B,-116B,122B,-88B,61B,53B,-74B,55B,-93B,102B,125B,-127B,83B,-110B,65B,125B,-101B,8B,-91B,-11B,-21B,104B,-121B,-18B,-49B,-30B,-41B,-113B,-17B,-57B,-105B,-15B,-86B,-11B,-19B,-57B,-69B,-85B,-9B,53B,-63B,-3B,-25B,-73B,127B,56B,106B,-118B,49B,39B,-103B,-62B,-24B,-60B,84B,-99B,54B,-86B,50B,-111B,64B,114B,-85B,118B,-3B,62B,-99B,-91B,65B,1B,-75B,6B,75B,-67B,66B,91B,-4B,111B,102B,4B,5B,-7B,99B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"修改宠物技能树",underlined:0b}],text:""}},count:1,id:"minecraft:writable_book"}'
+        item-name: '&e修改宠物技能树'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f修改当前宠物的技能树
+        item-flags: [
+          ]
+        unbreakable: false
+        extra-meta:
+          pages: [
+            ]
+      '7':
+        slot: 6
+        item: BOOK
+        amount: 1
+        click-events:
+          e9843e82-31dd-47ce-80b3-5f02b16f1cbc:
+            type: command
+            commands:
+            - petinfo
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:book
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"查看宠物信息",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"134907624","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,65B,107B,-44B,64B,24B,-67B,-25B,87B,12B,115B,112B,47B,-55B,-110B,116B,-77B,-69B,-19B,64B,47B,-91B,30B,68B,-24B,10B,74B,47B,-91B,44B,51B,-109B,111B,-77B,67B,-110B,-103B,48B,51B,-87B,93B,-105B,28B,4B,47B,-91B,120B,-14B,38B,-126B,122B,16B,-15B,-94B,-65B,64B,4B,127B,-117B,-19B,-2B,13B,39B,-55B,6B,86B,90B,-63B,-101B,-73B,-52B,55B,111B,-34B,-9B,-66B,-105B,-9B,-103B,92B,89B,-126B,66B,79B,88B,40B,8B,58B,-102B,-51B,30B,123B,-76B,80B,-107B,116B,-59B,-56B,-29B,-71B,-32B,89B,0B,23B,32B,-83B,33B,30B,66B,9B,-29B,81B,56B,-102B,38B,1B,-125B,81B,28B,-60B,116B,52B,13B,-10B,-7B,104B,18B,76B,120B,-110B,-16B,104B,-68B,127B,-64B,34B,-42B,-32B,16B,-78B,-85B,18B,8B,-30B,-86B,40B,-88B,76B,-38B,-54B,-10B,-37B,116B,-9B,1B,42B,-63B,10B,-71B,80B,-19B,-55B,-128B,-99B,-107B,4B,45B,104B,110B,-96B,3B,55B,-115B,-97B,-75B,28B,39B,-77B,-109B,-121B,109B,13B,46B,-127B,87B,86B,40B,121B,12B,57B,93B,57B,-51B,-61B,-48B,51B,-96B,5B,-51B,-59B,11B,72B,-126B,118B,0B,7B,60B,60B,36B,72B,-23B,116B,-56B,-86B,44B,19B,118B,40B,100B,-93B,94B,-23B,-43B,-16B,-111B,3B,60B,-75B,-108B,103B,14B,116B,76B,45B,61B,5B,109B,28B,27B,65B,-15B,100B,26B,-71B,-102B,72B,8B,42B,-124B,4B,-82B,-23B,-62B,18B,-90B,84B,3B,-28B,-67B,21B,-19B,0B,-91B,-110B,-67B,21B,104B,7B,-53B,43B,99B,85B,49B,-105B,-76B,112B,122B,7B,107B,-72B,-76B,-102B,-110B,-77B,53B,83B,121B,66B,66B,-26B,115B,-107B,43B,77B,-16B,-13B,-91B,-109B,-120B,125B,97B,-99B,96B,-34B,-44B,21B,91B,84B,-122B,83B,11B,45B,-54B,88B,45B,50B,-80B,75B,-83B,-86B,116B,-39B,20B,-84B,-29B,33B,-8B,-10B,-3B,-89B,-51B,-69B,-21B,-101B,-81B,31B,54B,87B,95B,126B,-3B,-8B,120B,-5B,-14B,27B,-10B,43B,-103B,-128B,-50B,93B,-5B,-26B,97B,125B,-66B,69B,-30B,122B,112B,-65B,-82B,-60B,13B,-37B,-24B,-38B,29B,58B,30B,-113B,99B,-1B,73B,-59B,-100B,-108B,-93B,-42B,-88B,83B,-102B,87B,96B,-56B,26B,-89B,-107B,40B,-13B,-54B,-112B,20B,36B,-24B,70B,-36B,92B,36B,-104B,-32B,104B,20B,31B,-124B,-45B,-55B,94B,-116B,-21B,-74B,-113B,-31B,75B,40B,-24B,-4B,-94B,55B,49B,106B,19B,20B,72B,102B,-125B,-65B,-10B,-37B,113B,112B,-115B,-17B,-107B,-119B,-55B,-65B,-87B,-84B,107B,-1B,46B,65B,-29B,-65B,35B,-8B,111B,-10B,-41B,126B,-105B,-106B,-56B,119B,81B,-62B,127B,70B,-87B,-7B,57B,-99B,65B,93B,72B,30B,44B,-18B,50B,111B,17B,78B,45B,116B,30B,58B,-101B,7B,-47B,-96B,75B,91B,73B,83B,-24B,114B,-24B,-42B,-80B,91B,-128B,-67B,-80B,61B,53B,-8B,126B,-87B,126B,126B,-18B,121B,-65B,-65B,-71B,-71B,122B,-35B,-79B,111B,-34B,-66B,-22B,26B,116B,-4B,-117B,-100B,-90B,-122B,-96B,51B,-9B,-28B,-36B,-85B,36B,-45B,64B,51B,-54B,114B,-24B,-9B,-17B,55B,96B,-57B,-121B,53B,18B,4B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"查看宠物信息",underlined:0b}],text:""}},count:1,id:"minecraft:book"}'
+        item-name: '&f查看宠物信息'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §f查看当前宠物的信息
+        item-flags: [
+          ]
+        unbreakable: false
+      '8':
+        slot: 7
+        item: TNT
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:tnt
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"放生当前宠物",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1167449897","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,82B,-49B,107B,19B,65B,24B,-67B,-17B,95B,49B,-52B,-63B,92B,54B,49B,43B,-37B,-58B,14B,-12B,34B,94B,-68B,-120B,96B,-23B,-91B,-108B,48B,-69B,-5B,101B,51B,-20B,-18B,76B,-104B,-103B,45B,-42B,-80B,7B,65B,109B,11B,45B,30B,-102B,-117B,5B,-79B,66B,66B,81B,-60B,31B,23B,5B,-115B,61B,-12B,111B,-23B,38B,-15B,-44B,127B,-63B,-39B,-35B,20B,35B,-83B,-32B,-51B,-37B,-52B,-9B,-67B,121B,-33B,-101B,-9B,61B,21B,11B,77B,80B,-45B,98B,26B,18B,-126B,-42B,-18B,-81B,89B,52B,17B,41B,55B,53B,-57B,82B,32B,25B,-115B,-39B,99B,8B,-22B,101B,-37B,66B,104B,117B,-107B,32B,33B,-61B,-122B,-105B,70B,17B,-45B,13B,-58B,-73B,-128B,107B,33B,-73B,27B,-9B,12B,-32B,-95B,-90B,126B,100B,64B,119B,-87B,-90B,-21B,32B,21B,19B,-100B,32B,119B,-71B,-27B,-104B,26B,11B,8B,74B,24B,7B,95B,-46B,-114B,38B,-102B,107B,83B,-13B,47B,7B,21B,-57B,-92B,39B,-72B,-31B,82B,-59B,20B,-76B,0B,-11B,83B,-91B,69B,-46B,-26B,52B,1B,-126B,106B,125B,120B,-92B,37B,37B,27B,125B,79B,-60B,1B,105B,122B,-74B,47B,98B,33B,9B,14B,-88B,-116B,-38B,18B,2B,108B,51B,109B,36B,-5B,69B,75B,120B,-99B,84B,-7B,84B,67B,9B,84B,90B,-78B,8B,116B,87B,-118B,52B,-20B,22B,5B,109B,-88B,8B,-98B,12B,78B,-89B,-125B,-41B,-7B,-113B,-61B,124B,-17B,32B,-1B,112B,60B,-35B,123B,-117B,-19B,-108B,7B,32B,99B,-93B,-96B,120B,-104B,109B,-50B,-111B,56B,-85B,93B,47B,45B,48B,-33B,45B,-92B,45B,126B,-37B,93B,90B,114B,-19B,7B,-87B,103B,-92B,-36B,41B,-83B,90B,-89B,113B,10B,-118B,-12B,113B,-104B,-78B,94B,-100B,42B,18B,2B,7B,89B,-120B,107B,-77B,0B,19B,-20B,56B,-53B,45B,-41B,93B,-71B,-67B,-46B,-62B,89B,57B,72B,-7B,93B,72B,104B,123B,-21B,-46B,71B,-89B,92B,81B,-99B,123B,-70B,-2B,-41B,-127B,11B,46B,-10B,-15B,-75B,58B,49B,-7B,55B,-103B,89B,102B,95B,37B,40B,118B,96B,8B,-2B,-25B,10B,50B,-69B,10B,-115B,99B,-101B,64B,-31B,63B,2B,85B,-20B,-89B,-78B,-88B,-118B,-54B,13B,-9B,42B,-15B,28B,97B,-12B,66B,-27B,-94B,49B,-70B,-26B,-44B,-86B,-52B,-11B,104B,8B,85B,26B,17B,10B,32B,-90B,-37B,4B,-35B,106B,-106B,-73B,2B,95B,97B,-22B,-24B,-20B,-60B,61B,31B,31B,-51B,-87B,95B,-68B,-49B,7B,-61B,124B,-25B,-37B,-28B,-43B,104B,122B,-12B,-76B,-102B,113B,49B,-34B,-81B,14B,-7B,-89B,-25B,-109B,47B,-69B,-7B,-16B,-13B,-59B,-8B,-55B,-17B,-57B,103B,39B,124B,-10B,-15B,-21B,108B,-25B,-35B,-20B,-51B,-2B,-20B,-12B,48B,127B,54B,-70B,-39B,3B,45B,33B,6B,-86B,-32B,-4B,-5B,40B,-33B,61B,-2B,-7B,114B,88B,49B,84B,106B,59B,49B,13B,21B,65B,27B,-122B,99B,-45B,74B,-71B,39B,-127B,70B,-44B,-117B,-115B,-42B,14B,-115B,21B,88B,-65B,0B,-42B,99B,35B,-15B,-61B,3B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"放生当前宠物",underlined:0b}],text:""}},count:1,id:"minecraft:tnt"}'
+        item-name: '&4放生当前宠物'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §4会放生召唤出来的宠物，宠物将消失！
+            - §4§n请自行输入/petrelease以删除宠物
+        item-flags: [
+          ]
+        unbreakable: false
+      '9':
+        slot: 8
+        item: PAPER
+        amount: 1
+        click-events:
+          0fff7b50-9b44-414d-b0a5-a76a3be80eff:
+            type: command
+            commands:
+            - gui open 菜单
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"617409061","guiplus:gui_item_storage":[B;31B,-117B,8B,0B,0B,0B,0B,0B,0B,-1B,-59B,83B,-67B,110B,-37B,48B,24B,-36B,-11B,20B,4B,-121B,122B,-111B,12B,-55B,81B,-20B,-102B,64B,-122B,22B,-55B,-48B,37B,49B,-38B,34B,75B,96B,24B,20B,-11B,89B,38B,36B,-111B,2B,127B,-46B,-72B,-122B,30B,-95B,-24B,-46B,78B,45B,-6B,28B,5B,58B,-12B,101B,26B,32B,-113B,81B,-118B,-76B,1B,35B,77B,-127B,110B,-35B,-88B,-29B,-15B,120B,-33B,-15B,-92B,27B,105B,8B,74B,35B,110B,-96B,37B,104B,-15B,98B,113B,-15B,58B,-94B,-83B,-76B,-62B,-95B,89B,-60B,26B,-50B,-22B,4B,110B,65B,24B,77B,34B,-124B,38B,57B,0B,59B,-127B,73B,-62B,-54B,73B,-102B,-28B,51B,40B,18B,-102B,21B,101B,-110B,-98B,-80B,-45B,-7B,-76B,-104B,21B,-109B,-7B,-13B,-127B,-121B,-112B,-39B,118B,64B,16B,-109B,109B,75B,69B,-23B,-111B,-3B,90B,-121B,-3B,4B,85B,-106B,35B,-39B,-127B,64B,15B,31B,-65B,-34B,127B,-8B,-20B,81B,13B,-26B,-86B,35B,104B,77B,27B,13B,-31B,-48B,96B,-32B,-83B,-41B,-70B,-68B,-70B,-68B,-16B,24B,-36B,1B,-77B,-122B,75B,113B,14B,13B,-35B,58B,-13B,-29B,52B,-46B,-96B,56B,109B,-8B,123B,40B,19B,63B,-119B,35B,-98B,-99B,17B,36B,85B,53B,46B,108B,93B,115B,51B,-26B,98B,-104B,66B,-86B,-19B,-8B,-107B,35B,-68B,49B,-108B,-43B,-114B,116B,78B,13B,-67B,6B,-91B,-99B,26B,65B,-7B,116B,-106B,57B,-116B,-105B,4B,-75B,92B,0B,83B,116B,109B,72B,71B,59B,80B,-47B,96B,127B,-97B,-119B,-97B,-92B,-109B,-30B,-112B,9B,58B,34B,51B,-85B,-115B,108B,87B,-126B,-74B,-50B,-16B,104B,7B,119B,70B,81B,114B,-77B,43B,100B,83B,-110B,-76B,-120B,-103B,108B,-92B,34B,-8B,-35B,-58B,121B,-60B,49B,55B,-50B,49B,27B,112B,89B,-84B,-83B,102B,-44B,-128B,103B,105B,-93B,120B,13B,102B,-93B,-92B,-83B,54B,3B,96B,-100B,14B,-63B,15B,63B,63B,-35B,127B,-7B,-10B,-21B,-5B,-113B,-112B,23B,-114B,-83B,40B,65B,53B,-18B,-18B,-31B,84B,-65B,-36B,-45B,112B,63B,122B,-38B,84B,-23B,70B,29B,76B,29B,-113B,-100B,-97B,-98B,-26B,-15B,-62B,22B,-50B,-57B,75B,31B,-45B,53B,109B,44B,104B,-78B,-61B,-18B,117B,-70B,-58B,106B,82B,-127B,0B,53B,56B,91B,-15B,18B,19B,60B,-51B,102B,121B,58B,79B,-89B,25B,-18B,-3B,61B,-102B,109B,-96B,-91B,-85B,-37B,67B,-124B,-103B,47B,82B,34B,10B,-109B,-4B,-11B,-66B,-93B,-8B,118B,-8B,73B,-101B,-104B,-4B,-101B,-53B,-66B,-113B,-1B,20B,24B,-62B,119B,2B,-1B,39B,-5B,62B,14B,61B,-55B,98B,-41B,34B,-4B,-88B,69B,-61B,-45B,-124B,120B,66B,63B,-98B,-83B,31B,-23B,-18B,-73B,-99B,81B,8B,-15B,-71B,-124B,71B,-39B,40B,-76B,-84B,-93B,21B,-124B,-2B,33B,84B,-122B,-26B,79B,82B,-1B,53B,-16B,9B,-70B,-15B,107B,-124B,-106B,65B,100B,-35B,-48B,74B,7B,116B,25B,89B,81B,40B,-96B,53B,45B,26B,56B,-4B,93B,-65B,1B,13B,-3B,-76B,105B,-7B,3B,0B,0B],"guiplus:is_compressed":0b}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&f返回主菜单'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '10':
+        slot: 9
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '11':
+        slot: 10
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '12':
+        slot: 11
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '13':
+        slot: 12
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '14':
+        slot: 13
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '15':
+        slot: 14
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '16':
+        slot: 15
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '17':
+        slot: 16
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '18':
+        slot: 17
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671

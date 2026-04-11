@@ -1,0 +1,121 @@
+id: 第一届建筑大赛
+rows: 1
+type: chest
+title: 第一届建筑大赛
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: PLAYER_HEAD
+        amount: 1
+        skullBase64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWNjODkyNjQ1OGNlMTVkOWNhZjRjZjA2ODE1NTFmYmEyOGRkNmVhZWRjODg0NDIxYmM3MTU1ZTMxMzVjNzQ0NyJ9fX0=
+        click-events:
+          b9abcbb8-61c1-4d5e-86e7-6d90f300617b:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+          6fa5263c-c70e-41dc-a1cd-963f84ac61e6:
+            type: command
+            commands:
+            - warp build_contest_1
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:player_head
+          count: 1
+          components:
+            minecraft:profile: '{id:[I;-168274137,-450807785,-1543278684,245495111],name:"SolitaryBamboo_o",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWNjODkyNjQ1OGNlMTVkOWNhZjRjZjA2ODE1NTFmYmEyOGRkNmVhZWRjODg0NDIxYmM3MTU1ZTMxMzVjNzQ0NyJ9fX0="}]}'
+            minecraft:lore: '[{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"樱花栈道建造者",underlined:0b}],text:""}]'
+            minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Solitarybamboo_o",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1926124108"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Solitarybamboo_o",underlined:0b}],text:""},"minecraft:lore":[{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"樱花栈道建造者",underlined:0b}],text:""}],"minecraft:profile":{id:[I;-168274137,-450807785,-1543278684,245495111],name:"SolitaryBamboo_o",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWNjODkyNjQ1OGNlMTVkOWNhZjRjZjA2ODE1NTFmYmEyOGRkNmVhZWRjODg0NDIxYmM3MTU1ZTMxMzVjNzQ0NyJ9fX0="}]}},count:1,id:"minecraft:player_head"}'
+        item-name: '&eSolitarybamboo_o'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §a樱花栈道建造者
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '3':
+        slot: 2
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '4':
+        slot: 3
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '5':
+        slot: 4
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '6':
+        slot: 5
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '7':
+        slot: 6
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '8':
+        slot: 7
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '9':
+        slot: 8
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671

@@ -1,0 +1,236 @@
+id: 圈地
+rows: 1
+type: chest
+title: 圈地
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
+  '0':
+    delay: 0
+    items:
+      '1':
+        slot: 0
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"311115834"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}}},count:1,id:"minecraft:paper"}'
+        item-name: ''
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §3手持木锄，左键点击一个位置
+            - §3然后右击再选择一个位置
+            - §3这两个点围起来的范围就是选中的区域
+        item-flags: [
+          ]
+        unbreakable: false
+      '2':
+        slot: 1
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"如何创建领地？",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"2114773139"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"如何创建领地？",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a如何创建领地？'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §e在已经选择一块区域之后
+            - §e使用§n/res create <你的领地名称>§e 即可
+            - §e比如执行/res create Example
+            - §e就会创建一个名叫Example的领地
+        item-flags: [
+          ]
+        unbreakable: false
+      '3':
+        slot: 2
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"如何让你的朋友获得领地权限？",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1828596575"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"如何让你的朋友获得领地权限？",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a如何让你的朋友获得领地权限？'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §9输入§n/res padd <领地名称> <朋友名称>§9即可
+        item-flags: [
+          ]
+        unbreakable: false
+      '4':
+        slot: 3
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"我能有几个领地？",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"19071067"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"我能有几个领地？",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a我能有几个领地？'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §e一个人最多能圈5块领地
+        item-flags: [
+          ]
+        unbreakable: false
+      '5':
+        slot: 4
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"圈地要不要花钱？",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"72141211"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"圈地要不要花钱？",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a圈地要不要花钱？'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §e圈地的价格是一格方块0.01金币
+        item-flags: [
+          ]
+        unbreakable: false
+      '6':
+        slot: 5
+        item: PAPER
+        amount: 1
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"我的领地面积最大是多少？",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"1088773040"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"我的领地面积最大是多少？",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a我的领地面积最大是多少？'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore:
+            - §e领地面积最大可以达到100*100
+            - §e如果因参与公共点建设需要更大的领地可以额外协商
+        item-flags: [
+          ]
+        unbreakable: false
+      '7':
+        slot: 6
+        item: PAPER
+        amount: 1
+        click-events:
+          b96378f1-8a6e-4f1d-91e2-193e2b857008:
+            type: command
+            commands:
+            - res
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          658243e0-fa34-4788-9c3b-d32558ce51a5:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"想知道更多用法？请点击我",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"952242015"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"想知道更多用法？请点击我",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&a想知道更多用法？请点击我'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
+      '8':
+        slot: 7
+        item: AIR
+        amount: 0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          schema_version: 1
+          id: minecraft:air
+          DataVersion: 4671
+      '9':
+        slot: 8
+        item: PAPER
+        amount: 1
+        click-events:
+          d2996f8b-fb5e-45ee-8eef-620b8735abf1:
+            type: command
+            commands:
+            - gui open 菜单
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+        serialized-item:
+          ==: org.bukkit.inventory.ItemStack
+          DataVersion: 4671
+          id: minecraft:paper
+          count: 1
+          components:
+            minecraft:custom_name: '{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}'
+            minecraft:custom_data: '{DataVersion:4554,PublicBukkitValues:{"guiplus:generated_id":"194047772"}}'
+          schema_version: 1
+        item-nbt-data: '{DataVersion:4554,components:{"minecraft:custom_data":{DataVersion:4554,PublicBukkitValues:{}},"minecraft:custom_name":{extra:[{bold:0b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"返回主菜单",underlined:0b}],text:""}},count:1,id:"minecraft:paper"}'
+        item-name: '&f返回主菜单'
+        item-lore-data:
+          '1':
+            page: 1
+            delay: 20
+            lore: [
+              ]
+        item-flags: [
+          ]
+        unbreakable: false
