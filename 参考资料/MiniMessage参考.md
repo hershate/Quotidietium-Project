@@ -140,7 +140,7 @@ MiniMessage 使用 **标签（Tag）** 来定义样式。每个标签有开始�
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `_颜色名或十六进制_` | 命名颜色或十六进制颜色，支持 `#RRGGBB` 或 `#RRGGBBAA` 格式 | 是 |
 | `[透明度浮点数]` | 0~1 之间的浮点数，表示阴影透明度。默认 0.25。如果十六进制颜色已包含 Alpha 值，此参数无效 | 否 |
 
@@ -164,7 +164,7 @@ MiniMessage 使用 **标签（Tag）** 来定义样式。每个标签有开始�
 **可用的装饰：**
 
 | 装饰名 | 别名 | 中文说明 |
-|--------|------|----------|
+| --- | --- | --- |
 | `bold` | `b` | 粗体 |
 | `italic` | `em` / `i` | 斜体 |
 | `underlined` | `u` | 下划线 |
@@ -204,14 +204,14 @@ MiniMessage 使用 **标签（Tag）** 来定义样式。每个标签有开始�
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `_操作类型_` | 点击事件类型，参见 [ClickEvent.Action 枚举](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/event/ClickEvent.Action.html#enum.constant.summary) |
 | `_值_` | 该事件类型的参数，参见 [Minecraft Wiki](https://minecraft.wiki/w/Text_component_format) |
 
 **常用 Click 操作：**
 
 | 操作类型 | 说明 | 值示例 |
-|----------|------|--------|
+| --- | --- | --- |
 | `run_command` | 执行命令 | `/seed` |
 | `suggest_command` | 建议命令（填入聊天框） | `/tell Player ` |
 | `open_url` | 打开链接 | `https://example.com` |
@@ -237,14 +237,14 @@ Click <click:copy_to_clipboard:Haha you suck> this </click>to copy your score!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `_操作类型_` | 悬停事件类型，参见 [HoverEvent.Action 字段](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/event/HoverEvent.Action.html#field.summary) |
 | `_值_` | 各操作类型对应的参数，详见下表 |
 
 **Hover 操作类型详解：**
 
 | 操作类型 | 值的格式 | 说明 |
-|----------|----------|------|
+| --- | --- | --- |
 | `show_text` | `_文本_` | 一个 MiniMessage 字符串 |
 | `show_item` | `_类型_[:_数量_[(:_组件Key_:_组件Value_)...]]` | 物品的类型 Key，可选数量（整数）和[数据组件](https://minecraft.wiki/w/Data_component_format)键值对列表 |
 | `show_item`（旧版） | `_类型_[:_数量_[:tag]]` | ⚠️ 旧版格式：物品类型 Key，可选数量和 tag（[SNBT](https://minecraft.wiki/w/NBT_format#SNBT_format) 字符串） |
@@ -269,7 +269,7 @@ Click <click:copy_to_clipboard:Haha you suck> this </click>to copy your score!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `_按键ID_` | 操作的按键绑定标识符 |
 
 **示例：**
@@ -290,7 +290,7 @@ Press <red><key:key.jump> to jump!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `_翻译Key_` | 翻译键（translation key） | 是 |
 | `_值X_` | 用于替换翻译键中占位符的值（对应 JSON 中的 `with` 数组） | 否（可变数量） |
 
@@ -315,7 +315,7 @@ You should get a <lang:block.minecraft.diamond_block>!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `_翻译Key_` | 翻译键 | 是 |
 | `_后备文本_` | 无翻译时的后备显示文本 | 是 |
 | `_值X_` | 用于替换占位符的值 | 否（可变数量） |
@@ -336,7 +336,7 @@ You should get a <lang_or:block.minecraft.diamond_block:'Dirt Block'>!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `_文本_` | 要插入的文本内容 |
 
 **示例：**
@@ -355,7 +355,7 @@ Shift-click <insert:test>this</insert> to insert!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `!` | 字面量 `!`，反转彩虹方向 | 否 |
 | `phase` | 相位偏移（整数），调整彩虹起始位置 | 否 |
 
@@ -378,7 +378,7 @@ Shift-click <insert:test>this</insert> to insert!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `[颜色1]...[颜色N]` | 1 到 N 个颜色，可以是十六进制或命名颜色（至少 1 个） | 是 |
 | `[phase]` | 相位偏移，范围 -1 到 1，可产生动画效果 | 否 |
 
@@ -401,7 +401,7 @@ Shift-click <insert:test>this</insert> to insert!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `[颜色1]...[颜色N]` | 1 到 N 个颜色 | 是 |
 | `[phase]` | 相位偏移，范围 -1 到 1 | 是（用于标记语法位置，运行时可动态替换） |
 
@@ -422,13 +422,13 @@ Shift-click <insert:test>this</insert> to insert!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `key` | 字体的命名空间 Key，缺省命名空间为 `minecraft` |
 
 **Minecraft 内置字体：**
 
 | 字体 Key | 说明 |
-|----------|------|
+| --- | --- |
 | `minecraft:default` | 默认字体 |
 | `minecraft:uniform` | 等宽字体 |
 | `minecraft:alt` | 替代字体（魔法符文风格） |
@@ -473,7 +473,7 @@ Let me insert a <newline>line break here.
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `_选择器_` | Minecraft 目标选择器，如 `@s`、`@e[limit=5]`、`@p` 等 | 是 |
 | `_分隔符_` | 多个匹配值之间的分隔符 | 否 |
 
@@ -496,7 +496,7 @@ Hello <selector:@e[limit=5]>, I'm <selector:@s>!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `_名称_` | 服务器记分板上分数持有者的名称，或使用接收者上下文中解析的选择器 |
 | `_计分项_` | 要获取 `名称` 在哪个计分项（objective）中的分数 |
 
@@ -521,7 +521,7 @@ You have won <score:rymiel:gamesWon/> games!
 **参数：**
 
 | 参数 | 说明 |
-|------|------|
+| --- | --- |
 | `block\|entity\|storage` | 数据源类型：方块实体的 `block`、实体的 `entity` 选择器、或持久化命令 `storage` 容器 |
 | `_id_` | 方块 NBT 的位置、实体 NBT 的选择器、或 storage NBT 的 key（资源位置） |
 | `_路径_` | 从数据源中解析的 NBT 路径 |
@@ -546,7 +546,7 @@ Your health is <nbt:entity:'@s':Health/>
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `flag` | 旗帜类型，见下表 | 否 |
 | `phase` | 相位偏移，-1 到 1 之间的数字 | 否 |
 
@@ -572,7 +572,7 @@ Kyori supports <pride:trans>trans rights</pride>!
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `图集` | 图集（atlas）名称，如 `minecraft:blocks`。缺省命名空间为 `minecraft` | 否 |
 | `精灵图` | 精灵图路径，如 `item/emerald` | 是 |
 
@@ -595,7 +595,7 @@ This item costs 10 x <sprite:"minecraft:items":item/porkchop>.
 **参数：**
 
 | 参数 | 说明 | 必填 |
-|------|------|------|
+| --- | --- | --- |
 | `名称\|UUID\|纹理` | 玩家名称、UUID 或皮肤纹理路径 | 是 |
 | `外层显示` | `true` 或 `false`，决定是否绘制外层（帽子层），默认 `true` | 否 |
 
