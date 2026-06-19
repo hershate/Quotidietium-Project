@@ -1,0 +1,39 @@
+nugalaetiter_light:
+  itemname: <green>ONEXHS <blue>- Nugalaetiter - 琐欢行乐 主奏曲 - 畅清</blue></green>
+  material: PAPER
+  Components:
+    max_stack_size: 1
+    jukebox_playable:
+      show_in_tooltip: true
+      song_key: oraxen:nugalaetiter_light
+  Pack:
+    generate_model: true
+    parent_model: "item/handheld"
+    textures:
+    - onexhs/nugalaetiter_light.png
+nugalaetiter_thick:
+  itemname: <green>ONEXHS <gold>- Nugalaetiter - 琐欢行乐 主奏曲 - 盛辉</gold></green>
+  material: PAPER
+  Components:
+    max_stack_size: 1
+    jukebox_playable:
+      show_in_tooltip: true
+      song_key: oraxen:nugalaetiter_thick
+  Pack:
+    generate_model: true
+    parent_model: "item/handheld"
+    textures:
+    - onexhs/nugalaetiter_thick.png
+# welcome_disk:
+#   itemname: <gradient:#9055FF:#13E2DA>Welcome Disk
+#   material: PAPER
+#   Components:
+#     max_stack_size: 1
+#     jukebox_playable:
+#       show_in_tooltip: true
+#       song_key: oraxen:welcome
+#   Pack:
+#     generate_model: true
+#     parent_model: item/handheld
+#     textures:
+#     - default/welcome_disk.png

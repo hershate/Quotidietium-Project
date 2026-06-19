@@ -1,0 +1,25 @@
+bacon_raw:
+  result:
+    oraxen_item: bacon_raw
+    amount: 2
+  ingredients:
+    A:
+      amount: 1
+      minecraft_type: PORKCHOP
+drink_carrot:
+  result:
+    oraxen_item: carrot_juice
+  ingredients:
+    A:
+      amount: 1
+      minecraft_type: GLASS_BOTTLE
+    B:
+      amount: 1
+      minecraft_type: CARROT
+raw_tomato_sauce_shapeless:
+  result:
+    oraxen_item: tomato_paste
+  ingredients:
+    A:
+      amount: 1
+      oraxen_item: tomato

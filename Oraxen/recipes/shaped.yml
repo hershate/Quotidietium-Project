@@ -1,0 +1,299 @@
+# bedrock_pickaxe:
+#   shape:
+#   - AAA
+#   - BCB
+#   - _D_
+#   result:
+#     oraxen_item: bedrock_pickaxe
+#   ingredients:
+#     D:
+#       minecraft_type: STICK
+#     B:
+#       minecraft_type: OBSIDIAN
+#     C:
+#       minecraft_type: NETHER_STAR
+#     A:
+#       minecraft_type: DIAMOND_BLOCK
+
+# obsidian_sword:
+#   result:
+#     oraxen_item: obsidian_sword
+#   ingredients:
+#     A:
+#       minecraft_type: OBSIDIAN
+#     B:
+#       minecraft_type: STICK
+#   shape:
+#   - A
+#   - A
+#   - B
+
+# obsidian_helmet:
+#   result:
+#     oraxen_item: obsidian_helmet
+#   ingredients:
+#     A:
+#       minecraft_type: OBSIDIAN
+#   shape:
+#   - AAA
+#   - A_A
+
+# obsidian_chestplate:
+#   result:
+#     oraxen_item: obsidian_chestplate
+#   ingredients:
+#     A:
+#       minecraft_type: OBSIDIAN
+#   shape:
+#   - A_A
+#   - AAA
+#   - AAA
+
+# obsidian_leggings:
+#   result:
+#     oraxen_item: obsidian_leggings
+#   ingredients:
+#     A:
+#       minecraft_type: OBSIDIAN
+#   shape:
+#   - AAA
+#   - A_A
+#   - A_A
+
+# obsidian_boots:
+#   result:
+#     oraxen_item: obsidian_boots
+#   ingredients:
+#     A:
+#       minecraft_type: OBSIDIAN
+#   shape:
+#   - A_A
+#   - A_A
+
+# builders_wand:
+#   result:
+#     minecraft_item:
+#       ==: org.bukkit.inventory.ItemStack
+#       DataVersion: 4671
+#       id: minecraft:blaze_rod
+#       count: 1
+#       components:
+#         minecraft:lore: '["",{color:"gray",italic:0b,text:"准备所需材料后"},{color:"gray",italic:0b,text:"对准需要复制的方块右键"},"",{color:"gray",extra:[{color:"yellow",text:"
+#           2000"}],italic:0b,text:"耐久度:"},{color:"gray",extra:[{color:"yellow",text:"
+#           6"}],italic:0b,text:"范围:"}]'
+#         minecraft:custom_name: '{bold:1b,color:"#8AFF91",italic:0b,text:"建筑法杖"}'
+#         minecraft:custom_data: '{PublicBukkitValues:{"builderwand:builder_wand":1,"builderwand:builder_wand_durability":2000,"builderwand:uuid":"4516d668-db31-4541-8d8a-7b22cdc36db1"}}'
+#       schema_version: 1
+#   ingredients:
+#     C:
+#       minecraft_type: BLAZE_ROD
+#     B:
+#       minecraft_type: DRAGON_EGG
+#       amount: 64
+#     A:
+#       minecraft_type: OBSIDIAN
+#   shape:
+#   - __A
+#   - _B_
+#   - C__
+builders_wand_1:
+  result:
+    minecraft_item:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4671
+      id: minecraft:blaze_rod
+      count: 1
+      components:
+        minecraft:lore: '["",{color:"gray",italic:0b,text:"准备所需材料后"},{color:"gray",italic:0b,text:"对准需要复制的方块右键"},"",{color:"gray",extra:[{color:"yellow",text:"
+          2000"}],italic:0b,text:"耐久度:"},{color:"gray",extra:[{color:"yellow",text:"
+          6"}],italic:0b,text:"范围:"}]'
+        minecraft:custom_name: '{bold:1b,color:"#8AFF91",italic:0b,text:"建筑法杖"}'
+        minecraft:custom_data: '{PublicBukkitValues:{"builderwand:builder_wand":1,"builderwand:builder_wand_durability":2000,"builderwand:uuid":"22f3d530-198c-4176-bca2-e11d2b702a41"}}'
+      schema_version: 1
+  ingredients:
+    C:
+      minecraft_type: BLAZE_ROD
+    B:
+      minecraft_type: DRAGON_EGG
+    A:
+      minecraft_type: OBSIDIAN
+  shape:
+  - __A
+  - _B_
+  - C__
+weapon_glass_sword_shaped:
+  result:
+    oraxen_item: glass_sword
+  ingredients:
+    B:
+      minecraft_type: STICK
+    A:
+      minecraft_type: GLASS
+  shape:
+  - _A_
+  - _A_
+  - _B_
+block_table_shaped:
+  result:
+    oraxen_item: table
+  ingredients:
+    D:
+      minecraft_type: OAK_LOG
+    A:
+      minecraft_type: BOOK
+    C:
+      minecraft_type: OAK_SLAB
+    B:
+      minecraft_type: CANDLE
+  shape:
+  - _AB
+  - CCC
+  - D_D
+block_cart_shaped:
+  result:
+    oraxen_item: cart
+  ingredients:
+    A:
+      minecraft_type: STICK
+    C:
+      minecraft_type: FLINT
+    B:
+      minecraft_type: IRON_INGOT
+  shape:
+  - A_A
+  - B_B
+  - CBC
+block_wall_bookshelf_shaped:
+  result:
+    oraxen_item: shelf
+  ingredients:
+    A:
+      minecraft_type: STICK
+    B:
+      minecraft_type: BOOK
+    C:
+      minecraft_type: OAK_STAIRS
+  shape:
+  - ABA
+  - ACA
+  - ACA
+item_chocolate_bar_shaped:
+  result:
+    oraxen_item: chocolate_bar
+    amount: 2
+  ingredients:
+    A:
+      minecraft_type: COCOA_BEANS
+  shape:
+  - AA_
+  - AA_
+  - AA_
+item_chocolate_donut_shaped:
+  result:
+    oraxen_item: chocolate_donut
+  ingredients:
+    C:
+      minecraft_type: SUGAR
+    B:
+      minecraft_type: WHEAT
+    A:
+      minecraft_type: COCOA_BEANS
+  shape:
+  - ___
+  - AAA
+  - BCB
+item_chocolate_icecream_shaped:
+  result:
+    oraxen_item: chocolate_ice_cream
+  ingredients:
+    C:
+      minecraft_type: SUGAR
+    D:
+      minecraft_type: WHEAT
+    A:
+      oraxen_item: chocolate_bar
+    B:
+      minecraft_type: COCOA_BEANS
+  shape:
+  - _A_
+  - BCB
+  - _D_
+item_packed_chocolate_bar_shaped:
+  result:
+    oraxen_item: wrapped_chocolate_bar
+  ingredients:
+    A:
+      minecraft_type: PAPER
+    B:
+      oraxen_item: chocolate_bar
+  shape:
+  - ___
+  - ABA
+  - _A_
+item_chocolate_pancakes_shaped:
+  result:
+    oraxen_item: pancake_with_chocolate
+  ingredients:
+    C:
+      minecraft_type: WHEAT
+    B:
+      oraxen_item: chocolate_bar
+    A:
+      minecraft_type: COCOA_BEANS
+  shape:
+  - ___
+  - ABA
+  - CCC
+item_baguette_shaped:
+  result:
+    oraxen_item: baguette
+  ingredients:
+    A:
+      minecraft_type: BREAD
+  shape:
+  - __A
+  - _A_
+  - A__
+item_croissant_shaped:
+  result:
+    oraxen_item: crossaint
+  ingredients:
+    A:
+      minecraft_type: BREAD
+  shape:
+  - _A_
+  - A_A
+  - ___
+item_waffle_shaped:
+  result:
+    oraxen_item: waffle
+  ingredients:
+    A:
+      minecraft_type: BREAD
+  shape:
+  - ___
+  - AAA
+  - ___
+item_toast_shaped:
+  result:
+    oraxen_item: toast
+    amount: 2
+  ingredients:
+    A:
+      minecraft_type: BREAD
+  shape:
+  - AA_
+  - AA_
+  - AA_
+# glass_sword:
+#   result:
+#     oraxen_item: glass_sword
+#   ingredients:
+#     B:
+#       minecraft_type: STICK
+#     A:
+#       minecraft_type: GLASS
+#   shape:
+#   - _A_
+#   - _A_
+#   - _B_

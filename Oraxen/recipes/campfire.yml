@@ -1,0 +1,14 @@
+bacon_baked:
+  result:
+    oraxen_item: bacon_cooked
+  input:
+    oraxen_item: bacon_raw
+  cookingTime: 300
+  experience: 1
+baked_egg:
+  result:
+    oraxen_item: fried_egg
+  input:
+    minecraft_type: EGG
+  cookingTime: 200
+  experience: 5
