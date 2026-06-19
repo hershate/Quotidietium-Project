@@ -1,5 +1,5 @@
 """
-将 nugalaetiter_light.ogg 和 nugalaetiter_thick.ogg
+将目录下所有非参考的 .ogg 音频文件
 转换为与 welcome.ogg 相同的音频参数：
   - 编码: Vorbis (libvorbis)
   - 采样率: 44100 Hz
@@ -20,12 +20,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='repla
 
 # ---------- 配置 ----------
 SCRIPT_DIR = Path(__file__).parent
-REFERENCE_FILE = SCRIPT_DIR / "welcome.ogg"
-TARGET_FILES = [
-    SCRIPT_DIR / "nugalaetiter_light.ogg",
-    SCRIPT_DIR / "nugalaetiter_thick.ogg",
-]
-OUTPUT_SUFFIX = "_converted.ogg"  # 输出文件后缀，例如 nugalaetiter_light_converted.ogg
+REFERENCE_FILE = SCRIPT_DIR / "welcome.ogg"          # 参考文件，以此参数为准
+OUTPUT_SUFFIX = "_converted.ogg"                     # 输出文件后缀
+SKIP_PATTERNS = ("_converted.ogg",)                  # 跳过已转换的文件
 # -------------------------
 
 
@@ -105,13 +102,20 @@ def main():
     print(f"      - 声道:       {ref_params['channels']} ({ref_params['channel_layout']})")
     print(f"      - 码率:       {ref_params['bit_rate']} bps")
 
-    # 2. 依次转换目标文件
-    success_count = 0
-    for target in TARGET_FILES:
-        if not target.exists():
-            print(f"\n⚠️  跳过: 文件不存在 — {target.name}")
-            continue
+    # 2. 扫描目录下所有需要转换的 .ogg 文件
+    all_ogg = sorted(SCRIPT_DIR.glob("*.ogg"))
+    target_files = [
+        f for f in all_ogg
+        if f.name != REFERENCE_FILE.name and not f.name.endswith(SKIP_PATTERNS)
+    ]
 
+    if not target_files:
+        print("\n⚠️  未找到需要转换的 .ogg 文件（已排除参考文件和已转换文件）")
+        return
+
+    # 3. 依次转换
+    success_count = 0
+    for target in target_files:
         print(f"\n📝 处理: {target.name}")
 
         # 探测源文件参数（仅供展示）
@@ -139,9 +143,9 @@ def main():
         else:
             print(f"   ❌ 转换失败: {target.name}")
 
-    # 3. 汇总
+    # 4. 汇总
     print("\n" + "=" * 60)
-    print(f"  完成: {success_count}/{len(TARGET_FILES)} 个文件转换成功")
+    print(f"  完成: {success_count}/{len(target_files)} 个文件转换成功")
     print("=" * 60)
 
 
