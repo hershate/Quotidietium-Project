@@ -7,4 +7,5 @@ Minecraft_Music_Converter/*.ogg
 /Oraxen/items/customcrops
 /Oraxen/items/cooking_expansion.yml
 /Oraxen/languages
-
+*.ogg
+*.png
