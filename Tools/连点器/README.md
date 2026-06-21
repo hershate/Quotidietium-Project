@@ -34,7 +34,7 @@ EXIT_KEY = keyboard.Key.esc    # 退出程序
 
 ## 使用前提
 
-- Python 3.6+
+- Python 3.12
 - 安装依赖：`pip install pynput`
 
 ## 使用方法

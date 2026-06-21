@@ -18,7 +18,7 @@
 使用前提：
 
 - 系统需安装 [ffmpeg](https://ffmpeg.org/) 并确保可在命令行中直接调用
-- Python 3.10+
+- Python 3.12
 
 使用方法：
 
