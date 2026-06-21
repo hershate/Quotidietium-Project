@@ -1,0 +1,26 @@
+# 分类 - 唯一标识符
+global:
+  # 分类名称
+  name: "全局"
+  # 分类描述
+  description:
+    - "&7可在所有服务器上完成的成就。"
+  # 启用该分类的服务器
+  servers:
+    - ALL
+  # 主菜单中显示的物品
+  item:
+    material: COMPASS
+    slot: 12
+  # (可选) 访问该分类所需的权限
+  # permission: achievements.global
+
+survival:
+  name: "生存"
+  description:
+    - "&7可在生存服务器上完成的成就。"
+  servers:
+    - survival
+  item:
+    material: CLOCK
+    slot: 14

@@ -1,0 +1,513 @@
+ore-collector:
+  type: BREAK
+  name: "矿藏收集者"
+  description:
+    - "&f挖矿！闪光的东西都是我的！"
+  conditions:
+    - type: blocks
+      blocks:
+        - "*_ORE"
+    - type: has_held
+      items:
+        - "*_PICKAXE"
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 32
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 64
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 128
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 256
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 512
+      rewards:
+        - type: points
+          amount: 50
+
+architect:
+  type: PLACE
+  name: "建筑师"
+  description:
+    - "&f尽情摆放方块，仿佛没有明天！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 64
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 128
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 256
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 512
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 1024
+      rewards:
+        - type: points
+          amount: 50
+
+marathon-runner:
+  type: WALK
+  name: "跑步健将"
+  description:
+    - "&f你能永远跑下去吗……？"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 500
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 1000
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 5000
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 10000
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 25000
+      rewards:
+        - type: points
+          amount: 50
+
+love-machine:
+  type: BREED
+  name: "爱之机器"
+  description:
+    - "&f帮生物们找到它们的完美伴侣！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 10
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 25
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 50
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 100
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 250
+      rewards:
+        - type: points
+          amount: 50
+
+alchemist:
+  type: BREW
+  name: "炼金术士"
+  description:
+    - "&f把尘埃变成魔法！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 15
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 30
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 60
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 120
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 200
+      rewards:
+        - type: points
+          amount: 50
+
+crafting-master:
+  type: CRAFT
+  name: "合成大师"
+  description:
+    - "&f成为一名真正的工匠大师！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 50
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 100
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 200
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 400
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 800
+      rewards:
+        - type: points
+          amount: 50
+
+spellcaster:
+  type: ENCHANT
+  name: "附魔师"
+  description:
+    - "&f为你的装备注入魔力！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 10
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 30
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 60
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 120
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 200
+      rewards:
+        - type: points
+          amount: 50
+
+experience-hunter:
+  type: EXPERIENCE
+  name: "经验猎人"
+  description:
+    - "&f经验永远不嫌多！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 5
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 10
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 20
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 30
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 45
+      rewards:
+        - type: points
+          amount: 50
+
+furnace-fanatic:
+  type: SMELT
+  name: "熔炉狂热者"
+  description:
+    - "&f让一切热起来！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 64
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 128
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 256
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 512
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 1024
+      rewards:
+        - type: points
+          amount: 50
+
+monster-slayer:
+  type: KILL
+  name: "怪物猎人"
+  description:
+    - "&f守护你的领地！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: is_hostile
+  tiers:
+    1:
+      required-amount: 25
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 50
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 100
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 175
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 300
+      rewards:
+        - type: points
+          amount: 50
+
+catch-them-all:
+  type: FISH
+  name: "钓竿大师"
+  description:
+    - "&f耐心是一种美德，"
+    - "&f但鱼儿值得等待！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 15
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 40
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 100
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 175
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 250
+      rewards:
+        - type: points
+          amount: 50
+
+green-thumb:
+  type: HARVEST
+  name: "绿手指"
+  description:
+    - "&f播种、生长、收获——循环往复！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: crop_age
+      age: MAX
+  tiers:
+    1:
+      required-amount: 64
+      rewards:
+      - type: points
+        amount: 10
+    2:
+      required-amount: 128
+      rewards:
+      - type: points
+        amount: 20
+    3:
+      required-amount: 256
+      rewards:
+      - type: points
+        amount: 30
+    4:
+      required-amount: 512
+      rewards:
+      - type: points
+        amount: 40
+    5:
+      required-amount: 1024
+      rewards:
+      - type: points
+        amount: 50
+
+animal-whisperer:
+  type: TAME
+  name: "动物低语者"
+  description:
+    - "&f结交一些忠诚的伙伴吧！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 5
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 10
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 20
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 40
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 80
+      rewards:
+        - type: points
+          amount: 50
+
+full-stomach:
+  type: CONSUME
+  name: "大饱口福"
+  description:
+    - "&f给你的身体补充能量！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 50
+      rewards:
+        - type: points
+          amount: 10
+    2:
+      required-amount: 100
+      rewards:
+        - type: points
+          amount: 20
+    3:
+      required-amount: 200
+      rewards:
+        - type: points
+          amount: 30
+    4:
+      required-amount: 400
+      rewards:
+        - type: points
+          amount: 40
+    5:
+      required-amount: 800
+      rewards:
+        - type: points
+          amount: 50

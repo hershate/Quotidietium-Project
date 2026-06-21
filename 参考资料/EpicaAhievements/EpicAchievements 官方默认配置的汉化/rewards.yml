@@ -1,0 +1,105 @@
+# 奖励类型的默认描述
+# 如需隐藏某奖励类型的描述，将其删除即可
+reward-descriptions:
+  # <奖励类型ID>: "<描述>"
+  points: "&8+&e{amount} &7成就点数"
+  vault: "&8+&e{amount} &7金币"
+  experience: "&8+&e{amount} &7经验值"
+  experience_levels: "&8+&e{amount} &7经验等级"
+  player_points: "&8+&e{amount} &7金币"
+  ecobits: "&8+&e{amount} &7{currency}"
+# 下方定义每个等级的奖励
+rewards:
+  normal:
+    levels:
+      from: 1
+      to: 48
+      # （可选）等级之间的增量步长。默认为 1。
+      # step: 1
+    # 领取奖励所需点数
+    required-points: "{level} * 100"
+    # （可选）若一个等级定义了多个奖励，权重最高的将被使用
+    # weight: 1
+    # 奖励列表
+    rewards:
+      - type: vault
+        amount: "{level} * 10"
+    locked:
+      material: "COAL"
+      name: "&c普通成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&c你还不能领取此奖励！"
+    claimed:
+      material: "GOLD_NUGGET"
+      name: "&a普通成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&a你已经领取了此奖励！"
+    unclaimed:
+      material: "GOLD_NUGGET"
+      name: "&e普通成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&e点击领取此奖励！"
+      glow: true
+
+  special:
+    levels:
+      from: 5
+      to: 48
+      step: 5
+    required-points: "{level} * 100"
+    weight: 2
+    rewards:
+      - type: vault
+        amount: "{level} * 20"
+    locked:
+      material: "COAL_BLOCK"
+      name: "&c特殊成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&c你还不能领取此奖励！"
+    claimed:
+      material: "GOLD_BLOCK"
+      name: "&a特殊成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&a你已经领取了此奖励！"
+    unclaimed:
+      material: "GOLD_BLOCK"
+      name: "&e特殊成就奖励"
+      lore:
+        - "&8等级 {level}"
+        - "&7所需点数：&e{points}"
+        - ""
+        - "&7奖励："
+        - "{rewards}"
+        - ""
+        - "&e点击领取此奖励！"
+      glow: true

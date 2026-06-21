@@ -1,0 +1,260 @@
+last-breath:
+  type: DEATH
+  name: "最后一息"
+  description:
+    - "&f因窒息而死亡。"
+  conditions:
+    - type: damage_causes
+      damage-causes:
+        - SUFFOCATION
+  tiers:
+    1:
+      required-amount: 10
+      rewards:
+        - type: points
+          amount: 15
+
+rabbit-feast:
+  type: BREAK
+  name: "兔子盛宴"
+  description:
+    - "&f收获胡萝卜。"
+    - "&f兔子认证！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: blocks
+      items:
+        - CARROTS
+    - type: crop_age
+      age: MAX
+  tiers:
+    1:
+      required-amount: 256
+      rewards:
+        - type: points
+          amount: 10
+
+dairy-dash:
+  type: MILK
+  name: "乳品冲刺"
+  description:
+    - "&f给奶牛挤奶。"
+    - "&f满足感爆棚！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+  tiers:
+    1:
+      required-amount: 64
+      rewards:
+        - type: points
+          amount: 10
+
+wool-gatherer:
+  type: SHEAR
+  name: "羊毛收集者"
+  description:
+    - "&f给羊剪毛。"
+    - "&f需要件毛衣吗？"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: entities
+      entities:
+        - SHEEP
+  tiers:
+    1:
+      required-amount: 150
+      rewards:
+        - type: points
+          amount: 15
+
+strider-rider:
+  type: ENTER_VEHICLE
+  name: "炽足骑士"
+  description:
+    - "&f骑着炽足兽在岩浆上冲浪。"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: entities
+      entities:
+        - STRIDER
+  tiers:
+    1:
+      required-amount: 1
+      rewards:
+        - type: points
+          amount: 20
+
+netherite-forge:
+  type: CRAFT
+  name: "下界合金锻造"
+  description:
+    - "&f合成下界合金锭。"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: items
+      items:
+        - NETHERITE_INGOT
+  tiers:
+    1:
+      required-amount: 32
+      rewards:
+        - type: points
+          amount: 20
+
+divine-bite:
+  type: CONSUME
+  name: "神圣一口"
+  description:
+    - "&f吃一个附魔金苹果。"
+    - "&f医生远离我！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: items
+      items:
+        - ENCHANTED_GOLDEN_APPLE
+  tiers:
+    1:
+      required-amount: 1
+      rewards:
+        - type: points
+          amount: 35
+
+return-to-start:
+  type: COMMAND
+  settings:
+    command: "spawn"
+  name: "回到起点"
+  description:
+    - "&f使用 /spawn 命令。"
+  tiers:
+    1:
+      required-amount: 1
+      rewards:
+        - type: points
+          amount: 5
+
+chatterbox:
+  type: CHAT
+  name: "话匣子"
+  description:
+    - "&f在聊天中发送消息。"
+    - "&f话真多，是吧？"
+  tiers:
+    1:
+      required-amount: 250
+      rewards:
+        - type: points
+          amount: 5
+
+captain-of-the-seas:
+  type: WALK
+  name: "海洋船长"
+  description:
+    - "&f乘船旅行。"
+    - "&f航行七海！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: riding_entity
+      entities:
+        - "*BOAT"
+        - "*RAFT"
+  tiers:
+    1:
+      required-amount: 5000
+      rewards:
+      - type: points
+        amount: 10
+
+sky-voyager:
+  type: WALK
+  name: "天空航行者"
+  description:
+    - "&f用鞘翅飞行。"
+    - "&f像雄鹰一样翱翔！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: has_equipped
+      items:
+        - ELYTRA
+  tiers:
+    1:
+      required-amount: 7500
+      rewards:
+        - type: points
+          amount: 15
+
+lucky-catch:
+  type: FISH
+  name: "幸运收获"
+  description:
+    - "&f在钓鱼时钓到一本"
+    - "&f附魔书。"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: items
+      items:
+        - ENCHANTED_BOOK
+  tiers:
+    1:
+      required-amount: 1
+      rewards:
+        - type: points
+          amount: 5
+
+railway-king:
+  type: WALK
+  name: "铁路之王"
+  description:
+    - "&f乘矿车旅行。"
+    - "&f况且况且！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: riding_entity
+      entities:
+        - MINECART
+  tiers:
+    1:
+      required-amount: 5000
+      rewards:
+      - type: points
+        amount: 10
+
+feathered-friend:
+  type: TAME
+  name: "羽翼之友"
+  description:
+    - "&f驯服一只鹦鹉。"
+    - "&f让它们在肩上跳舞吧！"
+  conditions:
+    - type: game_modes
+      game-modes:
+        - SURVIVAL
+    - type: entities
+      entities:
+        - PARROT
+  tiers:
+    1:
+      required-amount: 5
+      rewards:
+        - type: points
+          amount: 10

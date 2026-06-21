@@ -1,0 +1,408 @@
+# 主分类菜单
+main-menu:
+  title: "成就"
+  rows: 4
+  items:
+    category:
+      name: "&a{category_name} 成就"
+      lore:
+        - "{category_description}"
+        - ""
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+        - ""
+        - "&e点击查看成就！"
+      flags:
+        - HIDE_ATTRIBUTES
+    category-locked:
+      name: "&c{category_name} 成就"
+      lore:
+        - "{category_description}"
+        - ""
+        - "&c分类已锁定！"
+      flags:
+        - HIDE_ATTRIBUTES
+    rewards:
+      material: GOLD_INGOT
+      name: "&6成就奖励"
+      lore:
+        - "&7解锁在追寻成就过程中"
+        - "&7获得的专属奖励。"
+      slot: 27
+    close:
+      material: ARROW
+      name: "&c关闭"
+      lore:
+        - "&7关闭菜单"
+      slot: 30
+    summary:
+      material: DIAMOND
+      name: "&a成就完成度"
+      lore:
+        - "&7玩家：{player}"
+        - ""
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 31
+    tracker:
+      material: REPEATER
+      name: "&c成就追踪器"
+      lore:
+        - "&7在此菜单中追踪成就，"
+        - "&7快速访问并即时获取"
+        - "&7进度反馈。"
+      slot: 32
+    search:
+      material: OAK_SIGN
+      name: "&a搜索"
+      lore:
+        - "&7通过名称、描述或分类"
+        - "&7搜索成就。"
+      slot: 35
+  custom-items: {}
+# 分类菜单
+category-menu:
+  title: "{category_name} 成就"
+  rows: 4
+  items:
+    challenge:
+      material: DIAMOND
+      name: "&a挑战成就"
+      lore:
+        - "&8{category_name}"
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+        - ""
+        - "&7挑战成就只能"
+        - "&7完成一次。"
+        - ""
+        - "&e点击查看成就！"
+      slot: 11
+    tiered:
+      material: DIAMOND_BLOCK
+      name: "&a多级成就"
+      lore:
+        - "&8{category_name}"
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+        - ""
+        - "&7多级成就分多个等级"
+        - "&7逐步完成。"
+        - ""
+        - "&e点击查看成就！"
+      slot: 15
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回成就"
+      slot: 30
+    summary:
+      name: "&a总完成度"
+      lore:
+        - "&8{category_name}"
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 31
+  custom-items: {}
+# 挑战成就菜单
+challenge-achievements-menu:
+  title: "{category_name} 挑战成就"
+  rows: 6
+  items:
+    achievement:
+      unlocked:
+        material: DIAMOND
+        name: "&a{achievement_name}"
+        lore:
+          - "&f{achievement_description}"
+          - ""
+          - "&7进度：&a已完成！&7（&a{tier_requirement}&7）"
+          - ""
+          - "&7奖励："
+          - "{tier_rewards}"
+          - ""
+          - "&8由 {tier_unlock_percentage}% 的玩家解锁！"
+          - ""
+          - "&a成就已解锁！"
+      locked:
+        material: COAL
+        name: "&c{achievement_name}"
+        lore:
+          - "&f{achievement_description}"
+          - ""
+          - "&7进度：&a{achievement_progress}&7/&a{tier_requirement}"
+          - "&8[{tier_progress_bar}&8]"
+          - ""
+          - "&7奖励："
+          - "{tier_rewards}"
+          - ""
+          - "{achievement_requirements}"
+          - "&8由 {tier_unlock_percentage}% 的玩家解锁！"
+          - ""
+          - "&c成就未解锁！"
+      slots: [10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43]
+    sorting:
+      material: HOPPER
+      name: "&6排序方式：&a{sorting_type}"
+      lore:
+        - "&f{sorting_description}"
+        - ""
+        - "&7下一个排序：&a{next_sorting_type}"
+        - "&e左键点击使用！"
+        - ""
+        - "&7完成度排序：{completion_sorting_type}"
+        - "&e右键点击切换！"
+      slot: 47
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回至 {category_name} 成就"
+      slot: 48
+    summary:
+      name: "&a挑战成就"
+      lore:
+        - "&8{category_name}"
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 49
+    switch-type:
+      material: DIAMOND_BLOCK
+      name: "&a前往多级成就"
+      lore:
+        - "&7点击查看 {category_name} 多级成就。"
+      slot: 50
+    next-page:
+      material: ARROW
+      name: "&a下一页"
+      lore:
+        - "&e第 {next_page} 页"
+      slot: 53
+    previous-page:
+      material: ARROW
+      name: "&a上一页"
+      lore:
+        - "&e第 {previous_page} 页"
+      slot: 45
+  custom-items: {}
+# 多级成就菜单
+tiered-achievements-menu:
+  title: "{category_name} 多级成就"
+  rows: 6
+  items:
+    achievement:
+      slots:
+        1: [37,28,19,10,1]
+        2: [38,29,20,11,2]
+        3: [39,30,21,12,3]
+        4: [40,31,22,13,4]
+        5: [41,32,23,14,5]
+        6: [42,33,24,15,6]
+        7: [43,34,25,16,7]
+      unlocked:
+        material:
+          final-tier: "texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWNhODI5M2M4MzI1MTRmMjUzNDM4OTU4YmI0M2NhY2E4OWU2ZGQyZjllNDI3ZTMwZmEwZmY1ZjFhN2QyOGY1MSJ9fX0="
+          normal-tier: LIGHT_BLUE_STAINED_GLASS_PANE
+        name: "&a{achievement_name} {tier_roman}"
+        lore:
+          - "&f{achievement_description}"
+          - ""
+          - "&7进度：&a已完成！&7（&a{tier_requirement}&7）"
+          - ""
+          - "&7奖励："
+          - "{tier_rewards}"
+          - ""
+          - "&8由 {tier_unlock_percentage}% 的玩家解锁！"
+          - ""
+          - "&a等级已解锁！"
+      locked:
+        material:
+          final-tier: "texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlmNGVmM2YxZjI2OWUyMzM3YWMyYzRkMWZkZDBiYTk1MDUyZGUyZjMyOGU2MWYxNjUxNzhlYzJmOTQwIn19fQ=="
+          normal-tier: GRAY_STAINED_GLASS_PANE
+        name: "&c{achievement_name} {tier_roman}"
+        lore:
+          - "&f{achievement_description}"
+          - ""
+          - "&7进度：&a{achievement_progress}&7/&a{tier_requirement}"
+          - "&8[{tier_progress_bar}&8]"
+          - ""
+          - "&7奖励："
+          - "{tier_rewards}"
+          - ""
+          - "{achievement_requirements}"
+          - "&8由 {tier_unlock_percentage}% 的玩家解锁！"
+          - ""
+          - "&c等级未解锁！"
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回至 {category_name} 成就"
+      slot: 48
+    summary:
+      name: "&a多级成就"
+      lore:
+        - "&8{category_name}"
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 49
+    switch-type:
+      material: DIAMOND
+      name: "&a前往挑战成就"
+      lore:
+        - "&7点击查看 {category_name} 挑战成就。"
+      slot: 50
+    sorting:
+      material: HOPPER
+      name: "&6排序方式：&a{sorting_type}"
+      lore:
+        - "&f{sorting_description}"
+        - ""
+        - "&7下一个排序：&a{next_sorting_type}"
+        - "&e左键点击使用！"
+      slot: 51
+    next-page:
+      material: ARROW
+      name: "&a下一页"
+      lore:
+        - "&e第 {next_page} 页"
+      slot: 53
+    previous-page:
+      material: ARROW
+      name: "&a上一页"
+      lore:
+        - "&e第 {previous_page} 页"
+      slot: 45
+  custom-items: {}
+# 成就搜索菜单
+achievement-search-menu:
+  title: "搜索结果：{query}"
+  rows: 6
+  items:
+    result:
+      name: "&a{achievement_name}"
+      lore:
+        - "&8{category_name}"
+        - "&8{achievement_type}"
+        - "&f{achievement_description}"
+        - ""
+        - "&7奖励："
+        - "{tier_rewards}"
+        - ""
+        - "&e点击查看更多 {category_name} 成就！"
+      slots: [10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43]
+    no-results:
+      material: BEDROCK
+      name: "&c未找到结果！"
+      lore:
+        - "&7找不到匹配的成就！"
+      slot: 22
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回至成就"
+      slot: 49
+    next-page:
+      material: ARROW
+      name: "&a下一页"
+      lore:
+        - "&e第 {next_page} 页"
+      slot: 53
+    previous-page:
+      material: ARROW
+      name: "&a上一页"
+      lore:
+        - "&e第 {previous_page} 页"
+      slot: 45
+  custom-items: {}
+rewards-menu:
+  title: "成就奖励"
+  rows: 6
+  items:
+    reward-slots: [0,9,18,27,28,29,20,11,2,3,4,13,22,31,32,33,24,15,6,7,8,17,26,35]
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回至成就"
+      slot: 48
+    summary:
+      material: DIAMOND
+      name: "&a成就完成度"
+      lore:
+        - "&7玩家：{player}"
+        - ""
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 49
+    last-unlocked-reward:
+      material: NETHER_STAR
+      name: "&a上次解锁的奖励"
+      lore:
+        - "&7前往你上次解锁的奖励。"
+      slot: 50
+    next-page:
+      material: ARROW
+      name: "&a下一页"
+      lore:
+        - "&e第 {next_page} 页"
+      slot: 53
+    previous-page:
+      material: ARROW
+      name: "&a上一页"
+      lore:
+        - "&e第 {previous_page} 页"
+      slot: 45
+  custom-items: {}
+achievement-tracker-menu:
+  title: "成就追踪"
+  rows: 5
+  items:
+    achievement:
+      name: "&e{achievement_name}"
+      lore:
+        - "&f{achievement_description}"
+        - ""
+        - "&7进度：&a{achievement_progress}&7/&a{tier_requirement}"
+        - "&7奖励："
+        - "{tier_rewards}"
+        - ""
+        - "&e左键点击取消追踪！"
+        - "&a右键点击查看 {category_name} 菜单！"
+      slots: [10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34]
+    back:
+      material: ARROW
+      name: "&c返回"
+      lore:
+        - "&7返回至成就"
+      slot: 39
+    summary:
+      material: DIAMOND
+      name: "&a成就完成度"
+      lore:
+        - "&7玩家：{player}"
+        - ""
+        - "&7已解锁：&b{unlocked_achievements}&7/&b{total_achievements} &8（{unlocked_achievements_percentage}%）"
+        - "&7点数：&e{points}&7/&e{total_points} &8（{points_percentage}%）"
+      slot: 40
+    untrack-all:
+      material: BARRIER
+      name: "&a取消全部追踪"
+      lore:
+        - "&7取消追踪所有成就。"
+      slot: 41
+    next-page:
+      material: ARROW
+      name: "&a下一页"
+      lore:
+        - "&e第 {next_page} 页"
+      slot: 54
+    previous-page:
+      material: ARROW
+      name: "&a上一页"
+      lore:
+        - "&e第 {previous_page} 页"
+      slot: 36
+  custom-items: {}

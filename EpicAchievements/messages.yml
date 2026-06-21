@@ -1,0 +1,144 @@
+general:
+  no-permission: "&e&l成就系统 &8» &c你没有权限执行此操作！"
+  player-only: "&e&l成就系统 &8» &c该命令仅可由玩家执行！"
+  unknown-command: "&e&l成就系统 &8» &c未找到该命令！"
+  plugin-reloaded: "&e&l成就系统 &8» &7插件已成功重新加载！"
+  invalid-category: "&e&l成就系统 &8» &c无效的分类！"
+  invalid-type: "&e&l成就系统 &8» &c无效的成就类型！"
+  invalid-player: "&e&l成就系统 &8» &c请输入有效的玩家名称！"
+  invalid-achievement: "&e&l成就系统 &8» &c无效的成就！"
+  invalid-action: "&e&l成就系统 &8» &c无效的操作！"
+  confirm-reset: "&e&l成就系统 &8» &c请在 30 秒内再次输入命令以确认！此操作不可逆！"
+  progress-reset: "&e&l成就系统 &8» &7已成功重置 &6{player}&7 的进度！"
+  category-reset: "&e&l成就系统 &8» &7已成功重置 &6{player}&7 在 &6{category}&7 中的进度！"
+  achievement-reset: "&e&l成就系统 &8» &7已成功重置 &6{player}&7 在 &6{achievement}&7 中的进度！"
+  rewards-reset: "&e&l成就系统 &8» &7已成功重置 &6{player}&7 已领取的奖励！"
+  invalid-number: "&e&l成就系统 &8» &c请输入有效的数字！"
+  invalid-tier: "&e&l成就系统 &8» &c无效的等级！"
+  tier-already-unlocked: "&e&l成就系统 &8» &c该玩家已解锁此等级！"
+  achievement-unlocked: "&e&l成就系统 &8» &7已成功为 &6{player}&7 解锁 &6{achievement} {tier}&7！"
+  progress-set: "&e&l成就系统 &8» &7已成功将 &6{player}&7 在 &6{achievement}&7 中的进度设置为 &6{progress}&7！"
+  none: "无"
+achievement-types:
+  challenge: "挑战"
+  tiered: "多级"
+  all: "全部"
+achievement-unlock:
+  command: "achievements menu {category_id} {achievement_type_id}"
+  challenge:
+    message:
+      - "&f"
+      - "&e&ka&r&a>> 成就解锁：&6{achievement_name} &a<<&e&ka"
+      - "&f"
+    hover:
+      - "&a{achievement_name}"
+      - "&f{achievement_description}"
+      - ""
+      - "&7进度：&a已完成！&7（&a{tier_requirement}&7）"
+      - "&7奖励："
+      - "{tier_rewards}"
+      - ""
+      - "&e点击查看成就！"
+  tiered:
+    message:
+      - "&f"
+      - "&e&ka&r&a>> 成就解锁：&6{achievement_name} {tier_roman} &a<<&e&ka"
+      - "&f"
+    hover:
+      - "&a{achievement_name} {tier_roman}"
+      - "&f{achievement_description}"
+      - ""
+      - "&7进度：&a{achievement_progress}&7/&a{tier_requirement}"
+      - "&7奖励："
+      - "{tier_rewards}"
+      - ""
+      - "&e点击查看成就！"
+achievement-progress:
+  command: "achievements menu {category_id} {achievement_type_id}"
+  message:
+  - "&a>> &e{achievement_name} 进度&7：&a{achievement_progress}&7/&a{tier_requirement}"
+  hover:
+  - "&e{achievement_name}"
+  - "&f{achievement_description}"
+  - ""
+  - "&7进度：&a{achievement_progress}&7/&a{tier_requirement}"
+  - "&8[{tier_progress_bar}&8]"
+  - ""
+  - "&7奖励："
+  - "{tier_rewards}"
+  - ""
+  - "&e点击查看成就！"
+achievement-requirements:
+  format:
+    - "&7需求条件："
+    - "{requirements}"
+    - ""
+  requirement: " &8→ &c{achievement_name} {tier_roman}"
+sorting-types:
+  default:
+    name: "默认"
+    description:
+      - "&7按默认顺序排序。"
+  a-to-z:
+    name: "A 到 Z"
+    description:
+      - "&7按名称从 A 到 Z 排序。"
+  z-to-a:
+    name: "Z 到 A"
+    description:
+      - "&7按名称从 Z 到 A 排序。"
+  highest-points:
+    name: "最高分值"
+    description:
+      - "&7按成就奖励点数从高到低排序。"
+  lowest-points:
+    name: "最低分值"
+    description:
+      - "&7按成就奖励点数从低到高排序。"
+  most-completed-tiers:
+    name: "最多完成"
+    description:
+      - "&7按已完成等级从多到少排序。"
+  least-completed-tiers:
+    name: "最少完成"
+    description:
+      - "&7按已完成等级从少到多排序。"
+  no-sort: "&8不排序"
+  locked-first: "&c未解锁优先"
+  unlocked-first: "&a已解锁优先"
+search:
+  sign:
+    - ""
+    - "^^^^^^"
+    - "输入你的"
+    - "搜索关键词！"
+  invalid-query: "&c你没有输入搜索关键词！"
+rewards:
+  locked: "&c你没有足够的点数领取此奖励！"
+  already-claimed: "&c你已经领取过此奖励！"
+  claimed: "&a已领取 &e{points} &a成就点数的奖励！"
+  claim-previous-rewards: "&c你必须先领取前置奖励！"
+  unclaimed-rewards:
+    message:
+      - "&f"
+      - "&a>> &e你有 &6{unclaimed_rewards} &e个未领取的奖励！&8[&7点击领取&8]"
+      - "&f"
+    hover:
+      - "&e点击领取奖励！"
+tracker:
+  click-to-track:
+  - "&e点击追踪！"
+  click-to-untrack:
+  - "&e点击取消追踪！"
+  achievement-tracked: "&e&l成就系统 &8» &7你正在追踪 &6{achievement}&7！"
+  achievement-untracked: "&e&l成就系统 &8» &7你已取消追踪 &6{achievement}&7！"
+  untracked-all: "&e&l成就系统 &8» &7你已取消追踪所有成就！"
+time-formats:
+  days: "{days}天"
+  hours: "{hours}小时"
+  minutes: "{minutes}分钟"
+  seconds: "{seconds}秒"
+progress-bar:
+  length: 10
+  filled: "&a■"
+  empty: "&7■"

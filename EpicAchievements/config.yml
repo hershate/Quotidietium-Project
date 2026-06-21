@@ -1,0 +1,82 @@
+# EpicAchievements 配置文件
+update-checker:
+  enabled: true
+  check-interval: 3600
+# 设置玩家数据自动保存的时间间隔（秒）
+auto-save-interval: 300
+# 服务器 ID
+server: survival
+# 若玩家不满足条件或无权限，在菜单中隐藏成就
+hide-achievements-with-requirements: false
+# 在物品堆叠数上显示每个成就奖励的点数
+# 仅对挑战类成就生效
+show-points-in-item-amount: true
+# 通过打开原版进度标签页来打开成就菜单
+# (需要 ProtocolLib)
+replace-vanilla-menu: true
+# 设置为 false 可禁用奖励等级系统
+rewards-leveling:
+  enabled: true
+  # 启用后，玩家必须按解锁顺序领取奖励
+  claim-in-order: false
+  # 启用后，奖励将在解锁时自动领取
+  auto-claim: false
+# (1.16.3+) 启用后，只有自然生成的方块（即非玩家放置）会被计入"破坏"类成就
+# 防止玩家反复放置和破坏方块来解锁成就
+count-only-natural-blocks: true
+# 启用后，玩家将在以下时机收到未领取奖励的通知
+notify-unclaimed-rewards:
+  on-join: true
+  on-reward-unlock: true
+# 成就解锁百分比设置
+achievement-unlock-percentages:
+  update-interval: 1800 # 单位：秒
+  decimal-places: 1
+# 解锁成就时发送弹窗消息
+# (需要 CrazyAdvancementsAPI)
+toast-messages:
+  enabled: true
+  # 你也可以为每个成就覆盖默认设置
+  icon: DIAMOND
+  message: "{achievement_name} {tier_roman}"
+  # 可用类型: CHALLENGE, GOAL, TASK
+  type: TASK
+# 任务设置
+tasks:
+  PLACEHOLDER:
+    # 进度更新频率（20 ticks = 1 秒）
+    update-interval: 20
+  PLAYTIME:
+    update-interval: 20
+    # 设为 false 可禁止玩家追踪该成就
+    # 用于避免刷屏聊天
+    trackable: false
+  WALK:
+    trackable: false
+# 音效设置
+sounds:
+  achievement-unlock:
+    - FIREWORK_TWINKLE
+    - NOTE_PLING
+  switch-page: ITEM_BOOK_PAGE_TURN
+  sorting-item: UI_BUTTON_CLICK
+  unclaimed-rewards: BLOCK_NOTE_PLING
+  reward-claimed: ENTITY_PLAYER_LEVELUP
+  cannot-claim-reward: NOTE_BASS
+# 存储设置
+storage:
+  # 可用类型: sqlite, mysql, mongodb
+  type: mysql
+  mysql:
+    host: 127.0.0.1
+    port: 7729
+    database: Minecraft
+    username: root
+    password: VAgnGDW_Ng9tVipX
+    ssl: false
+  mongodb:
+    uri: "mongodb://localhost:27017/"
+    database: achievements
+# 仅限开发者
+# 如果你的自定义任务类型需要更多注册时间，请增大此值
+load-delay-ticks: 1
