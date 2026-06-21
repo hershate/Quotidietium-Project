@@ -22,7 +22,7 @@ rewards:
     # weight: 1
     # 奖励列表
     rewards:
-      - type: vault
+      - type: player_points
         amount: "{level} * 10"
     locked:
       material: "COAL"
@@ -67,7 +67,7 @@ rewards:
     required-points: "{level} * 100"
     weight: 2
     rewards:
-      - type: vault
+      - type: player_points
         amount: "{level} * 20"
     locked:
       material: "COAL_BLOCK"
