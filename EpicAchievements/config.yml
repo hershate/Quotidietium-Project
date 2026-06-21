@@ -13,20 +13,20 @@ hide-achievements-with-requirements: false
 show-points-in-item-amount: true
 # 通过打开原版进度标签页来打开成就菜单
 # (需要 ProtocolLib)
-replace-vanilla-menu: true
+replace-vanilla-menu: false
 # 设置为 false 可禁用奖励等级系统
 rewards-leveling:
   enabled: true
   # 启用后，玩家必须按解锁顺序领取奖励
   claim-in-order: false
   # 启用后，奖励将在解锁时自动领取
-  auto-claim: false
+  auto-claim: true
 # (1.16.3+) 启用后，只有自然生成的方块（即非玩家放置）会被计入"破坏"类成就
 # 防止玩家反复放置和破坏方块来解锁成就
 count-only-natural-blocks: true
 # 启用后，玩家将在以下时机收到未领取奖励的通知
 notify-unclaimed-rewards:
-  on-join: true
+  on-join: false
   on-reward-unlock: true
 # 成就解锁百分比设置
 achievement-unlock-percentages:
