@@ -92,9 +92,6 @@ items:
     material: MUSIC_DISC_OTHERSIDE   # << CHANGE THIS - 使用原版唱片材质
     data:
       jukebox_playable: myquest:ancient_forest_disc
-    # 可叠加其他组件，例如：
-    # rarity: EPIC
-    # max_stack_size: 1
 
   myquest:final_battle_disc:
     material: MUSIC_DISC_PIGSTEP      # << CHANGE THIS

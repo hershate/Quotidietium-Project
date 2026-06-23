@@ -21,7 +21,7 @@ templates:
     material: stone                                        # << CHANGE THIS
     data:
       item_name: "<lang:item.mycraft.base_item>"
-    max_stack_size: ${max_stack:-64}                       # 参数 + 默认值
+    fuel_time: ${fuel:-0}                                    # 参数 + 默认值
   # ----------------------------------------------------------
   # 1.2 食物模板 - 带参数的模板
   #     演示 ${xxx} 参数占位符的完整用法

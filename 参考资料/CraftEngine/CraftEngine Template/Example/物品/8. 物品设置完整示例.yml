@@ -1,210 +1,190 @@
 # ============================================================================
-# 物品设置完整示例 — CraftEngine Wiki 参考
+# 物品设置完整示例
 # 本地 Wiki: configuration/item/settings.md
-# 命名空间: quartzietium (自定义)
-# 说明: 本文件展示 settings 段中所有可用配置项的实际用法。
-#       标记为 "<< CHANGE THIS" 的值请根据实际情况修改。
+# 每个设置项均以完整 items: 配置块展示，可直接使用。
 # ============================================================================
 
-# ==================== 燃料 ====================
-# 控制物品作为燃料时的燃烧时长（单位：刻，20 刻 = 1 秒）
-# wiki-ref: fuel_time
-fuel_time: 1600                    # << CHANGE THIS 燃烧时长（刻），如 1600 刻可烧炼 16 个物品
+items:
+  # ==================== 燃料 ====================
+  quartzietium:coal_chunk:
+    material: coal
+    data:
+      item_name: "<!i>煤炭碎块"
+    settings:
+      fuel_time: 1600                    # << CHANGE THIS 燃烧时长（刻）
 
-# ==================== 标签 ====================
-# 用于命令检测 / 配方条件，格式为 <命名空间>:<标签名>
-# wiki-ref: tags
-tags:
-  - "quartzietium:quartz_logs"     # << CHANGE THIS 自定义标签
-  - "minecraft:logs"               # 原版标签
-  - "minecraft:logs_that_burn"     # 原版标签
+  # ==================== 标签 ====================
+  quartzietium:quartz_log:
+    material: paper
+    data:
+      item_name: "<!i>石英原木"
+    settings:
+      tags:
+        - "quartzietium:quartz_logs"     # << CHANGE THIS
+        - "minecraft:logs"
 
-# ==================== 装备 ====================
-# 将装备模型应用于此物品
-# wiki-ref: equipment
-equipment:
-  # 必填: 装备模型资源 ID
-  asset_id: quartzietium:topaz     # << CHANGE THIS 对应 assets/quartzietium/models/equipment/topaz
-  # 可选: 是否使用客户端绑定模型（默认跟随 config.yml 全局设置）
-  client_bound_model: true
-  # 1.21.2+ 可选: 装备槽位
-  slot: head                        # << CHANGE THIS head/chest/legs/feet/body/saddle
-  # 可选: 第一人称视角纹理遮罩（路径相对于 assets/<命名空间>/textures/）
-  camera_overlay: quartzietium:textures/equipment/topaz_overlay
-  # 可选: 是否允许发射器为生物穿戴
-  dispensable: true
-  # 可选: 受伤害时此装备是否扣除耐久
-  damage_on_hurt: true
-  # 可选: 物品是否可以直接右键穿戴
-  swappable: true
-  # 1.21.5+ 可选: 对生物使用物品时是否自动穿戴到空槽位
-  equip_on_interact: true
+  # ==================== 装备 ====================
+  quartzietium:topaz_helmet:
+    material: diamond_helmet
+    data:
+      item_name: "<!i>黄玉头盔"
+    settings:
+      equipment:
+        asset_id: quartzietium:topaz     # << CHANGE THIS
+        slot: head
 
-# ==================== 可修复 ====================
-# 控制物品是否可通过工作台或铁砧修复（默认值: true）
-# wiki-ref: repairable
-repairable:
-  crafting_table: true              # 允许工作台修复
-  anvil_repair: false               # 禁止铁砧材料修复
-  anvil_combine: true               # 允许铁砧合并修复
+  # ==================== 可修复 ====================
+  quartzietium:repairable_sword:
+    material: diamond_sword
+    data:
+      item_name: "<!i>可修复剑"
+    settings:
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
 
-# ==================== 铁砧材料修复 ====================
-# 指定材料在铁砧修复时提供的耐久度
-# wiki-ref: anvil_repair_item
-anvil_repair_item:
-  - target: "#quartzietium:topaz_tools"  # << CHANGE THIS 使用标签指定可修复材料
-    amount: 20                            # 每次修复固定恢复 20 点耐久
-  - target:
-      - "minecraft:iron_ingot"            # << CHANGE THIS 具体物品 ID
-      - "quartzietium:topaz_gem"
-    percent: 0.25                         # 每次修复恢复总耐久的 25%
+  # ==================== 铁砧修复材料 ====================
+  quartzietium:special_pickaxe:
+    material: diamond_pickaxe
+    data:
+      item_name: "<!i>特殊镐"
+    settings:
+      anvil_repair_item:
+        - target: "quartzietium:repair_ingot"
+          amount: 100
+        - target: "minecraft:diamond"
+          percent: 0.25
 
-# ==================== 可重命名 ====================
-# 控制物品是否可在铁砧中重命名（默认值: true）
-# wiki-ref: renameable
-renameable: true
+  # ==================== 可重命名 ====================
+  quartzietium:unrenameable_item:
+    material: nether_star
+    data:
+      item_name: "<!i>不可重命名之星"
+    settings:
+      renameable: false
 
-# ==================== 可装载的弹射物 ====================
-# 决定弩/弓可以装载哪些弹药
-# wiki-ref: allowed_projectiles
-allowed_projectiles:
-  - "quartzietium:topaz_arrow"     # << CHANGE THIS 自定义弹药
-  - "minecraft:arrow"              # 原版箭
-  - "minecraft:firework_rocket"    # 烟火（弩专用）
+  # ==================== 可装载的弹射物 ====================
+  quartzietium:custom_crossbow:
+    material: crossbow
+    data:
+      item_name: "<!i>自定义弩"
+    settings:
+      allowed_projectiles:
+        - "minecraft:arrow"
+        - "quartzietium:magic_bolt"
 
-# ==================== 弹射物 ====================
-# 基于此物品创建自定义弹射物实体
-# wiki-ref: projectile
-projectile:
-  display:
-    item: quartzietium:topaz_trident     # << CHANGE THIS 弹射物显示的物品模型
-    translation: 0,0,0
-    rotation: 1,1,1,1
-    display_transform: NONE
-    scale: 0.5
-  sounds:
-    throw:
-      id: "minecraft:item.trident.throw" # << CHANGE THIS
-      pitch: 0.9~1
-      volume: 1.0
-    hit_entity:
-      id: "minecraft:item.trident.hit"
-      pitch: 1.0
-      volume: 1.0
-    hit_block:
-      default: "minecraft:item.trident.hit_ground"
-      overrides:                         # 根据不同方块播放不同音效
-        "minecraft:stone": "minecraft:item.trident.hit_stone"
-        "quartzietium:topaz_block": "minecraft:block.amethyst_block.hit"
-  # 作为弹药时是否忽略无限附魔
-  ignore_infinity_enchantment: false
-  # 射出命中后是否可以被捡起
-  pickupable: true
-  # 是否在命中后移除弹射物实体
-  remove_on_hit: false
-  # 弹射物是否受重力影响
-  gravity: true
-  # 弹射物初速度
-  velocity: 2.0                          # << CHANGE THIS
-  # 基础伤害
-  damage: 12                             # << CHANGE THIS
-  # 穿透等级（可穿透的实体数量）
-  pierce_level: 3                        # << CHANGE THIS
+  # ==================== 弹射物 ====================
+  quartzietium:throwing_knife:
+    material: arrow
+    data:
+      item_name: "<!i>飞刀"
+    settings:
+      projectile:
+        display:
+          item: "quartzietium:throwing_knife"
+          translation: "0,0,0"
+          rotation: "1,1,1,1"
+          display_transform: NONE
+          scale: 1.0
+        sounds:
+          throw: "minecraft:entity.arrow.shoot"
+          hit_entity: "minecraft:entity.arrow.hit"
+          hit_block: "minecraft:entity.arrow.hit"
+        ignore_infinity_enchantment: false
+        pickupable: true
+        remove_on_hit: true
+        gravity: true
+        velocity: 2.0
+        damage: 5.0
+        pierce_level: 1
 
-# ==================== 可染色 ====================
-# 控制物品是否可在工作台中染色（默认值: 未定义）
-# wiki-ref: dyeable
-dyeable: true
+  # ==================== 可染色 ====================
+  quartzietium:dyeable_helmet:
+    material: leather_horse_armor
+    data:
+      item_name: "<!i>可染色头盔"
+    settings:
+      dyeable: true
 
-# ==================== 可附魔 ====================
-# 控制物品是否可在附魔台附魔（默认值: true）
-# wiki-ref: enchantable
-enchantable: true
+  # ==================== 可附魔 ====================
+  quartzietium:unenchatable_item:
+    material: diamond_sword
+    data:
+      item_name: "<!i>不可附魔剑"
+    settings:
+      enchantable: false
 
-# ==================== 堆肥成功率 ====================
-# 物品在堆肥桶中成功堆肥的几率（默认值: 0.5）
-# wiki-ref: compost_probability
-compost_probability: 0.65          # << CHANGE THIS 0.0 ~ 1.0
+  # ==================== 堆肥成功率 ====================
+  quartzietium:compostable_wheat:
+    material: wheat
+    data:
+      item_name: "<!i>可堆肥小麦"
+    settings:
+      compost_probability: 0.65
 
-# ==================== 染色颜色 ====================
-# 物品在染色配方中提供的颜色 (R,G,B)
-# wiki-ref: dye_color
-dye_color: "255,140,0"             # << CHANGE THIS 橙色 RGB
+  # ==================== 染色颜色 ====================
+  quartzietium:dye_material:
+    material: red_dye
+    data:
+      item_name: "<!i>红色染料"
+    settings:
+      dye_color: 255, 0, 0
 
-# ==================== 烟火颜色 ====================
-# 物品在烟火之星配方中提供的颜色 (R,G,B)
-# wiki-ref: firework_color
-firework_color: "255,215,0"        # << CHANGE THIS 金色 RGB
+  # ==================== 烟火颜色 ====================
+  quartzietium:firework_colorant:
+    material: blaze_powder
+    data:
+      item_name: "<!i>焰火着色粉"
+    settings:
+      firework_color: 0, 255, 0
 
-# ==================== 食物（补充演示） ====================
-# 基于插件的 food 组件替代实现（wiki-ref: food）
-# 建议 1.20.5+ 使用原版 food 组件
-food:
-  nutrition: 6                     # << CHANGE THIS 0~20 整数
-  saturation: 4.5                  # << CHANGE THIS 0~10 单精度浮点数
+  # ==================== 消耗替代品 ====================
+  quartzietium:magic_potion:
+    material: potion
+    data:
+      item_name: "<!i>魔力药水"
+    settings:
+      consume_replacement: "minecraft:glass_bottle"
+    events:
+      - on: consume
+        functions:
+          - type: potion_effect
+            potion_effect: "minecraft:regeneration"
+            duration: 100
 
-# ==================== 消耗替代品 ====================
-# 物品消耗后返回的物品（默认值: null）
-# wiki-ref: consume_replacement
-consume_replacement: "minecraft:glass_bottle"  # << CHANGE THIS
+  # ==================== 不被伤害摧毁 ====================
+  quartzietium:indestructible_gem:
+    material: diamond
+    data:
+      item_name: "<!i>不坏宝石"
+    settings:
+      invulnerable:
+        - lava
+        - fire
+        - fire_tick
+        - explosion
 
-# ==================== 合成剩余物品 ====================
-# 合成后返还或处理参与合成的物品
-# wiki-ref: craft_remainder / craft_remaining_item
-craft_remainder:
-  type: hurt_and_break              # 消耗耐久模式
-  damage: 1                         # 每次合成消耗 1 点耐久（默认 1）
+  # ==================== 死亡保留 ====================
+  quartzietium:soul_bound_ring:
+    material: golden_ring
+    data:
+      item_name: "<!i>魂绑定指环"
+    settings:
+      keep_on_death_chance: 0.8
 
-# ==================== 燃料剩余物品 ====================
-# 作为燃料消耗后返还的物品（仅堆叠数量为 1 时有效）
-# wiki-ref: fuel_remainder
-fuel_remainder: "minecraft:bucket"  # << CHANGE THIS
+  # ==================== 发光颜色 ====================
+  quartzietium:glowing_gem:
+    material: emerald
+    data:
+      item_name: "<!i>发光宝石"
+    settings:
+      glow_color: "green"
 
-# ==================== 不被指定伤害类型摧毁 ====================
-# 物品免疫的伤害类型列表
-# wiki-ref: invulnerable
-invulnerable:
-  - lava
-  - fire
-  - fire_tick
-  - block_explosion
-  - entity_explosion
-  - lightning
-  - contact
-
-# ==================== 尊重 repairable 组件 ====================
-# 铁砧界面中是否允许被 repairable 组件指定的物品修复（默认值: false）
-# wiki-ref: respect_repairable_component
-respect_repairable_component: true
-
-# ==================== 原料替代物 ====================
-# 在合成配方中可作为替代原料的物品
-# wiki-ref: ingredient_substitute
-ingredient_substitute:
-  - "minecraft:leather"
-  - "minecraft:paper"
-
-# ==================== 死亡保留概率 ====================
-# 死亡后保留此物品的概率（0~1）
-# wiki-ref: keep_on_death_chance
-keep_on_death_chance: 0.3          # << CHANGE THIS
-
-# ==================== 死亡损毁概率 ====================
-# 死亡后损毁此物品的概率（0~1）
-# wiki-ref: destroy_on_death_chance
-destroy_on_death_chance: 0.1       # << CHANGE THIS
-
-# ==================== 掉落物显示名称 ====================
-# 控制掉落物实体是否显示名称及格式
-# wiki-ref: drop_display
-drop_display: "<arg:count>x <name>"  # << CHANGE THIS 自定义格式
-
-# ==================== 发光颜色 ====================
-# 使物品发光并指定颜色
-# wiki-ref: glow_color
-glow_color: "gold"                 # << CHANGE THIS 可选: black/dark_blue/dark_green/dark_aqua/dark_red/dark_purple/gold/gray/dark_gray/blue/green/aqua/red/light_purple/yellow/white
-
-# ==================== 帽子高度 ====================
-# 此帽子物品对玩家铭牌高度的影响（需要 CustomNameplates 插件）
-# wiki-ref: hat_height
-hat_height: 1.5                    # << CHANGE THIS
+  # ==================== 物品掉落物显示 ====================
+  quartzietium:fancy_gem:
+    material: diamond
+    data:
+      item_name: "<!i>精美宝石"
+    settings:
+      drop_display: "<arg:count>x <name>"
