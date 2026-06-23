@@ -1,151 +1,78 @@
 # =============================================================================
-# 方块标签 (Block Tags) 配置模板
-# 参考文档: 参考资料/CraftEngine/CraftEngine Wiki/reference/block_tags.md
+# 方块标签配置模板
+# 参考: reference/block_tags.md
 # =============================================================================
-# 本文件覆盖 block_tags.md 中记录的所有标签，按功能分组。
-# 将下方 "yourmod" 替换为你的模组命名空间，并补全方块/物品 ID。
-# # << CHANGE THIS 标记处需要根据你的模组实际情况修改。
+# 标签配置在 blocks: → settings: → tags: 下，格式为 "namespace:tag"
+# 常见标签见 block_tags.md。
 # =============================================================================
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. 可挖掘标签 (Mineable Tags)
-#    控制何种工具挖掘本模组方块时效率最高。
-# ─────────────────────────────────────────────────────────────────────────────
+blocks:
+  # 示例：使用斧挖掘更快的方块 (minecraft:mineable/axe)
+  custom:example_log:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_log"
+    settings:
+      tags:
+        - "minecraft:mineable/axe"
+        - "minecraft:logs"
 
-# << CHANGE THIS: Replace "yourmod" with your mod's namespace
+  custom:example_planks:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_planks"
+    settings:
+      tags:
+        - "minecraft:mineable/axe"
+        - "minecraft:planks"
 
-# --- 1a. 斧效率方块 (minecraft:mineable/axe) ---
-# 斧挖掘更快的方块（原木、木板类）
-yourmod:mineable/axe:
-  values:
-    - yourmod:example_log                        # << CHANGE THIS
-    - yourmod:example_planks                     # << CHANGE THIS
-    - yourmod:example_fence                      # << CHANGE THIS
-    - yourmod:example_gate                       # << CHANGE THIS
-    - yourmod:example_trapdoor                   # << CHANGE THIS
+  # 使用镐挖掘更快的方块 (minecraft:mineable/pickaxe)
+  custom:example_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_ore"
+    settings:
+      tags:
+        - "minecraft:mineable/pickaxe"
 
-# --- 1b. 锄效率方块 (minecraft:mineable/hoe) ---
-# 锄挖掘更快的方块（树叶、干草块类）
-yourmod:mineable/hoe:
-  values:
-    - yourmod:example_leaves                     # << CHANGE THIS
-    - yourmod:example_hay_block                  # << CHANGE THIS
-    - yourmod:example_dried_kelp                 # << CHANGE THIS
-    - yourmod:example_sponge_like                # << CHANGE THIS
-    - yourmod:example_target_block               # << CHANGE THIS
+  # 使用锹挖掘更快的方块 (minecraft:mineable/shovel)
+  custom:example_dirt:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_dirt"
+    settings:
+      tags:
+        - "minecraft:mineable/shovel"
 
-# --- 1c. 镐效率方块 (minecraft:mineable/pickaxe) ---
-# 镐挖掘更快的方块（石头、金属类）
-yourmod:mineable/pickaxe:
-  values:
-    - yourmod:example_ore                        # << CHANGE THIS
-    - yourmod:example_stone                      # << CHANGE THIS
-    - yourmod:example_metal_block                # << CHANGE THIS
-    - yourmod:example_bricks                     # << CHANGE THIS
-    - yourmod:example_crystal                    # << CHANGE THIS
-    - yourmod:example_deepslate                  # << CHANGE THIS
+  # 可用作信标底座 (minecraft:beacon_base_blocks)
+  custom:example_beacon_base:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/beacon_base"
+    settings:
+      tags:
+        - "minecraft:beacon_base_blocks"
 
-# --- 1d. 锹效率方块 (minecraft:mineable/shovel) ---
-# 锹挖掘更快的方块（泥土、沙砾类）
-yourmod:mineable/shovel:
-  values:
-    - yourmod:example_dirt                       # << CHANGE THIS
-    - yourmod:example_gravel                     # << CHANGE THIS
-    - yourmod:example_sand                       # << CHANGE THIS
-    - yourmod:example_snow_layer                 # << CHANGE THIS
-    - yourmod:example_farmland                   # << CHANGE THIS
+  # 可攀爬方块 (minecraft:climbable) — 如自定义藤蔓
+  custom:example_vine:
+    state:
+      auto_state: vine
+      model:
+        texture: "minecraft:block/custom/vine"
+    settings:
+      tags:
+        - "minecraft:climbable"
 
-# --- 1e. 剑效率方块 (minecraft:sword_efficient) ---
-# 剑挖掘更快的方块（蜘蛛网、可可豆类）
-yourmod:sword_efficient:
-  values:
-    - yourmod:example_cobweb                     # << CHANGE THIS
-    - yourmod:example_cocoa                      # << CHANGE THIS
-    - yourmod:example_leaves_slow                # << CHANGE THIS
-    - yourmod:example_bamboo_sapling             # << CHANGE THIS
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 2. 特殊机制标签 (Special Mechanism Tags)
-#    赋予方块特定的游戏机制行为。
-# ─────────────────────────────────────────────────────────────────────────────
-
-# --- 2a. 可攀爬 (minecraft:climbable) ---
-# 玩家可沿此方块攀爬（仅在客户端生效）
-yourmod:climbable:
-  values:
-    - yourmod:example_ladder                     # << CHANGE THIS
-    - yourmod:example_vine                       # << CHANGE THIS
-    - yourmod:example_scaffold                   # << CHANGE THIS
-    - yourmod:example_rope                       # << CHANGE THIS
-
-# --- 2b. 信标底座 (minecraft:beacon_base_blocks) ---
-# 可作为信标基座的方块（矿块类）
-yourmod:beacon_base_blocks:
-  values:
-    - yourmod:example_metal_block                # << CHANGE THIS
-    - yourmod:example_emerald_block              # << CHANGE THIS
-    - yourmod:example_diamond_block              # << CHANGE THIS
-    - yourmod:example_netherite_block            # << CHANGE THIS
-    - yourmod:example_custom_alloy_block         # << CHANGE THIS
-
-# --- 2c. 重置摔落伤害 (minecraft:fall_damage_resetting) ---
-# 玩家落在该方块上时重置摔落伤害计数
-yourmod:fall_damage_resetting:
-  values:
-    - yourmod:example_slime_block                # << CHANGE THIS
-    - yourmod:example_hay_block                  # << CHANGE THIS
-    - yourmod:example_honey_block                # << CHANGE THIS
-    - yourmod:example_bouncy_cushion             # << CHANGE THIS
-
-# --- 2d. 灵魂火基底 (minecraft:soul_fire_base_blocks) ---
-# 方块上方火焰为灵魂火而非普通火
-yourmod:soul_fire_base_blocks:
-  values:
-    - yourmod:example_soul_soil                  # << CHANGE THIS
-    - yourmod:example_soul_sand                  # << CHANGE THIS
-    - yourmod:example_custom_soul_block          # << CHANGE THIS
-
-# --- 2e. 维度无限燃烧 (infiniburn) ---
-# 火焰在下方方块上无限燃烧（不熄灭）
-
-# 主世界无限燃烧
-yourmod:infiniburn_overworld:
-  values:
-    - yourmod:example_netherrack                 # << CHANGE THIS
-    - yourmod:example_magma_block                # << CHANGE THIS
-    - yourmod:example_infinite_burn_block        # << CHANGE THIS
-
-# 下界无限燃烧
-yourmod:infiniburn_nether:
-  values:
-    - yourmod:example_netherrack                 # << CHANGE THIS
-    - yourmod:example_magma_block                # << CHANGE THIS
-    - yourmod:example_basalt                     # << CHANGE THIS
-    - yourmod:example_blackstone                 # << CHANGE THIS
-
-# 末地无限燃烧
-yourmod:infiniburn_end:
-  values:
-    - yourmod:example_end_stone                  # << CHANGE THIS
-    - yourmod:example_purpur_block               # << CHANGE THIS
-    - yourmod:example_obsidian                   # << CHANGE THIS
-
-# --- 2f. 附魔等级提供 (minecraft:enchantment_power_provider) ---
-# 此方块可提供附魔等级（书架类附魔增强）
-yourmod:enchantment_power_provider:
-  values:
-    - yourmod:example_bookshelf                  # << CHANGE THIS
-    - yourmod:example_enchanted_bookshelf        # << CHANGE THIS
-    - yourmod:example_arcane_stone               # << CHANGE THIS
-    - yourmod:example_lantern_of_knowledge       # << CHANGE THIS
-
-# --- 2g. 树木可替换 (minecraft:replaceable_by_trees) ---
-# 树木自然生长时可直接替换此方块
-yourmod:replaceable_by_trees:
-  values:
-    - yourmod:example_air_like                   # << CHANGE THIS
-    - yourmod:example_grass                      # << CHANGE THIS
-    - yourmod:example_flower                     # << CHANGE THIS
-    - yourmod:example_tall_grass                 # << CHANGE THIS
-    - yourmod:example_foliage                    # << CHANGE THIS
-    - yourmod:example_sapling                    # << CHANGE THIS
+  # 在原版基础上，可用以下标签:
+  # minecraft:mineable/hoe         — 锄挖掘更快
+  # minecraft:sword_efficient      — 剑挖掘更快
+  # minecraft:fall_damage_resetting  — 重置摔落伤害
+  # minecraft:soul_fire_base_blocks  — 上方火焰变为灵魂火
+  # minecraft:infiniburn_overworld   — 主世界无限燃烧
+  # minecraft:enchantment_power_provider — 提供附魔等级
+  # minecraft:replaceable_by_trees  — 树木生长时可替换
