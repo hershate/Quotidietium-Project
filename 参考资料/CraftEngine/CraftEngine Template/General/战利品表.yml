@@ -1,190 +1,170 @@
 # =============================================================================
-# CraftEngine 战利品表模板 (Loot Table Template)
+# CraftEngine 战利品表模板
+# 参考: reference/loot_table.md, configuration/vanilla_loot.md
 # =============================================================================
-# 参考 Wiki 路径:
-#   - 参考资料/CraftEngine/CraftEngine Wiki/reference/loot_table.md
-#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/vanilla_loot.md
-#
-# 使用方法:
-#   1. 将 your_namespace 替换为你的命名空间
-#   2. 修改所有 # << CHANGE THIS 标记的值
-#   3. 根据需要启用/禁用各部分
+# 注意: loot: 是 blocks/items/furniture 的子键（不是独立根键）
+#       可复用模板通过 templates: 定义
+#       独立根键 vanilla_loots: 用于覆盖原版掉落
 # =============================================================================
 
-# =============================================================================
-# 一、标准战利品表 (Standard Loot Table)
-# =============================================================================
-# 适用于通过插件 API 触发的自定义掉落
-# =============================================================================
-your_namespace:custom_loot_id:  # << CHANGE THIS - 战利品表 ID
-  # ---- 函数 (全局, 应用于所有池) ----
-  functions: []
-
-  # ---- 战利品池列表 ----
-  pools:
-    # -----------------------------------------------------------------------
-    # 池示例 1: 单次抽取, 基础物品掉落
-    # -----------------------------------------------------------------------
-    - rolls: 1  # << CHANGE THIS - 抽取次数
-      # 条件 (可选, 全部满足才掉落)
-      conditions:
-        - type: survives_explosion
-      # 条目
-      entries:
-        - type: item
-          item: "minecraft:apple"  # << CHANGE THIS - 物品 ID
-          # 权重 (可选, 默认 1)
-          weight: 1  # << CHANGE THIS - 相对概率权重
-          functions: []
-          conditions: []
-      # 池级函数 (可选)
-      functions: []
-
-    # -----------------------------------------------------------------------
-    # 池示例 2: 多条目按权重随机
-    # -----------------------------------------------------------------------
-    - rolls: 2  # << CHANGE THIS - 抽取次数
-      entries:
-        - type: item
-          item: "minecraft:apple"  # << CHANGE THIS - 物品 ID
-          weight: 1  # << CHANGE THIS - 权重
-        - type: item
-          item: "minecraft:stone"  # << CHANGE THIS - 物品 ID
-          weight: 1  # << CHANGE THIS - 权重
-
-    # -----------------------------------------------------------------------
-    # 池示例 3: 家具物品 (Furniture Item)
-    # -----------------------------------------------------------------------
-    - rolls: 1
-      entries:
-        - type: furniture_item
-          item: "default:fallback_item"  # << CHANGE THIS - 备用物品 ID
-          weight: 1  # << CHANGE THIS - 权重
-
-    # -----------------------------------------------------------------------
-    # 池示例 4: 经验值掉落
-    # -----------------------------------------------------------------------
-    - rolls: 1
-      entries:
-        - type: exp
-          count: 1  # << CHANGE THIS - 经验值数量
-
-    # -----------------------------------------------------------------------
-    # 池示例 5: alternatives — 按条件选择第一个匹配项
-    # -----------------------------------------------------------------------
-    - rolls: 1
-      entries:
-        - type: alternatives
-          children:
-            # 子项 1: 满足精准采集时掉落矿石方块
+templates:
+  custom:loot_table/self:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
             - type: item
-              item: "${ore_block}"  # << CHANGE THIS - 矿石方块 ID
-              conditions:
-                - type: enchantment
-                  predicate: minecraft:silk_touch>=1
-            # 子项 2: 不满足时掉落矿物 + 时运加成 + 爆炸衰减 + 经验
-            - type: item
-              item: "${ore_drop}"  # << CHANGE THIS - 矿物掉落物 ID
-              functions:
-                - type: apply_bonus
-                  enchantment: minecraft:fortune
-                  formula:
-                    type: ore_drops
-                - type: explosion_decay
-                - type: drop_exp
-                  count:
-                    type: uniform
-                    min: "${min_exp}"  # << CHANGE THIS - 最小经验
-                    max: "${max_exp}"  # << CHANGE THIS - 最大经验
+              item: "${__NAMESPACE__}:${__ID__}"
 
-    # -----------------------------------------------------------------------
-    # 池示例 6: 完整函数组合 — 矿物掉落全流程
-    # -----------------------------------------------------------------------
-    - rolls: 1
-      entries:
-        - type: item
-          item: "minecraft:diamond"  # << CHANGE THIS - 物品 ID
+  custom:loot_table/furniture:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: "${item:-custom:fallback}"
+
+blocks:
+  # ===========================================================================
+  # 1. 基础掉落 — 掉落自身
+  # ===========================================================================
+  custom:stone_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/stone_block"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:stone_block"
+
+  # ===========================================================================
+  # 2. 精准采集分支 + 时运 + 经验
+  # ===========================================================================
+  custom:ruby_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/ruby_ore"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: "custom:ruby_ore"
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: "custom:ruby"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops
+                    - type: explosion_decay
+                    - type: drop_exp
+                      count:
+                        type: uniform
+                        min: 3
+                        max: 7
+
+  # ===========================================================================
+  # 3. 权重随机 + 数量限制
+  # ===========================================================================
+  custom:lucky_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/lucky_block"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:diamond"
+              weight: 10
+            - type: item
+              item: "custom:emerald"
+              weight: 30
+            - type: item
+              item: "custom:coal"
+              weight: 60
           functions:
-            # 时运加成 — 矿石掉落公式
-            - type: apply_bonus
-              enchantment: minecraft:fortune
-              formula:
-                type: ore_drops
-            # 时运加成 — 二项分布公式
-            - type: apply_bonus
-              enchantment: minecraft:fortune
-              formula:
-                type: binomial_with_bonus_count
-                extra: 3  # << CHANGE THIS - 额外计算次数
-                probability: 0.5  # << CHANGE THIS - 二项分布概率 p
-            # 自定义数据
-            - type: apply_data
-              data:
-                item_name: "自定义物品"  # << CHANGE THIS - 物品显示名称
-            # 设置数量
             - type: set_count
-              count: 10  # << CHANGE THIS - 数量
-              add: true  # << CHANGE THIS - true=累加, false=覆盖
-            # 爆炸衰减
-            - type: explosion_decay
-            # 掉落经验
-            - type: drop_exp
-              count: 5  # << CHANGE THIS - 经验值数量
-            # 数量限制
+              count: 3
+              add: true
             - type: limit_count
-              min: 1  # << CHANGE THIS - 最小数量
-              max: 5  # << CHANGE THIS - 最大数量
+              min: 1
+              max: 5
 
-# =============================================================================
-# 二、原版战利品覆盖 (Vanilla Loot Override)
-# =============================================================================
-# 用于覆盖 Minecraft 原版方块/实体的战利品表
-# =============================================================================
+  # ===========================================================================
+  # 4. 引用模板
+  # ===========================================================================
+  custom:template_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/template_block"
+    loot:
+      template: custom:loot_table/self
+
+furniture:
+  # ===========================================================================
+  # 5. 家具掉落
+  # ===========================================================================
+  custom:bench:
+    settings:
+      item: custom:bench
+    variants:
+      ground:
+        elements:
+          - item: custom:bench
+    loot:
+      template: custom:loot_table/furniture
+      arguments:
+        item: custom:bench
+
+  custom:table:
+    settings:
+      item: custom:table
+    variants:
+      ground:
+        elements:
+          - item: custom:table
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: "custom:table"
+
+# ===========================================================================
+# 原版战利品覆盖 (vanilla_loots:)
+# ===========================================================================
 vanilla_loots:
-  # -------------------------------------------------------------------------
-  # 示例 1: 方块战利品 — 单个目标
-  # -------------------------------------------------------------------------
-  your_namespace:grass_loot:  # << CHANGE THIS - 战利品表 ID
+  custom:grass_loot:
     type: block
-    target: "minecraft:grass"  # << CHANGE THIS - 目标方块 ID
-    # 是否覆盖原版战利品
-    override: false  # << CHANGE THIS - true=覆盖, false=追加
+    target: "minecraft:grass"
+    override: false
     loot:
       pools:
         - rolls: 1
           entries:
             - type: item
-              item: "minecraft:wheat_seeds"  # << CHANGE THIS - 物品 ID
+              item: "custom:grass_seeds"
 
-  # -------------------------------------------------------------------------
-  # 示例 2: 方块战利品 — 多个目标 (使用精确方块状态)
-  # -------------------------------------------------------------------------
-  your_namespace:wheat_loot:  # << CHANGE THIS - 战利品表 ID
-    type: block
-    target:
-      - minecraft:wheat[age=0]  # << CHANGE THIS - 方块状态
-      - minecraft:wheat[age=1]  # << CHANGE THIS - 方块状态
-    override: false  # << CHANGE THIS
-    loot:
-      pools:
-        - rolls: 1
-          entries:
-            - type: item
-              item: "minecraft:wheat"  # << CHANGE THIS
-
-  # -------------------------------------------------------------------------
-  # 示例 3: 实体战利品
-  # -------------------------------------------------------------------------
-  your_namespace:sheep_loot:  # << CHANGE THIS - 战利品表 ID
+  custom:sheep_loot:
     type: entity
-    target: "minecraft:sheep"  # << CHANGE THIS - 目标实体 ID
-    override: false  # << CHANGE THIS
+    target: "minecraft:sheep"
+    override: false
     loot:
       pools:
         - rolls: 1
-          conditions:
-            - type: survives_explosion
           entries:
             - type: item
-              item: "minecraft:mutton"  # << CHANGE THIS
-              weight: 1
+              item: "custom:quality_mutton"

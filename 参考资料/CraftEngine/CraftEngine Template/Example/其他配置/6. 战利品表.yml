@@ -1,233 +1,21 @@
 # ============================================================
 # 战利品表配置示例
-# 参考: CraftEngine Wiki -> reference/loot_table.md
-# 参考: CraftEngine Wiki -> configuration/vanilla_loot.md
+# 参考: reference/loot_table.md, configuration/vanilla_loot.md
 # 命名空间: example
 # ============================================================
-
-# ============================================================
-# 一、基础战利品表
-# ============================================================
-# 战利品表核心结构: loot -> pools[]
-# 每个池由 rolls(次数)、conditions(条件)、entries(条目)、functions(函数) 组成
-
-example:base_loot:
-  loot:
-    pools:
-      - rolls: 1                                            # << CHANGE THIS
-        conditions:
-          - type: survives_explosion                         # 仅爆炸破坏时掉落
-        entries:
-          - type: item
-            item: "example:custom_ingot"                     # << CHANGE THIS
-            weight: 1                                        # 相对权重，默认为1
-        functions: []
-
-# ============================================================
-# 二、多物品权重池 (带多个条目)
+# 注意: loot: 是 blocks/items/furniture 的子键（不是独立根键）
+#       独立根键 vanilla_loots: 用于覆盖原版掉落
 # ============================================================
 
-example:weighted_loot:
-  loot:
-    pools:
-      - rolls: 2                                            # << CHANGE THIS
-        entries:
-          - type: item
-            item: "minecraft:diamond"                        # << CHANGE THIS
-            weight: 1
-          - type: item
-            item: "minecraft:emerald"                        # << CHANGE THIS
-            weight: 3
-          - type: item
-            item: "minecraft:iron_ingot"                     # << CHANGE THIS
-            weight: 5
-        functions:
-          - type: set_count
-            count: 2                                         # << CHANGE THIS
-            add: false
-
-# ============================================================
-# 三、家具物品掉落 (furniture_item)
-# ============================================================
-
-example:furniture_drop:
-  loot:
-    pools:
-      - rolls: 1
-        entries:
-          - type: furniture_item                             # 掉落原家具物品
-            item: "default:example_table"                    # 失败时的备用物品     # << CHANGE THIS
-          - type: item
-            item: "minecraft:stick"
-            weight: 1
-        functions: []
-
-# ============================================================
-# 四、经验掉落 (exp 条目)
-# ============================================================
-
-example:exp_drop:
-  loot:
-    pools:
-      - rolls: 1
-        entries:
-          - type: exp                                       # 直接掉落经验值
-            count: 5                                        # << CHANGE THIS
-          - type: item
-            item: "minecraft:bone"
-            functions:
-              - type: set_count
-                count: 3
-                add: false
-
-# ============================================================
-# 五、分支选择 (alternatives)
-# —— 按顺序检查 conditions，选中第一个符合条件的子条目
-# ============================================================
-
-example:alternatives_loot:
-  loot:
-    pools:
-      - rolls: 1
-        entries:
-          - type: alternatives
-            children:
-              - type: item
-                item: "example:custom_ore_block"             # 精准采集 -> 掉落原矿    # << CHANGE THIS
-                conditions:
-                  - type: enchantment
-                    predicate: minecraft:silk_touch>=1
-              - type: item
-                item: "example:custom_ore_drop"              # 非精准采集 -> 掉落物    # << CHANGE THIS
-                functions:
-                  - type: apply_bonus
-                    enchantment: minecraft:fortune
-                    formula:
-                      type: ore_drops
-                  - type: explosion_decay
-                  - type: drop_exp
-                    count:
-                      type: uniform
-                      min: 1                                 # << CHANGE THIS
-                      max: 3                                 # << CHANGE THIS
-          - type: item
-            item: "minecraft:cobblestone"                    # 最终保底掉落
-            weight: 2
-
-# ============================================================
-# 六、函数综合应用
-# ============================================================
-
-example:advanced_functions:
-  loot:
-    pools:
-      - rolls:
-          type: uniform
-          min: 2                                             # << CHANGE THIS
-          max: 4                                             # << CHANGE THIS
-        entries:
-          - type: item
-            item: "example:magic_sword"                      # << CHANGE THIS
-            functions:
-              # 6a. 应用自定义物品数据
-              - type: apply_data
-                data:
-                  item_name: "{\"text\":\"§6传奇之刃\"}"        # << CHANGE THIS
-                  lore:
-                    - "{\"text\":\"§7从远古遗迹中发掘...\"}"    # << CHANGE THIS
-              # 6b. 限制数量范围
-              - type: limit_count
-                min: 1                                       # << CHANGE THIS
-                max: 1                                       # 唯一性限制
-              # 6c. 数量设置 (共存时按函数顺序执行)
-              - type: set_count
-                count: 1
-                add: false
-        functions:
-          - type: drop_exp                                   # 整个池额外掉落经验
-            count: 10                                        # << CHANGE THIS
-
-# ============================================================
-# 七、二项分布公式 (binomial_with_bonus_count)
-# ============================================================
-
-example:binomial_loot:
-  loot:
-    pools:
-      - rolls: 1
-        entries:
-          - type: item
-            item: "example:rare_gem"                         # << CHANGE THIS
-            functions:
-              - type: set_count
-                count:
-                  type: binomial_with_bonus_count
-                  extra: 3                                   # 额外计算次数           # << CHANGE THIS
-                  probability: 0.4                           # 二项分布概率 p        # << CHANGE THIS
-                add: true
-
-# ============================================================
-# 八、条目级条件与函数
-# ============================================================
-# 所有 entry 都支持独立的 functions 和 conditions
-
-example:conditional_entry:
-  loot:
-    pools:
-      - rolls: 1
-        entries:
-          - type: item
-            item: "minecraft:golden_apple"                   # << CHANGE THIS
-            functions:
-              - type: set_count
-                count: 1
-                add: false
-              - type: apply_data
-                data:
-                  item_name: "{\"text\":\"§e附魔金苹果\"}"     # << CHANGE THIS
-            conditions:
-              - type: enchantment
-                predicate: minecraft:looting>=2               # 抢夺 II 以上才掉落
-          - type: item
-            item: "minecraft:apple"                           # 普通掉落保底           # << CHANGE THIS
-
-# ============================================================
-# 九、原版战利品覆盖 —— 方块 (vanilla_loots block)
-# ============================================================
-
-vanilla_loots:
-  # 9a. 覆盖单个方块
-  example:override_grass:
-    type: block
-    target: "minecraft:grass"                                # << CHANGE THIS
-    override: true                                           # 覆盖原版战利品        # << CHANGE THIS
-    loot:
-      pools:
-        - rolls: 1
-          entries:
-            - type: item
-              item: "example:custom_seed"                    # 草方块改为掉落自定义种子 # << CHANGE THIS
-              weight: 3
-            - type: item
-              item: "minecraft:wheat_seeds"
-              weight: 1
-          functions:
-            - type: set_count
-              count:
-                type: uniform
-                min: 1
-                max: 2
-              add: false
-
-  # 9b. 多目标方块状态覆盖
-  example:override_wheat:
-    type: block
-    target:                                                  # 对不同生长阶段分别处理    # << CHANGE THIS
-      - minecraft:wheat[age=0]
-      - minecraft:wheat[age=1]
-      - minecraft:wheat[age=2]
-      - minecraft:wheat[age=3]
-    override: false                                          # 不覆盖，额外追加掉落    # << CHANGE THIS
+blocks:
+  # ============================================================
+  # 1. 基础掉落 — 单个物品
+  # ============================================================
+  example:custom_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_ore"
     loot:
       pools:
         - rolls: 1
@@ -235,32 +23,194 @@ vanilla_loots:
             - type: survives_explosion
           entries:
             - type: item
-              item: "example:magic_fertilizer"               # 小麦任意阶段额外掉落   # << CHANGE THIS
+              item: "example:custom_ingot"                     # << CHANGE THIS
               weight: 1
 
-  # 9c. 实体战利品覆盖
-  example:override_sheep:
-    type: entity
-    target: "minecraft:sheep"                                # << CHANGE THIS
-    override: true
+  # ============================================================
+  # 2. 权重随机
+  # ============================================================
+  example:random_drop:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/random_drop"
     loot:
       pools:
-        - rolls: 2
+        - rolls: 1
           entries:
             - type: item
-              item: "minecraft:mutton"                       # 羊肉                       # << CHANGE THIS
+              item: "example:rare_gem"
               weight: 10
             - type: item
-              item: "example:magic_wool"                     # 自定义魔法羊毛              # << CHANGE THIS
-              weight: 2
-          functions:
-            - type: set_count
-              count:
-                type: uniform
-                min: 1
-                max: 3
-              add: false
+              item: "example:common_gem"
+              weight: 60
+            - type: item
+              item: "example:trash_item"
+              weight: 30
+
+  # ============================================================
+  # 3. 家具物品掉落
+  # ============================================================
+  example:furniture_demo:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/furniture_demo"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: "example:fallback_item"
+
+  # ============================================================
+  # 4. 经验值掉落
+  # ============================================================
+  example:exp_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/exp_block"
+    loot:
+      pools:
         - rolls: 1
           entries:
             - type: exp
-              count: 3
+              count: 5
+
+  # ============================================================
+  # 5. 精准采集 + 时运分支
+  # ============================================================
+  example:alternatives_demo:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/alternatives_demo"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: "example:ore_block"
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: "example:raw_ore"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops
+                    - type: explosion_decay
+                    - type: drop_exp
+                      count:
+                        type: uniform
+                        min: 2
+                        max: 5
+
+  # ============================================================
+  # 6. 函数组合：set_count + apply_data + limit_count
+  # ============================================================
+  example:advanced_drop:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/advanced_drop"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:magic_gem"
+              functions:
+                - type: set_count
+                  count: 5
+                  add: true
+                - type: apply_data
+                  data:
+                    item_name: "魔法宝石"
+                - type: limit_count
+                  min: 1
+                  max: 3
+
+  # ============================================================
+  # 7. 二项分布公式
+  # ============================================================
+  example:binomial_drop:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/binomial_drop"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:bonus_item"
+              functions:
+                - type: apply_bonus
+                  enchantment: minecraft:fortune
+                  formula:
+                    type: binomial_with_bonus_count
+                    extra: 3
+                    probability: 0.5
+
+  # ============================================================
+  # 8. 带条件的条目
+  # ============================================================
+  example:conditional_drop:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/conditional_drop"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:rare_sword"
+              conditions:
+                - type: enchantment
+                  predicate: minecraft:looting>=2
+
+# ============================================================
+# 原版战利品覆盖
+# ============================================================
+vanilla_loots:
+  example:grass_loot:
+    type: block
+    target: "minecraft:grass"
+    override: true
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:grass_seeds"
+
+  example:wheat_loot:
+    type: block
+    target:
+      - "minecraft:wheat[age=0]"
+      - "minecraft:wheat[age=1]"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:wheat_grain"
+
+  example:sheep_loot:
+    type: entity
+    target: "minecraft:sheep"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "example:quality_wool"

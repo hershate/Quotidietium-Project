@@ -1,220 +1,82 @@
 # =============================================================================
-# 方块实体渲染器 (Block Entity Renderer) — 完整配置模板
-# 参考文档: 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/states/entity_renderer.md
-# =============================================================================
-# 用法: 将本模板复制到你的方块 state 或 appearances 配置中,
-#       替换 namespace 和 ID, 并根据需要取消注释对应字段.
+# 方块实体渲染器配置模板
+# 参考: configuration/block/states/entity_renderer.md
+# entity_renderer 是 state/appearance 的子键，此处以完整 blocks: 展示
 # =============================================================================
 
-# =============================================================================
-# 一、单渲染元素 (配置部分格式)
-# =============================================================================
-entity_renderer:
+blocks:
   # ===========================================================================
-  # 1.1 物品展示实体 (item_display)
-  #     基于原版物品展示实体渲染自定义物品模型.
-  #     当未指定 type 且包含 item 时自动推导为此类型.
+  # 1. 物品展示实体 (item_display)
   # ===========================================================================
-  # type: item_display                                      # << CHANGE THIS
-  # item: "default:sofa"                                    # << CHANGE THIS: 物品命名空间ID
-  # translation: 0,0.5,0                                    # << CHANGE THIS: 偏移量 (x,y,z), 推荐用此代替 position
-  # position: 0.5,0.5,0.5                                   # << CHANGE THIS: 相对位置 (x,y,z), 默认方块中心
-  # scale: 1,1,1                                            # << CHANGE THIS: 缩放 (x,y,z), 也支持单个数字如 scale: 1.5
-  # rotation: 45                                            # << CHANGE THIS: 绕 Y 轴旋转 (角度), 推荐用此代替 yaw/pitch
-  # rotation: 45,45,0                                       # << CHANGE THIS: 欧拉角 (yaw,pitch,roll)
-  # rotation: 0,0,0.707,0.707                               # << CHANGE THIS: 四元数 (x,y,z,w)
-  # yaw: 0                                                   # << CHANGE THIS: 绕 Y 轴旋转 (不推荐, 优先用 rotation)
-  # pitch: 0                                                 # << CHANGE THIS: 绕 X 轴旋转 (不推荐, 优先用 rotation)
-  # billboard: fixed                                         # << CHANGE THIS: fixed|vertical|horizontal|center
-  # glow_color: 255,255,255                                  # << CHANGE THIS: 发光边框颜色 (R,G,B)
-  # brightness:
-  #   block_light: 15                                        # << CHANGE THIS: 方块光照 (0-15)
-  #   sky_light: 15                                          # << CHANGE THIS: 天空光照 (0-15)
-  # view_range: 1.0                                          # << CHANGE THIS: 可视距离系数
-  # shadow_radius: 0                                         # << CHANGE THIS: 阴影半径
-  # shadow_strength: 1                                       # << CHANGE THIS: 阴影不透明度
-  # display_transform: none                                   # << CHANGE THIS: none|third_person_left_hand|third_person_right_hand|first_person_left_hand|first_person_right_hand|head|gui|ground|fixed|on_shelf
-  # display_context: none                                     # display_transform 的别名
+  custom:display_stool:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: custom:stool
+        translation: 0,0.5,0                                    # << CHANGE THIS
+        scale: 1.0,1.0,1.0                                      # << CHANGE THIS
+        rotation: 0,0,0,0                                        # << CHANGE THIS
 
   # ===========================================================================
-  # 1.2 文本展示实体 (text_display)
-  #     基于原版文本展示实体渲染文本.
-  #     当未指定 type 且包含 text 时自动推导为此类型.
+  # 2. 文本展示实体 (text_display)
   # ===========================================================================
-  # type: text_display                                       # << CHANGE THIS
-  # text: "<yellow>点击交互 <papi:player_name></yellow>"     # << CHANGE THIS: 文本内容, 支持 MiniMessage 和 PAPI
-  # translation: 0,1.2,0                                     # << CHANGE THIS: 偏移量 (x,y,z)
-  # position: 0.5,0.5,0.5                                    # << CHANGE THIS: 相对位置 (x,y,z)
-  # scale: 1.5                                                # << CHANGE THIS: 缩放 (x,y,z) 或单个数字
-  # rotation: 0                                               # << CHANGE THIS: 旋转角度 / 欧拉角 / 四元数
-  # billboard: center                                         # << CHANGE THIS: fixed|vertical|horizontal|center
-  # line_width: 200                                           # << CHANGE THIS: 单行最大宽度
-  # background_color: 0,0,0,0                                 # << CHANGE THIS: 背景颜色 (A,R,G,B), 默认 64,0,0,0
-  # text_opacity: -1                                          # << CHANGE THIS: 文本不透明度 (0-255), 默认 -1
-  # has_shadow: true                                          # << CHANGE THIS: 是否显示文本阴影
-  # is_see_through: false                                     # << CHANGE THIS: 是否穿过方块渲染
-  # use_default_background_color: false                       # << CHANGE THIS: 是否使用默认文本背景
-  # alignment: center                                         # << CHANGE THIS: center|left|right
-  # glow_color: 255,255,255                                   # << CHANGE THIS: 发光边框颜色 (R,G,B)
-  # brightness:
-  #   block_light: 15                                         # << CHANGE THIS
-  #   sky_light: 15                                           # << CHANGE THIS
-  # view_range: 1.0                                           # << CHANGE THIS: 可视距离系数
-  # shadow_radius: 0                                          # << CHANGE THIS: 阴影半径
-  # shadow_strength: 1                                        # << CHANGE THIS: 阴影不透明度
+  custom:sign_post:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: text_display
+        text: "<gold>公告板"                                     # << CHANGE THIS
+        translation: 0,1.5,0                                     # << CHANGE THIS
+        scale: 1.0,1.0,1.0
+        billboard: CENTER                                        # << CHANGE THIS: CENTER/FIXED/VERTICAL/HORIZONTAL
+        background_color: "#40000000"                            # << CHANGE THIS
+        see_through: false
 
   # ===========================================================================
-  # 1.3 物品实体 (item)
-  #     渲染一个物品实体, 自动带有旋转动画, 适合简单物品展示.
+  # 3. 物品实体 (item) — 掉落物形式
   # ===========================================================================
-  # type: item                                                # << CHANGE THIS
-  # item: "default:sleeper_sofa"                              # << CHANGE THIS: 物品命名空间ID
-  # position: 0.5,0.5,0.5                                     # << CHANGE THIS: 位置 (x,y,z), 默认方块中心
+  custom:floating_gem:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item
+        item: custom:floating_gem
+        translation: 0,0.8,0
 
   # ===========================================================================
-  # 1.4 盔甲架 (armor_stand)
-  #     基于盔甲架在头盔槽位渲染物品模型.
+  # 4. 盔甲架实体 (armor_stand)
   # ===========================================================================
-  # type: armor_stand                                         # << CHANGE THIS
-  # item: "default:bench"                                     # << CHANGE THIS: 物品命名空间ID
-  # position: 0,0.2,0                                         # << CHANGE THIS: 位置 (x,y,z), 默认方块中心
-  # yaw: 0                                                     # << CHANGE THIS: 绕 Y 轴旋转
-  # pitch: 0                                                   # << CHANGE THIS: 绕 X 轴旋转
-  # scale: 1                                                   # << CHANGE THIS: 缩放, 默认 1
-  # small: false                                               # << CHANGE THIS: 是否小盔甲架, 默认 false
-  # glow_color: white                                          # << CHANGE THIS: 发光颜色 (仅支持旧版颜色名)
-  #                                                            # black|dark_blue|dark_green|dark_aqua|dark_red|dark_purple|gold|gray|dark_gray|blue|green|aqua|red|light_purple|yellow|white
+  custom:armor_stand_display:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: armor_stand
+        item: custom:display_helmet
+        translation: 0,0.5,0
 
-# =============================================================================
-# 二、多渲染元素 (列表格式)
-# =============================================================================
-# entity_renderer:
-#   - type: item_display                                      # << CHANGE THIS
-#     item: "default:sofa"                                    # << CHANGE THIS
-#     translation: 0,0.5,0
-#     scale: 1,1,1
-#   - type: text_display                                      # << CHANGE THIS
-#     text: "<aqua>沙发</aqua>"                               # << CHANGE THIS
-#     translation: 0,1.2,0
-#     billboard: center
-#     alignment: center
-
-# =============================================================================
-# 三、颜色提供器 (tint_source)
-#     用于为渲染物品动态着色, 从方块行为中读取颜色数据.
-# =============================================================================
-# --- 3.1 简写形式 ------------------------------------------------------------
-# entity_renderer:
-#   type: item_display
-#   item: "default:colored_block"                             # << CHANGE THIS
-#   tint_source: "minecraft:dyed_color"                       # << CHANGE THIS
-
-# --- 3.2 完整形式 ------------------------------------------------------------
-# entity_renderer:
-#   type: item_display
-#   item: "default:colored_block"                             # << CHANGE THIS
-#   tint_source:
-#     type: default
-#     components:
-#       - "minecraft:dyed_color"                              # << CHANGE THIS
-#     index: 0                                                 # << CHANGE THIS: 着色索引, 默认 0
-
-# --- 3.3 多元素多索引着色 ----------------------------------------------------
-# entity_renderer:
-#   - item: "example:element_1"                               # << CHANGE THIS
-#     tint_source:
-#       type: default
-#       components:
-#         - "minecraft:dyed_color"
-#       index: 0                                               # 对应第 1 个颜色提供器
-#   - item: "example:element_2"                               # << CHANGE THIS
-#     tint_source:
-#       type: default
-#       components:
-#         - "minecraft:dyed_color"
-#       index: 1                                               # 对应第 2 个颜色提供器
-#   - item: "example:element_3"                               # << CHANGE THIS
-#     tint_source:
-#       type: default
-#       components:
-#         - "minecraft:dyed_color"
-#       index: 2                                               # 对应第 3 个颜色提供器
-
-# =============================================================================
-# 四、实体剔除 (entity_culling)
-#     控制方块实体在客户端侧的可见性, 用于性能优化.
-# =============================================================================
-# --- 4.1 禁用剔除 (实体始终可见) --------------------------------------------
-# entity_renderer:
-#   type: item_display
-#   item: "default:sofa"                                      # << CHANGE THIS
-# entity_culling: false
-
-# --- 4.2 启用剔除 (可自定义参数) --------------------------------------------
-# entity_renderer:
-#   type: item_display
-#   item: "default:sofa"                                      # << CHANGE THIS
-# entity_culling:
-#   aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5                          # << CHANGE THIS: 剔除包围盒 (minX,minY,minZ,maxX,maxY,maxZ)
-#   view_distance: 64                                          # << CHANGE THIS: 最大可视距离, -1 表示无限
-#   aabb_expansion: 0.5                                        # << CHANGE THIS: 包围盒扩展量, 默认 0.5
-#   ray_tracing: true                                          # << CHANGE THIS: 是否启用光线追踪剔除
-
-# =============================================================================
-# 五、渲染条件 (conditions)
-#     每个渲染元素可配置 conditions, 该元素仅对满足条件的玩家可见.
-#     多个条件之间使用 "与" 逻辑 (需全部满足).
-# =============================================================================
-# entity_renderer:
-#   - type: item_display
-#     item: "default:secret_block"                            # << CHANGE THIS
-#     translation: 0,0.5,0
-#     conditions:
-#       - type: permission
-#         permission: "vip.secret"                            # << CHANGE THIS
-#       - type: world
-#         world: "world_nether"                               # << CHANGE THIS
-#   - type: text_display
-#     text: "<red>仅 VIP 可见</red>"                         # << CHANGE THIS
-
-# =============================================================================
-# 六、综合示例 — 完整方块配置 (state 上下文)
-# =============================================================================
-# state:
-#   name: "example:fancy_sofa"                                # << CHANGE THIS
-#   entity_renderer:
-#     - type: item_display
-#       item: "example:fancy_sofa"                            # << CHANGE THIS
-#       translation: 0,0.5,0
-#       scale: 1.2
-#       rotation: 0,45,0
-#       billboard: fixed
-#       glow_color: 255,200,100
-#       brightness:
-#         block_light: 15
-#         sky_light: 15
-#       view_range: 1.0
-#       shadow_radius: 0.5
-#       shadow_strength: 0.8
-#       display_transform: none
-#       tint_source:
-#         type: default
-#         components:
-#           - "minecraft:dyed_color"
-#         index: 0
-#     - type: text_display
-#       text: "<gold>豪华沙发</gold>"
-#       translation: 0,1.5,0
-#       scale: 1.2
-#       billboard: center
-#       alignment: center
-#       line_width: 200
-#       background_color: 64,0,0,0
-#       text_opacity: 200
-#       has_shadow: true
-#       is_see_through: false
-#   entity_culling:
-#     aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5
-#     view_distance: 48
-#     aabb_expansion: 0.5
-#     ray_tracing: true
+  # ===========================================================================
+  # 5. 复杂：多外观 + 实体渲染器 + glow_color
+  # ===========================================================================
+  custom:glowing_orb:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: custom:orb
+        glow_color: 255,200,100                                  # << CHANGE THIS
