@@ -1,6 +1,6 @@
 # CraftEngine 模板集
 
-> 由 ZTF3 根据 CraftEngine 官方文档整理制作
+> 由正版ID为 ZTF3 的玩家根据 CraftEngine 官方文档整理制作
 
 本目录包含 CraftEngine 插件的完整 YAML 配置模板。每个 `.yml` 文件均配有可直接复制使用的示例代码，覆盖方块、物品、家具、配方、盔甲等全部可自定义对象。
 
