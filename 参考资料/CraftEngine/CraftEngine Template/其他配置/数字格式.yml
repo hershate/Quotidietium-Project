@@ -1,0 +1,460 @@
+# ============================================================
+# CraftEngine 数字格式参考 (Number Format Reference)
+# 参考来源: CraftEngine Wiki -> reference/number_format.md
+# 格式说明: 此文件为 Oraxen 风格参考文档
+# ============================================================
+#
+# 数字格式在 CraftEngine 中广泛应用于数值型配置字段。
+# 注意: 部分早期开发的物品数据部分暂不支持，将在未来重构。
+#
+# 简写 (Shorthand):
+#   大多数数字格式类型支持简写形式，方便快速配置。
+#   详见各类型的 shorthand 字段说明。
+#
+# 嵌套 (Nesting):
+#   部分类型的参数支持嵌套使用其他数字格式或 PlaceholderAPI 表达式。
+#   示例: min: "<papi:skilllevel_farming>*5"
+#
+# ============================================================
+
+# ------------------------------------------------------------
+# 1. 常量 (constant)
+# ------------------------------------------------------------
+# 提供一个固定的数值。
+#
+constant:
+  description: "固定数值"
+  params:
+    - name: type
+      required: true
+      value: constant
+      description: "类型标识"
+    - name: value
+      required: true
+      type: number
+      description: "要返回的固定数值"
+  example:
+    type: constant
+    value: 1
+  shorthand:
+    enabled: true
+    description: "直接使用数值字符串"
+    example: 1
+    usage: "count: 1  # 等价于 count: { type: constant, value: 1 }"
+
+# ------------------------------------------------------------
+# 2. 均匀随机数 (uniform)
+# ------------------------------------------------------------
+# 在 [min, max] 闭区间内生成均匀分布的随机整数或浮点数。
+#
+uniform:
+  description: "在给定范围内生成均匀分布的随机数"
+  params:
+    - name: type
+      required: true
+      value: uniform
+      description: "类型标识"
+    - name: min
+      required: true
+      type: number | number_format
+      description: "随机数下限（包含），支持嵌套数字格式或 PAPI 表达式"
+    - name: max
+      required: true
+      type: number | number_format
+      description: "随机数上限（包含），支持嵌套数字格式或 PAPI 表达式"
+  example:
+    type: uniform
+    min: 1
+    max: 3
+  shorthand:
+    enabled: true
+    description: "使用 '最小值~最大值' 字符串"
+    example: "1~3"
+    usage: "count: 1~3  # 等价于 count: { type: uniform, min: 1, max: 3 }"
+  nesting_example:
+    "嵌套示例：min 和 max 参数支持嵌套其他数字格式":
+      type: uniform
+      min:
+        type: uniform
+        min: 2
+        max: 7
+      max: "<papi:skilllevel_farming>*5~<papi:skilllevel_farming>*10"
+
+# ------------------------------------------------------------
+# 3. 表达式 (expression)
+# ------------------------------------------------------------
+# 通过 EvalEx 表达式引擎计算数值。
+# 支持四则运算、函数调用及 PlaceholderAPI 变量。
+# 完整参考: https://ezylang.github.io/EvalEx/references/references.html
+#
+expression:
+  description: "通过 EvalEx 表达式引擎计算数值"
+  params:
+    - name: type
+      required: true
+      value: expression
+      description: "类型标识"
+    - name: expression
+      required: true
+      type: string
+      description: "EvalEx 表达式字符串，支持运算符、函数和 PAPI 变量"
+  example:
+    type: expression
+    expression: "20 + 70 / 2"
+  shorthand:
+    enabled: true
+    description: "直接使用表达式字符串"
+    usage: "count: \"<papi:skilllevel_farming> / 20 + 5\"  # 等价于 count: { type: expression, expression: \"...\" }"
+
+# ------------------------------------------------------------
+# 4. 二项分布 (binomial)
+# ------------------------------------------------------------
+# 使用二项分布生成随机数。
+# 模拟 n 次独立伯努利试验中成功的次数。
+#
+binomial:
+  description: "使用二项分布生成随机数（成功次数）"
+  params:
+    - name: type
+      required: true
+      value: binomial
+      description: "类型标识"
+    - name: extra
+      required: true
+      type: integer
+      description: "独立重复伯努利试验的次数 (n)"
+    - name: probability
+      required: true
+      type: number
+      description: "每次试验的成功概率 (p)，范围 [0.0, 1.0]"
+  example:
+    type: binomial
+    extra: 10
+    probability: 0.2
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 5. 高斯/正态分布 (gaussian)
+# ------------------------------------------------------------
+# 使用正态分布生成随机数，受 min/max 截断。
+# 基于 6σ 原则：默认标准差使得 99.7% 的值落在范围内。
+#
+gaussian:
+  description: "使用正态分布生成随机数（受 min/max 截断）"
+  params:
+    - name: type
+      required: true
+      value: gaussian
+      description: "类型标识"
+    - name: min
+      required: true
+      type: number
+      description: "随机数下限，生成值不会小于此值"
+    - name: max
+      required: true
+      type: number
+      description: "随机数上限，生成值不会大于此值"
+    - name: mean
+      required: false
+      type: number
+      default: "(min + max) / 2.0"
+      description: "高斯分布的均值（期望值），定义分布中心位置"
+    - name: std_dev
+      required: false
+      type: number
+      default: "(max - min) / 6.0"
+      description: "高斯分布的标准差，衡量数据离散程度"
+    - name: max_attempts
+      required: false
+      type: integer
+      default: 128
+      description: "生成有效随机数的最大尝试次数，超限返回最接近的边界值"
+  example:
+    type: gaussian
+    min: 10
+    max: 20
+    mean: 15
+    std_dev: 1
+    max_attempts: 128
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 6. 偏态分布 (skew_normal)
+# ------------------------------------------------------------
+# 使用偏态正态分布生成随机数，允许不对称分布。
+# skewness > 0: 右偏（长尾在右，主体靠左）
+# skewness < 0: 左偏（长尾在左，主体靠右）
+# skewness = 0: 对称（等同于正态分布）
+#
+skew_normal:
+  description: "使用偏态正态分布生成随机数（允许不对称分布）"
+  params:
+    - name: type
+      required: true
+      value: skew_normal
+      description: "类型标识"
+    - name: min
+      required: true
+      type: number
+      description: "最小预期值"
+    - name: max
+      required: true
+      type: number
+      description: "最大预期值"
+    - name: mean
+      required: false
+      type: number
+      default: "(min + max) / 2.0"
+      description: "期望算子"
+    - name: std_dev
+      required: false
+      type: number
+      default: "(max - min) / 6.0"
+      description: "标准差"
+    - name: skewness
+      required: false
+      type: number
+      default: 0.0
+      range: "[-0.995, 0.995]"
+      description: "偏度系数。正值=右偏，负值=左偏，零=对称"
+    - name: max_attempts
+      required: false
+      type: integer
+      default: 128
+      description: "最大重试次数"
+  example:
+    type: skew_normal
+    min: 0
+    max: 100
+    mean: 50
+    std_dev: 10
+    skewness: 0.5
+    max_attempts: 128
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 7. 对数正态分布 (log_normal)
+# ------------------------------------------------------------
+# 使用对数正态分布生成随机数。
+# 数值始终为正，右偏（长尾在右）。
+# 适合模拟货币贬值、消耗耐久度等场景。
+#
+# 支持两种参数方案:
+#   方案一: 直接提供真实平均值(mean)和真实标准差(std_dev)
+#   方案二: 直接提供对数参数 location(μ) 和 scale(σ)
+#
+log_normal:
+  description: "使用对数正态分布生成随机数（始终为正，右偏）"
+  params:
+    - name: type
+      required: true
+      value: log_normal
+      description: "类型标识"
+    - name: min
+      required: true
+      type: number
+      minValue: 0
+      description: "最小预期值（必须大于 0）"
+    - name: max
+      required: true
+      type: number
+      description: "最大预期值"
+    # ---- 方案一：真实值参数 ----
+    - name: mean
+      required: false
+      type: number
+      description: "方案一：真实平均值（非对数），生成器自动计算对数的 μ 和 σ"
+    - name: std_dev
+      required: false
+      type: number
+      description: "方案一：真实标准差（非对数），与 mean 配合使用"
+    # ---- 方案二：对数参数 ----
+    - name: location
+      required: false
+      type: number
+      description: "方案二：location 参数（μ），自然对数平均值"
+    - name: scale
+      required: false
+      type: number
+      description: "方案二：scale 参数（σ），自然对数的标准差"
+    # ---- 通用 ----
+    - name: max_attempts
+      required: false
+      type: integer
+      default: 128
+      description: "最大重试次数"
+  example_scheme1:
+    description: "方案一：直接使用真实值"
+    config:
+      type: log_normal
+      min: 1
+      max: 1000
+      mean: 50
+      std_dev: 20
+      max_attempts: 128
+  example_scheme2:
+    description: "方案二：使用对数参数（高级）"
+    config:
+      type: log_normal
+      min: 1
+      max: 1000
+      location: 3.5
+      scale: 0.5
+      max_attempts: 128
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 8. 三角分布 (triangle)
+# ------------------------------------------------------------
+# 使用三角分布生成随机数。
+# 计算效率高的正态分布替代方案，具有天然的边界特性。
+# mode 指定三角形顶点位置，默认为中点（等腰三角形）。
+#
+triangle:
+  description: "使用三角分布生成随机数（高效的正态分布替代方案）"
+  params:
+    - name: type
+      required: true
+      value: triangle
+      description: "类型标识"
+    - name: min
+      required: true
+      type: number
+      description: "下限"
+    - name: max
+      required: true
+      type: number
+      description: "上限"
+    - name: mode
+      required: false
+      type: number
+      default: "(min + max) / 2.0"
+      description: "众数（三角形的顶点），默认在中点形成等腰三角形"
+  example:
+    type: triangle
+    min: 10
+    max: 100
+    mode: 30
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 9. 贝塔分布 (beta)
+# ------------------------------------------------------------
+# 使用贝塔分布生成随机数。
+# 在固定范围内具有极高的灵活性，通过调整 alpha(α) 和 beta(β)
+# 形状参数可模拟多种分布形态。
+#
+#  alpha 大: 分布向最大值（右端）集中
+#  beta  大: 分布向最小值（左端）集中
+#  alpha = beta: 对称分布
+#
+beta:
+  description: "使用贝塔分布生成随机数（高灵活性，可模拟多种分布）"
+  params:
+    - name: type
+      required: true
+      value: beta
+      description: "类型标识"
+    - name: min
+      required: false
+      type: number
+      default: 0.0
+      description: "最小预期值"
+    - name: max
+      required: false
+      type: number
+      default: 1.0
+      description: "最大预期值"
+    - name: alpha
+      required: false
+      type: number
+      default: 2.0
+      description: "Alpha 形状参数 (α)。值越大，分布越向最大值（右端）集中"
+    - name: beta
+      required: false
+      type: number
+      default: 2.0
+      description: "Beta 形状参数 (β)。值越大，分布越向最小值（左端）集中"
+  example:
+    type: beta
+    min: 0
+    max: 10
+    alpha: 5.0
+    beta: 2.0
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 10. 加权列表 (weighted)
+# ------------------------------------------------------------
+# 基于权重从预定义的数值列表中随机选取一个返回值。
+# 权重总和无需为 100，生成器自动计算相对概率。
+#
+weighted:
+  description: "基于权重从数值列表中随机选取返回值"
+  params:
+    - name: type
+      required: true
+      value: weighted
+      description: "类型标识"
+    - name: weights
+      required: true
+      type: "map<string, number>"
+      description: "以 '数值: 权重' 对组成的映射表，权重自动归一化为概率"
+  example:
+    type: weighted
+    weights:
+      "10": 70    # 70% 的概率返回 10
+      "50": 25    # 25% 的概率返回 50
+      "200": 5    # 5% 的概率返回 200
+  shorthand:
+    enabled: false
+
+# ------------------------------------------------------------
+# 11. 指数分布 (exponential)
+# ------------------------------------------------------------
+# 使用指数分布生成随机数。
+# 常用于模拟随机事件之间的时间间隔。
+#
+# 参数选择说明：
+#   必须指定 lambda(λ) 和 mean 之一：
+#     - lambda: 速率参数（单位时间内事件的平均次数）
+#     - mean:   平均间隔时间（均值 = 1/λ）
+#
+exponential:
+  description: "使用指数分布生成随机数（模拟事件时间间隔）"
+  params:
+    - name: type
+      required: true
+      value: exponential
+      description: "类型标识"
+    - name: min
+      required: false
+      type: number
+      default: 0.0
+      description: "最小预期值"
+    - name: max
+      required: false
+      type: number
+      default: "Double.MAX_VALUE"
+      description: "最大预期值"
+    - name: lambda
+      required: false
+      type: number
+      description: "速率参数 λ（单位时间内事件的平均次数），与 mean 二选一"
+    - name: mean
+      required: false
+      type: number
+      description: "平均间隔（均值 = 1/λ），与 lambda 二选一"
+  example:
+    type: exponential
+    min: 0
+    max: 60
+    mean: 10
+  shorthand:
+    enabled: false

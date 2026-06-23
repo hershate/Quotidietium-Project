@@ -1,0 +1,688 @@
+# ============================================================================
+# CraftEngine - 物品设置（settings）完整参考
+# ============================================================================
+# 与 data 不同，settings 中的内容涉及由插件处理的特殊机制。
+# 所有示例均使用自定义命名空间 custom。
+# ============================================================================
+
+# ============================================================================
+# 1. fuel_time（烧炼时间）
+# ============================================================================
+# 控制物品可燃烧的时间（或称燃料热值）。单位：刻（tick）。
+custom:coal_chunk:
+  settings:
+    fuel_time: 100 # 100 ticks = 5 seconds
+
+custom:blaze_powder:
+  settings:
+    fuel_time: 2400 # 2400 ticks = 2 minutes
+
+custom:magmatic_ore:
+  settings:
+    fuel_time: 12000 # 12000 ticks = 10 minutes
+
+# ============================================================================
+# 2. tags（标签）
+# ============================================================================
+# 标签可以在用命令测试物品时以 #<命名空间ID> 的形式调用，
+# 也可以在配方中用 #<命名空间ID> 的格式使用。
+# 只要物品满足了该标签中定义的任何一个物品，测试就会通过。
+custom:palm_stick:
+  settings:
+    tags:
+      - "custom:palm_logs"
+      - "minecraft:logs"
+      - "minecraft:logs_that_burn"
+
+custom:topaz_gem:
+  settings:
+    tags:
+      - "custom:gems"
+      - "custom:topaz_tools"
+      - "forge:gems"
+
+# ============================================================================
+# 3. equipment（装备）
+# ============================================================================
+# 将装备属性应用于此物品。
+custom:topaz_helmet:
+  settings:
+    equipment:
+      # 必填参数
+      asset_id: custom:topaz
+
+      # 可选参数。默认为 config.yml 中的全局 client_bound_model 选项。
+      client_bound_model: true
+
+      # 1.21.2+ 可选参数
+      slot: head # head / chest / legs / feet / body (animal armor) / saddle
+      camera_overlay: custom:textures/models/armor/topaz_overlay
+      dispensable: true
+      damage_on_hurt: true
+      swappable: true
+      # >= 1.21.5
+      equip_on_interact: true
+
+custom:topaz_chestplate:
+  settings:
+    equipment:
+      asset_id: custom:topaz
+      client_bound_model: true
+      slot: chest
+      camera_overlay: custom:textures/models/armor/topaz_chest_overlay
+      dispensable: true
+      damage_on_hurt: true
+      swappable: true
+      equip_on_interact: true
+
+custom:topaz_leggings:
+  settings:
+    equipment:
+      asset_id: custom:topaz
+      slot: legs
+      dispensable: false
+      damage_on_hurt: true
+      swappable: true
+
+custom:topaz_boots:
+  settings:
+    equipment:
+      asset_id: custom:topaz
+      slot: feet
+      dispensable: false
+      damage_on_hurt: true
+      swappable: false
+
+custom:ruby_helmet:
+  settings:
+    equipment:
+      asset_id: custom:ruby
+      client_bound_model: false
+      slot: head
+      camera_overlay: custom:textures/models/armor/ruby_helmet_overlay
+      dispensable: true
+      damage_on_hurt: true
+      swappable: true
+      equip_on_interact: true
+
+# ============================================================================
+# 4. repairable（可修复）
+# ============================================================================
+# 控制物品是否可以通过工作台或铁砧修复。（默认值：true）
+custom:topaz_sword:
+  settings:
+    # 简单的总开关
+    repairable: true
+
+custom:topaz_pickaxe:
+  settings:
+    # 具体修复场景设定
+    repairable:
+      crafting_table: true
+      anvil_repair: false
+      anvil_combine: true
+
+custom:glass_sword:
+  settings:
+    repairable: false # 完全不可修复
+
+# ============================================================================
+# 5. anvil_repair_item（铁砧材料修复）
+# ============================================================================
+# 控制指定物品在铁砧修复时提供的耐久度。
+custom:topaz_axe:
+  settings:
+    anvil_repair_item:
+      - target: "#custom:topaz_tools" # 使用标签
+        amount: 20                     # 指定恢复耐久度
+      - target:
+          - "minecraft:iron_pickaxe"
+          - "minecraft:shears"
+        percent: 0.25                  # 0.25 = 25%, 恢复 n% 总耐久度
+
+custom:ruby_sword:
+  settings:
+    anvil_repair_item:
+      - target: "custom:ruby_gem"
+        amount: 50
+      - target: "#forge:gems/ruby"
+        percent: 0.5
+
+# ============================================================================
+# 6. renameable（可重命名）
+# ============================================================================
+# 控制物品是否可以在铁砧中重命名。（默认值：true）
+custom:ancient_artifact:
+  settings:
+    renameable: false # 不可重命名
+
+custom:topaz_hoe:
+  settings:
+    renameable: true
+
+# ============================================================================
+# 7. allowed_projectiles（可装载的弹射物）
+# ============================================================================
+# 决定了什么弹药可以装在弩和弓上。
+custom:magic_bow:
+  settings:
+    allowed_projectiles:
+      - custom:mana_arrow
+      - custom:ice_arrow
+      - minecraft:ender_pearl
+
+custom:crossbow_ruby:
+  settings:
+    allowed_projectiles:
+      - custom:ruby_bolt
+      - custom:explosive_bolt
+      - minecraft:arrow
+
+# ============================================================================
+# 8. projectile（弹射物）
+# ============================================================================
+# 基于该物品创建一个自定义弹射物实体。
+# 支持 trident、arrow、snowball 等类型。
+custom:topaz_trident:
+  settings:
+    projectile:
+      display:
+        item: custom:topaz_trident
+        translation: 0,0,0
+        rotation: 1,1,1,1
+        display_transform: NONE
+        scale: 0.5
+      sounds:
+        throw: minecraft:item.trident.throw
+        hit_entity: minecraft:item.trident.hit
+        hit_block: minecraft:item.trident.hit_ground
+      ignore_infinity_enchantment: false
+      pickupable: true
+      remove_on_hit: false
+      gravity: true
+      velocity: 1
+      damage: 10
+      pierce_level: 5
+
+custom:mana_arrow:
+  settings:
+    projectile:
+      display:
+        item: custom:mana_arrow
+        translation: 0,-0.1,0
+        rotation: 0,0,0,0
+        display_transform: FIRSTPERSON_RIGHTHAND
+        scale: 0.75
+      sounds:
+        throw:
+          id: minecraft:entity.arrow.shoot
+          pitch: 0.9~1
+          volume: 1
+        hit_entity: minecraft:entity.arrow.hit
+        hit_block:
+          default: minecraft:block.glass.break
+          overrides:
+            minecraft:stone: minecraft:block.stone.break
+            custom:magic_block: minecraft:entity.firework_rocket.blast
+      ignore_infinity_enchantment: true
+      pickupable: true
+      remove_on_hit: false
+      gravity: false
+      velocity: 2
+      damage: 6
+      pierce_level: 2
+
+custom:ruby_bolt:
+  settings:
+    projectile:
+      display:
+        item: custom:ruby_bolt
+        translation: 0,0,0.5
+        rotation: 0.5,0.5,0.5,0.5
+        display_transform: THIRDPERSON_RIGHTHAND
+        scale: 1.0
+      sounds:
+        throw: custom:item.ruby_bolt.throw
+        hit_entity: custom:item.ruby_bolt.hit
+        hit_block: custom:item.ruby_bolt.hit_ground
+      ignore_infinity_enchantment: false
+      pickupable: false
+      remove_on_hit: true
+      gravity: true
+      velocity: 1.5
+      damage: 15
+      pierce_level: 0
+
+# ============================================================================
+# 9. dyeable（可染色）
+# ============================================================================
+# 控制物品是否可以在工作台中染色。（默认值：未定义）
+custom:topaz_dyeable_armor:
+  settings:
+    dyeable: true
+
+custom:crystal_robes:
+  settings:
+    dyeable: true
+
+# ============================================================================
+# 10. enchantable（可附魔）
+# ============================================================================
+# 控制物品是否可在附魔台上被附魔。（默认值：true）
+# 提示：将此项设置为 true 并不会神奇地让原本不可附魔的物品变得可附魔。
+# 如果你想让不可附魔的物品可以附魔，应该使用 enchantable 数据组件以及对应的物品标签。
+custom:cursed_blade:
+  settings:
+    enchantable: false # 不可附魔
+
+custom:topaz_pickaxe:
+  settings:
+    enchantable: true
+
+# ============================================================================
+# 11. compost_probability（堆肥成功率）
+# ============================================================================
+# 控制物品堆肥成功的几率。（默认值：0.5）
+custom:rotten_vegetable:
+  settings:
+    compost_probability: 0.3
+
+custom:magic_fertilizer:
+  settings:
+    compost_probability: 0.85
+
+# ============================================================================
+# 12. respect_repairable_component（尊重 repairable 组件）
+# ============================================================================
+# 控制物品在铁砧界面中是否允许被 repairable 组件中指定的物品修复。
+# （默认值：false）
+custom:topaz_shovel:
+  settings:
+    respect_repairable_component: true
+
+custom:ancient_blade:
+  settings:
+    respect_repairable_component: false
+
+# ============================================================================
+# 13. dye_color（染色颜色）
+# ============================================================================
+# 控制物品在染色配方中提供的颜色。
+custom:orange_dye_custom:
+  settings:
+    dye_color: 255,140,0
+
+custom:purple_pigment:
+  settings:
+    dye_color: 128,0,255
+
+# ============================================================================
+# 14. firework_color（烟火颜色）
+# ============================================================================
+# 控制物品在烟火之星配方中提供的颜色。
+custom:orange_glow_powder:
+  settings:
+    firework_color: 255,140,0
+
+custom:blue_fire_dust:
+  settings:
+    firework_color: 0,100,255
+
+custom:neon_mix:
+  settings:
+    firework_color: 0,255,180
+
+# ============================================================================
+# 15. food（可食用 - 插件替代实现）
+# ============================================================================
+# 基于插件的 food 组件替代实现方案。
+# 建议在 1.20.5 及以上版本的服务器上使用原版 food 组件。
+custom:magic_apple:
+  settings:
+    food:
+      nutrition: 5      # 0~20, 整数
+      saturation: 3.5   # 0~10, 单精度浮点数
+
+custom:golden_berry:
+  settings:
+    food:
+      nutrition: 8
+      saturation: 6.0
+
+# ============================================================================
+# 16. consume_replacement（消耗替代品）
+# ============================================================================
+# 控制物品消耗后返回的物品。例如，玩家喝完水瓶后，会返回空瓶。
+# （默认值：null）
+custom:magic_potion:
+  settings:
+    consume_replacement: custom:empty_vial
+
+custom:enchanted_flask:
+  settings:
+    consume_replacement: minecraft:glass_bottle
+
+# ============================================================================
+# 17. craft_remainder / craft_remaining_item（合成剩余物品）
+# ============================================================================
+# 控制在合成配方完成后，物品是否应返还其他物品，
+# 或对参与合成的物品进行一些特殊操作。
+
+# ---- 17a. 返回一个固定物品 ----
+custom:reinforced_bucket:
+  settings:
+    craft_remainder: custom:reinforced_bucket_empty
+
+custom:metal_shears:
+  settings:
+    craft_remainder:
+      type: fixed
+      item: custom:metal_shears_broken
+      count: 1
+
+# ---- 17b. 消耗一定耐久度 ----
+custom:glass_cutter:
+  settings:
+    craft_remainder:
+      type: hurt_and_break
+      damage: 1 # 默认值 1
+
+custom:heavy_hammer:
+  settings:
+    craft_remainder:
+      type: hurt_and_break
+      damage: 5
+
+# ---- 17c. 根据配方选择合成剩余物品 ----
+custom:smart_tool:
+  settings:
+    craft_remainder:
+      type: recipe_based
+      terms:
+        - recipes:
+            - custom:smart_tool_repair_1
+            - custom:smart_tool_repair_3
+          craft_remainder:
+            type: hurt_and_break
+        - recipes:
+            - custom:smart_tool_upgrade
+          craft_remainder: custom:smart_tool_core
+
+# ============================================================================
+# 18. fuel_remainder（燃料剩余物品）
+# ============================================================================
+# 作为燃料消耗后会返还的物品，仅适用于堆叠数量为 1 的物品。
+custom:magical_coal:
+  settings:
+    fuel_remainder: custom:coal_ash
+
+custom:dried_kelp_block_custom:
+  settings:
+    fuel_remainder: custom:ash_pile
+
+# ============================================================================
+# 19. invulnerable（不被指定伤害类型摧毁）
+# ============================================================================
+# 与数据组件 damage_resistant 不同，此设置的实现方法是通过取消事件实现。
+custom:dragon_crystal:
+  settings:
+    invulnerable:
+      - lava
+      - fire
+      - fire_tick
+      - block_explosion      # 例如重生锚
+      - entity_explosion     # 例如苦力怕，TNT
+      - lightning
+      - contact              # 例如仙人掌
+
+custom:netherite_ring:
+  settings:
+    invulnerable:
+      - lava
+      - fire
+      - fire_tick
+
+# ============================================================================
+# 20. ingredient_substitute（原料替代物）
+# ============================================================================
+# 控制物品在合成配方中提供的替代物。
+custom:rubber_ingot:
+  settings:
+    ingredient_substitute:
+      - minecraft:leather
+      - minecraft:paper
+
+custom:artificial_leather:
+  settings:
+    ingredient_substitute:
+      - minecraft:leather
+
+custom:wood_pellets:
+  settings:
+    ingredient_substitute:
+      - minecraft:paper
+      - minecraft:sugar
+
+# ============================================================================
+# 21. hat_height（帽子高度，需要 CustomNameplates）
+# ============================================================================
+# 决定了这个帽子物品对玩家铭牌高度的影响。
+custom:tall_top_hat:
+  settings:
+    hat_height: 1.5
+
+custom:royal_crown:
+  settings:
+    hat_height: 0.8
+
+# ============================================================================
+# 22. keep_on_death_chance（死亡保留概率）
+# ============================================================================
+# 决定了死亡后保留此物品的概率。
+custom:soulbound_amulet:
+  settings:
+    keep_on_death_chance: 0.2 # 0~1
+
+custom:phoenix_feather:
+  settings:
+    keep_on_death_chance: 0.75
+
+# ============================================================================
+# 23. destroy_on_death_chance（死亡损毁概率）
+# ============================================================================
+# 决定了死亡后损毁此物品的概率。
+custom:fragile_vase:
+  settings:
+    destroy_on_death_chance: 0.5 # 0~1
+
+custom:cursed_ring:
+  settings:
+    destroy_on_death_chance: 0.9
+
+custom:eternal_crystal:
+  settings:
+    destroy_on_death_chance: 0.0
+
+# ============================================================================
+# 24. drop_display（掉落物显示名称）
+# ============================================================================
+# 用于控制掉落物是否显示名称，以及显示的内容。
+custom:simple_stone:
+  settings:
+    drop_display: false # 如果全局开启，可以单独关闭
+
+custom:legendary_sword:
+  settings:
+    drop_display: true # 根据物品名显示实体名
+
+custom:enchanted_gem:
+  settings:
+    # 自定义显示名称 <arg:count> 为数量，<name> 为物品名
+    drop_display: "<arg:count>x <name>"
+
+custom:gold_stack:
+  settings:
+    drop_display: "Gold: <arg:count>"
+
+# ============================================================================
+# 25. glow_color（发光颜色）
+# ============================================================================
+# 使物品发光并显示颜色。
+# 可用颜色:
+#   black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple,
+#   gold, gray, dark_gray, blue, green, aqua, red, light_purple,
+#   yellow, white
+custom:sun_medallion:
+  settings:
+    glow_color: yellow
+
+custom:dark_amulet:
+  settings:
+    glow_color: dark_purple
+
+custom:frost_crystal:
+  settings:
+    glow_color: aqua
+
+custom:inferno_gem:
+  settings:
+    glow_color: red
+
+# ============================================================================
+# 组合示例：同时使用多个 settings
+# ============================================================================
+
+# ---- 完整工具示例 ----
+custom:topaz_sword:
+  settings:
+    repairable: true
+    anvil_repair_item:
+      - target: "custom:topaz_gem"
+        amount: 25
+    renameable: true
+    enchantable: true
+    tags:
+      - "custom:topaz_tools"
+      - "custom:swords"
+
+# ---- 完整装备示例 ----
+custom:topaz_chestplate:
+  settings:
+    equipment:
+      asset_id: custom:topaz
+      client_bound_model: true
+      slot: chest
+      dispensable: true
+      damage_on_hurt: true
+      swappable: true
+    repairable:
+      crafting_table: true
+      anvil_repair: true
+      anvil_combine: true
+    anvil_repair_item:
+      - target: "custom:topaz_gem"
+        amount: 30
+      - target: "#custom:topaz_tools"
+        percent: 0.25
+    renameable: true
+    dyeable: true
+    enchantable: true
+    invulnerable:
+      - fire
+      - fire_tick
+
+# ---- 完整弹射物示例 ----
+custom:magic_trident:
+  settings:
+    projectile:
+      display:
+        item: custom:magic_trident
+        translation: 0,0,0
+        rotation: 1,1,1,1
+        display_transform: NONE
+        scale: 0.5
+      sounds:
+        throw:
+          id: minecraft:item.trident.throw
+          pitch: 0.8~1.2
+          volume: 1.5
+        hit_entity: minecraft:item.trident.hit
+        hit_block:
+          default: minecraft:item.trident.hit_ground
+          overrides:
+            minecraft:water: minecraft:item.trident.hit_water
+            custom:magic_block: custom:magic_trident.hit
+      ignore_infinity_enchantment: true
+      pickupable: true
+      remove_on_hit: false
+      gravity: true
+      velocity: 1
+      damage: 12
+      pierce_level: 3
+    allowed_projectiles:
+      - custom:magic_trident
+    tags:
+      - "custom:tridents"
+    repairable:
+      crafting_table: false
+      anvil_repair: false
+      anvil_combine: true
+    anvil_repair_item:
+      - target: "#custom:magic_gems"
+        percent: 0.25
+
+# ---- 完整消耗品示例 ----
+custom:enchanted_potion:
+  settings:
+    food:
+      nutrition: 6
+      saturation: 4.0
+    consume_replacement: custom:empty_phial
+    glow_color: light_purple
+    compost_probability: 0.0
+
+# ---- 死亡机制专用物品 ----
+custom:soul_bound_ring:
+  settings:
+    keep_on_death_chance: 1.0
+    destroy_on_death_chance: 0.0
+    invulnerable:
+      - lava
+      - fire
+      - fire_tick
+      - lightning
+      - block_explosion
+      - entity_explosion
+    glow_color: dark_purple
+
+# ============================================================================
+# 设置项索引
+# ============================================================================
+# 编号  设置项                      类型           默认值      参考章节
+# ────────────────────────────────────────────────────────────────────────────
+#  1    fuel_time                   int           -           1
+#  2    tags                        list<string>  -           2
+#  3    equipment                   object        -           3
+#  4    repairable                  bool/object   true        4
+#  5    anvil_repair_item           list<object>  -           5
+#  6    renameable                  bool          true        6
+#  7    allowed_projectiles         list<string>  -           7
+#  8    projectile                  object        -           8
+#  9    dyeable                     bool          undefined   9
+# 10    enchantable                 bool          true        10
+# 11    compost_probability         float         0.5         11
+# 12    respect_repairable_component bool         false       12
+# 13    dye_color                   string(3int)  -           13
+# 14    firework_color              string(3int)  -           14
+# 15    food                        object        -           15
+# 16    consume_replacement         string        null        16
+# 17    craft_remainder             string/object -           17
+# 18    fuel_remainder              string        -           18
+# 19    invulnerable                list<string>  -           19
+# 20    ingredient_substitute       list<string>  -           20
+# 21    hat_height                  float         -           21
+# 22    keep_on_death_chance        float         -           22
+# 23    destroy_on_death_chance     float         -           23
+# 24    drop_display                bool/string   -           24
+# 25    glow_color                  string        -           25
+# ============================================================================

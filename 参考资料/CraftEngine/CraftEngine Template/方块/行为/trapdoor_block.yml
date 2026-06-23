@@ -1,0 +1,195 @@
+# =============================================================================
+# CraftEngine 活板门方块 (trapdoor_block) 行为模板
+# =============================================================================
+#
+# 说明:
+#   活板门是可开合的铰链面板。支持三种切换方式:
+#     - 手:   右键点击开关
+#     - 红石: 相邻信号激活时打开，信号切断时关闭
+#     - 风弹: 风弹爆炸可切换活板门状态
+#
+#   放置时活板门会自动检测周围红石信号与当前位置的水体状态:
+#     - 若被红石信号激活 => 变为开启状态
+#     - 若放置在水中     => 含水 (waterlogged = true)
+#
+# 兼容版本:
+#   - CraftEngine 26.2+
+#
+# 命名空间约定:
+#   本模板使用 custom: 命名空间，请替换为你自己的命名空间 ID。
+#
+# 使用方式:
+#   1. 将配置放入 resources/<你的包>/configuration/ 下的任意 YML 文件中
+#   2. 运行 /ce reload 重载配置
+#   3. 使用 /ce block set <x> <y> <z> custom:<方块ID> 放置方块
+#
+# 物品绑定:
+#   为使方块能被玩家通过物品放置，需要同时在物品侧配置 block_item 行为。
+#   详见: CraftEngine Wiki/configuration/item/behaviors/block_item.md
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 活板门方块 (trapdoor_block)
+  # ===========================================================================
+  #
+  # ┌─ 必需属性 (5个，4个必需 + 1个可选) ──────────────────────────────────┐
+  # │                                                                       │
+  # │  open        (boolean)              — 是否打开 (必需)                 │
+  # │  powered     (boolean)              — 是否被红石充能 (必需)           │
+  # │  half        (single_block_half)    — top / bottom (必需)             │
+  # │  facing      (horizontal_direction) — north/south/west/east (必需)   │
+  # │  waterlogged (boolean)              — 是否含水 (可选，默认 false)    │
+  # └───────────────────────────────────────────────────────────────────────┘
+  #
+  # 内部状态总数:
+  #   open(2) × powered(2) × half(2) × facing(4) × waterlogged(2) = 64 状态
+  #
+  # ┌─ 行为配置项 ───────────────────────────────────────────────────────────┐
+  # │                                                                       │
+  # │  type                  — 固定为 trapdoor_block (必填)                 │
+  # │  can_open_with_hand    — 允许右键点击切换 (boolean，默认 true)        │
+  # │  can_open_by_wind_charge — 允许风弹切换 (boolean，默认 true)           │
+  # │  sounds.open           — 打开时播放的音效 (可选)                      │
+  # │  sounds.close          — 关闭时播放的音效 (可选)                      │
+  # └───────────────────────────────────────────────────────────────────────┘
+  #
+  # ===========================================================================
+
+  # ===========================================================================
+  # 示例: 自定义木质活板门
+  # ===========================================================================
+  custom:example_trapdoor:
+
+    # ---- 状态定义 (states) ----
+    # 多状态方块: 定义所有属性及其默认值
+    states:
+
+      # --- 属性定义 ---
+      # 每个属性名称必须与 CraftEngine 硬编码名称完全一致
+      properties:
+        open:                                         # 是否打开 (必需)
+          type: boolean
+          default: false
+        powered:                                      # 是否被红石充能 (必需)
+          type: boolean
+          default: false
+        half:                                         # 面板位置 (必需)
+          type: single_block_half                     # 取值: top / bottom
+          default: bottom
+        facing:                                       # 朝向 (必需)
+          type: horizontal_direction                  # 取值: north / south / west / east
+          default: north
+        waterlogged:                                  # 是否含水 (可选)
+          type: boolean
+          default: false
+
+      # --- 外观定义 (appearances) ---
+      # 定义不同状态下方块的视觉表现
+      appearances:
+        # 默认外观 (第一个外观为回退备选)
+        default:
+          auto_state: solid                           # 使用通用 solid 状态组
+          model:
+            path: "minecraft:block/custom/example_trapdoor"  # 模型路径
+            generation:
+              parent: "minecraft:block/template_trapdoor_bottom"
+              textures:
+                texture: "minecraft:block/custom/example_trapdoor"
+
+      # --- 变体映射 (variants) ---
+      # 通配符语义: 只约束关键属性，其余不限
+      # 此处未显式指定 open/half/facing 的变体 => 所有匹配 waterlogged 的状态
+      # 均使用 default 外观，但 settings 会根据变体覆写含水状态
+      variants:
+        # 不含水 (默认，也可省略)
+        waterlogged=false:
+          appearance: default
+        # 含水: 外观不变，但方块内部含水体
+        waterlogged=true:
+          appearance: default
+          settings:
+            fluid_state: water                         # 方块内部含水体
+
+    # ---- 方块设置 (settings) ----
+    # 控制方块的物理属性、音效、工具、标签等
+    settings:
+      # 使用预定义的木质方块模板 (参见功能方块模板文件)
+      template:
+        - "custom:template/block_settings_wood"
+
+      # 活板门特有的物理属性
+      is_suffocating: false                           # 活板门不造成窒息
+      is_redstone_conductor: false                    # 活板门不传导红石信号
+      item: "custom:example_trapdoor"                 # 对应的物品 ID (中键选取)
+
+    # ---- 行为定义 (behavior) ----
+    # 核心: 活板门行为
+    behavior:
+      type: trapdoor_block                            # 行为类型 (必填)
+      can_open_with_hand: true                        # 允许右键点击切换 (默认 true)
+      can_open_by_wind_charge: true                   # 允许风弹切换 (默认 true)
+      sounds:                                         # 自定义开关音效 (可选)
+        open: "minecraft:block.wooden_trapdoor.open"  # 打开时播放的音效
+        close: "minecraft:block.wooden_trapdoor.close" # 关闭时播放的音效
+
+    # ---- 战利品表 (loot) ----
+    # 破坏后掉落自身物品
+    loot:
+      type: generic
+      entries:
+        - item: "custom:example_trapdoor"
+
+
+# =============================================================================
+# 附录: 活板门方块配置速查
+# =============================================================================
+#
+# ┌─ 属性一览 ───────────────────────────────────────────────────────────────┐
+# │                                                                         │
+# │  属性名       类型                    必需  默认值    说明              │
+# │  ────────────────────────────────────────────────────────────────────   │
+# │  open         boolean                 是    false    是否打开            │
+# │  powered      boolean                 是    false    是否红石充能        │
+# │  half         single_block_half       是    bottom   面板位置            │
+# │  facing       horizontal_direction    是    north    朝向                │
+# │  waterlogged  boolean                 否    false    是否含水            │
+# └─────────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 行为配置项一览 ─────────────────────────────────────────────────────────┐
+# │                                                                         │
+# │  配置项                  类型     默认值    说明                        │
+# │  ────────────────────────────────────────────────────────────────────   │
+# │  type                    string   必填      固定为 trapdoor_block       │
+# │  can_open_with_hand      boolean  true      允许右键切换                │
+# │  can_open_by_wind_charge boolean  true      允许风弹切换                │
+# │  sounds.open             string   可选      打开音效                    │
+# │  sounds.close            string   可选      关闭音效                    │
+# └─────────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 常见音效参考 ───────────────────────────────────────────────────────────┐
+# │                                                                         │
+# │  木活板门:                                                              │
+# │    open:  minecraft:block.wooden_trapdoor.open                          │
+# │    close: minecraft:block.wooden_trapdoor.close                         │
+# │                                                                         │
+# │  铁活板门:                                                              │
+# │    open:  minecraft:block.iron_trapdoor.open                            │
+# │    close: minecraft:block.iron_trapdoor.close                           │
+# └─────────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 常见问题 ───────────────────────────────────────────────────────────────┐
+# │                                                                         │
+# │  Q: 活板门能否被水冲毁?                                                 │
+# │  A: 不能。水只能进入活板门使其含水 (waterlogged=true)，不会破坏方块。   │
+# │                                                                         │
+# │  Q: 含水活板门被破坏时，水会流出吗?                                     │
+# │  A: 会的。破坏含水活板门后，水会流出并在该位置形成水源。                │
+# │                                                                         │
+# │  Q: 活板门是否能阻挡红石信号?                                           │
+# │  A: 不能。活板门 (无论开闭) 都不会传导红石信号。                        │
+# │                                                                         │
+# │  Q: 活板门是否可以被活塞推动?                                           │
+# │  A: 取决于 push_reaction 设置。默认与原版一致: 可被活塞推动。           │
+# └─────────────────────────────────────────────────────────────────────────┘

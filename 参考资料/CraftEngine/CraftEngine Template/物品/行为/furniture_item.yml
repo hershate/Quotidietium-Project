@@ -1,0 +1,54 @@
+# ============================================================================
+# 家具物品 (furniture_item) 行为模板
+# ============================================================================
+# 家具物品是一种绑定到家具的物品。当将此行为绑定到物品上时，
+# 可以通过右键点击来放置它。
+# ============================================================================
+
+# 方式一：引用已定义的家具
+items:
+  <namespace>:<item_id>:
+    behavior:
+      type: furniture_item
+      rules:
+        <variant>:                             # 变体，如 ground / wall
+          # 旋转选项:
+          # any     - 任意方向
+          # four    - 四向 (东/南/西/北)
+          # eight   - 八向
+          # sixteen - 十六向
+          # north   - 仅北向
+          # east    - 仅东向
+          # west    - 仅西向
+          # south   - 仅南向
+          # 注意: 旋转配置对 wall 变体无效
+          rotation: <four|eight|sixteen|any|north|east|west|south>
+          # 对齐选项:
+          # any    - 任意位置
+          # center - 居中
+          # half   - 半格
+          # quarter - 四分之一格
+          # corner - 角落
+          alignment: <center|half|quarter|corner|any>
+      furniture: <namespace>:<furniture_id>    # 引用的家具命名空间ID
+      ignore_placer: false                     # 放置时是否忽略放置者的碰撞箱
+      ignore_entities: false                   # 放置时是否忽略所有实体的碰撞箱
+
+# ---------------------------------------------------------------------------
+# 方式二：内联定义完整家具配置
+# ---------------------------------------------------------------------------
+items:
+  <namespace>:<item_id>:
+    behavior:
+      type: furniture_item
+      rules:
+        <variant>:
+          rotation: <four|eight|sixteen|any|north|east|west|south>
+          alignment: <center|half|quarter|corner|any>
+      ignore_placer: false
+      ignore_entities: false
+      furniture:
+        settings: { }
+        variants: { }
+        loot: { }
+        events: { }

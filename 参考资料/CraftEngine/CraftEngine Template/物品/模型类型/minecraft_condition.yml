@@ -1,0 +1,121 @@
+# ============================================================
+# 物品模型 - minecraft:condition (布尔条件型)
+# ============================================================
+# 根据物品堆叠上的布尔谓词条件，在两个模型映射之间切换。
+# 当属性为真时显示 on_true 模型，为假时显示 on_false 模型。
+# ============================================================
+# 参考文档:
+#   https://zh.minecraft.wiki/w/物品模型映射#condition
+#   configuration/item/models/condition.md
+# ============================================================
+
+items:
+  # ========== 物品命名空间ID ==========
+  # 格式: <命名空间>:<物品ID>
+  custom:example_condition_item:
+    model:
+      # ========== 模型映射类型 (必填) ==========
+      # 固定为 minecraft:condition
+      type: "minecraft:condition"
+
+      # ========== 条件谓词 (必填) ==========
+      # 指定用于判断的谓词属性，决定使用 on_true 还是 on_false 分支
+      #
+      # 可用谓词:
+      #
+      # --- 基础状态 ---
+      # minecraft:broken            - 物品即将损坏（耐久度仅剩 1 点）
+      #                                不可损坏物品返回 false
+      # minecraft:carried           - 玩家在容器屏幕中通过光标拾取此物品堆叠
+      # minecraft:damaged           - 物品堆叠损坏程度 (damage) 是否为 0
+      #                                不可损坏物品返回 false
+      # minecraft:selected          - 玩家在快捷栏中选择了此物品堆叠
+      # minecraft:using_item        - 物品堆叠正在被使用（如食用食物）
+      # minecraft:extended_view     - 按下 Shift 且物品在 GUI 内渲染
+      #
+      # --- 钓鱼竿 ---
+      # minecraft:fishing_rod/cast  - 检查钓鱼钩是否已经抛出
+      #                                游戏先检查玩家是否正在钓鱼，
+      #                                再检查钓鱼竿在主/副手的位置
+      #
+      # --- 实体视角 ---
+      # minecraft:view_entity       - 持有此物品的生物是否为当前摄像机实体
+      #                                非旁观模式=当前玩家，
+      #                                旁观模式=当前进入视角的实体
+      #
+      # --- 收纳袋 ---
+      # minecraft:bundle/has_selected_item
+      #                               - 玩家选中了此收纳袋内的物品
+      #                                无 bundle_contents 组件返回 false
+      #
+      # --- 数据组件 (1.21.5+) ---
+      # minecraft:component         - 检查物品是否满足指定数据组件谓词
+      #                               需额外配置 component 字段
+      # minecraft:has_component     - 检查物品是否有给定的组件
+      #                               需额外配置 component / ignore-default 字段
+      #
+      # --- 按键绑定 ---
+      # minecraft:keybind_down      - 检查键位绑定是否被按下
+      #                               需额外配置 keybind 字段
+      #
+      # --- 自定义模型数据 ---
+      # minecraft:custom_model_data - 读取 custom_model_data 组件获取结果
+      #                               需额外配置 index 字段
+      property: "minecraft:using_item"
+
+      # ========== 额外属性参数 (根据 property 选择性添加) ==========
+
+      # --- minecraft:component 专用 (1.21.5+) ---
+      # 数据组件谓词，用于判定物品堆叠是否满足指定组件条件
+      # component:
+      #   conditions:
+      #     - type: "minecraft:value_check"
+      #       value:
+      #         type: "minecraft:component"
+      #         component: "minecraft:damage"
+      #         ignore_default: true
+      #       range:
+      #         min: 1
+      #         max: 10
+
+      # --- minecraft:has_component 专用 ---
+      # component: "minecraft:enchantments"   # 要检查的组件名称
+      # ignore-default: false                  # 是否忽略默认值 (可选, 默认 false)
+
+      # --- minecraft:keybind_down 专用 ---
+      # keybind: "key.left"                    # 键位绑定标识
+
+      # --- minecraft:custom_model_data 专用 ---
+      # index: 0                               # 整型数组索引 (可选, 默认 0)
+
+      # ========== 条件为假时的模型映射 (必填) ==========
+      # 当 property 评估为 false 时应用此模型
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/model_false"
+
+      # ========== 条件为真时的模型映射 (必填) ==========
+      # 当 property 评估为 true 时应用此模型
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/model_true"
+
+      # ========== 模型变换 transformation (可选, 26.1+) ==========
+      # 对整个条件模型结果进行统一的变换操作
+      # transformation:
+      #   # 缩放: 以原点为中心缩放模型
+      #   # 格式: scale_x,scale_y,scale_z (浮点数)
+      #   scale: 1.0,1.0,1.0
+      #
+      #   # 平移: 模型在三维空间中的位移
+      #   # 格式: translate_x,translate_y,translate_z (浮点数)
+      #   translation: 0.0,0.0,0.0
+      #
+      #   # 初始旋转 (右乘旋转): 绕指定轴旋转指定角度
+      #   right_rotation:
+      #     angle: 0.0       # 旋转角度，弧度制 (例如 3.14159 = 180度)
+      #     axis: 0.0,1.0,0.0  # 旋转轴向量 (例如 0,1,0 = Y轴)
+      #
+      #   # 二次旋转 (左乘旋转): 四元数格式
+      #   # 格式: x,y,z,w (四元数分量)
+      #   left_rotation: 0.0,0.0,0.0,1.0

@@ -1,0 +1,103 @@
+# ====================================================================
+# 农作物方块 (Crop Block) - 行为配置模板
+# ====================================================================
+# 农作物方块通过随机刻在年龄阶段中生长，类似小麦或马铃薯。
+# 仅在光照等级位于 light_requirement 与 max_light_requirement
+# （包含两端）之间时生长。
+# 骨粉可按配置的值增加 age 值，但不会超过最大值。
+# ====================================================================
+
+blocks:
+  # ==================================================================
+  # 自定义农作物示例 (custom 命名空间)
+  # ==================================================================
+  custom:crystal_wheat:
+    behavior:
+      type: crop_block                                    # [必需] 行为类型，固定为 crop_block
+
+      # ----- 生长速度 -----
+      grow_speed: 0.25                                    # [可选] 每随机刻增加的 age 值
+                                                            # 整数部分：每次随机刻直接增加对应数量
+                                                            # 小数部分：作为概率额外增加 1
+                                                            # 例：0.25 = 25% 概率 +1
+                                                            #     1.25 = 必定 +1，额外 25% 概率再 +1
+                                                            # 默认值: 0.125
+
+      # ----- 光照要求 -----
+      light_requirement: 9                                # [可选] 生长所需最低光照等级
+                                                            # 默认值: 无（需自行设置）
+      max_light_requirement: 15                           # [可选] 生长所需最高光照等级
+                                                            # 默认值: 15
+
+      # ----- 区块生成光照 -----
+      spawn_light_requirement: 9                          # [可选] 区块生成时的最低光照
+                                                            # 默认值: 等于 light_requirement
+      max_spawn_light_requirement: 15                     # [可选] 区块生成时的最高光照
+                                                            # 默认值: 等于 max_light_requirement
+
+      # ----- 骨粉交互 -----
+      is_bone_meal_target: true                           # [可选] 骨粉是否对此农作物生效
+                                                            # 默认值: true
+      bone_meal_age_bonus:                                # [可选] 骨粉增加的 age 值（支持范围）
+        type: uniform                                     #   - uniform: 均匀分布
+        min: 1                                            #   [必需] 最小值
+        max: 3                                            #   [必需] 最大值
+
+    # ================================================================
+    # 属性定义 - 农作物方块必需的属性
+    # ================================================================
+    properties:
+      age: 0                                              # [必需] int 类型，当前生长阶段
+                                                            # 取值范围：0 ~ 最大成熟阶段（由具体模型/行为决定）
+                                                            # 初始值为 0（种子阶段）
+
+  # ==================================================================
+  # 完整示例：传统农作物 (vanilla 风格)
+  # ==================================================================
+  custom:tomato_plant:
+    behavior:
+      type: crop_block
+      grow_speed: 0.33
+      light_requirement: 8
+      max_light_requirement: 15
+      spawn_light_requirement: 8
+      max_spawn_light_requirement: 15
+      is_bone_meal_target: true
+      bone_meal_age_bonus:
+        type: uniform
+        min: 2
+        max: 4
+    properties:
+      age: 0
+
+  # ==================================================================
+  # 速生作物示例 (grow_speed > 1)
+  # ==================================================================
+  custom:magic_bamboo:
+    behavior:
+      type: crop_block
+      grow_speed: 1.5                                     # 每次随机刻必定 +1，额外 50% 概率再 +1
+      light_requirement: 10
+      max_light_requirement: 15
+      is_bone_meal_target: false                          # 骨粉无效
+    properties:
+      age: 0
+
+  # ==================================================================
+  # 低光作物示例 (可在低光照下生长)
+  # ==================================================================
+  custom:cave_moss:
+    behavior:
+      type: crop_block
+      grow_speed: 0.1                                     # 生长极慢
+      light_requirement: 1                                # 仅需光照 1 即可生长
+      max_light_requirement: 8
+      spawn_light_requirement: 0                          # 生成时无光照要求
+      max_spawn_light_requirement: 7
+      is_bone_meal_target: true
+      bone_meal_age_bonus:
+        type: uniform
+        min: 1
+        max: 2
+    properties:
+      age: 0

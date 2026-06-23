@@ -1,0 +1,16 @@
+# display_item_furniture 行为模板
+# 允许将物品放置在家具中进行展示
+# 可单独配置展示物品的碰撞框，以优化交互逻辑
+
+furniture:
+  example:display_item_furniture:
+    behavior:
+      type: display_item_furniture
+      data_key: craftengine:display_item
+      sounds:
+        put: minecraft:block.decorated_pot.insert         # 放入物品时播放的音效
+        take: minecraft:block.decorated_pot.insert_fail    # 取出物品时播放的音效
+      variants:
+        ground:
+          item_position: 0,0.07,0                          # 展示物品的位置偏移 (x,y,z)
+          hitboxes: []                                     # 判定箱配置，详见家具变体的判定箱部分

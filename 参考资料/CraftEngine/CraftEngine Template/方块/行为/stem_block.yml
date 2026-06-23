@@ -1,0 +1,313 @@
+# =============================================================================
+# CraftEngine 茎方块行为配置模板 (stem_block)
+# =============================================================================
+# 对应 Wiki: CraftEngine Wiki/configuration/block/behaviors/stem_block.md
+#
+# 茎方块会随时间生长（类似原版西瓜或南瓜茎）。每次随机刻都会增加 age。
+# 达到最大 age 后，随机选择一个水平方向，若目标位置为空气且其下方方块
+# 在白名单中，则在该位置生成果实，并将自身替换为朝向果实的附着茎方块。
+#
+# 适用 Minecraft 版本: 1.21+
+# 命名空间: custom（请替换为实际项目命名空间）
+# =============================================================================
+
+# =============================================================================
+# 全局 blocks 配置区域
+# 所有自定义方块都定义在此键下。可分散在多个配置文件中，插件会自动合并。
+# =============================================================================
+blocks:
+
+  # ===========================================================================
+  # 茎方块
+  # ===========================================================================
+  # 类似西瓜或南瓜茎。达到最大 age 后生成果实并变为附着茎。
+  #
+  # 生长条件:
+  #   - 光照等级必须位于 light_requirement 与 max_light_requirement 之间
+  #   - 未达到最大 age 时，每次随机刻增加 age（骨粉可加速）
+  #
+  # 果实生成条件:
+  #   - 目标位置必须为空气
+  #   - 目标位置下方方块必须在 fruit_bottom_blocks 或 fruit_bottom_block_tags 白名单中
+  #   - 若两个列表均为空，果实永远不会生成
+  #
+  # 骨粉作用:
+  #   - 可额外生长多个 age 阶段
+  #   - 若已达最大值，立即尝试生成果实
+  # ===========================================================================
+  custom:hami_melon_stem:
+    # -------------------------------------------------------------------------
+    # 多状态配置（必填）
+    # stem_block 需要 age 属性来追踪生长阶段，因此使用 states 而非 state。
+    # -------------------------------------------------------------------------
+    states:
+      # ---- 属性定义 ----
+      properties:
+        age:
+          type: int                          # 属性类型（必需）
+          default: 0                         # 默认值（建议设为 0）
+          range: 0~7                         # 取值范围（必需, 0~7 为典型值）
+
+      # ---- 外观定义 ----
+      # 为不同生长阶段配置不同的模型/纹理。可统一使用一个外观，
+      # 也可按 age 范围分多个外观。
+      appearances:
+        default:
+          auto_state: sapling                # 使用树苗方块状态组（碰撞箱小）
+          model:
+            path: "custom:block/hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "custom:block/hami_melon_stem"
+                upperstem: "custom:block/attached_hami_melon_stem"
+
+      # ---- 变体映射 ----
+      # 将 age 值范围映射到对应外观。
+      variants:
+        "age=0": appearance: default
+        "age=1": appearance: default
+        "age=2": appearance: default
+        "age=3": appearance: default
+        "age=4": appearance: default
+        "age=5": appearance: default
+        "age=6": appearance: default
+        "age=7": appearance: default
+
+    # -------------------------------------------------------------------------
+    # 方块行为（必填 — 指定为 stem_block 类型）
+    # -------------------------------------------------------------------------
+    behavior:
+      # ---- 行为类型（必需）----
+      type: stem_block
+
+      # ---- 生成配置（必需）----
+      fruit: custom:hami_melon                # 果实方块 ID（必需）
+                                              # 茎达到最大 age 后在此处生成的方块
+      attached_stem: custom:attached_hami_melon_stem  # 附着茎方块 ID（必需）
+                                                      # 结果后茎自身转变的目标方块
+
+      # ---- 光照限制（可选）----
+      light_requirement: 0                    # 生长所需最低光照等级（默认 0）
+                                              # 光照低于此值时不生长
+      max_light_requirement: 15               # 生长所需最高光照等级（默认 15）
+                                              # 光照高于此值时不生长
+
+      # ---- 果实底部方块白名单（可选）----
+      fruit_bottom_blocks:                    # 果实可坐落的方块列表（白名单）
+        - minecraft:farmland                  # 示例: 耕地
+        - minecraft:dirt                      # 示例: 泥土
+        - minecraft:grass_block               # 示例: 草方块
+                                              # 仅当目标位置下方的方块匹配此列表时，
+                                              # 果实才会生成
+
+      fruit_bottom_block_tags: []             # 果实可坐落的方块标签列表（白名单）
+                                              # 例如: ["minecraft:dirt", "minecraft:sand"]
+                                              # 若两个列表均为空，果实永不生成
+
+    # -------------------------------------------------------------------------
+    # 方块设置（可选 — 推荐搭配使用）
+    # -------------------------------------------------------------------------
+    settings:
+      hardness: 0.0                           # 硬度（农作物一碰就碎）
+      resistance: 0.0                         # 爆炸抗性
+      replaceable: false                      # 不可被其他方块替代
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+      tags:
+        - minecraft:crops                     # 农作物标签
+
+    # -------------------------------------------------------------------------
+    # 战利品表（可选 — 通常只掉落种子）
+    # -------------------------------------------------------------------------
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:hami_melon_seeds"
+
+
+  # ===========================================================================
+  # 完整示例: 南瓜茎（带多外观 + 成长进度骨骼模型 + 完整 loot 表）
+  # ===========================================================================
+  custom:pumpkin_stem:
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~7
+
+      appearances:
+        # 幼苗期（age=0~1）：小苗模型
+        seedling:
+          auto_state: sapling
+          model:
+            path: "custom:block/pumpkin_stem_stage0"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "custom:block/pumpkin_stem_stage0"
+        # 生长期（age=2~4）：逐渐长高的茎
+        growing:
+          auto_state: sapling
+          model:
+            path: "custom:block/pumpkin_stem_stage1"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "custom:block/pumpkin_stem_stage1"
+        # 成熟期（age=5~7）：完全成熟的茎，准备结果
+        mature:
+          auto_state: sapling
+          model:
+            path: "custom:block/pumpkin_stem_stage2"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "custom:block/pumpkin_stem_stage2"
+                upperstem: "custom:block/attached_pumpkin_stem"
+
+      variants:
+        "age=0,1":
+          appearance: seedling
+        "age=2,3,4":
+          appearance: growing
+        "age=5,6,7":
+          appearance: mature
+
+    behavior:
+      type: stem_block
+      fruit: custom:pumpkin                       # 果实方块 ID（必需）
+      attached_stem: custom:attached_pumpkin_stem # 附着茎方块 ID（必需）
+      light_requirement: 8                        # 南瓜需要较高光照
+      max_light_requirement: 15
+      fruit_bottom_blocks:
+        - minecraft:farmland
+        - minecraft:dirt
+        - minecraft:grass_block
+      fruit_bottom_block_tags:
+        - minecraft:dirt                           # 示例: 使用标签而非具体方块
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      push_reaction: DESTROY
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+      tags:
+        - minecraft:crops
+
+    loot:
+      pools:
+        # 池1: 种子（始终掉落）
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:pumpkin_seeds"
+        # 池2: 成熟时额外掉落经验
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+            - type: block_state_property
+              block: "custom:pumpkin_stem"
+              properties:
+                age: "7"
+          entries:
+            - type: item
+              item: "minecraft:experience_bottle"
+              weight: 1
+              functions:
+                - type: set_count
+                  count:
+                    type: uniform
+                    min: 1
+                    max: 3
+
+
+# =============================================================================
+# 属性参考（property requirements）
+# =============================================================================
+# stem_block 行为要求方块具有以下属性：
+#
+# | 属性名称 | 属性类型 | 是否必需 | 说明                        |
+# |---------|---------|---------|----------------------------|
+# | age     | int     | 是       | 生长阶段，0=刚种下，最大值时结果 |
+#
+# 注意事项:
+#   1. age 的 range（取值范围）必须定义，典型值为 0~7（与原版一致）
+#   2. 最大 age 值由 range 的上限决定，而非由行为配置指定
+#   3. stem_block 本身无 grow_speed 配置，生长进度完全由随机刻驱动
+#      （若需要可控生长速度，请考虑 crop_block 行为）
+#   4. fruit_bottom_blocks 与 fruit_bottom_block_tags 使用白名单模式
+#      而非黑名单。若两个列表均为空，果实永远不会生成
+#   5. 附着茎方块必须有 facing (horizontal_direction) 属性，并配置
+#      attached_stem_block 行为（参见 attached_stem_block 模板）
+# =============================================================================
+
+# =============================================================================
+# 所有配置选项汇总
+# =============================================================================
+# blocks:
+#   <namespace:path>:                         # 方块 ID
+#     states:                                  # [必需] 多状态配置
+#       properties:                            #   属性定义
+#         age:                                 #   [必需] age 属性
+#           type: int                          #     属性类型，固定为 int
+#           default: <int>                     #     默认值，建议 0
+#           range: <min~max>                   #     取值范围，如 0~7
+#       appearances:                           #   外观定义
+#         <appearance_name>:                   #     外观名称
+#           auto_state: <state_group>          #     方块状态组，如 sapling
+#           model:                             #     模型配置
+#             path: <model_path>               #       模型路径
+#             generation:                      #       模型生成（可选）
+#               parent: <parent_model>         #         父模型
+#               textures:                      #         纹理映射
+#                 <texture_var>: <texture>     #           纹理变量: 纹理路径
+#       variants:                              #   [可选] 变体映射
+#         "<condition>":                       #     条件，如 "age=0,1,2"
+#           appearance: <appearance_name>      #     映射到外观
+#     behavior:                                # [必需] 行为配置
+#       type: stem_block                       #   [必需] 行为类型，固定为 stem_block
+#       fruit: <namespace:path>                #   [必需] 果实方块 ID
+#       attached_stem: <namespace:path>        #   [必需] 附着茎方块 ID
+#       light_requirement: <int>               #   [可选] 最低光照，默认 0
+#       max_light_requirement: <int>           #   [可选] 最高光照，默认 15
+#       fruit_bottom_blocks:                   #   [可选] 果实底部方块白名单
+#         - <namespace:path>                   #     方块 ID
+#       fruit_bottom_block_tags:               #   [可选] 果实底部方块标签白名单
+#         - <tag_namespace:tag>               #     标签 ID
+#     settings:                                # [可选] 方块设置
+#       hardness: <double>                     #   硬度
+#       resistance: <double>                   #   爆炸抗性
+#       sounds:                                #   音效配置
+#         break: <sound_id>                    #     破坏音效
+#         step: <sound_id>                     #     行走音效
+#         place: <sound_id>                    #     放置音效
+#         hit: <sound_id>                      #     打击音效
+#         fall: <sound_id>                     #     坠落音效
+#       tags:                                  #   方块标签
+#         - <tag_id>                           #     标签
+#     loot:                                    # [可选] 战利品表
+#       pools:                                 #   掉落池
+#         - rolls: <int>                       #     掉落次数
+#           conditions:                        #     条件
+#             - type: <condition_type>         #       条件类型
+#           entries:                           #     掉落条目
+#             - type: item                     #       条目类型
+#               item: <namespace:path>         #       物品 ID
+# =============================================================================

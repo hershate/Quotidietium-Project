@@ -1,0 +1,9 @@
+# 墙面方块物品
+# 只能放到方块侧面，其他行为和方块物品一致。
+# 参考文档: configuration/item/behaviors/wall_block_item.md
+
+items:
+  <namespace>:<item_id>:
+    behavior:
+      type: wall_block_item
+      block: <namespace>:<block_id>

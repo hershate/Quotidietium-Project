@@ -1,0 +1,11 @@
+# 🌊 液体碰撞方块物品
+# 检查交互是否与液体、冰、霜冰或含水方块碰撞。适用于创建可以放置在水源或熔岩表面的方块。
+# 所有其他配置选项与方块物品的配置相同。
+
+items:
+  default:reed:
+    material: paper
+    behavior:
+      type: liquid_collision_block_item
+      offset_y: 1 # 放置方块的位置
+      block: default:reed

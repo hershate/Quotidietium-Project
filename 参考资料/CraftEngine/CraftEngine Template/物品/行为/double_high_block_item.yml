@@ -1,0 +1,14 @@
+# 2️⃣ 双层方块物品 (Double-High Block Item)
+# 一种专门用于两格高方块的放置方法，解决仅使用标准方块物品时出现的放置错误。
+# 当物品被使用时，会检测放置位置上方是否为空，并自动放置两格高的方块结构。
+
+items:
+  example:my_double_high_block:
+    behavior:
+      # 行为类型：双层方块物品
+      type: double_high_block_item
+
+      # 【必需】放置时使用的方块 ID
+      # 指定当物品被使用时放置的两格高方块。
+      # 该方块应为一个双层方块（如门、高大的植物等），物品会处理下半部分和上半部分的放置逻辑。
+      block: example:my_double_high_block

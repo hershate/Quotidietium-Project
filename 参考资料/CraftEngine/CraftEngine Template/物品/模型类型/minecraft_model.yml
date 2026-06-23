@@ -1,0 +1,308 @@
+# ============================================================================
+# 模型类型: minecraft:model - 配置模板
+# ============================================================================
+# 指定游戏使用哪一个物品模型进行渲染，并且指定各个着色索引使用的颜色。
+# 如果不指定 type，默认使用 minecraft:model。
+# 参考: https://zh.minecraft.wiki/w/物品模型映射#model
+# ============================================================================
+
+items:
+  # ==========================================================================
+  # 基础配置: type + path
+  # ==========================================================================
+  # type 在此情况下是可选的，默认为 minecraft:model。
+  # path 指向物品模型文件路径（不包含 .json 后缀）。
+  # ==========================================================================
+  custom:example_item:
+    model:
+      type: minecraft:model    # 可选，默认 minecraft:model
+      path: minecraft:item/custom/example_item
+
+  # ==========================================================================
+  # 模型生成 (generation)
+  # ==========================================================================
+  # 自动生成物品模型，避免手动创建 JSON 模型文件。
+  # parent: 必填，父模型路径，例如 "minecraft:item/handheld"、"minecraft:item/generated"
+  # textures: 纹理映射，key 为纹理变量名，value 为纹理路径
+  # ==========================================================================
+  custom:example_pickaxe:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_pickaxe
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          "layer0": "minecraft:item/custom/example_pickaxe"
+
+  # ---- 常用物品示例 (generated 父模型) ----
+  custom:example_ingot:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_ingot
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:item/custom/example_ingot"
+
+  # ---- 多纹理层示例 ----
+  custom:example_chestplate:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_chestplate
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:item/custom/example_chestplate"
+          "layer1": "minecraft:item/custom/example_chestplate_overlay"
+
+  # ---- 自定义方块物品示例 ----
+  custom:example_block:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_block
+      generation:
+        parent: "minecraft:block/custom/example_block"
+
+  # ==========================================================================
+  # 模型变换 (transformation) - 1.26.1+
+  # ==========================================================================
+  # 对模型应用变换，包括缩放、平移、旋转。
+  # 所有变换以模型原点为中心执行。
+  # ==========================================================================
+  custom:example_transformed:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_transformed
+      transformation:
+        # 缩放: 以原点为中心缩放模型，格式: scaleX,scaleY,scaleZ
+        scale: 1.5,1.5,1.5
+
+        # 平移: 沿各轴移动模型，格式: x,y,z
+        translation: 0.5,0.0,0.0
+
+        # 右旋 (right_rotation): 初始旋转
+        # angle: 绕旋转轴的旋转角度（弧度制）
+        # axis: 3D 向量，表示旋转轴
+        right_rotation:
+          angle: 1.5708    # 90 度 = PI/2
+          axis: 0.0,1.0,0.0
+
+        # 左旋 (left_rotation): 再次旋转模型，格式: x,y,z,angle（四元数）
+        left_rotation: 0.0,0.0,0.0,0.0
+
+  # ---- 变换：仅缩放 ----
+  custom:example_scaled:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_scaled
+      transformation:
+        scale: 2.0,2.0,2.0
+
+  # ---- 变换：仅平移 ----
+  custom:example_translated:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_translated
+      transformation:
+        translation: 0.0,0.5,0.0
+
+  # ---- 变换：完整旋转示例 ----
+  custom:example_rotated:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_rotated
+      transformation:
+        right_rotation:
+          angle: 3.14159    # 180 度 = PI
+          axis: 0.0,1.0,0.0
+        left_rotation: 0.0,0.0,0.0,0.0
+
+  # ==========================================================================
+  # 着色 (tints)
+  # ==========================================================================
+  # 为模型指定颜色提供器 (ColorProvider)，用于给模型面着色。
+  # 对应 BlockBench 中勾选了"着色"(tintindex) 的模型面。
+  # tints 是一个列表，按索引对应 tintindex。
+  # ==========================================================================
+
+  # ==========================================================================
+  # tint 类型: minecraft:constant
+  # ==========================================================================
+  # 使用固定颜色值着色。颜色支持十进制、RGB 格式。
+  # ==========================================================================
+  custom:example_tint_constant:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_constant
+      generation:
+        parent: "minecraft:block/custom/example_leaves"
+      tints:
+        - type: "minecraft:constant"
+          value: -12012264    # 十进制颜色值
+
+  # ---- constant: RGB 格式示例 ----
+  custom:example_constant_rgb:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_constant_rgb
+      tints:
+        - type: "minecraft:constant"
+          value: 255,0,0      # RGB 颜色，红色
+
+  # ==========================================================================
+  # tint 类型: minecraft:custom_model_data
+  # ==========================================================================
+  # 根据物品的 CustomModelData 组件值着色。
+  # index: 要读取的数据索引（对应 CustomModelData 的浮点数列表索引）
+  # default: 未设置时的默认颜色
+  # ==========================================================================
+  custom:example_tint_custom_data:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_custom_data
+      tints:
+        - type: "minecraft:custom_model_data"
+          index: 0
+          default: -12012264
+
+  # ==========================================================================
+  # tint 类型: minecraft:dye
+  # ==========================================================================
+  # 根据物品的染料颜色着色。适用于可染色的盔甲/物品。
+  # default: 未染色时的默认颜色
+  # ==========================================================================
+  custom:example_tint_dye:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_dye
+      tints:
+        - type: "minecraft:dye"
+          default: -12012264
+
+  # ==========================================================================
+  # tint 类型: minecraft:firework
+  # ==========================================================================
+  # 根据烟火之星的颜色着色。
+  # default: 未设置时的默认颜色
+  # ==========================================================================
+  custom:example_tint_firework:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_firework
+      tints:
+        - type: "minecraft:firework"
+          default: -12012264
+
+  # ==========================================================================
+  # tint 类型: minecraft:grass
+  # ==========================================================================
+  # 根据所处生物群系的草地颜色着色。
+  # temperature: 温度值 (0.0~1.0)，决定颜色混合
+  # downfall: 降雨值 (0.0~1.0)，决定颜色混合
+  # ==========================================================================
+  custom:example_tint_grass:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_grass
+      tints:
+        - type: "minecraft:grass"
+          temperature: 0.5
+          downfall: 0.5
+
+  # ==========================================================================
+  # tint 类型: minecraft:map_color
+  # ==========================================================================
+  # 使用地图颜色着色。
+  # default: 未设置时的默认颜色
+  # ==========================================================================
+  custom:example_tint_map:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_map
+      tints:
+        - type: "minecraft:map_color"
+          default: -12012264
+
+  # ==========================================================================
+  # tint 类型: minecraft:potion
+  # ==========================================================================
+  # 根据药水颜色着色。
+  # default: 未设置时的默认颜色
+  # ==========================================================================
+  custom:example_tint_potion:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_potion
+      tints:
+        - type: "minecraft:potion"
+          default: -12012264
+
+  # ==========================================================================
+  # tint 类型: minecraft:team
+  # ==========================================================================
+  # 根据队伍颜色着色。
+  # default: 未设置时的默认颜色
+  # ==========================================================================
+  custom:example_tint_team:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_tint_team
+      tints:
+        - type: "minecraft:team"
+          default: -12012264
+
+  # ==========================================================================
+  # 综合示例: generation + transformation + 多 tint
+  # ==========================================================================
+  # 结合模型生成、变换以及多个着色索引的完整示例。
+  # tints 列表的顺序对应 BlockBench 中的 tintindex 索引（从 0 开始）。
+  # ==========================================================================
+  custom:example_complex:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_complex
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:item/custom/example_base"
+          "layer1": "minecraft:item/custom/example_overlay"
+      transformation:
+        scale: 1.0,1.0,1.0
+        translation: 0.0,0.0,0.0
+        right_rotation:
+          angle: 0.0
+          axis: 0.0,0.0,0.0
+        left_rotation: 0.0,0.0,0.0,0.0
+      tints:
+        - type: "minecraft:dye"           # tintindex=0: 染料颜色
+          default: 144,80,62
+        - type: "minecraft:grass"         # tintindex=1: 群系草地颜色
+          temperature: 0.5
+          downfall: 0.5
+
+  # ==========================================================================
+  # 简约示例: 仅基础字段
+  # ==========================================================================
+  custom:example_simple:
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/example_simple
+
+# ============================================================================
+# 字段速查
+# ============================================================================
+# 路径                    类型            必需    默认值        说明
+# ────────────────────────────────────────────────────────────────────────────
+# model.type              string          否      minecraft:model  模型类型
+# model.path              string          是      -                模型文件路径
+# model.generation        object          否      -                模型自动生成
+# model.generation.parent string          是*     -                父模型路径 (*generation 存在时必填)
+# model.generation.textures  object       否      -                纹理映射表
+# model.transformation    object          否      -                模型变换 (1.26.1+)
+# model.transformation.scale  string      否      1,1,1           缩放 XYZ
+# model.transformation.translation string 否      0,0,0           平移 XYZ
+# model.transformation.right_rotation object 否      -             初始旋转 (角度+轴)
+# model.transformation.left_rotation  string 否     0,0,0,0        再次旋转 (四元数)
+# model.tints             list<object>    否      -                着色配置列表
+# model.tints[].type      string          是      -                着色类型
+# ============================================================================

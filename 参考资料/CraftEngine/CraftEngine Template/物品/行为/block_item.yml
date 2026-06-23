@@ -1,0 +1,49 @@
+# ============================================================
+# 方块物品 (Block Item) - 行为配置模板
+# ============================================================
+# 将物品绑定到方块，右键点击可放置对应方块。
+# 支持直接引用已有方块定义，或内联完整方块配置。
+# ============================================================
+
+items:
+  # ========== 物品命名空间ID ==========
+  # 格式: <命名空间>:<物品ID>
+  # 示例使用 custom 命名空间，可按需替换
+  custom:example_block_item:
+    behavior:
+      # ========== 行为类型 (必填) ==========
+      # 固定为 block_item
+      type: block_item
+
+      # ========== 方块绑定 (必填) ==========
+      # 方式一: 引用已有的方块定义（推荐）
+      # 指向 blocks 下已定义的方块
+      block: custom:example_block
+
+      # ========== 完整方块配置 (可选) ==========
+      # 方式二: 直接内联方块的所有配置
+      # 注意: 这种方式将方块定义内嵌在物品中，
+      #       不利于复用，建议仅用于简单/一次性方块
+      # block:
+      #   # 方块行为
+      #   behavior:
+      #     type: custom_block_type
+      #   # 方块设置 (硬度、亮度、碰撞箱等)
+      #   settings:
+      #     hardness: 2.0
+      #     blast_resistance: 3.0
+      #     light_level: 0
+      #   # 方块状态
+      #   states:
+      #     facing: north
+      #     powered: false
+      #   # 战利品表
+      #   loot:
+      #     - type: item
+      #       item: custom:example_block
+      #       amount: 1
+      #   # 事件
+      #   events:
+      #     on_place:
+      #       commands:
+      #         - playsound block.stone.place block @p

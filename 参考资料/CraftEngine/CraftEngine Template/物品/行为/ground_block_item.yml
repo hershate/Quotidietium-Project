@@ -1,0 +1,10 @@
+# ⬆️ 地面方块物品 (ground_block_item)
+# 只能放到方块顶面，其他行为和 block_item 一致。
+
+items:
+  example:my_ground_block:
+    behavior:
+      # 行为类型：地面方块物品
+      type: ground_block_item
+      # 放置时对应的方块 (命名空间:方块ID)
+      block: example:my_ground_block

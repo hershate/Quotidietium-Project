@@ -1,0 +1,209 @@
+# =============================================================================
+# CraftEngine 文件冲突处理器配置模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: reference/file_conflict.md
+# 严格遵循文档中出现的配置项，未出现的不使用。
+# =============================================================================
+#
+# 冲突处理器位于 config.yml 的 resource-pack.duplicated-files-handler 部分。
+# 当合并多个资源包遇到文件冲突时，插件会按顺序查找第一个匹配的解决方案。
+# 如果没有找到合适的方案，插件将在控制台发出警告。
+#
+# 核心结构:
+#   - term:      识别冲突文件的条件
+#   - resolution:冲突文件的处理方案
+#
+# 注意: 插件不支持着色器 (shader) 文件的合并。
+# =============================================================================
+
+duplicated-files-handler:
+
+  # ===========================================================================
+  # 1. 物品模型冲突处理 (all_of 示例)
+  # ===========================================================================
+  # 匹配 items 目录下的所有 JSON 模型文件，两种路径都覆盖。
+  # 使用 deeply: true 深度合并，避免手动合并所有物品模型。
+  - term:
+      type: all_of
+      terms:
+        - type: any_of
+          terms:
+            - type: parent_path_suffix
+              suffix: "minecraft/items"         # 1.21.4+
+            - type: parent_path_suffix
+              suffix: "minecraft/models/item"   # 1.20-1.21.3
+        - type: filename
+          name: "*.json"
+    resolution:
+      type: merge_json
+      deeply: true
+
+  # ===========================================================================
+  # 2. 方块模型冲突处理 (any_of + 正则)
+  # ===========================================================================
+  # 匹配 blocks 目录下的所有 JSON 模型文件。
+  # any_of: 路径前缀匹配或正则匹配，满足任一条件即触发。
+  - term:
+      type: any_of
+      terms:
+        - type: parent_path_prefix
+          path: "assets/minecraft/models/block"
+        - type: pattern
+          pattern: "^assets/minecraft/models/block/.+\\.json$"
+    resolution:
+      type: merge_json
+      deeply: true
+
+  # ===========================================================================
+  # 3. pack.mcmeta 冲突处理 (exact 路径精确匹配)
+  # ===========================================================================
+  # 精确匹配根目录下的 pack.mcmeta 文件，使用专用合并方案。
+  - term:
+      type: exact
+      path: "pack.mcmeta"
+    resolution:
+      type: merge_pack_mcmeta
+      description: "<gray>CraftEngine 资源包"
+
+  # ===========================================================================
+  # 4. pack.png 冲突处理 (exact + retain_matching)
+  # ===========================================================================
+  # 精确匹配 pack.png 文件，保留默认资源包目录下的版本。
+  # retain_matching 的条件中使用 contains 检查路径是否包含特定片段。
+  - term:
+      type: exact
+      path: "pack.png"
+    resolution:
+      type: retain_matching
+      term:
+        type: contains
+        path: "resources/default/resourcepack"
+
+  # ===========================================================================
+  # 5. sounds.json 冲突处理 (filename 文件名匹配)
+  # ===========================================================================
+  # 按文件名匹配所有 sounds.json 文件，浅层合并（不嵌套合并子对象）。
+  - term:
+      type: filename
+      name: "sounds.json"
+    resolution:
+      type: merge_json
+      deeply: false
+
+  # ===========================================================================
+  # 6. 纹理图集冲突处理 (exact + merge_atlas)
+  # ===========================================================================
+  # 精确匹配纹理图集文件，使用专用 atlases 合并方案。
+  - term:
+      type: exact
+      path: "assets/minecraft/atlases/blocks.json"
+    resolution:
+      type: merge_atlas
+
+  # ===========================================================================
+  # 7. 字体文件冲突处理 (parent_path_prefix + merge_font)
+  # ===========================================================================
+  # 匹配 font 目录下的所有字体文件，使用专用字体合并方案。
+  - term:
+      type: parent_path_prefix
+      path: "assets/minecraft/font"
+    resolution:
+      type: merge_font
+
+  # ===========================================================================
+  # 8. 语言文件冲突处理 (parent_path_suffix + conditional)
+  # ===========================================================================
+  # 条件解析: 先检查冲突文件是否在 lang 目录下，是则 JSON 合并。
+  - term:
+      type: parent_path_suffix
+      suffix: "minecraft/lang"
+    resolution:
+      type: conditional
+      term:
+        type: pattern
+        pattern: ".+\\.json$"
+      resolution:
+        type: merge_json
+        deeply: false
+
+  # ===========================================================================
+  # 9. 自定义纹理冲突处理 (inverted 取反)
+  # ===========================================================================
+  # 匹配 optifine 目录之外的所有纹理 PNG 文件。
+  # inverted 对内部 term 的结果取反，此处排除 optifine 路径。
+  - term:
+      type: inverted
+      term:
+        type: parent_path_prefix
+        path: "assets/minecraft/optifine"
+    resolution:
+      type: retain_matching
+      term:
+        type: contains
+        path: "resources/default"
+
+  # ===========================================================================
+  # 10. 自定义家具模型冲突处理 (all_of + 多层嵌套)
+  # ===========================================================================
+  # 多层条件组合: 路径包含 custom/furniture 且是 JSON 文件。
+  - term:
+      type: all_of
+      terms:
+        - type: contains
+          path: "custom/furniture"
+        - type: filename
+          name: "*.json"
+    resolution:
+      type: merge_json
+      deeply: true
+
+  # ===========================================================================
+  # 11. 命名空间级别的 JSON 合并 (parent_path_prefix + merge_json)
+  # ===========================================================================
+  # 整个 assets/custom 命名空间下所有 JSON 文件深度合并。
+  - term:
+      type: parent_path_prefix
+      path: "assets/custom"
+    resolution:
+      type: merge_json
+      deeply: true
+
+  # ===========================================================================
+  # 12. 特定前缀/后缀文件的保留策略 (any_of + retain_matching)
+  # ===========================================================================
+  # 核心资源包文件保留基础包中的版本。
+  - term:
+      type: any_of
+      terms:
+        - type: exact
+          path: "splashes.txt"
+        - type: exact
+          path: "en_us.json"
+        - type: exact
+          path: "credits.txt"
+    resolution:
+      type: retain_matching
+      term:
+        type: contains
+        path: "base"
+
+  # ===========================================================================
+  # 13. 自定义武器模型冲突处理 (pattern 正则匹配)
+  # ===========================================================================
+  # 使用正则表达式匹配自定义武器物品模型。
+  - term:
+      type: pattern
+      pattern: "^assets/[a-z_]+/items/weapons/.+\\.json$"
+    resolution:
+      type: merge_json
+      deeply: true
+
+  # ===========================================================================
+  # 14. atlas 目录下所有纹理图集 (parent_path_suffix + merge_atlas)
+  # ===========================================================================
+  # 匹配所有 atlases 子目录下的 JSON 文件。
+  - term:
+      type: parent_path_suffix
+      suffix: "atlases"
+    resolution:
+      type: merge_atlas

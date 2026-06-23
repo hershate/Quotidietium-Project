@@ -1,0 +1,9 @@
+# 天花板方块物品 (ceiling_block_item)
+# 只能放到方块底面，其他行为和方块物品一致。
+items:
+  <物品标识符, 例如 default:chandelier>:
+    behavior:
+      # 行为类型: ceiling_block_item
+      type: ceiling_block_item
+      # 指向的方块标识符
+      block: <方块标识符, 例如 default:chandelier>

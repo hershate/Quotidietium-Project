@@ -1,0 +1,142 @@
+# ============================================================================
+# CraftEngine - 物品模型类型：minecraft:composite（组合模型）
+# ============================================================================
+# 对应原版物品模型映射类型：composite
+# 参考文档：https://zh.minecraft.wiki/w/物品模型映射#composite
+# ============================================================================
+# composite 类型会先计算 models 列表内所有物品模型映射，
+# 再根据数组次序从后向前依次渲染，从而实现多层叠加效果。
+# 适用于：多层材质叠加、发光效果层、自定义装饰层等。
+# ============================================================================
+
+# ============================================================================
+# 1. 基础组合模型（无变换）
+# ============================================================================
+# 最简单的 composite 用法：将多个模型按顺序叠层渲染。
+custom:composite_sword:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/iron_sword"          # 底层：铁剑
+      - type: minecraft:model
+        path: "custom:item/crystal_overlay"         # 上层：水晶覆盖层
+
+# ============================================================================
+# 2. 多层叠加组合
+# ============================================================================
+# 可以叠加任意数量的模型层，常用于装饰性物品。
+custom:runed_blade:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/diamond_sword"        # 第一层（最底层）：钻石剑
+      - type: minecraft:model
+        path: "custom:item/runes_layer"             # 第二层：符文纹理
+      - type: minecraft:model
+        path: "custom:item/glow_overlay"            # 第三层（最顶层）：发光覆盖
+
+# ============================================================================
+# 3. 带基本变换的组合模型
+# ============================================================================
+# 通过 transformation 对整体组合进行缩放、平移、旋转。
+# 注意：变换作用于整个组合模型，而非单独某一层。
+# transformation 在 26.1+ 版本中可用。
+custom:enchanted_shield:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/shield"               # 底层：盾牌
+      - type: minecraft:model
+        path: "custom:item/shield_emblem"           # 上层：徽章
+    transformation:
+      scale: 1.0,1.0,1.0                           # 缩放：x,y,z（以原点为中心）
+      translation: 0,0,0                            # 平移：x,y,z
+
+# ============================================================================
+# 4. 带旋转变换的组合模型
+# ============================================================================
+# right_rotation：初始旋转，以 angle（弧度）和 axis（三维向量）定义。
+# left_rotation：再次旋转，以四元数（x,y,z,w）定义。
+custom:magic_orb:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/ender_pearl"          # 底层：末影珍珠
+      - type: minecraft:model
+        path: "custom:item/magic_aura"              # 上层：魔法光环
+    transformation:
+      scale: 0.8,0.8,0.8                           # 整体缩小
+      translation: 0,0.5,0                          # 向上偏移
+      right_rotation:                               # 初始旋转
+        angle: 1.5708                               # 旋转角度（弧度），1.5708 ≈ 90°
+        axis: 0,1,0                                 # 旋转轴：沿 Y 轴旋转
+      left_rotation: 0,0,0,0                        # 再次旋转（四元数 x,y,z,w），0 表示不旋转
+
+# ============================================================================
+# 5. 完整示例：多层装备组合
+# ============================================================================
+# 结合了多层叠加与完整变换的实战示例。
+custom:dragon_scale_helmet:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/netherite_helmet"     # 第一层：下界合金头盔基底
+      - type: minecraft:model
+        path: "custom:item/dragon_scales"           # 第二层：龙鳞材质
+      - type: minecraft:model
+        path: "custom:item/dragon_eye_gem"          # 第三层：龙眼宝石装饰
+    transformation:
+      scale: 1.1,1.1,1.1                           # 等比放大 10%
+      translation: 0,0.1,0                          # 略微上移
+      right_rotation:
+        angle: 0.0
+        axis: 0,1,0
+      left_rotation: 0,0,0,0
+
+# ============================================================================
+# 6. 与 condition 结合使用
+# ============================================================================
+# composite 中的每层 model 同样支持 condition 条件判断，
+# 可以根据物品状态动态选择不同模型层。
+custom:conditional_staff:
+  model:
+    type: "minecraft:composite"
+    models:
+      - type: minecraft:model
+        path: "minecraft:item/stick"
+      - type: minecraft:model
+        path: "custom:item/staff_charged"
+        condition:
+          - type: filled
+            component: "minecraft:charged_projectiles"
+      - type: minecraft:model
+        path: "custom:item/staff_glow"
+        condition:
+          - type: property
+            property: "custom:is_empowered"
+
+# ============================================================================
+# 完整参数参考
+# ============================================================================
+# type: "minecraft:composite"                        # 模型类型，固定值
+#
+# models:                                           # 模型映射列表（必填，至少一个）
+#   - type: minecraft:model                         # 子模型类型
+#     path: "命名空间:路径"                           # 模型路径
+#     condition: [...]                              # 可选：条件判断
+#   - type: minecraft:model
+#     path: "命名空间:路径"
+#
+# transformation:                                   # 可选：模型变换（26.1+）
+#   scale: x,y,z                                   # 缩放（以原点为中心）
+#   translation: x,y,z                              # 平移变换
+#   right_rotation:                                 # 初始旋转
+#     angle: 弧度值                                 # 旋转角度（弧度制）
+#     axis: x,y,z                                   # 三维旋转轴向量
+#   left_rotation: x,y,z,w                          # 再次旋转（四元数形式）
+# ============================================================================

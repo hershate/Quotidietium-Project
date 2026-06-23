@@ -1,0 +1,135 @@
+# ============================================================
+# 可切换灯方块 (toggleable_lamp_block) 行为配置模板
+# 对应文档: CraftEngine Wiki/configuration/block/behaviors/toggleable_lamp_block.md
+# 命名空间: 使用自定义命名空间 (custom) 替换示例中的 default
+# ============================================================
+#
+# 【行为概述】
+# toggleable_lamp_block 通过切换 `lit` 属性控制方块的亮灭状态。
+# 可由红石信号、手动交互（右键点击）或两者共同控制。
+#
+#   - 红石控制: 每当方块从未充能变为充能时，lit 状态翻转一次。
+#     powered 属性用于记录当前是否受到红石信号。
+#   - 手动交互: 当 can_open_with_hand 启用时，玩家可右键直接切换 lit 状态。
+#
+# 【依赖属性】
+#   lit:     boolean | 必选 | 表示当前方块是否发光/亮起
+#   powered: boolean | 条件必选 | 表示当前方块是否被红石充能
+#     - 当 can_open_with_hand: false 时，powered 为必选
+#     - 当 can_open_with_hand: true 时，powered 为可选
+#
+# ============================================================
+
+# -------------------- blocks 根键 --------------------
+# 所有方块定义均位于此键下，使用 "命名空间:方块ID" 格式
+blocks:
+
+  # ============================================================
+  # 示例方块: custom:test_lamp
+  # 完整配置演示，包含所有可用选项
+  # ============================================================
+  custom:test_lamp:
+
+    # ---------- behavior 行为定义 ----------
+    # 控制方块的逻辑行为类型及其参数
+    behavior:
+
+      # 行为类型: toggleable_lamp_block (可切换灯)
+      type: toggleable_lamp_block
+
+      # ---- can_open_with_hand ----
+      # 描述: 是否允许玩家右键点击直接切换 lit 状态
+      # 类型: boolean
+      # 默认值: false
+      # 说明:
+      #   - false: 仅能通过红石信号控制方块亮灭
+      #   - true: 玩家右键点击即可切换 lit，同时仍可受红石控制
+      # 注意事项:
+      #   - 为 false 时，powered 属性为必选
+      #   - 为 true 时，powered 属性为可选
+      can_open_with_hand: false
+
+    # ---------- properties 属性定义 ----------
+    # 定义方块实例可存储的状态属性
+    properties:
+
+      # ---- lit (必选) ----
+      # 类型: boolean
+      # 描述: 方块的发光/亮起状态
+      #   true  = 亮起（发光）
+      #   false = 熄灭（不发光）
+      lit:
+        type: boolean
+        default: false         # 默认熄灭
+
+      # ---- powered (条件必选) ----
+      # 类型: boolean
+      # 描述: 方块当前是否受到红石信号充能
+      #   true  = 正在被红石充能
+      #   false = 未被红石充能
+      # 必选条件: 当 can_open_with_hand: false 时此属性为必选
+      powered:
+        type: boolean
+        default: false         # 默认未充能
+
+    # ============================================================
+    # 以下是可选的 display / mechanics / durability 等补充配置
+    # 可根据具体需求扩展
+    # ============================================================
+
+    # display (可选): 方块外观配置
+    display:
+      # 亮起时的方块模型
+      lit:
+        model: custom:block/test_lamp_on
+      # 熄灭时的方块模型
+      unlit:
+        model: custom:block/test_lamp_off
+
+    # mechanics (可选): 附加机制
+    mechanics:
+      # 破坏掉落自身
+      block_drops:
+        type: block_self
+      # 方块音效组
+      sound:
+        place: block.stone.place
+        break: block.stone.break
+        step: block.stone.step
+
+  # ============================================================
+  # 简洁示例: 仅红石控制 (手动交互关闭)
+  # can_open_with_hand: false 时 powered 为必选
+  # ============================================================
+  custom:redstone_lamp:
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: false
+    properties:
+      lit:
+        type: boolean
+        default: false
+      powered:
+        type: boolean
+        default: false
+
+  # ============================================================
+  # 简洁示例: 红石 + 手动交互 (右键切换)
+  # can_open_with_hand: true 时 powered 为可选
+  # ============================================================
+  custom:hand_lamp:
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true       # 允许右键切换
+    properties:
+      lit:
+        type: boolean
+        default: true                # 默认亮起
+
+  # ============================================================
+  # 原版文档中的示例 (保留作为对照)
+  # ============================================================
+  # default:copper_coil:
+  #   behavior:
+  #     type: toggleable_lamp_block
+  #     can_open_with_hand: false

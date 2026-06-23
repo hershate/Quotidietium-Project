@@ -1,0 +1,278 @@
+# =============================================================================
+# CraftEngine 树苗方块模板 — sapling_block
+# =============================================================================
+#
+# 概述:
+#   树苗方块会随时间生长。每次随机刻，若光照条件满足，则以 grow_speed
+#   的概率使 stage 增加 1。当 stage 达到最大值时，会调用配置的 feature
+#   生成完整的树木。
+#
+# 生长条件:
+#   仅当方块上方位置的亮度位于 light_requirement（下限，默认 9）与
+#   max_light_requirement（上限，默认 15）之间时才会生长。
+#
+# 骨粉行为:
+#   骨粉可以无视光照和生长概率，立即将 stage 增加 1；若已达最大值则
+#   直接尝试生成树木。bone_meal_success_chance 仅决定骨粉使用时是否
+#   播放绿色粒子效果——无论粒子是否出现，stage 的增加始终生效。
+#
+# 兼容版本:
+#   - CraftEngine 26.2+
+#
+# 命名空间约定:
+#   - 所有示例使用 custom: 命名空间
+#   - 纹理路径使用 minecraft:block/custom/ 前缀
+#   - 物品绑定默认与方块同 id
+# =============================================================================
+
+
+# =============================================================================
+# 方块配置
+# =============================================================================
+blocks:
+
+  # ===========================================================================
+  # 树苗方块 (sapling_block) — 随时间生长为树木
+  # ===========================================================================
+  #
+  # 必需属性:
+  #   stage (int) — 生长阶段（0 ~ max_stage），达到 max_stage 时生成树木
+  #
+  # 行为配置项:
+  #   feature                   (string)  — [必需] 完全成熟时生成的已配置地物 ID
+  #   light_requirement         (int)     — [可选] 生长所需最低光照，默认 9
+  #   max_light_requirement     (int)     — [可选] 生长所需最高光照，默认 15
+  #   grow_speed                (double)  — [可选] 每随机刻增加 stage 的概率，默认约 0.143
+  #   bone_meal_success_chance  (double)  — [可选] 骨粉产生成功粒子的概率，默认 0.45
+  #
+  # 注意:
+  #   stage 增加到最大值的次数越多，树苗完全生长的平均时间就越长——
+  #   因为每个随机刻不是必定生长，只有 grow_speed 的概率会让 stage
+  #   增加一次，所以需要增加的次数越多，等待的时间也就越长。
+  #
+  custom:palm_sapling:
+    # --- 状态定义 ---
+    # stage 属性是 sapling_block 行为所必需的 int 属性
+    # 取值范围: 0 ~ max_stage (这里设为 3, 即 4 个生长阶段)
+    states:
+      properties:
+        stage:
+          type: int
+          default: 0
+          # values 用于约束 stage 的取值范围 (可选)
+          # 若未指定 values, 则 Minecraft 使用 int 默认范围
+          values:
+            - 0
+            - 1
+            - 2
+            - 3
+
+      # --- 外观定义 ---
+      # 每个生长阶段可以有独立的模型和纹理
+      appearances:
+        # 阶段 0: 种子 / 刚种下
+        stage_0:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/palm_sapling
+            generation:
+              parent: minecraft:block/cross
+              textures:
+                cross: minecraft:block/custom/palm_sapling_stage_0
+          settings:
+            # 小树苗碰撞箱较小
+            collision_box: -4, 0, -4, 4, 8, 4
+
+        # 阶段 1: 幼芽
+        stage_1:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/palm_sapling
+            generation:
+              parent: minecraft:block/cross
+              textures:
+                cross: minecraft:block/custom/palm_sapling_stage_1
+          settings:
+            collision_box: -4, 0, -4, 4, 8, 4
+
+        # 阶段 2: 树苗长高
+        stage_2:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/palm_sapling
+            generation:
+              parent: minecraft:block/cross
+              textures:
+                cross: minecraft:block/custom/palm_sapling_stage_2
+          settings:
+            collision_box: -4, 0, -4, 4, 12, 4
+
+        # 阶段 3: 即将成熟 (最大值)
+        stage_3:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/palm_sapling
+            generation:
+              parent: minecraft:block/cross
+              textures:
+                cross: minecraft:block/custom/palm_sapling_stage_3
+          settings:
+            collision_box: -4, 0, -4, 4, 12, 4
+
+      # --- 变体映射: stage 值 → 外观 ---
+      # 通配符语义: 只匹配 stage 属性, 其余属性不限
+      variants:
+        stage=0:
+          appearance: stage_0
+        stage=1:
+          appearance: stage_1
+        stage=2:
+          appearance: stage_2
+        stage=3:
+          appearance: stage_3
+
+    # --- 方块设置 ---
+    settings:
+      hardness: 0.0                    # 树苗很脆弱, 瞬间破坏
+      resistance: 0.0
+      is_suffocating: false            # 树苗不窒息生物
+      is_redstone_conductor: false     # 树苗不是红石导体
+      map_color: 38                    # 绿色系
+      instrument: harp                 # 音符盒 - 竖琴
+      sounds:
+        break: minecraft:block.grass.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.grass.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+      correct_tools:
+        - minecraft:wooden_hoe
+        - minecraft:stone_hoe
+        - minecraft:iron_hoe
+        - minecraft:golden_hoe
+        - minecraft:diamond_hoe
+        - minecraft:netherite_hoe
+      tags:
+        - minecraft:mineable/hoe       # 锄类可加速破坏
+        - minecraft:saplings           # 树苗标签 (用于与原版树苗相关的机制)
+      item: custom:palm_sapling        # 方块对应的物品 ID
+
+    # --- 方块行为: 树苗生长 ---
+    behavior:
+      type: sapling_block
+      feature: custom:palm_tree                    # [必需] 完全成熟时生成的已配置地物 ID
+      light_requirement: 9                         # [可选] 生长所需最低光照, 默认 9
+      max_light_requirement: 15                    # [可选] 生长所需最高光照, 默认 15
+      grow_speed: 0.7                              # [可选] 每随机刻增加 stage 的概率, 默认约 0.143
+      bone_meal_success_chance: 0.45               # [可选] 骨粉产生成功粒子的概率, 默认 0.45
+
+    # --- 战利品表: 破坏时掉落自身 ---
+    loot:
+      type: generic
+      entries:
+        - item: custom:palm_sapling
+          count: 1
+
+    # --- 可选: 事件响应 ---
+    # 例如: 放置时随机初始化生长阶段
+    # events:
+    #   - on: place
+    #     functions:
+    #       - type: random_int
+    #         target: state
+    #         property: stage
+    #         min: 0
+    #         max: 1
+    #         chance: 0.3
+
+
+  # ===========================================================================
+  # 完整参考: 最小化树苗配置 (仅必需项)
+  # ===========================================================================
+  #
+  # 以下是最简配置, 仅包含 sapling_block 行为的必需项:
+  #
+  # custom:minimal_sapling:
+  #   states:
+  #     properties:
+  #       stage:
+  #         type: int
+  #         default: 0
+  #         values:
+  #           - 0
+  #           - 1
+  #
+  #     appearances:
+  #       default:
+  #         auto_state: solid
+  #         model:
+  #           path: minecraft:block/custom/minimal_sapling
+  #           generation:
+  #             parent: minecraft:block/cross
+  #             textures:
+  #               cross: minecraft:block/custom/minimal_sapling
+  #
+  #     variants:
+  #       stage=0:
+  #         appearance: default
+  #       stage=1:
+  #         appearance: default
+  #
+  #   settings:
+  #     hardness: 0.0
+  #     is_suffocating: false
+  #     is_redstone_conductor: false
+  #     sounds:
+  #       break: minecraft:block.grass.break
+  #       step: minecraft:block.grass.step
+  #       place: minecraft:block.grass.place
+  #       hit: minecraft:block.grass.hit
+  #       fall: minecraft:block.grass.fall
+  #     item: custom:minimal_sapling
+  #
+  #   behavior:
+  #     type: sapling_block
+  #     feature: custom:some_tree_feature   # [必需] 请替换为实际的地物 ID
+  #
+  #   loot:
+  #     type: generic
+  #     entries:
+  #       - item: custom:minimal_sapling
+
+
+# =============================================================================
+# 附录: 配置项速查
+# =============================================================================
+#
+# blocks:
+#   <namespace:block_id>:
+#     states:
+#       properties:
+#         stage:                    # [必需] int 属性
+#           type: int
+#           default: 0
+#           values: []              # [可选] 约束取值范围
+#       appearances: {}             # 各阶段外观定义
+#       variants: {}                # stage=N → appearance 映射
+#     settings: {}                  # 基础方块属性
+#     behavior:
+#       type: sapling_block
+#       feature: <namespace:feature_id>          #  [必需] 地物 ID
+#       light_requirement: <int>                  #  [可选] 最低光照, 默认 9
+#       max_light_requirement: <int>             #  [可选] 最高光照, 默认 15
+#       grow_speed: <double>                      #  [可选] 生长概率, 默认 ~0.143
+#       bone_meal_success_chance: <double>        #  [可选] 骨粉粒子概率, 默认 0.45
+#     loot: {}                     # 战利品表
+#
+# =============================================================================
+# 物品侧配置 (放置在 物品/行为/ 目录下)
+# =============================================================================
+# 要使玩家能手持放置该树苗方块, 需要在物品配置中添加 block_item 行为:
+#
+# items:
+#   custom:palm_sapling:
+#     behavior:
+#       type: block_item
+#       block: custom:palm_sapling
+#
+# =============================================================================

@@ -1,0 +1,864 @@
+# =============================================================================
+# CraftEngine 家具变体配置参考
+# 完整覆盖所有变体相关配置项：变体模式、元素、判定箱、座位、剔除、显示变换、广告牌、发光、阴影。
+#
+# 参考资料:
+#   CraftEngine Wiki/configuration/furniture/variants.md
+# =============================================================================
+
+# =============================================================================
+# 变体基础结构
+#
+# variants 是家具的核心部分，定义家具在不同放置模式下的外观和交互体积。
+# 每个家具必须至少有一个变体（通常为 ground）。
+#
+# 三个预设变体类型:
+#   ground:   地面变体 — 放置在地面方块上的默认形态
+#   wall:     墙壁变体 — 挂在墙面上的形态（需要 wall_block_item 行为支持）
+#   ceiling:  天花板变体 — 挂在天花板下的形态（需要 ceiling_block_item 行为支持）
+#
+# 变体的切换目前仅支持通过 API 操作。
+#
+# 结构速览:
+#   variants:
+#     <变体名称>:
+#       loot_spawn_offset: x,y,z     # 掉落物生成偏移
+#       entity_culling: ...           # 实体剔除配置
+#       elements:                     # 展示元素列表
+#         - type: item_display        # 元素类型
+#           item: <物品ID>
+#           display_transform: none   # 显示变换
+#           billboard: fixed          # 广告牌模式
+#           position: x,y,z           # 元素位置
+#           translation: x,y,z        # 实体偏移
+#           ...
+#       hitboxes:                     # 判定箱列表
+#         - type: interaction         # 判定箱类型
+#           position: x,y,z
+#           width: 1
+#           height: 2
+#           seats:                    # 座位列表
+#             - x,y,z yaw
+# =============================================================================
+furniture:
+  namespace:example_furniture:
+
+    # ---------- 家具设置 ----------
+    settings:
+      item: namespace:example_furniture
+      sounds:
+        break: minecraft:block.stone.break
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+      hit_times: 1
+
+    # =========================================================================
+    # 变体区域
+    #
+    # 以下是三种预设变体的完整配置，涵盖所有可用参数。
+    # 每种变体都可以包含完全独立的 elements、hitboxes、entity_culling 配置。
+    # =========================================================================
+    variants:
+
+      # =======================================================================
+      # 1. ground 变体 — 地面放置形态
+      #
+      # 应用于放置在方块顶面上的家具。position 的 Y 轴通常为 0（方块底部）。
+      # =======================================================================
+      ground:
+
+        # ---------- 掉落物偏移 ----------
+        # loot_spawn_offset: 掉落物生成时的偏移坐标。
+        # 防止掉落物卡在家具内部，导致玩家无法拾取。
+        # 格式: x,y,z（相对于方块坐标）
+        loot_spawn_offset: 0.5,0.5,0
+
+        # ---------- 实体剔除 ----------
+        # entity_culling: 控制此变体的实体剔除行为。
+        # 剔除能显著提升大量家具同屏时的渲染性能。
+        #
+        # 方式 1: 简单开关（true = 启用剔除并使用自动参数）
+        # entity_culling: true
+        #
+        # 方式 2: 显式关闭
+        # entity_culling: false
+        #
+        # 方式 3: 详细配置
+        entity_culling:
+          # aabb: 剔除判断的包围盒 (x1,y1,z1,x2,y2,z2)
+          # 不建议手动配置，插件会自动基于元素和判定箱计算。
+          view_distance: 64   # 可视距离剔除（格）
+                               # -1 = 不限制距离（开启光追时慎用，会导致性能消耗）
+          ray_tracing: false   # 是否启用光线追踪剔除
+
+        # ---------- 展示元素 ----------
+        elements:
+
+          # -------------------------------------------------------------------
+          # 元素类型 1: item_display — 物品展示实体
+          # 最常用的元素类型。渲染一个 Minecraft 物品模型作为家具外观。
+          # 支持 display_transform、billboard、glow_color、shadow 等丰富效果。
+          # -------------------------------------------------------------------
+          - type: item_display
+
+            # item: 要渲染的物品 ID（必填）
+            item: namespace:example_furniture
+
+            # display_transform: 物品模型的显示变换方式
+            # 控制模型在展示时的坐标系变换。不同的变换方式会带来自动旋转或缩放。
+            #
+            # none:                          不变换（使用原始模型姿态）
+            # third_person_left_hand:        第三人称左手视角变换
+            # third_person_right_hand:       第三人称右手视角变换
+            # first_person_left_hand:        第一人称左手视角变换
+            # first_person_right_hand:       第一人称右手视角变换
+            # head:                          头部物品栏变换（如头盔）
+            # gui:                           图形界面中的变换（物品栏图标）
+            # ground:                        地面掉落物变换（平铺旋转）
+            # fixed:                         默认变换（固定显示）
+            # on_shelf:                      展示架/物品框中的变换
+            display_transform: none
+
+            # billboard: 元素面朝玩家的方式（广告牌模式）
+            # 控制元素如何跟随玩家视角旋转。
+            #
+            # fixed:       固定垂直轴和水平轴 — 完全不跟随玩家视角
+            #               适用场景: 大多数固定家具（桌子、椅子、箱子）
+            #
+            # vertical:    仅固定垂直轴 — 水平方向上跟随玩家旋转
+            #               适用场景: 立柱形物体（柱子、路灯）
+            #
+            # horizontal:  仅固定水平轴 — 垂直方向上跟随玩家旋转
+            #               适用场景: 需要始终俯视或仰视的元素
+            #
+            # center:      按中心跟随玩家视角旋转（始终面向玩家）
+            #               适用场景: 全息投影、始终面向玩家的装饰
+            billboard: fixed
+
+            # position: 元素锚点在方块内的位置
+            # 这是展示实体在 Minecraft 世界中的实际坐标位置。
+            # ground 变体中，通常 X 和 Z 在 0~1 之间（方块内），Y 为 0。
+            # 格式: x,y,z
+            # ⚠️ wall/ceiling 变体必须设置微偏移避免黑色渲染
+            position: 0.5,0,0
+
+            # translation: 展示实体自身的位移属性
+            # 这是展示实体 NBT 中的位移（实体自身的渲染偏移）。
+            # 与 position 的区别:
+            #   - position 改变实体的世界坐标位置
+            #   - translation 是实体内部的渲染偏移（不影响碰撞箱位置）
+            # 格式: x,y,z
+            translation: 0,0.5,0
+
+            # pitch: 俯仰角（单位: 度）
+            # 元素绕 X 轴的旋转角度。正值向下，负值向上。
+            pitch: 0.0
+
+            # yaw: 偏航角（单位: 度）
+            # 元素绕 Y 轴的旋转角度。0 朝南，90 朝西，180 朝北，270 朝东。
+            yaw: 0.0
+
+            # scale: 元素的缩放比例
+            # 格式 1: 单一数值 — 等比例缩放
+            # 格式 2: x,y,z — 分别设定三个轴的缩放
+            # scale: 1          # 等比例缩放
+            # scale: 1,2,1      # Y 轴拉伸至 2 倍
+            scale: 1
+
+            # rotation: 元素的旋转（支持 3 种格式）
+            #
+            # 格式 1: 单一数值 — 绕 Y 轴旋转的角度
+            # rotation: 45
+            #
+            # 格式 2: 欧拉角 (x,y,z) — 分别绕 X、Y、Z 轴旋转
+            # rotation: 45,45,0
+            #
+            # 格式 3: 四元数 (x,y,z,w) — 用四元数精确控制旋转
+            # rotation: 0,0,0.7071,0.7071
+            # 四元数参考: https://quaternions.online/
+            # 旋转工具: https://iwatake2222.github.io/rotation_master/rotation_master.html
+            rotation: 0
+
+            # glow_color: 发光颜色
+            # 使元素呈现自发光效果，并指定发光颜色。
+            # 格式: R,G,B（范围 0~255，每个分量）
+            # 设置为非零值会使元素无视环境光照，始终以指定颜色显示发光。
+            glow_color: 255,255,255   # 白色发光
+
+            # shadow_radius: 阴影扩散半径
+            # 控制元素投射阴影的扩散范围。默认值: 0（无阴影扩散效果）。
+            # 值越大，阴影越柔和扩散。
+            shadow_radius: 0.5
+
+            # shadow_strength: 阴影强度
+            # 控制投射阴影的深浅程度。默认值: 1.0（完全阴影）。
+            # 范围: 0.0（无阴影）~ 1.0（最深阴影）
+            shadow_strength: 1.0
+
+            # brightness: 光照覆盖
+            # 强制指定元素的方块光照和天空光照等级，
+            # 使其不受环境黑暗影响（如在地下也保持亮色）。
+            brightness:
+              block_light: 15    # 方块光照等级覆盖（0~15）
+              sky_light: 15      # 天空光照等级覆盖（0~15）
+
+            # apply_dyed_color: 是否应用染色颜色
+            # 当物品具有染色组件时，是否自动将染色颜色应用到渲染上。
+            # 默认值: true
+            apply_dyed_color: true
+
+            # tint_source: 染色来源
+            # 选择影响此家具颜色的组件类型。
+            # 选择取决于家具元素物品所支持的组件。
+            tint_source:
+              - dyed_color           # 皮革染色
+              # - map_color          # 地图颜色
+              # - firework_explosion # 烟花爆炸颜色
+              # - potion_contents    # 药水内容物颜色
+
+            # view_range: 可见范围倍率
+            # 控制此元素在多少距离内可见。默认值: 1.0。
+            # 值越大，玩家在更远的距离就能看到此元素。
+            view_range: 1.0
+
+          # -------------------------------------------------------------------
+          # 元素类型 2: text_display — 文本展示实体
+          # 渲染一段悬浮文本。支持变量占位符和丰富格式选项。
+          # -------------------------------------------------------------------
+          - type: text_display
+
+            # text: 要显示的文本内容（必填）
+            # 支持 PlaceholderAPI 变量占位符如 <papi:player_name>
+            text: "欢迎 <papi:player_name>"    # 使用 PAPI 显示玩家名
+
+            # billboard 同 item_display
+            billboard: fixed
+
+            # position / translation / pitch / yaw / scale 同 item_display
+            position: 0.5,0,0
+            translation: 0,1.2,0
+            scale: 1
+
+            # glow_color 同 item_display
+            glow_color: 255,255,0    # 金色发光文本
+
+            # brightness 同 item_display
+            brightness:
+              block_light: 15
+              sky_light: 15
+
+            # rotation 同 item_display（3 种格式）
+            rotation: 0
+
+            # line_width: 文本行宽限制
+            # 超过此行宽的文本会自动换行。默认值: 200。
+            line_width: 200
+
+            # background_color: 文本背景颜色
+            # 格式: A,R,G,B（Alpha 通道在前）。范围 0~255 每个分量。
+            # 64,0,0,0 = 半透明黑色
+            background_color: 64,0,0,0
+
+            # text_opacity: 文本不透明度
+            # -1 = 默认不透明度。范围 0~255。
+            text_opacity: -1
+
+            # has_shadow: 文本是否有阴影描边
+            # false = 无阴影（文本更清晰简洁）
+            # true = 有阴影（类似默认标题文字效果）
+            has_shadow: false
+
+            # is_see_through: 是否透视可见
+            # false = 被方块挡住时不可见
+            # true = 始终可见（穿过方块也能看到）
+            is_see_through: false
+
+            # use_default_background_color: 是否使用默认背景颜色
+            # false = 使用上面设置的 background_color
+            # true = 使用 Minecraft 默认文本背景（黑色不透明）
+            use_default_background_color: false
+
+            # alignment: 文本对齐方式
+            # center: 居中对齐
+            # left:   左对齐
+            # right:  右对齐
+            alignment: center
+
+          # -------------------------------------------------------------------
+          # 元素类型 3: item — 掉落物实体
+          # 渲染一个旋转浮动的掉落物形式（类似丢在地上的物品）。
+          # 用于模拟掉落在地上的物品展示效果。
+          # -------------------------------------------------------------------
+          - type: item
+
+            # item: 要渲染的物品 ID（必填）
+            item: namespace:example_furniture
+
+            # position: 掉落物的位置
+            position: 0,1,0
+
+            # tint_source 同 item_display
+            tint_source:
+              - dyed_color
+
+          # -------------------------------------------------------------------
+          # 元素类型 4: armor_stand — 盔甲架实体
+          # 基于盔甲架渲染物品。可在小/大盔甲架上展示装备物品。
+          # 适用于展示盔甲、手持物品等场景。
+          # -------------------------------------------------------------------
+          - type: armor_stand
+
+            # item: 要渲染的物品 ID（必填）
+            item: namespace:armor_stand_item
+
+            # position: 盔甲架的位置
+            position: 0,1,0
+
+            # pitch: 俯仰角
+            pitch: 0.0
+
+            # yaw: 偏航角
+            yaw: 0.0
+
+            # scale: 缩放
+            scale: 1
+
+            # small: 是否为小盔甲架
+            # false = 正常大小盔甲架
+            # true = 小盔甲架
+            small: false
+
+            # glow_color: 发光颜色（使用颜色名称）
+            # 可用值: black, dark_blue, dark_green, dark_aqua, dark_red,
+            #         dark_purple, gold, gray, dark_gray, blue, green,
+            #         aqua, red, light_purple, yellow, white
+            glow_color: white
+
+            # tint_source 同 item_display
+            tint_source:
+              - dyed_color
+
+          # -------------------------------------------------------------------
+          # 元素类型 5: better_model — BetterModel 自定义模型
+          # 通过 BetterModel 插件渲染自定义 3D 模型。
+          # 需要安装 BetterModel 插件。
+          # -------------------------------------------------------------------
+          - type: better_model
+
+            # model: BetterModel 模型 ID（必填）
+            model: custom_model
+
+            # position / yaw / pitch 同 item_display
+            position: 0,0,0
+            yaw: 0
+            pitch: 0
+
+            # sight_trace: 是否启用视线追踪
+            sight_trace: true
+
+          # -------------------------------------------------------------------
+          # 元素类型 6: model_engine — ModelEngine 自定义模型
+          # 通过 ModelEngine 插件渲染自定义 3D 模型。
+          # 需要安装 ModelEngine 插件。
+          # -------------------------------------------------------------------
+          - type: model_engine
+
+            # model: ModelEngine 模型 ID（必填）
+            model: custom_model
+
+            # position / yaw / pitch 同 item_display
+            position: 0,0,0
+            yaw: 0
+            pitch: 0
+
+        # ---------- 判定箱 ----------
+        # hitboxes: 定义家具有哪些交互/碰撞体积。
+        # 一个家具可以有多个判定箱，分别提供不同的交互功能。
+        hitboxes:
+
+          # -------------------------------------------------------------------
+          # 判定箱类型 1: interaction — 无碰撞判定箱
+          # 不阻挡实体移动，仅用于检测交互（右键点击、破坏等）。
+          # 适合用于座位、菜单触发、装饰性互动等。
+          # -------------------------------------------------------------------
+          - type: interaction
+
+            # can_use_item_on: 玩家是否可在此判定箱上使用物品
+            can_use_item_on: false
+
+            # can_be_hit_by_projectile: 是否可被抛射物击中
+            can_be_hit_by_projectile: false
+
+            # blocks_building: 是否阻挡方块放置
+            # 默认值: true
+            blocks_building: false
+
+            # position: 判定箱位置
+            position: 0,0,0
+
+            # width 和 height: 判定箱的水平宽度和垂直高度
+            # 单位为格（方块）。1 = 1 格的宽度/高度。
+            # 注意: height 测量 Z 轴深度，不是 Y 轴高度。
+            width: 1
+            height: 2
+
+            # scale: width 和 height 的简化写法
+            # scale: 1,2   等价于 width: 1, height: 2
+            # 格式: scale: 宽度,高度
+            # 注意: 不支持 scale: x,y,z 三个值 — 仅宽度和高度。
+
+            # interactive: 交互实体是否可交互
+            # true = 玩家右键或左键时可以检测到
+            interactive: true
+
+            # invisible: 交互实体是否在 F3+B 调试模式下可见
+            # false = 调试模式下可见
+            # true = 调试模式下也隐藏
+            invisible: false
+
+            # ---------- 座位 ----------
+            # seats: 此判定箱提供的座位列表。
+            # 玩家右键单击后入座（需要 interactive: true）。
+            # 每个座位格式: "x,y,z yaw"
+            #   x,y,z: 玩家入座后相对于方块的位置
+            #   yaw:   可选，强制玩家朝向角度（度）
+            #          0=南, 90=西, 180=北, 270=东
+            #         不指定 yaw 时玩家可自由旋转视角
+            #
+            # 示例:
+            #   - 0,0,-0.1 0      # 座位朝南，位于方块中心偏前
+            #   - 0.5,0.4,0.5     # 座位在方块中心，无强制朝向
+            #   - 0.2,0.4,0.5 90  # 座位朝西，位于方块偏左
+            seats:
+              - 0,0,-0.1 0
+
+          # -------------------------------------------------------------------
+          # 判定箱类型 2: shulker — 硬碰撞判定箱
+          # 具有实体碰撞体积，阻挡玩家和生物穿过。
+          # 基于潜影贝实体实现，类似实体方块的效果。
+          # 是最常用的碰撞判定箱类型。
+          # -------------------------------------------------------------------
+          - type: shulker
+
+            # can_use_item_on: 是否可在判定箱上使用物品
+            can_use_item_on: true
+
+            # can_be_hit_by_projectile: 是否可被抛射物击中
+            can_be_hit_by_projectile: true
+
+            # blocks_building: 是否阻挡方块放置
+            blocks_building: true
+
+            # position: 判定箱的位置
+            position: 0,0,0
+
+            # scale: 判定箱尺寸
+            # 单一数值 = 等比例缩放（1 = 1x1x1 方块大小）
+            # 两个值 = width,height（注意 height 是 Z 轴深度）
+            # 示例: scale: 1,2 = 1 格宽，2 格深
+            scale: 1
+
+            # peek: 潜影贝缩壳程度（0~100）
+            # 控制碰撞箱的实际体积百分比。
+            # 0   = 完全展开（最大碰撞体积）
+            # 50  = 半开半闭
+            # 100 = 完全缩回（无碰撞，但判定箱依然生效）
+            # 可用于制作半开放空间或需要精细碰撞控制的家具。
+            peek: 0
+
+            # direction: 判定箱的相对朝向
+            # 影响 peeking 动画的收缩方向和碰撞箱的朝向。
+            # up / down / north / west / east / south
+            # north = 面向玩家（默认朝向）
+            direction: up
+
+            # interaction_entity: 是否额外生成一个交互实体
+            # 交互实体用于改善点击交互体验（更容易被右键击中）。
+            # 推荐启用（true）。
+            interaction_entity: true
+
+            # interactive: 交互实体是否可交互
+            # 座位需要设置为 true
+            interactive: true
+
+            # invisible: 交互实体在 F3+B 下是否可见
+            invisible: false
+
+            # ---------- 座位 ----------
+            seats:
+              - 0,0,-0.1 0
+
+          # -------------------------------------------------------------------
+          # 判定箱类型 3: happy_ghast — 硬/软碰撞判定箱
+          # 基于快乐恶魂实体。支持硬碰撞和软碰撞两种模式切换。
+          # 比 shulker 多一个 hard_collision 开关，灵活性更高。
+          # -------------------------------------------------------------------
+          - type: happy_ghast
+
+            # can_use_item_on / can_be_hit_by_projectile / blocks_building
+            # 这三个参数的默认值比 interaction 更高:
+            can_use_item_on: true
+            can_be_hit_by_projectile: true
+            blocks_building: true
+
+            # hard_collision: 硬碰撞开关
+            # true  = 硬碰撞——实体无法穿过（类似 shulker）
+            # false = 软碰撞——实体可以穿过（类似 interaction）
+            hard_collision: true
+
+            # position: 判定箱位置
+            position: 0,0,0
+
+            # scale: 判定箱尺寸
+            # 注意: happy_ghast 的 scale 默认值为 1，
+            # 但推荐使用 0.25 作为精细碰撞的基础缩放。
+            scale: 0.25
+
+            seats:
+              - 0,0,-0.1 0
+
+          # -------------------------------------------------------------------
+          # 判定箱类型 4: custom — 自定义实体判定箱
+          # 使用任意 Minecraft 实体作为判定箱载体。
+          # 可以指定实体类型（默认: slime），获得软碰撞效果。
+          # 适用于需要特殊碰撞形状或行为的场景。
+          # -------------------------------------------------------------------
+          - type: custom
+
+            # position: 判定箱位置
+            position: 0,0,0
+
+            # scale: 实体缩放比例
+            scale: 5
+
+            # entity_type: 使用的实体类型
+            # 支持任何 Minecraft 实体 ID。默认值: slime。
+            entity_type: slime
+
+            seats:
+              - 0,0,-0.1 0
+
+      # =======================================================================
+      # 2. wall 变体 — 墙壁放置形态
+      #
+      # 放在方块侧面上的家具（如挂画、壁灯、壁钟）。
+      # 需要家具物品配置 wall_block_item 行为才能放置到墙上。
+      #
+      # ⚠️ 关键注意事项:
+      #   wall 和 ceiling 变体必须通过 position 设置微小偏移（约 0.01 格），
+      #   否则展示实体可能与方块共面（Z-fighting），导致渲染为黑色。
+      #   同时，应使用反向的 translation 将实体拉回到正确视觉位置。
+      # =======================================================================
+      wall:
+
+        loot_spawn_offset: 0.5,0.5,0
+
+        entity_culling:
+          view_distance: 48
+          ray_tracing: false
+
+        elements:
+          # 墙壁挂画的元素示例
+          - type: item_display
+            item: namespace:wall_decor
+
+            display_transform: none
+            billboard: fixed
+
+            # ⚠️ wall 变体: position 的 Z 轴设置为 0.01（微小正向偏移）
+            # 避免与墙壁方块共面而变黑
+            position: 0.5,0,0.01
+
+            # ⚠️ translation 的 Z 轴设置为 -0.01（微小反向偏移）
+            # 将视觉位置拉回正确的展示位置
+            translation: 0,0.5,-0.01
+
+            scale: 1
+            glow_color: 255,255,255
+            brightness:
+              block_light: 15
+              sky_light: 15
+
+        hitboxes:
+          # 墙壁挂画通常只需要一个交互判定箱
+          - type: interaction
+            position: 0,0,0
+            scale: 1,1
+            blocks_building: false
+            interactive: true
+            can_use_item_on: false
+
+      # =======================================================================
+      # 3. ceiling 变体 — 天花板放置形态
+      #
+      # 放在方块底面（天花板）上的家具（如吊灯、吊扇、悬挂标志）。
+      # 需要家具物品配置 ceiling_block_item 行为才能放置到天花板。
+      #
+      # ⚠️ 同样需要注意防止黑色渲染：
+      #   position 的 Y 轴设为 -0.01（向下偏移）
+      #   translation 的 Y 轴设为 +0.01（向上拉回）
+      # =======================================================================
+      ceiling:
+
+        loot_spawn_offset: 0.5,0.5,0.5
+
+        entity_culling:
+          view_distance: 64
+          ray_tracing: false
+
+        elements:
+          # 吊灯的主体
+          - type: item_display
+            item: namespace:ceiling_lamp
+
+            display_transform: none
+            billboard: fixed
+
+            # ⚠️ ceiling 变体: position 的 Y 轴设置为 -0.01（向下微小偏移）
+            position: 0.5,-0.01,0
+
+            # ⚠️ translation 的 Y 轴设置为 +0.01（向上拉回）
+            translation: 0,-0.8,0.01
+
+            scale: 1
+
+            # 吊灯发光效果
+            glow_color: 255,200,100    # 暖黄光
+            shadow_radius: 1.0
+            shadow_strength: 0.8
+            brightness:
+              block_light: 15
+              sky_light: 15
+
+          # 吊链（第二个元素模拟链条连接天花板）
+          - type: item_display
+            item: namespace:lamp_chain
+            display_transform: none
+            billboard: fixed
+            position: 0.5,-0.01,0
+            translation: 0,-0.3,0.01
+            scale: 1
+
+        hitboxes:
+          - type: interaction
+            position: 0,0,0
+            scale: 1,1
+            blocks_building: true
+            interactive: true
+
+  # ===========================================================================
+  # 完整示例: 带多元素、多判定箱、座位的复合家具
+  #
+  # 展示如何在一个家具中组合使用上述所有配置项。
+  # ===========================================================================
+  custom:grand_throne:
+
+    settings:
+      item: custom:grand_throne
+      sounds:
+        break: minecraft:block.stone.break
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+      hit_times: 6
+      correct_tools:
+        - "#minecraft:axes"
+
+    behavior:
+      # 可选: 作为光源
+      type: glowing_furniture
+      lights:
+        - position: 0,0,0
+          level: 10
+
+    variants:
+      ground:
+        loot_spawn_offset: 0.5,0.8,0.5
+
+        # 高级 entity_culling 配置
+        entity_culling:
+          view_distance: 64
+          ray_tracing: true   # 精密家具启用光追剔除
+          # aabb 由插件自动计算
+
+        elements:
+          # 王座主体
+          - type: item_display
+            item: custom:throne_body
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            scale: 1
+            # 金色辉光
+            glow_color: 255,215,0
+            # 阴影
+            shadow_radius: 1.5
+            shadow_strength: 0.9
+
+          # 王座靠背 — 使用 billboard: vertical（水平跟随玩家）
+          - type: item_display
+            item: custom:throne_back
+            display_transform: ground
+            billboard: vertical
+            position: 0.5,0,0
+            translation: 0,0.8,0
+            scale: 1
+
+          # 悬浮皇冠 — 使用 billboard: center（始终面向玩家）
+          - type: item_display
+            item: custom:floating_crown
+            display_transform: none
+            billboard: center
+            position: 0.5,0,0
+            translation: 0,1.3,0
+            scale: 0.8
+            glow_color: 100,200,255   # 蓝色辉光
+            brightness:
+              block_light: 15
+              sky_light: 15
+
+          # 王座名称标签
+          - type: text_display
+            text: "<gold><bold>王座</bold></gold>"
+            billboard: vertical
+            position: 0.5,0,0
+            translation: 0,1.6,0
+            scale: 0.6
+            has_shadow: true
+            alignment: center
+            background_color: 0,0,0,0   # 完全透明背景
+            glow_color: 255,215,0
+
+        hitboxes:
+          # 硬碰撞: 王座底座（阻挡通行）
+          - type: shulker
+            position: 0,0,0
+            scale: 1,1
+            peek: 0
+            direction: up
+            blocks_building: true
+            interactive: false
+            interaction_entity: false
+
+          # 硬碰撞: 王座靠背（阻挡从后方穿越）
+          - type: shulker
+            position: 0,0.5,0.8
+            scale: 1,0.5
+            peek: 100
+            direction: north
+            blocks_building: true
+            interactive: false
+            interaction_entity: false
+
+          # 无碰撞: 座位判定箱（入座）
+          - type: interaction
+            position: 0,0,0
+            scale: 0.8,0.6
+            blocks_building: false
+            interactive: true
+            invisible: true
+            seats:
+              - 0.5,0.3,0.2 0
+
+  # ===========================================================================
+  # 外部模型快捷方式
+  #
+  # 如果使用 ModelEngine / BetterModel 或 API 注册的完整家具模型，
+  # 可以用 blueprint 替代完整的 elements + hitboxes 配置。
+  # blueprint 会直接加载预注册的模型模板。
+  # ===========================================================================
+  custom:blueprint_model:
+
+    settings:
+      item: custom:blueprint_model
+    variants:
+      ground:
+        blueprint: model_id   # 直接引用外部模型 ID
+      wall:
+        blueprint: model_id
+      ceiling:
+        blueprint: model_id
+
+# =============================================================================
+# 参数速查表
+# =============================================================================
+#
+# --- 元素公共参数 (item_display 及部分通用) ---
+# 参数                | 类型           | 默认值    | 说明
+# --------------------+----------------+----------+-------------------------------
+# type                | 枚举           | item_display | 元素类型
+# item                | 字符串         | -        | 物品 ID（必填）
+# display_transform   | 枚举           | none     | 显示变换方式
+# billboard           | 枚举           | fixed    | 广告牌模式
+# position            | x,y,z          | 0,0,0    | 实体世界坐标
+# translation         | x,y,z          | 0,0,0    | 实体渲染偏移
+# pitch               | 浮点数         | 0.0      | 俯仰角度
+# yaw                 | 浮点数         | 0.0      | 偏航角度
+# scale               | 数值/x,y,z     | 1        | 缩放比例
+# rotation            | 数值/欧拉/四元 | 0        | 旋转（3种格式）
+# glow_color          | R,G,B          | -        | 发光颜色 (0~255)
+# shadow_radius       | 浮点数         | 0        | 阴影扩散半径
+# shadow_strength     | 浮点数         | 1.0      | 阴影强度 (0.0~1.0)
+# brightness          | 对象           | -        | 光照覆盖
+#   block_light       | 整数(0~15)     | -        | 方块光照等级
+#   sky_light         | 整数(0~15)     | -        | 天空光照等级
+# apply_dyed_color    | 布尔           | true     | 是否应用染色
+# tint_source         | 列表           | -        | 染色来源组件
+# view_range          | 浮点数         | 1.0      | 可见范围倍率
+#
+# --- 文本元素专用参数 (text_display) ---
+# 参数                | 类型           | 默认值    | 说明
+# --------------------+----------------+----------+-------------------------------
+# text                | 字符串         | -        | 文本内容（必填）
+# line_width          | 整数           | 200      | 换行宽度
+# background_color    | A,R,G,B        | 64,0,0,0 | 背景颜色 (0~255)
+# text_opacity        | 整数           | -1       | 文本不透明度 (0~255)
+# has_shadow          | 布尔           | false    | 文本阴影描边
+# is_see_through      | 布尔           | false    | 透视可见
+# use_default_background | 布尔        | false    | 使用默认背景
+# alignment           | 枚举           | center   | 文本对齐方式
+#
+# --- 判定箱公共参数 ---
+# 参数                | interaction | shulker | happy_ghast | custom
+# --------------------+-------------+---------+-------------+--------
+# position            | 是          | 是      | 是          | 是
+# scale               | 支持 宽度,高度 | 支持    | 支持        | 支持
+# seats               | 是          | 是      | 是          | 是
+# blocks_building     | 是          | 是      | 是          | -
+# can_use_item_on     | 是          | 是      | 是          | -
+# can_be_hit_by_projectile | 是    | 是      | 是          | -
+# interactive         | 是          | 是      | -           | -
+# invisible           | 是          | 是      | -           | -
+#
+# --- 座位格式 ---
+# 带朝向:  x,y,z yaw    (yaw: 0=南, 90=西, 180=北, 270=东)
+# 自由旋转: x,y,z        (不指定 yaw，玩家可自由转动视角)
+# 多个座位可配置在同一判定箱，也可分散在不同判定箱。
+# 多个判定箱的座位位置重合时，效果等同于仅存在一个座位。
+#
+# --- 实体剔除参数 ---
+# entity_culling: true        # 启用自动参数
+# entity_culling: false       # 关闭
+# entity_culling:             # 详细配置
+#   aabb: x1,y1,z1,x2,y2,z2  # 包围盒（不推荐手动设置）
+#   view_distance: 64         # 可视距离（-1 = 不限）
+#   ray_tracing: false        # 光线追踪剔除
+#
+# --- display_transform 可选值 ---
+# none                     不变换
+# third_person_left_hand   第三人称左手视角
+# third_person_right_hand  第三人称右手视角
+# first_person_left_hand   第一人称左手视角
+# first_person_right_hand  第一人称右手视角
+# head                     头部物品栏
+# gui                      图形界面
+# ground                   地面掉落物
+# fixed                    默认固定
+# on_shelf                 展示架/物品框
+#
+# --- billboard 可选值 ---
+# fixed        固定垂直和水平轴（完全不跟随玩家）
+# vertical     固定垂直轴（水平跟随玩家旋转）
+# horizontal   固定水平轴（垂直跟随玩家旋转）
+# center       按中心跟随玩家视角（始终面向玩家）
+# =============================================================================
