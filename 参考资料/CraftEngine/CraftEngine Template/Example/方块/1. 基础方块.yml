@@ -1,0 +1,290 @@
+# ============================================================================
+# CraftEngine 方块配置示例
+# 参考文档:
+#   wiki/configuration/block.md
+#   wiki/configuration/block/states.md
+#   wiki/configuration/block/states/properties.md
+# ============================================================================
+# 自定义命名空间: wiki  (所有方块 ID 使用 wiki:<id>)
+# 标记 # << CHANGE THIS 的值为可自定义项
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # 示例 1: 最简方块 — auto_state + 单张纹理
+  # 只需要定义 state 即可, 其余全部使用默认值。
+  # ==========================================================================
+  wiki:simple_stone:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/wiki/simple_stone"
+
+  # ==========================================================================
+  # 示例 2: 完整方块 — state + settings + loot + events
+  # 演示方向: model.generation 自动生成模型, 各项基本属性, 掉落自身,
+  #           以及右键点击事件。
+  # ==========================================================================
+  wiki:fancy_ore:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/wiki/fancy_ore"
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "minecraft:block/custom/wiki/fancy_ore"
+        x: 0                                         # << CHANGE THIS 绕 X 轴旋转 (90 的倍数)
+        y: 0                                         # << CHANGE THIS 绕 Y 轴旋转
+        z: 0                                         # << CHANGE THIS 绕 Z 轴旋转 (1.21.11+)
+        uvlock: false                                # << CHANGE THIS 是否锁定纹理 UV
+    settings:
+      hardness: 3.0                                  # << CHANGE THIS 硬度
+      resistance: 6.0                                # << CHANGE THIS 爆炸抗性
+      luminance: 5                                   # << CHANGE THIS 发光等级
+      luminance_on: 8                                # << CHANGE THIS 激活时发光等级
+      map_color: 12                                  # << CHANGE THIS 地图颜色值
+      instrument: basedrum                            # << CHANGE THIS 音符盒音色
+      is_suffocating: true                           # 是否窒息
+      is_redstone_conductor: true                    # 是否传导红石
+      requires_tool_for_drops: true                  # 需要正确工具才掉落
+      item: wiki:fancy_ore                           # 方块对应的物品 ID
+      sounds:                                        # << CHANGE THIS 自定义音效
+        break:  minecraft:block.stone.break
+        step:   minecraft:block.stone.step
+        place:  minecraft:block.stone.place
+        hit:    minecraft:block.stone.hit
+        fall:   minecraft:block.stone.fall
+      correct_tools:                                 # << CHANGE THIS 合适的挖掘工具
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:golden_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      tags:                                          # << CHANGE THIS 方块标签
+        - minecraft:mineable/pickaxe
+        - minecraft:needs_iron_tool
+    loot:                                            # 破坏时掉落自身
+      type: self
+      count: 1
+    events:                                          # 玩家右键时打开 GUI
+      on_interact:
+        - action: execute_command
+          command: "say 你点击了 wiki:fancy_ore！"
+
+  # ==========================================================================
+  # 示例 3: 方块带战利品表 — 多种掉落方式
+  # 演示: 掉落自身、随机数量、多物品、条件掉落、经验掉落。
+  # ==========================================================================
+  wiki:gem_crystal:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/wiki/gem_crystal"
+        textures:
+          - "^minecraft:block/custom/wiki/gem_crystal_top"      # ^ 前缀同时用作粒子纹理
+          - "minecraft:block/custom/wiki/gem_crystal_bottom"
+          - "minecraft:block/custom/wiki/gem_crystal_side"
+    settings:
+      hardness: 1.5
+      resistance: 3.0
+      correct_tools:
+        - minecraft:iron_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+    loot:
+      - type: item                                        # 掉落物品
+        item: wiki:gem_shard                               # << CHANGE THIS 物品 ID
+        min_count: 2                                       # << CHANGE THIS 最少数量
+        max_count: 4                                       # << CHANGE THIS 最多数量
+        conditions:                                        # 条件: 精准采集时不触发此条
+          - condition: not_enchantment
+            enchantment: minecraft:silk_touch
+      - type: item
+        item: wiki:gem_crystal                             # 精准采集时掉落自身
+        condition: silk_touch
+      - type: experience                                   # 额外掉落经验
+        min_count: 3
+        max_count: 7
+
+  # ==========================================================================
+  # 示例 4: 多状态方块 — axis 属性 (原木风格)
+  # 属性: axis → 自动适应放置轴方向。
+  # 外观: axisY (垂直) / axisX (水平) / axisZ (水平, 不同旋转)。
+  # ==========================================================================
+  wiki:palm_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: "y"
+      appearances:
+        axisY:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/wiki/palm_log"
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end:  "minecraft:block/custom/wiki/palm_log_top"
+                side: "minecraft:block/custom/wiki/palm_log_side"
+        axisX:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/wiki/palm_log_horizontal"
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end:  "minecraft:block/custom/wiki/palm_log_top"
+                side: "minecraft:block/custom/wiki/palm_log_side"
+        axisZ:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/wiki/palm_log_horizontal"
+            x: 90
+            # axisZ 与 axisX 共用同一模型文件, 仅旋转角度不同
+      variants:
+        axis=y:
+          appearance: axisY
+        axis=x:
+          appearance: axisX
+        axis=z:
+          appearance: axisZ
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+    behavior:
+      type: strippable_block                            # 可用斧剥皮
+      stripped: wiki:stripped_palm_log                   # << CHANGE THIS 剥皮后的方块 ID
+    loot:
+      type: self
+
+  # ==========================================================================
+  # 示例 5: 多状态方块 — waterlogged + persistent + distance
+  # 演示: 三个属性的组合, 利用通配符语义用少量变体覆盖全部状态。
+  # 属性组合: waterlogged(2) × persistent(2) × distance(7) = 28 种内部状态
+  # ==========================================================================
+  wiki:palm_leaves:
+    states:
+      id: 200                                            # << CHANGE THIS 固定内部 ID 起始值
+      properties:
+        waterlogged:
+          type: boolean
+          default: false
+        persistent:
+          type: boolean
+          default: true
+        distance:
+          type: int
+          default: 7
+          range: 1~7                                     # << CHANGE THIS 范围
+      appearances:
+        default:                                         # 第一个外观 = 默认回退
+          auto_state: leaves
+          model:
+            path: "minecraft:block/custom/wiki/palm_leaves"
+            textures:
+              - "minecraft:block/custom/wiki/palm_leaves"
+        waterlogged:
+          auto_state: waterlogged_leaves
+          model:
+            path: "minecraft:block/custom/wiki/palm_leaves"
+      variants:
+        waterlogged=false:                               # 通配符 → 覆盖 14 个状态
+          appearance: default
+        waterlogged=true:                                # 通配符 → 覆盖 14 个状态
+          appearance: waterlogged
+          settings:
+            resistance: 1200.0
+            burnable: false
+            fluid_state: water
+    settings:
+      hardness: 0.2
+      is_suffocating: false
+      burnable: true
+      tags:
+        - minecraft:mineable/hoe
+        - minecraft:leaves
+    loot:
+      - type: item
+        item: wiki:palm_sapling                           # << CHANGE THIS 掉落树苗
+        min_count: 0
+        max_count: 1
+        conditions:
+          - condition: not_enchantment
+            enchantment: minecraft:silk_touch
+      - type: item                                        # 精准采集时掉落树叶自身
+        condition: silk_touch
+        item: wiki:palm_leaves
+
+  # ==========================================================================
+  # 示例 6: 多状态方块 — facing + 四种外观
+  # 演示: horizontal_direction 属性 + 四种朝向 + 实体渲染器。
+  # 所有外观共用同一个被清空模型的原版状态 (transparent),
+  # 完全由 entity_renderer 渲染。
+  # ==========================================================================
+  wiki:wall_torch:
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state:
+            type: sugar_cane
+            id: transparent                              # 共享同一个被清空模型的状态
+          transparent: true                              # 清除方块自身模型
+          entity_renderer:
+            type: item_display
+            item: wiki:wall_torch                         # << CHANGE THIS
+            rotation: 0                                  # 朝北
+        east:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: wiki:wall_torch
+            rotation: 90                                 # 朝东
+        south:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: wiki:wall_torch
+            rotation: 180                                # 朝南
+        west:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: wiki:wall_torch
+            rotation: 270                                # 朝西
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+    settings:
+      hardness: 0.2
+      luminance: 14
+      correct_tools:
+        - minecraft:wooden_axe
+      tags:
+        - minecraft:mineable/axe

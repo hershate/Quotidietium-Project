@@ -1,0 +1,347 @@
+# ============================================================================
+# 模板系统 - 完整配置示例
+# 参考: CraftEngine Wiki /reference/template.md
+# 命名空间: mycraft (所有模板/物品均使用 mycraft: 前缀)
+# ============================================================================
+# 本文件演示模板系统的全部核心功能：基础模板、参数、默认值、多模板、
+# 合并(merges)、覆写(overrides)、配置工厂(config_factory)以及扩展参数类型。
+# 凡需根据实际情况调整的值均标注了 # << CHANGE THIS。
+# ============================================================================
+
+# ============================================================
+# 一、模板定义 (templates)
+# ============================================================
+# templates 是 YAML 根键，其下每个键的格式为 namespace:template_id
+# ============================================================
+templates:
+  # ----------------------------------------------------------
+  # 1.1 基础模板 - 定义物品的通用属性
+  # ----------------------------------------------------------
+  mycraft:base_item:
+    material: stone                                        # << CHANGE THIS
+    data:
+      item_name: "<lang:item.mycraft.base_item>"
+    max_stack_size: ${max_stack:-64}                       # 参数 + 默认值
+  # ----------------------------------------------------------
+  # 1.2 食物模板 - 带参数的模板
+  #     演示 ${xxx} 参数占位符的完整用法
+  # ----------------------------------------------------------
+  mycraft:food_template:
+    template: mycraft:base_item                            # 模板可嵌套引用
+    material: "${food_material}"                           # 参数 - 由调用者提供
+    data:
+      food:
+        nutrition: "${nutrition:-6}"                       # 参数 + 默认值 (SNBT)
+        saturation: "${saturation:-0.6d}"                  # << CHANGE THIS
+        can_always_eat: "${can_always_eat:-false}"         # << CHANGE THIS
+      item_name: "<lang:item.${__NAMESPACE__}.${__ID__}>"  # 特殊参数: 自动从调用方获取
+  # ----------------------------------------------------------
+  # 1.3 工具模板 - 演示 merges 与 overrides 的配合
+  # ----------------------------------------------------------
+  mycraft:tool_template:
+    template: mycraft:base_item
+    material: "${tool_material:-minecraft:iron_ingot}"     # << CHANGE THIS
+    data:
+      durability: "${durability:-250}"                     # << CHANGE THIS
+      enchantable: true
+  # ----------------------------------------------------------
+  # 1.4 盔甲模板 - 演示 when 扩展参数类型的输出作为输入
+  # ----------------------------------------------------------
+  mycraft:armor_template:
+    material: "${armor_material}"
+    data:
+      armor:
+        slot: "${slot_result}"                             # 由 when 类型参数产生
+        defense: "${defense:-5}"                           # << CHANGE THIS
+      item_name: "<lang:item.${__NAMESPACE__}.${__ID__}>"
+  # ----------------------------------------------------------
+  # 1.5 自定义剑模板 - 演示 expression 参数类型
+  # ----------------------------------------------------------
+  mycraft:sword_template:
+    template: mycraft:tool_template
+    arguments:
+      tool_material: "${sword_material}"
+      durability: "${sword_durability:-1561}"              # << CHANGE THIS
+    data:
+      attack_damage: "${final_damage}"                     # 由 expression 计算得出
+      attack_speed: "${final_speed}"                       # 由 expression 计算得出
+
+# ============================================================
+# 二、物品定义 (items)
+# ============================================================
+items:
+  # ----------------------------------------------------------
+  # 2.1 使用基础模板 + 参数
+  #     演示: template + arguments
+  # ----------------------------------------------------------
+  mycraft:golden_apple:
+    template: mycraft:food_template
+    arguments:
+      food_material: minecraft:golden_apple                 # << CHANGE THIS
+      nutrition: 6                                          # << CHANGE THIS
+      saturation: 1.2                                       # << CHANGE THIS
+      can_always_eat: true
+
+  # ----------------------------------------------------------
+  # 2.2 多模板 (Multi-Template)
+  #     演示: template 设为列表, 下方模板覆盖上方模板的同名配置,
+  #          但列表类型的配置项会合并而非覆盖
+  # ----------------------------------------------------------
+  mycraft:enchanted_golden_apple:
+    template:
+      - mycraft:food_template                              # 先应用 food_template
+      - mycraft:base_item                                  # 再应用 base_item (覆盖冲突项)
+    arguments:
+      food_material: minecraft:enchanted_golden_apple       # << CHANGE THIS
+      nutrition: 8                                          # << CHANGE THIS
+      saturation: 2.0                                       # << CHANGE THIS
+      max_stack: 16
+
+  # ----------------------------------------------------------
+  # 2.3 合并 (merges) - 深度整合配置 (含列表)
+  #     演示: template + arguments + merges
+  # ----------------------------------------------------------
+  mycraft:bread_with_extras:
+    template: mycraft:food_template
+    arguments:
+      food_material: minecraft:bread                        # << CHANGE THIS
+      nutrition: 5
+      saturation: 6.0
+    merges:
+      data:
+        food:
+          effects:                                          # 合并到现有列表
+            - effect: minecraft:speed
+              duration: 200
+              amplifier: 1
+        item_name: "<lang:item.mycraft.special_bread>"
+
+  # ----------------------------------------------------------
+  # 2.4 覆写 (overrides) - 完全替换指定路径的所有内容
+  #     演示: overrides 会整体替换 material 节点, 不做合并
+  # ----------------------------------------------------------
+  mycraft:stone_bread:
+    template: mycraft:food_template
+    arguments:
+      food_material: minecraft:bread                        # << CHANGE THIS
+      nutrition: 3
+      saturation: 3.0
+    overrides:
+      material: minecraft:stone                             # 整个 material 节点被替换
+      data:
+        food:                                               # 整个 data.food 被替换
+          nutrition: -1                                     # 吞掉原来的所有继承配置
+
+  # ----------------------------------------------------------
+  # 2.5 扩展参数类型 - condition
+  #     演示: 根据条件返回 on_true 或 on_false
+  # ----------------------------------------------------------
+  mycraft:custom_leaves:
+    template: mycraft:base_item
+    arguments:
+      tintable: true                                        # << CHANGE THIS
+      leaves_base_model:
+        type: condition
+        condition: "${tintable}"                            # 若 tintable=true 返回 on_true
+        on_true: leaves                                     # << CHANGE THIS
+        on_false: cube_all                                  # << CHANGE THIS
+    data:
+      block_model: "${leaves_base_model}"                   # 条件结果注入此处
+
+  # ----------------------------------------------------------
+  # 2.6 扩展参数类型 - when
+  #     演示: source 值与各 case 匹配, fallback 兜底
+  # ----------------------------------------------------------
+  mycraft:diamond_helmet:
+    template: mycraft:armor_template
+    arguments:
+      armor_material: minecraft:diamond                     # << CHANGE THIS
+      defense: 5
+      part: helmet                                          # << CHANGE THIS (helmet/chestplate/leggings/boots)
+      slot:
+        type: when
+        source: "${part}"
+        when:
+          helmet: head
+          chestplate: chest
+          leggings: legs
+          boots: feet
+        fallback: any
+      slot_result: "${slot}"                                # 将 when 结果传给模板
+
+  # ----------------------------------------------------------
+  # 2.7 扩展参数类型 - to_upper_case
+  #     演示: 将 tier 值转为大写并注入 NBT
+  # ----------------------------------------------------------
+  mycraft:common_sword:
+    template: mycraft:sword_template
+    arguments:
+      sword_material: minecraft:iron_ingot                  # << CHANGE THIS
+      sword_durability: 250
+      tier: common                                          # << CHANGE THIS
+      tier.uppercase:
+        type: to_upper_case
+        value: "${tier}"
+        locale: en
+      name: "Iron Sword"                                    # << CHANGE THIS
+      base_damage: 6.0                                      # << CHANGE THIS
+      damage_multiplier: 1.0
+      base_speed: 1.6
+      speed_multiplier: 1.0
+      final_damage:                                          # expression 计算最终伤害
+        type: expression
+        expression: "${base_damage:-6d} * ${damage_multiplier:-1d}"  # << CHANGE THIS
+        value_type: double
+      final_speed:                                           # expression 计算最终攻速
+        type: expression
+        expression: "${base_speed:-1.6d} * ${speed_multiplier:-1.0d}" # << CHANGE THIS
+        value_type: double
+    data:
+      item_name: "<!i><white><image:${tier}> ${name}"
+      nbt:
+        MYCRAFT_TIER: ${tier.uppercase}                     # 大写后的值: "COMMON"
+
+  # ----------------------------------------------------------
+  # 2.8 扩展参数类型 - self_increase_int
+  #     演示: 每引用一次 ${id} 就自增, 用于生成递增 ID
+  #     同时演示参数顺序: arg1..arg3 按顺序应用
+  # ----------------------------------------------------------
+  mycraft:tier_1:
+    template: mycraft:base_item
+    arguments:
+      id:
+        type: self_increase_int
+        from: 0                                               # << CHANGE THIS
+        to: 20                                                # << CHANGE THIS
+        step: 1
+        step_interval: 1
+      # 参数顺序应用的演示: arg3 可立即使用 arg1 和 arg2
+      arg1: topaz
+      arg2: helmet
+      arg3: "${arg1}_${arg2}"                                 # 结果: "topaz_helmet"
+    data:
+      item_tier_id: "${id}"                                   # 首次 = 0, 第二次 = 1 ...
+      crafted_with: "${arg3}"
+
+  mycraft:tier_2:
+    template: mycraft:base_item
+    arguments:
+      id:
+        type: self_increase_int
+        from: 0
+        to: 20
+        step: 1
+        step_interval: 1
+    data:
+      item_tier_id: "${id}"                                   # 本物品 = 1
+
+  # ----------------------------------------------------------
+  # 2.9 列表与映射参数 (扩展参数类型)
+  #     演示: 参数值可以是列表或映射
+  # ----------------------------------------------------------
+  mycraft:multi_effect_food:
+    template: mycraft:food_template
+    arguments:
+      food_material: minecraft:carrot                        # << CHANGE THIS
+      nutrition: 4
+      saturation: 4.8
+      # 列表参数
+      effect_list:
+        - speed
+        - strength
+        - regeneration
+      # 映射参数 - 注意: 如果映射内包含 type 键且不应被视为参数类型,
+      #            必须添加 __skip_template_argument__
+      hitbox:
+        __skip_template_argument__: {}
+        type: shulker                                         # << CHANGE THIS
+        scale: 2
+        peek: 100
+    data:
+      effects: "${effect_list}"
+      hitbox_settings: "${hitbox}"
+
+# ============================================================
+# 三、配置工厂 (config_factory)
+# ============================================================
+# config_factory 可以实例化大量具有相同特征的配置。
+# 格式: config_factory#名称 -> blueprint + instances
+# ============================================================
+config_factory#wool:
+  blueprint:
+    items:
+      "mycraft:${color}_wool":
+        material: "${color}_wool"
+        data::item_name: "<lang:block.minecraft.${color}_wool>"
+        merges:
+          data:
+            dye_color: "${color}"
+    # 配方也支持模板参数
+    recipes:
+      "mycraft:${color}_wool":
+        type: shaped
+        pattern:
+          - AA
+          - AB
+        ingredients:
+          A: "minecraft:white_wool"
+          B: "minecraft:${color}_dye"
+        result:
+          id: ${__NAMESPACE__}:${__ID__}                     # __NAMESPACE__ -> mycraft
+                                                             # __ID__ -> red_wool, blue_wool, orange_wool...
+          count: ${result_count:-3}                           # << CHANGE THIS
+  instances:
+    - color: red                                              # << CHANGE THIS
+      result_count: 5                                        # 覆盖默认值
+    - color: blue                                             # << CHANGE THIS
+      result_count: 2
+    - color: orange                                           # << CHANGE THIS
+      # result_count 未指定, 使用 blueprint 默认值 3
+
+# ============================================================
+# 四、配方中使用模板参数
+# ============================================================
+config_factory#colored_glass:
+  blueprint:
+    items:
+      "mycraft:${color}_glass":
+        material: "${color}_stained_glass"
+        data::item_name: "<lang:block.minecraft.${color}_stained_glass>"
+    recipes:
+      "mycraft:${color}_glass":
+        type: shaped
+        pattern:
+          - " G "
+          - "GDG"
+          - " G "
+        ingredients:
+          G: "minecraft:glass"
+          D: "minecraft:${color}_dye"
+        result:
+          id: ${__NAMESPACE__}:${__ID__}
+          count: 8
+  instances:
+    - color: red                                               # << CHANGE THIS
+    - color: blue                                              # << CHANGE THIS
+    - color: green                                             # << CHANGE THIS
+    - color: yellow                                            # << CHANGE THIS
+    - color: purple                                            # << CHANGE THIS
+
+# ============================================================
+# 五、参数默认值格式参考 (SNBT)
+#    以下为 wiki 支持的默认值写法, 并非实际配置
+# ============================================================
+# 字符串: "${name:-stone}"
+# 数字:   "${count:-64}"
+# SNBT:
+#   - 浮点数:   "${speed:-2.5d}"
+#   - 映射:     "${map:-{aa:bb,cc:ddd}}"
+#   - 带引号:   "${string:-\"1234\"}"
+#   - 空值:     "${nullable:-null}"
+# 递归嵌套参数:
+#   "${arg1:-'${arg2:-\'${arg3:-abc}\'}'}"
+#
+# 转义花括号 (不作为参数标识):
+#   "\${文本}"    -> 输出 ${文本}
+#   "\{"          -> 输出 {
+#   "\}"          -> 输出 }

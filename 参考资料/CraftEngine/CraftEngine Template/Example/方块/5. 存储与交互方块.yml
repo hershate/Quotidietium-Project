@@ -1,0 +1,126 @@
+# =============================================================================
+# 存储与交互方块 —— 综合示例
+# 参考: CraftEngine Wiki -> configuration/block/behaviors/
+#   simple_storage_block.md, drawer_block.md, seat_block.md, sofa_block.md,
+#   stackable_block.md, display_item_block.md, item_frame_block.md
+# 命名空间: mythic (自定义)
+# =============================================================================
+# 本文件包含七种行为的方块各一个，展示完整配置。
+# 所有带 # << CHANGE THIS 的值均可按需修改。
+
+blocks:
+
+  # ===========================================================================
+  # 1. simple_storage_block —— 保险柜
+  # 功能: 类似箱子的容器，右键打开界面，比较器输出填充信号。
+  # ===========================================================================
+  mythic:vault:
+    behavior:
+      type: simple_storage_block
+      title: "<bold><gradient:#FFD700:#FF8C00>保险柜</gradient></bold>"  # << CHANGE THIS: 容器标题，支持 MiniMessage
+      rows: 3                                      # << CHANGE THIS: 行数 1~6
+      has_signal: true                             # 根据填充比例输出 0~15 红石信号
+      allow_input: true                            # 允许漏斗等外部容器放入物品
+      allow_output: true                           # 允许漏斗等外部容器取出物品
+      data_key: "mythic:vault_data"                # << CHANGE THIS: 持久化 NBT 键
+      sounds:
+        open: minecraft:block.iron_trapdoor.open   # << CHANGE THIS: 打开音效
+        close: minecraft:block.iron_trapdoor.close # << CHANGE THIS: 关闭音效
+
+  # ===========================================================================
+  # 2. drawer_block —— 矿物抽屉
+  # 功能: 只存一种物品但可存大量，右键放入、左键取出、双击全部存入。
+  # ===========================================================================
+  mythic:mineral_drawer:
+    behavior:
+      type: drawer_block
+      max_stacks: 48                               # << CHANGE THIS: 最多容纳物品组数
+      has_signal: true                             # 允许比较器输出填充信号
+      allow_input: true                            # 允许漏斗放入
+      allow_output: true                           # 允许漏斗取出
+      item_position: 0.5,0.8,-0.52                 # << CHANGE THIS: 展示物品位置偏移
+      text_position: 0.5,0.0,-0.52                 # << CHANGE THIS: 数量文本位置偏移
+      item_scale: 0.8,0.8,0.8                     # << CHANGE THIS: 展示物品缩放
+      text_scale: 0.6,0.6,0.6                     # << CHANGE THIS: 数量文本缩放
+      data_key: "mythic:drawer_data"               # << CHANGE THIS: 持久化 NBT 键
+      compatible_mode: false                       # 与其他存储插件兼容模式
+      sounds:
+        put: minecraft:block.decorated_pot.insert       # << CHANGE THIS: 放入音效
+        take: minecraft:block.decorated_pot.insert_fail # << CHANGE THIS: 取出音效
+    properties:
+      facing: north                                # 朝向
+
+  # ===========================================================================
+  # 3. seat_block —— 圆凳
+  # 功能: 右键坐下，可配置多个座位及偏航锁定。
+  # ===========================================================================
+  mythic:stool:
+    behavior:
+      type: seat_block
+      seats:
+        - 0.5,0.4,0.5 90                          # x,y,z [偏航角] 锁定朝东
+        - 0.5,0.4,0.5                             # 不锁定角度，自由旋转
+    properties:
+      facing: south
+
+  # ===========================================================================
+  # 4. sofa_block —— 转角沙发
+  # 功能: 可连接座椅，shape 属性根据周围沙发自动计算直形/内角。
+  # ===========================================================================
+  mythic:corner_sofa:
+    behavior:
+      type: sofa_block
+    properties:
+      shape: none                                # 初始形状，PP 更新后自动计算
+      facing: north                              # 朝向
+      waterlogged: false                         # 是否含水
+
+  # ===========================================================================
+  # 5. stackable_block —— 金币堆
+  # 功能: 使用同物品右击递增 int 属性，达到最大值后停止。
+  # ===========================================================================
+  mythic:coin_pile:
+    behavior:
+      type: stackable_block
+      property: coins                            # 记录堆叠数量的 int 属性名
+      items:
+        - mythic:coin_pile                       # 允许堆叠的物品
+    properties:
+      coins: 1                                   # int 属性，取值范围 1~8
+    # 注意: 模型应配置 8 种 variant，对应 coins 属性的 1~8
+
+  # ===========================================================================
+  # 6. display_item_block —— 展示台
+  # 功能: 在方块上展示一个掉落物品，手持物品右键放入，空手右键取出。
+  # ===========================================================================
+  mythic:pedestal:
+    behavior:
+      type: display_item_block
+      position: "0.5,1.0,0.5"                   # << CHANGE THIS: 展示物品位置偏移
+      has_signal: true                           # 有物品时比较器输出 15，无物品输出 0
+      data_key: "mythic:display_item_data"       # << CHANGE THIS: 持久化 NBT 键
+      tint_source: false                         # 存储物品是否为方块实体提供颜色
+      sounds:
+        put: minecraft:block.decorated_pot.insert        # << CHANGE THIS: 放入音效
+        take: minecraft:block.decorated_pot.insert_fail  # << CHANGE THIS: 取出音效
+    properties:
+      facing: north
+
+  # ===========================================================================
+  # 7. item_frame_block —— 自定义展示框
+  # 功能: 高性能物品展示框替代品，支持发光/隐形/旋转(8方向)/地图渲染。
+  # ===========================================================================
+  mythic:custom_frame:
+    behavior:
+      type: item_frame_block
+      position: 0.5,0.5,0                         # << CHANGE THIS: 展示物品位置偏移
+      glow: true                                  # << CHANGE THIS: 是否发光
+      invisible: false                            # 是否隐藏展示框边框
+      render_map_item: true                       # 启用静态地图渲染
+      data_key: "mythic:item_frame_data"          # << CHANGE THIS: 持久化 NBT 键
+      sounds:
+        put: entity.item_frame.add_item           # << CHANGE THIS: 放入音效
+        take: entity.item_frame.remove_item       # << CHANGE THIS: 取出音效
+        rotate: entity.item_frame.rotate_item     # << CHANGE THIS: 旋转音效
+    properties:
+      facing: north                               # 朝向

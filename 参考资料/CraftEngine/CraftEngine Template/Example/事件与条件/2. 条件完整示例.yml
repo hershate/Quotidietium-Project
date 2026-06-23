@@ -1,0 +1,855 @@
+# ============================================================================
+# 条件完整示例 — CraftEngine Wiki 参考
+# 本地 Wiki: reference/conditions.md
+# 命名空间: quartzietium (自定义)
+# 说明: 本文件展示 reference/conditions.md 中所有条件类型的实际用法。
+#       每种条件均包含正向与反向 (!) 用法演示，可独立解引用。
+#       标记为 "<< CHANGE THIS" 的值请根据实际情况修改。
+# ============================================================================
+
+# ============================================================================
+# 第一部分: 复合条件容器
+#   - any_of:  满足任意子条件即可通过
+#   - all_of:  所有子条件都必须通过
+#   - inverted: 对单个子条件的布尔值取反
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 1.1 any_of — 任意条件满足 (OR)
+# 用途: 玩家拥有 OP 权限 或 手持钻石即可通过
+# wiki-ref: any_of
+# ---------------------------------------------------------------------------
+- type: any_of
+  terms:
+    # 子条件 1: 检查 OP 权限
+    - type: permission
+      permission: "quartzietium.op"           # << CHANGE THIS 自定义权限节点
+    # 子条件 2: 检查手持物品是否为钻石（反向: 不是钻石则返回 false）
+    - type: "!match_item"
+      id: "minecraft:diamond"
+      regex: false
+
+# ---------------------------------------------------------------------------
+# 1.2 all_of — 所有条件必须满足 (AND)
+# 用途: 玩家必须在世界 "world" 且距离原点 10-50 格之间
+# wiki-ref: all_of
+# ---------------------------------------------------------------------------
+- type: all_of
+  terms:
+    # 子条件 1: 通过 WorldGuard 区域检测
+    - type: worldguard:region
+      mode: 1                              # 模式 1 = 并集, 2 = 交集
+      regions:
+        - "spawn_area"                     # << CHANGE THIS 区域 ID
+    # 子条件 2: 距离约束
+    - type: distance
+      min: 10                              # << CHANGE THIS
+      max: 50                              # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 1.3 inverted — 对单个条件取反 (NOT)
+# 用途: 玩家不在冷却中才可执行
+# wiki-ref: inverted
+# ---------------------------------------------------------------------------
+- type: inverted
+  term:
+    type: on_cooldown
+    id: "quartzietium:super_ability"       # << CHANGE THIS 冷却 ID
+
+
+# ============================================================================
+# 第二部分: 上下文检测条件
+#   - falling_block:       检测掉落物是否由下落方块产生
+#   - survives_explosion:  以 1/爆炸半径 概率通过
+#   - has_item:            是否手持物品
+#   - hand:                检测交互手 (主手/副手)
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 2.1 falling_block — 下落方块检测
+# 用途: 仅当下落方块触发的掉落物才执行
+# wiki-ref: falling_block
+# ---------------------------------------------------------------------------
+- type: falling_block
+
+# 反向: 非下落方块触发的掉落物
+- type: "!falling_block"
+
+# ---------------------------------------------------------------------------
+# 2.2 survives_explosion — 爆炸幸存概率
+# 用途: 以 1/爆炸半径 的概率成功。未提供爆炸上下文时总是通过
+# wiki-ref: survives_explosion
+# ---------------------------------------------------------------------------
+- type: survives_explosion
+
+# 反向: 以 1 - 1/爆炸半径 的概率通过（即大概率失败）
+- type: "!survives_explosion"
+
+# ---------------------------------------------------------------------------
+# 2.3 has_item — 手持物品存在检测
+# 用途: 玩家必须手持任意物品
+# wiki-ref: has_item
+# ---------------------------------------------------------------------------
+- type: has_item
+
+# 反向: 玩家必须空手
+- type: "!has_item"
+
+# ---------------------------------------------------------------------------
+# 2.4 hand — 交互手检测
+# 用途: 仅主手交互时触发
+# wiki-ref: hand
+# ---------------------------------------------------------------------------
+- type: hand
+  hand: main_hand                          # main_hand | off_hand
+
+# 反向: 仅副手交互时触发
+- type: "!hand"
+  hand: off_hand
+
+
+# ============================================================================
+# 第三部分: 物品匹配条件
+#   - match_item:               匹配手持物品 ID (支持正则与多值)
+#   - match_block:             匹配指定坐标的方块类型
+#   - match_block_property:    匹配方块状态属性值
+#   - match_entity:            匹配实体类型
+#   - match_furniture_variant: 匹配家具变体
+#   - inventory_has_item:      检查背包中的物品数量
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 3.1 match_item — 手持物品匹配
+# 用途: 手持黄水晶镐 或 任意品质的镐时通过
+# wiki-ref: match_item
+# ---------------------------------------------------------------------------
+# 单物品匹配
+- type: match_item
+  id: "quartzietium:topaz_pickaxe"        # << CHANGE THIS 自定义物品 ID
+  regex: false
+
+# 多物品匹配 (列表)
+- type: match_item
+  id:
+    - "quartzietium:topaz_pickaxe"        # << CHANGE THIS
+    - "quartzietium:ruby_pickaxe"         # << CHANGE THIS
+    - "quartzietium:sapphire_pickaxe"     # << CHANGE THIS
+  regex: false
+
+# 正则匹配: 所有 quartzietium 镐
+- type: match_item
+  id: "quartzietium:.*_pickaxe"
+  regex: true
+
+# 反向: 手持的不是钻石
+- type: "!match_item"
+  id: "minecraft:diamond"
+  regex: false
+
+# ---------------------------------------------------------------------------
+# 3.2 match_block — 方块类型匹配
+# 用途: 检查 (x, y, z) 位置的方块是否为指定类型
+# wiki-ref: match_block
+# ---------------------------------------------------------------------------
+- type: match_block
+  x: "<arg:position.x>"                   # 当前上下文坐标
+  y: "<arg:position.y>"
+  z: "<arg:position.z>"
+  id: "quartzietium:topaz_ore"            # << CHANGE THIS 目标方块 ID
+  regex: false
+
+# 反向: 目标位置不是空气
+- type: "!match_block"
+  x: "<arg:position.x>"
+  y: "<arg:position.y>"
+  z: "<arg:position.z>"
+  id: "minecraft:air"
+  regex: false
+
+# 正则匹配: 所有变体矿石
+- type: match_block
+  x: "<arg:position.x>"
+  y: "<arg:position.y>"
+  z: "<arg:position.z>"
+  id: "quartzietium:.*_ore"
+  regex: true
+
+# ---------------------------------------------------------------------------
+# 3.3 match_block_property — 方块状态匹配
+# 用途: 检查方块的特定状态属性
+# wiki-ref: match_block_property
+# ---------------------------------------------------------------------------
+# 检查农作物 age 是否为 3（未完全成熟）
+- type: match_block_property
+  properties:
+    age: 3
+
+# 多属性检查: 朝向北方且处于 lit 状态
+- type: match_block_property
+  properties:
+    facing: north                          # << CHANGE THIS
+    lit: "true"
+
+# 反向: 方块 not 处于某个状态 (age != 7)
+- type: "!match_block_property"
+  properties:
+    age: 7
+
+# ---------------------------------------------------------------------------
+# 3.4 match_entity — 实体类型匹配
+# 用途: 检查交互或击杀的实体类型
+# wiki-ref: match_entity
+# ---------------------------------------------------------------------------
+- type: match_entity
+  id: "minecraft:ender_dragon"
+  regex: false
+
+# 多实体匹配
+- type: match_entity
+  id:
+    - "minecraft:zombie"
+    - "minecraft:skeleton"
+    - "minecraft:creeper"
+  regex: false
+
+# 正则匹配: 所有亡灵生物
+- type: match_entity
+  id: "minecraft:(zombie|skeleton|phantom|wither).*"
+  regex: true
+
+# 反向: 不是末影人
+- type: "!match_entity"
+  id: "minecraft:enderman"
+  regex: false
+
+# ---------------------------------------------------------------------------
+# 3.5 match_furniture_variant — 家具变体匹配
+# 用途: 检查家具的变体类型
+# wiki-ref: match_furniture_variant
+# ---------------------------------------------------------------------------
+- type: match_furniture_variant
+  variants:
+    - wall                                 # << CHANGE THIS 墙壁变体
+    - corner                               # << CHANGE THIS 角落变体
+    - center                               # << CHANGE THIS 中心变体
+
+# 反向: 不是椅子变体 (坐垫/高脚/摇椅)
+- type: "!match_furniture_variant"
+  variants:
+    - stool                               # << CHANGE THIS
+    - high                                 # << CHANGE THIS
+    - rocking                             # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 3.6 inventory_has_item — 背包物品检测
+# 用途: 检查玩家背包中是否有指定物品及数量
+# wiki-ref: inventory_has_item
+# ---------------------------------------------------------------------------
+- type: inventory_has_item
+  id: "quartzietium:topaz_gem"            # << CHANGE THIS 物品 ID
+  count: 5                                # << CHANGE THIS 至少 5 个
+
+# 反向: 背包中没有黄铜锭
+- type: "!inventory_has_item"
+  id: "quartzietium:brass_ingot"          # << CHANGE THIS
+  count: 1
+
+
+# ============================================================================
+# 第四部分: 魔咒与概率条件
+#   - enchantment:   检测物品附魔 (支持 >= > = < <=)
+#   - table_bonus:   附魔等级查表概率
+#   - random:        纯随机概率
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 4.1 enchantment — 附魔检测
+# 用途: 检查手持物品是否拥有指定等级及以上的附魔
+# wiki-ref: enchantment
+# ---------------------------------------------------------------------------
+# 精准采集 >= 1 级
+- type: enchantment
+  predicate: "minecraft:silk_touch>=1"      # << CHANGE THIS
+
+# 时运 > 2 级
+- type: enchantment
+  predicate: "minecraft:fortune>2"           # << CHANGE THIS
+
+# 锋利 = 5 级 (恰好)
+- type: enchantment
+  predicate: "minecraft:sharpness=5"         # << CHANGE THIS
+
+# 耐久 <= 2 级（即将损坏）
+- type: enchantment
+  predicate: "minecraft:unbreaking<=2"       # << CHANGE THIS
+
+# 效率 < 4 级（效率不够高）
+- type: enchantment
+  predicate: "minecraft:efficiency<4"        # << CHANGE THIS
+
+# 反向: 没有经验修补
+- type: "!enchantment"
+  predicate: "minecraft:mending>=1"
+
+# ---------------------------------------------------------------------------
+# 4.2 table_bonus — 附魔等级查表概率
+# 用途: 以附魔等级为索引，从 chances 列表中选取概率
+#       等级 0→10%, 1→50%, 2→80%, 3→100%
+# wiki-ref: table_bonus
+# ---------------------------------------------------------------------------
+- type: table_bonus
+  enchantment: "minecraft:fortune"         # << CHANGE THIS
+  chances:
+    - 0.1                                  # 等级 0: 10%
+    - 0.5                                  # 等级 1: 50%
+    - 0.8                                  # 等级 2: 80%
+    - 1.0                                  # 等级 3: 100%
+
+# 反向: 以反概率判定
+- type: "!table_bonus"
+  enchantment: "minecraft:looting"         # << CHANGE THIS
+  chances:
+    - 0.0                                  # 等级 0: 总是失败
+    - 0.25                                 # 等级 1: 25%
+    - 0.5                                  # 等级 2: 50%
+    - 0.75                                 # 等级 3: 75%
+
+# ---------------------------------------------------------------------------
+# 4.3 random — 纯随机概率
+# 用途: 按固定概率通过
+# wiki-ref: random
+# ---------------------------------------------------------------------------
+# 50% 概率
+- type: random
+  value: 0.5                               # << CHANGE THIS 0.0 ~ 1.0
+
+# 5% 稀有掉落概率
+- type: random
+  value: 0.05                              # << CHANGE THIS
+
+# 反向: 75% 概率失败（即 25% 概率成功）
+- type: "!random"
+  value: 0.75
+
+
+# ============================================================================
+# 第五部分: 权限与表达式条件
+#   - permission:  权限节点检测
+#   - expression:  EvalEx 表达式求值
+#   - test_flag:   位置权限标志检测
+#   - worldguard:region:  WorldGuard 区域检测
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 5.1 permission — 权限检测
+# 用途: 检查玩家是否拥有指定权限节点
+# wiki-ref: permission
+# ---------------------------------------------------------------------------
+- type: permission
+  permission: "quartzietium.mining.bypass"  # << CHANGE THIS
+
+# 多权限 (利用 all_of 复合)
+- type: all_of
+  terms:
+    - type: permission
+      permission: "quartzietium.vip"        # << CHANGE THIS
+    - type: permission
+      permission: "quartzietium.event_access"
+
+# 反向: 没有管理员权限
+- type: "!permission"
+  permission: "quartzietium.admin"          # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 5.2 expression — 表达式求值
+# 用途: 使用 EvalEx 引擎计算表达式，返回 true 时通过
+#       支持 PlaceholderAPI: <papi:xxx>
+#       支持上下文变量: <arg:xxx>
+# 语法参考: https://ezylang.github.io/EvalEx/references/references.html
+# wiki-ref: expression
+# ---------------------------------------------------------------------------
+- type: expression
+  expression: "<papi:farming_level> >= 10"  # << CHANGE THIS PAPI 变量
+
+- type: expression
+  expression: "<arg:player.health> < 6.0"   # << CHANGE THIS 血量低于 3 颗心
+
+- type: expression
+  expression: "<arg:player.food_level> == 20" # << CHANGE THIS 饱食度满
+
+- type: expression
+  expression: "<papi:quartzietium_mana> / <papi:quartzietium_max_mana> > 0.3"
+
+# 反向: 等级不足 5 级 (即 < 5)
+- type: "!expression"
+  expression: "<papi:farming_level> >= 5"
+
+# ---------------------------------------------------------------------------
+# 5.3 test_flag — 位置权限标志检测
+# 用途: 检查当前位置是否允许指定行为
+# wiki-ref: test_flag
+# ---------------------------------------------------------------------------
+- type: test_flag
+  flag: break                              # break, place, interact, open_container
+
+- type: test_flag
+  flag: place                              # << CHANGE THIS
+
+- type: test_flag
+  flag: interact                           # << CHANGE THIS
+
+- type: test_flag
+  flag: open_container                     # << CHANGE THIS
+
+# 反向: 不允许放置
+- type: "!test_flag"
+  flag: place
+
+# ---------------------------------------------------------------------------
+# 5.4 worldguard:region — WorldGuard 区域检测
+# 用途: 检测当前位置是否位于指定 WorldGuard 区域内
+#       模式 1 = 区域并集 (任一区域)
+#       模式 2 = 区域交集 (所有区域)
+# wiki-ref: "worldguard:region"
+# ---------------------------------------------------------------------------
+# 模式 1: 在 A 或 B 区域中
+- type: worldguard:region
+  mode: 1
+  regions:
+    - "spawn"                              # << CHANGE THIS 区域名称
+    - "shop"                               # << CHANGE THIS
+
+# 模式 2: 同时位于 A 和 B 的交集区域
+- type: worldguard:region
+  mode: 2
+  regions:
+    - "pvp_zone"                           # << CHANGE THIS
+    - "arena"                              # << CHANGE THIS
+
+# 反向: 不在 "safe_zone" 区域内
+- type: "!worldguard:region"
+  mode: 1
+  regions:
+    - "safe_zone"                          # << CHANGE THIS
+
+
+# ============================================================================
+# 第六部分: 字符串与空值条件
+#   - string_equals:   判断两个字符串值是否相等
+#   - string_contains: 判断 value1 是否包含 value2
+#   - regex:           判断值是否符合正则表达式
+#   - is_null:         检查参数是否为空
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 6.1 string_equals — 字符串相等判定
+# 用途: 比较两个值是否完全相同
+# wiki-ref: string_equals
+# ---------------------------------------------------------------------------
+- type: string_equals
+  value1: "<arg:player.name>"              # 当前玩家名
+  value2: "Notch"                          # << CHANGE THIS 目标玩家名
+
+- type: string_equals
+  value1: "<arg:block.world>"              # 当前方块所在世界
+  value2: "world_the_end"                  # << CHANGE THIS
+
+# 反向: 玩家名字不是指定值
+- type: "!string_equals"
+  value1: "<arg:player.name>"
+  value2: "Steve"
+
+# ---------------------------------------------------------------------------
+# 6.2 string_contains — 字符串包含判定
+# 用途: 判断 value1 是否包含 value2 子串
+# wiki-ref: string_contains
+# ---------------------------------------------------------------------------
+- type: string_contains
+  value1: "<arg:player.name>"
+  value2: "Build"                          # << CHANGE THIS 子串
+
+- type: string_contains
+  value1: "<arg:player.location.world>"
+  value2: "nether"                         # << CHANGE THIS
+
+# 反向: 玩家名不包含指定子串
+- type: "!string_contains"
+  value1: "<arg:player.name>"
+  value2: "Admin"
+
+# ---------------------------------------------------------------------------
+# 6.3 regex — 正则表达式匹配
+# 用途: 判断值是否符合指定的正则表达式
+# wiki-ref: regex
+# ---------------------------------------------------------------------------
+- type: regex
+  value: "<arg:player.name>"
+  regex: "Player[0-9]+"                   # << CHANGE THIS 匹配 "Player" + 数字
+
+- type: regex
+  value: "<arg:player.uuid>"
+  regex: "^[a-f0-9-]{36}$"               # << CHANGE THIS UUID 格式校验
+
+# 反向: 玩家名不符合指定模式
+- type: "!regex"
+  value: "<arg:player.name>"
+  regex: "^[A-Z].*"
+
+# ---------------------------------------------------------------------------
+# 6.4 is_null — 空值检测
+# 用途: 检查参数或占位符是否为空/不存在
+# wiki-ref: is_null
+# ---------------------------------------------------------------------------
+- type: is_null
+  argument: "player.main_hand_item"        # << CHANGE THIS 上下文变量路径
+
+- type: is_null
+  argument: "block.top_property"           # << CHANGE THIS
+
+# 反向: 值存在 (非空)
+- type: "!is_null"
+  argument: "arg:target.name"
+
+
+# ============================================================================
+# 第七部分: 玩家状态条件
+#   - has_player:        检测当前上下文是否存在玩家
+#   - is_bedrock_player: 检测玩家是否为基岩版
+#   - distance:          检测玩家与位置的距离
+#   - on_cooldown:       检测冷却状态
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 7.1 has_player — 玩家存在检测
+# 用途: 确保当前上下文中有玩家实体
+# wiki-ref: has_player
+# ---------------------------------------------------------------------------
+- type: has_player
+
+# 反向: 上下文中没有玩家 (例如命令方块/红石触发)
+- type: "!has_player"
+
+# ---------------------------------------------------------------------------
+# 7.2 is_bedrock_player — 基岩版玩家检测
+# 用途: 区分 Java 版与基岩版玩家
+# wiki-ref: is_bedrock_player
+# ---------------------------------------------------------------------------
+- type: is_bedrock_player
+
+# 反向: Java 版玩家
+- type: "!is_bedrock_player"
+
+# ---------------------------------------------------------------------------
+# 7.3 distance — 距离范围检测
+# 用途: 检测玩家与上下文位置的欧几里得距离是否在 [min, max] 内
+# wiki-ref: distance
+# ---------------------------------------------------------------------------
+- type: distance
+  min: 0                                   # << CHANGE THIS 最小距离
+  max: 32                                  # << CHANGE THIS 最大距离
+
+- type: distance
+  min: 10                                  # 10 ~ 50 格
+  max: 50
+
+# 反向: 距离小于 5 格 或 大于 100 格
+- type: "!distance"
+  min: 5                                   # << CHANGE THIS
+  max: 100                                 # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 7.4 on_cooldown — 冷却检测
+# 用途: 检测玩家是否处于指定冷却状态 (由 set_cooldown 函数设置)
+# wiki-ref: on_cooldown
+# ---------------------------------------------------------------------------
+- type: on_cooldown
+  id: "quartzietium:dash_ability"          # << CHANGE THIS 冷却 ID
+
+- type: on_cooldown
+  id: "quartzietium:super_jump"           # << CHANGE THIS
+
+# 反向: 不在冷却中 (可用)
+- type: "!on_cooldown"
+  id: "quartzietium:special_attack"        # << CHANGE THIS
+
+
+# ============================================================================
+# 第八部分: 完整事件配置范例
+#   综合运用以上所有条件类型，展示在真实事件中的嵌套与组合
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 8.1 采矿事件 — 结合 match_block, enchantment, random, permission
+# 用途: 挖掘黄水晶矿石时，只有手持时运 III 镐且有 VIP 权限的玩家
+#       有 50% 概率获得双倍掉落
+# wiki-ref: all_of | match_item | enchantment | permission | random
+# ---------------------------------------------------------------------------
+events:
+  - on: block_break                        # 方块破坏事件
+    functions:
+      - type: give_item
+        item: quartzietium:topaz_gem       # << CHANGE THIS
+        amount: 1
+      - type: command
+        command: "say <arg:player.name> 挖到了黄水晶！"
+    conditions:
+      # 复合条件: 所有子条件必须满足
+      - type: all_of
+        terms:
+          # 1. 挖掘的是黄水晶矿石
+          - type: match_block
+            x: "<arg:position.x>"
+            y: "<arg:position.y>"
+            z: "<arg:position.z>"
+            id: "quartzietium:topaz_ore"
+            regex: false
+          # 2. 手持镐 (反向条件: 不是非镐类物品)
+          - type: "!match_item"
+            id: "minecraft:.*_pickaxe"
+            regex: true
+          # 3. 拥有时运 III
+          - type: enchantment
+            predicate: "minecraft:fortune>=3"
+          # 4. VIP 权限
+          - type: permission
+            permission: "quartzietium.vip"
+          # 5. 50% 双倍掉落概率
+          - type: random
+            value: 0.5
+
+# ---------------------------------------------------------------------------
+# 8.2 右键交互事件 — 结合 hand, has_item, is_null, test_flag
+# 用途: 手持黄铜钥匙右键门时，若钥匙数据非空且门区域允许交互则开门
+# wiki-ref: hand | has_item | is_null | test_flag
+# ---------------------------------------------------------------------------
+  - on: right_click                        # 右键事件
+    functions:
+      - type: command
+        command: "doors open <arg:position.x> <arg:position.y> <arg:position.z>"
+      - type: sound
+        sound: "minecraft:block.iron_door.open"
+      - type: set_cooldown
+        id: "quartzietium:key_cooldown"
+        time: "5s"
+    conditions:
+      - type: all_of
+        terms:
+          # 1. 主手交互
+          - type: hand
+            hand: main_hand
+          # 2. 有手持物品
+          - type: has_item
+          # 3. 手持黄铜钥匙
+          - type: match_item
+            id: "quartzietium:brass_key"   # << CHANGE THIS
+            regex: false
+          # 4. 钥匙数据不为空 (有对应的门 ID)
+          - type: "!is_null"
+            argument: "item.quartzietium:door_id"
+          # 5. 门位置允许交互
+          - type: test_flag
+            flag: interact
+          # 6. 不在冷却中
+          - type: "!on_cooldown"
+            id: "quartzietium:key_cooldown"
+
+# ---------------------------------------------------------------------------
+# 8.3 生物击杀事件 — 结合 any_of, match_entity, expression, inventory_has_item
+# 用途: 击杀末影龙或者凋零时，若玩家等级 >= 30 且背包有荣誉之剑，
+#       则执行特殊奖励
+# wiki-ref: any_of | match_entity | expression | inventory_has_item
+# ---------------------------------------------------------------------------
+  - on: entity_kill                        # 实体击杀事件
+    functions:
+      - type: give_item
+        item: quartzietium:dragon_trophy   # << CHANGE THIS
+        amount: 1
+      - type: message
+        message: "&6恭喜 <arg:player.name> 击败了首领！"
+    conditions:
+      - type: all_of
+        terms:
+          # 1. 击杀的是末影龙 或 凋零
+          - type: any_of
+            terms:
+              - type: match_entity
+                id: "minecraft:ender_dragon"
+                regex: false
+              - type: match_entity
+                id: "minecraft:wither"
+                regex: false
+          # 2. 玩家击杀时等级 >= 30
+          - type: expression
+            expression: "<papi:player_level> >= 30"
+          # 3. 背包中有荣誉之剑
+          - type: inventory_has_item
+            id: "quartzietium:honor_sword" # << CHANGE THIS
+            count: 1
+          # 4. 不是基岩版玩家 (仅 Java 版)
+          - type: "!is_bedrock_player"
+
+# ---------------------------------------------------------------------------
+# 8.4 工具使用事件 — 结合 distance, worldguard, string_contains, match_block_property
+# 用途: 只在主世界且距离出生点 100 格内的农场区域,
+#       对 age=7 的成熟作物使用黄水晶镰刀收割
+# wiki-ref: distance | worldguard:region | string_contains | match_block_property
+# ---------------------------------------------------------------------------
+  - on: right_click_block                  # 右键方块事件
+    functions:
+      - type: command
+        command: "setblock <arg:position.x> <arg:position.y> <arg:position.z> minecraft:wheat[age=0]"
+      - type: give_item
+        item: "minecraft:wheat"
+        amount: 3
+      - type: sound
+        sound: "minecraft:block.crop.break"
+    conditions:
+      - type: all_of
+        terms:
+          # 1. 方块是成熟小麦 (age=7)
+          - type: match_block_property
+            properties:
+              age: 7
+          # 2. 手持黄水晶镰刀
+          - type: match_item
+            id: "quartzietium:topaz_hoe"   # << CHANGE THIS
+            regex: false
+          # 3. 在主世界
+          - type: string_contains
+            value1: "<arg:block.world>"
+            value2: "world"
+          # 4. 在 farm 区域
+          - type: worldguard:region
+            mode: 1
+            regions:
+              - "farm"                     # << CHANGE THIS
+          # 5. 距离原点 100 格内
+          - type: distance
+            min: 0
+            max: 100                       # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 8.5 聊天检测事件 — 结合 regex, string_equals, permission
+# 用途: 检查聊天消息是否包含暴言 或 发送者不是管理员
+# wiki-ref: regex | string_equals | permission
+# ---------------------------------------------------------------------------
+  - on: player_chat                        # 玩家聊天事件
+    functions:
+      - type: command
+        command: "mute <arg:player.name> 60s 检测到违禁词"
+      - type: message
+        message: "&c请勿在聊天中使用不当词汇！"
+    conditions:
+      - type: any_of
+        terms:
+          # 1. 消息包含违禁词 (正则)
+          - type: regex
+            value: "<arg:message>"
+            regex: "( swear|f.u.c.k|badword)"  # << CHANGE THIS
+          # 2. 消息包含特定链接 (反向条件)
+          - type: "!string_equals"
+            value1: "<arg:message>"
+            value2: "www.example.com"     # << CHANGE THIS
+      # AND: 不是管理员
+      - type: "!permission"
+        permission: "quartzietium.chat.bypass"
+
+# ---------------------------------------------------------------------------
+# 8.6 方块放置事件 — 结合 test_flag, distance, table_bonus, expression
+# 用途: 在非建筑区域放置稀有方块时，按玩家时运等级触发特殊效果
+# wiki-ref: test_flag | distance | table_bonus | expression
+# ---------------------------------------------------------------------------
+  - on: block_place                        # 方块放置事件
+    functions:
+      - type: command
+        command: "particle flame <arg:position.x> <arg:position.y> <arg:position.z>"
+      - type: command
+        command: "playsound minecraft:block.beacon.activate master <arg:player.name>"
+    conditions:
+      - type: all_of
+        terms:
+          # 1. 放置的是自定义方块
+          - type: match_item
+            id: "quartzietium:magic_block" # << CHANGE THIS
+            regex: false
+          # 2. 该位置不允许放置 (反向: flag 为 false)
+          - type: "!test_flag"
+            flag: place
+          # 3. 距离出生点超过 500 格
+          - type: "!distance"
+            min: 0
+            max: 500                       # << CHANGE THIS
+          # 4. 时运附魔等级查表概率
+          - type: table_bonus
+            enchantment: "minecraft:fortune"
+            chances:
+              - 0.0                        # 无时运: 0%
+              - 0.3                        # 时运 I:  30%
+              - 0.6                        # 时运 II: 60%
+              - 1.0                        # 时运 III: 100%
+          # 5. 玩家血量大于 50%
+          - type: expression
+            expression: "<papi:player_health_percent> > 50.0"
+
+# ---------------------------------------------------------------------------
+# 8.7 钓鱼/掉落事件 — 结合 falling_block, survives_explosion, random
+# 用途: 方块掉落物检测 + 爆炸幸存概率
+# wiki-ref: falling_block | survives_explosion | random
+# ---------------------------------------------------------------------------
+  - on: block_drop                         # 方块掉落物生成事件
+    functions:
+      - type: give_item
+        item: "quartzietium:ancient_relic" # << CHANGE THIS
+        amount: 1
+    conditions:
+      - type: all_of
+        terms:
+          # 1. 必须是下落方块产生的掉落物
+          - type: falling_block
+          # 2. 爆炸后幸存概率
+          - type: survives_explosion
+          # 3. 额外 10% 稀有掉落机会
+          - type: random
+            value: 0.1
+
+# ---------------------------------------------------------------------------
+# 8.8 完整嵌套条件 — 综合 inverted + any_of + all_of
+# 用途: 展示条件嵌套的极端情况: 不在 A 区域 且 (有权限 或 手持特定物品)
+#       同时 不是基岩版玩家 且 不在冷却中
+# wiki-ref: inverted | any_of | all_of
+# ---------------------------------------------------------------------------
+  - on: entity_interact                    # 实体交互事件
+    functions:
+      - type: command
+        command: "say <arg:player.name> 与实体进行了特殊交互！"
+    conditions:
+      # 最外层: 所有条件必须满足
+      - type: all_of
+        terms:
+          # 条件 A: 不在 safe_zone 中 (使用 inverted 对整个 any_of 取反)
+          # 逻辑: NOT (在 A 区域 OR 在 B 区域)
+          - type: inverted
+            term:
+              type: any_of
+              terms:
+                - type: worldguard:region
+                  mode: 1
+                  regions:
+                    - "safe_zone"          # << CHANGE THIS
+                - type: worldguard:region
+                  mode: 1
+                  regions:
+                    - "no_pvp_zone"        # << CHANGE THIS
+          # 条件 B: 有特殊权限 或 手持紫水晶碎片
+          - type: any_of
+            terms:
+              - type: permission
+                permission: "quartzietium.special_interact"
+              - type: match_item
+                id: "quartzietium:amethyst_shard"  # << CHANGE THIS
+                regex: false
+          # 条件 C: Java 版玩家
+          - type: "!is_bedrock_player"
+          # 条件 D: 不在冷却中
+          - type: "!on_cooldown"
+            id: "quartzietium:special_interact_cd"

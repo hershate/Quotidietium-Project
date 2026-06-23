@@ -1,0 +1,320 @@
+# ============================================================================
+# 配方类型 完全示例
+# 参考: configuration/recipe.md (CraftEngine Wiki)
+# 命名空间: example:tutorial
+# ============================================================================
+# 本文件演示 CraftEngine 支持的全部 11 种配方类型，每种包含完整配置。
+# 所有条目均来自 wiki 文档定义的键，未引入任何虚构字段。
+# 标记 "<< CHANGE THIS" 的值请按需修改。
+# ============================================================================
+
+# ============================================================================
+# 1. 有序合成配方 (shaped)
+# ============================================================================
+recipes:
+  example:tutorial_magic_staff:
+    type: shaped
+    category: equipment                  # building | redstone | equipment | misc
+    group: magic_staffs                  # 配方书分组名
+    pattern:
+      - "  A"
+      - " B "
+      - "C  "
+    ingredients:
+      A: "example:tutorial_crystal"      # << CHANGE THIS
+      B: "minecraft:stick"
+      C:
+        items: "minecraft:blaze_rod"     # 原料支持 count 属性
+        count: 1
+    result:
+      id: example:tutorial_magic_staff   # << CHANGE THIS
+      count: 1
+      post_processors:                   # 结果后处理器
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:sharpness: 3
+    visual_result:                       # 付费版专属 — 隐藏真实随机结果
+      id: example:tutorial_magic_staff
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            remove_components:
+              - attribute_modifiers
+            lore:
+              - "<gray>攻击伤害 5~8"
+              - "<gray>攻击速度 0.8~1.2"
+    functions:                           # 付费版专属 — 合成时触发
+      - type: command
+        command: "playsound minecraft:block.beacon.activate block @p"
+      - type: command
+        command: "say %player% 合成了一把魔法杖！"
+    conditions:                          # 付费版专属 — 限制条件
+      - type: permission
+        permission: "recipe.example.tutorial_magic_staff"  # << CHANGE THIS
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 2. 无序合成配方 (shapeless)
+# ============================================================================
+  example:tutorial_power_gem:
+    type: shapeless
+    category: misc
+    group: gems
+    ingredients:
+      - "example:tutorial_crystal"
+      - "minecraft:diamond"
+      - "minecraft:emerald"
+      # 嵌套列表: 满足其中任意一组即可
+      - - "minecraft:nether_star"
+        - "minecraft:echo_shard"
+    result:
+      id: example:tutorial_power_gem
+      count: 2
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:efficiency: 2
+    visual_result:
+      id: example:tutorial_power_gem
+      count: 2
+      post_processors:
+        - type: apply_data
+          data:
+            lore:
+              - "<gray>蕴含神秘力量的宝石"
+    functions:
+      - type: command
+        command: "effect give @p minecraft:absorption 10 0"
+    conditions:
+      - type: permission
+        permission: "recipe.example.tutorial_power_gem"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 3. 熔炉烧炼 (smelting)
+# ============================================================================
+  example:tutorial_ingot_from_smelting_ore:
+    type: smelting
+    experience: 1.5                      # << CHANGE THIS
+    category: blocks                     # food | blocks | misc
+    group: tutorial_ingots
+    time: 300                            # 刻数，默认 200
+    ingredient: "example:tutorial_ore"   # << CHANGE THIS
+    result:
+      id: example:tutorial_ingot         # << CHANGE THIS
+      count: 2
+      post_processors:
+        - type: apply_data
+          data:
+            item_name: "<!i>精炼锭"
+    functions:
+      - type: command
+        command: "scoreboard players add @p tutorial_smelted 1"
+    conditions:
+      - type: permission
+        permission: "recipe.example.smelting_tutorial_ingot"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 4. 高炉烧炼 (blasting)
+# ============================================================================
+  example:tutorial_ingot_from_blasting_ore:
+    type: blasting
+    experience: 2.0
+    category: misc
+    group: tutorial_ingots
+    time: 100                            # 高炉更快
+    ingredient: "example:tutorial_deepslate_ore"  # << CHANGE THIS
+    result:
+      id: example:tutorial_ingot
+      count: 2
+      post_processors:
+        - type: apply_data
+          data:
+            item_name: "<!i>速熔锭"
+    functions:
+      - type: command
+        command: "particle minecraft:flame %x% %y% %z% 0.5 0.5 0.5 0.1 20"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 5. 烟熏炉烹饪 (smoking)
+# ============================================================================
+  example:tutorial_cooked_meat:
+    type: smoking
+    experience: 0.7
+    category: food
+    group: tutorial_food
+    time: 200
+    ingredient: "example:tutorial_raw_meat"  # << CHANGE THIS
+    result:
+      id: example:tutorial_cooked_meat
+      count: 1
+    functions:
+      - type: command
+        command: "advancement grant @p only example:tutorial_cook"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 6. 营火烹饪 (campfire_cooking)
+# ============================================================================
+  example:tutorial_campfire_skewer:
+    type: campfire_cooking
+    experience: 0.5
+    category: food
+    group: tutorial_food
+    time: 600                            # 营火较慢
+    ingredient: "example:tutorial_skewer_raw"  # << CHANGE THIS
+    result:
+      id: example:tutorial_skewer_cooked
+      count: 1
+    conditions:
+      - type: permission
+        permission: "recipe.example.campfire_skewer"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 7. 切石机配方 (stonecutting)
+# ============================================================================
+# 注意: wiki 警告不建议使用自定义物品作为原料，可能导致客户端显示问题。
+  example:tutorial_stonecutting:
+    type: stonecutting
+    group: tutorial_decorative
+    ingredient: "minecraft:stone_bricks"          # 使用原版方块更安全
+    result:
+      id: example:tutorial_chiseled_bricks
+      count: 2
+      post_processors:
+        - type: apply_data
+          data:
+            item_name: "<!i>雕纹教程砖"
+    unlock_on_ingredient_obtained: false
+
+# ============================================================================
+# 8. 锻造升级配方 (smithing_transform)
+# ============================================================================
+  example:tutorial_netherite_bow:
+    type: smithing_transform
+    template_type: "minecraft:netherite_upgrade_smithing_template"  # 槽位1（可选）
+    base: "minecraft:bow"                                            # 槽位2（必填）
+    addition: "example:tutorial_ingot"                               # 槽位3（可选）
+    merge_components: true                                           # 默认 true
+    result:
+      id: example:tutorial_netherite_bow
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:power: 2
+    visual_result:
+      id: example:tutorial_netherite_bow
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            lore:
+              - "<gray>一把强化过的弓"
+              - "<gray>保留原有附魔"
+    transform_processors:                      # 转化处理器
+      - type: keep_components                  # 保留指定组件 (1.20.5+)
+        components:
+          - minecraft:enchantments
+          - minecraft:unbreakable
+      - type: apply_data                       # 应用额外数据
+        data:
+          item_name: "<!i>下界合金弓"
+      - type: merge_enchantments               # 合并附魔
+    functions:
+      - type: command
+        command: "playsound minecraft:item.trident.thunder block @p"
+    conditions:
+      - type: permission
+        permission: "recipe.example.tutorial_netherite_bow"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 9. 有序合成转化配方 (shaped_transform)
+# ============================================================================
+  example:tutorial_crossbow_transform:
+    type: shaped_transform
+    pattern:
+      - 'BBB'
+      - 'B  '
+      - 'A  '
+    ingredients:
+      A:
+        item: "minecraft:crossbow"
+        source: true                         # 标识为源物品
+      B: "example:tutorial_ingot"
+    result:
+      id: example:tutorial_crossbow
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:quick_charge: 2
+    visual_result:
+      id: example:tutorial_crossbow
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            lore:
+              - "<gray>升级过的弩"
+              - "<gray>保留原弩附魔"
+    transform_processors:
+      - type: keep_custom_data                # 保留 custom_data (1.20.5+)
+        paths:
+          - weapon
+          - energy.charged
+      - type: merge_enchantments              # 合并附魔
+      - type: apply_data                      # 应用数据
+        data:
+          item_name: "<!i>教程弩"
+    functions:
+      - type: command
+        command: "effect give @p minecraft:glowing 3 1"
+    conditions:
+      - type: permission
+        permission: "recipe.example.tutorial_crossbow"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 10. 盔甲纹饰配方 (smithing_trim)
+# ============================================================================
+  example:tutorial_copper_trims:
+    type: smithing_trim
+    template_type: "minecraft:coast_armor_trim_smithing_template"   # << CHANGE THIS
+    base: "#minecraft:trimmable_armor"                                # 标签作为输入
+    addition: "#minecraft:copper_ingot"                               # 纹饰材料
+    pattern: "minecraft:coast"                                        # 纹饰图案 (1.21.5+)
+    functions:
+      - type: command
+        command: "advancement grant @p only example:tutorial_trimmed"
+    unlock_on_ingredient_obtained: true
+
+# ============================================================================
+# 11. 酿造配方 (brewing)  — 1.20.2+
+# ============================================================================
+  example:tutorial_haste_potion:
+    type: brewing
+    ingredient: "example:tutorial_haste_powder"   # 放入顶槽的原料
+    container: "minecraft:awkward_potion"          # 底槽的容器（可选）
+    result:
+      id: "example:tutorial_potion_haste"
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            item_name: "<!i>急迫药水"
+            lore:
+              - "<gray>急迫 III (0:30)"
+    functions:
+      - type: command
+        command: "title @p actionbar [{\"text\":\"药水已酿造完成！\",\"color\":\"green\"}]"
+    unlock_on_ingredient_obtained: true

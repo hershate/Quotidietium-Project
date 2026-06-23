@@ -1,0 +1,114 @@
+# =============================================================================
+# 音乐唱片配置 (Jukebox & Sounds) | 基于 CraftEngine Wiki
+# 参考: configuration/jukebox_song.md, configuration/sound.md
+# =============================================================================
+# 本文件演示如何通过 CraftEngine 添加自定义音乐唱片:
+#   1) sounds      —— 注册自定义声音事件及音效文件
+#   2) jukebox_songs —— 注册唱片机曲目
+#   3) items       —— 将物品绑定 jukebox_playable 组件使其可播放
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 1. 自定义声音事件
+#    格式: <命名空间>:<声音事件名>
+#    每个事件下可用 sounds 列表指定一个或多个音效文件（支持权重随机播放）
+# ---------------------------------------------------------------------------
+sounds:
+  # --- 唱片曲目 A: "远古森林" ---
+  myquest:music.ancient_forest:
+    replace: false
+    subtitle: subtitles.myquest.music.ancient_forest
+    sounds:
+      - name: "myquest/music/ancient_forest_1"
+        volume: 1.0
+        weight: 5
+        stream: true            # 长音频建议启用流式播放
+        attenuation_distance: 32
+        preload: false
+        type: "file"
+      - name: "myquest/music/ancient_forest_2"
+        volume: 1.0
+        weight: 5
+        stream: true
+        attenuation_distance: 32
+        type: "file"
+
+  # --- 唱片曲目 B: "终末之战" ---
+  myquest:music.final_battle:
+    replace: false
+    subtitle: subtitles.myquest.music.final_battle
+    sounds:
+      - name: "myquest/music/final_battle_loop"
+        volume: 1.0
+        weight: 1
+        stream: true
+        attenuation_distance: 48   # 战斗音乐传播更远
+        type: "file"
+
+  # --- 唱片曲目 C: "静谧之夜"（仅有单文件的无权重写法）---
+  myquest:music.silent_night:
+    replace: false
+    subtitle: subtitles.myquest.music.silent_night
+    sounds:
+      - "myquest/music/silent_night"
+
+# ---------------------------------------------------------------------------
+# 2. 唱片机曲目
+#    格式: <命名空间>:<曲目ID>
+#    sound              —— 播放时触发的声音事件（可引用上方自定义事件）
+#    length             —— 音乐总时长（秒），唱片机旋转期间
+#    description        —— 唱片描述文本
+#    comparator_output  —— 放入唱片机后红石比较器的输出强度 (0-15)
+#    range              —— 音乐可听范围（方块）
+# ---------------------------------------------------------------------------
+jukebox_songs:
+  myquest:ancient_forest_disc:
+    sound: myquest:music.ancient_forest
+    length: 198.0           # << CHANGE THIS - 3分18秒
+    description: "§b远古森林 §7- MyQuest Original Soundtrack"
+    comparator_output: 12    # << CHANGE THIS
+    range: 48                # << CHANGE THIS
+
+  myquest:final_battle_disc:
+    sound: myquest:music.final_battle
+    length: 142.0           # << CHANGE THIS - 2分22秒
+    description: "§c终末之战 §7- MyQuest Original Soundtrack"
+    comparator_output: 15    # << CHANGE THIS - 最强信号
+    range: 64                # << CHANGE THIS - 全范围
+
+  myquest:silent_night_disc:
+    sound: myquest:music.silent_night
+    length: 265.0           # << CHANGE THIS - 4分25秒
+    description: "§d静谧之夜 §7- MyQuest Original Soundtrack"
+    comparator_output: 7     # << CHANGE THIS
+    range: 24                # << CHANGE THIS - 柔和短距
+
+# ---------------------------------------------------------------------------
+# 3. 可播放唱片的物品
+#    添加 jukebox_playable 组件，值为 jukebox_songs 中定义的曲目ID
+# ---------------------------------------------------------------------------
+items:
+  myquest:ancient_forest_disc:
+    material: MUSIC_DISC_OTHERSIDE   # << CHANGE THIS - 使用原版唱片材质
+    data:
+      jukebox_playable: myquest:ancient_forest_disc
+    # 可叠加其他组件，例如：
+    # rarity: EPIC
+    # max_stack_size: 1
+
+  myquest:final_battle_disc:
+    material: MUSIC_DISC_PIGSTEP      # << CHANGE THIS
+    data:
+      jukebox_playable: myquest:final_battle_disc
+
+  myquest:silent_night_disc:
+    material: MUSIC_DISC_CAT          # << CHANGE THIS
+    data:
+      jukebox_playable: myquest:silent_night_disc
+
+# =============================================================================
+# 资源包路径约定（仅注释提示，非配置内容）
+# 对应 sounds 中 name 的路径，需将 .ogg 文件置于:
+#   assets/myquest/sounds/myquest/music/
+# 并在资源包中维护 assets/myquest/sounds.json（CraftEngine 会部分自动处理）
+# =============================================================================

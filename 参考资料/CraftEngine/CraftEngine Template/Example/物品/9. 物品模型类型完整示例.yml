@@ -1,0 +1,1231 @@
+# ============================================================================
+# 物品模型类型完整示例
+# 参考: CraftEngine Wiki - configuration/item/models.md 及子页面
+# 命名空间: questcraft
+# ============================================================================
+# 本文件展示 CraftEngine 支持的全部物品模型类型:
+#   1. 简化模型 (texture / textures / model / models)
+#   2. minecraft:model (含 tints 生成 transformation)
+#   3. minecraft:condition (布尔条件型)
+#   4. minecraft:range_dispatch (值调配型)
+#   5. minecraft:composite (组合)
+#   6. minecraft:select (枚举条件型)
+#   7. minecraft:special (特殊模型/硬编码渲染器)
+# ============================================================================
+
+
+
+# ============================================================
+# 第一部分: 简化模型
+# 自动分析基础材质并选择最合适的方法生成模型
+# ============================================================
+items:
+
+  # --- 2D 图标 (texture 单纹理) ---
+  questcraft:ender_pearl_seeds:
+    material: paper
+    texture: questcraft:item/custom/ender_pearl_seeds                          # << CHANGE THIS
+
+  # --- 手持物品 (texture 单纹理, 自动识别手持) ---
+  questcraft:topaz_axe:
+    material: golden_axe
+    texture: questcraft:item/custom/topaz_axe                                  # << CHANGE THIS
+
+  # --- 多纹理叠加 (textures 数组) ---
+  questcraft:topaz_axe_overlay:
+    material: golden_axe
+    textures:
+      - questcraft:item/custom/topaz_axe                                       # << CHANGE THIS
+      - questcraft:item/custom/topaz                                           # << CHANGE THIS
+
+  # --- 钓鱼竿 (textures 自动状态切换) ---
+  questcraft:topaz_rod:
+    material: fishing_rod
+    textures:
+      - questcraft:item/custom/topaz_rod                                       # << CHANGE THIS
+      - questcraft:item/custom/topaz_rod_cast                                  # << CHANGE THIS
+
+  # --- 鞘翅 (textures 破损/完好) ---
+  questcraft:flame_elytra:
+    material: elytra
+    textures:
+      - questcraft:item/custom/flame_elytra                                    # << CHANGE THIS
+      - questcraft:item/custom/flame_elytra_broken                             # << CHANGE THIS
+
+  # --- 弓 (textures 拉弦动画) ---
+  questcraft:topaz_bow:
+    material: bow
+    textures:
+      - questcraft:item/custom/topaz_bow                                       # << CHANGE THIS
+      - questcraft:item/custom/topaz_bow_pulling_0                             # << CHANGE THIS
+      - questcraft:item/custom/topaz_bow_pulling_1                             # << CHANGE THIS
+      - questcraft:item/custom/topaz_bow_pulling_2                             # << CHANGE THIS
+
+  # --- 弩 (textures 装填动画) ---
+  questcraft:topaz_crossbow:
+    material: crossbow
+    textures:
+      - questcraft:item/custom/topaz_crossbow                                  # << CHANGE THIS
+      - questcraft:item/custom/topaz_crossbow_pulling_0                        # << CHANGE THIS
+      - questcraft:item/custom/topaz_crossbow_pulling_1                        # << CHANGE THIS
+      - questcraft:item/custom/topaz_crossbow_pulling_2                        # << CHANGE THIS
+      - questcraft:item/custom/topaz_crossbow_arrow                            # << CHANGE THIS
+      - questcraft:item/custom/topaz_crossbow_firework                         # << CHANGE THIS
+
+  # --- 盾牌 (models 数组 + 已存在模型文件) ---
+  questcraft:shield_3d:
+    material: shield
+    models:
+      - questcraft:item/custom/shield_3d                                       # << CHANGE THIS
+      - questcraft:item/custom/shield_3d_blocking                              # << CHANGE THIS
+
+  # --- 直接指定 model 路径 ---
+  questcraft:exit_icon:
+    material: paper
+    model: questcraft:item/custom/exit_icon                                    # << CHANGE THIS
+
+  # --- model + texture 同时指定 ---
+  questcraft:ender_pearl_flower_seeds:
+    material: paper
+    model: questcraft:item/custom/ender_pearl_flower_seeds                      # << CHANGE THIS
+    texture: questcraft:item/custom/ender_pearl_flower_seeds                    # << CHANGE THIS
+
+  # --- models + textures 同时指定 ---
+  questcraft:topaz_rod_explicit:
+    material: fishing_rod
+    models:
+      - questcraft:item/custom/topaz_rod                                       # << CHANGE THIS
+      - questcraft:item/custom/topaz_rod_cast                                  # << CHANGE THIS
+    textures:
+      - questcraft:item/custom/topaz_rod                                       # << CHANGE THIS
+      - questcraft:item/custom/topaz_rod_cast                                  # << CHANGE THIS
+
+
+
+# ============================================================
+# 第二部分: minecraft:model (基础模型)
+# type 可省略, 默认 minecraft:model
+# ============================================================
+
+  # --- 基础路径 + 生成 (2D 图标) ---
+  questcraft:model_generated:
+    material: paper
+    model:
+      path: questcraft:item/custom/model_generated                              # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          layer0: "questcraft:item/custom/model_generated"                     # << CHANGE THIS
+
+  # --- 基础路径 + 生成 (手持) ---
+  questcraft:model_handheld:
+    material: golden_axe
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/topaz_pickaxe                                # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "questcraft:item/custom/topaz_pickaxe"                       # << CHANGE THIS
+
+  # --- 变换 (transformation / 26.1+) ---
+  questcraft:model_transformed:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/transformed_item                            # << CHANGE THIS
+      transformation:
+        scale: 1,1,1                                                           # << CHANGE THIS
+        translation: 0,0,0                                                     # << CHANGE THIS
+        right_rotation:
+          angle: 0.0                                                           # << CHANGE THIS
+          axis: 0,0,0                                                          # << CHANGE THIS
+        left_rotation: 0,0,0,0                                                 # << CHANGE THIS
+
+  # --- 着色: minecraft:constant ---
+  questcraft:palm_leaves:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/palm_leaves                                  # << CHANGE THIS
+      generation:
+        parent: "questcraft:block/custom/palm_leaves"
+      tints:
+        - type: "minecraft:constant"
+          value: -12012264                                                     # << CHANGE THIS
+
+  # --- 着色: minecraft:custom_model_data ---
+  questcraft:tint_custom_model_data:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/tint_cmd                                    # << CHANGE THIS
+      tints:
+        - type: "minecraft:custom_model_data"
+          index: 0                                                             # << CHANGE THIS
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 着色: minecraft:dye (可染色) ---
+  questcraft:dyeable_example:
+    material: leather_chestplate
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/dyeable_example                             # << CHANGE THIS
+      multiples: # 注: 此键不在wiki中, 仅示意 - 实际使用 tints
+      tints:
+        - type: "minecraft:dye"
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 着色: minecraft:firework ---
+  questcraft:firework_tint:
+    material: firework_rocket
+    model:
+      type: minecraft:model
+      path: minecraft:item/firework_rocket
+      tints:
+        - type: "minecraft:firework"
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 着色: minecraft:grass (生物群系颜色) ---
+  questcraft:grass_tint:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/grass_tint                                  # << CHANGE THIS
+      tints:
+        - type: "minecraft:grass"
+          temperature: 0.5                                                     # << CHANGE THIS
+          downfall: 0.5                                                        # << CHANGE THIS
+
+  # --- 着色: minecraft:map_color ---
+  questcraft:map_color_tint:
+    material: filled_map
+    model:
+      type: minecraft:model
+      path: minecraft:item/filled_map
+      tints:
+        - type: "minecraft:map_color"
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 着色: minecraft:potion ---
+  questcraft:potion_tint:
+    material: potion
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/potion_base                                 # << CHANGE THIS
+      tints:
+        - type: "minecraft:potion"
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 着色: minecraft:team ---
+  questcraft:team_tint:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/team_tint                                   # << CHANGE THIS
+      tints:
+        - type: "minecraft:team"
+          default: -12012264                                                   # << CHANGE THIS
+
+  # --- 多 tintindex 示例 (BlockBench 着色) ---
+  questcraft:tints_example:
+    material: paper
+    model:
+      type: minecraft:model
+      path: questcraft:item/example                                            # << CHANGE THIS
+      generation:
+        parent: "questcraft:block/example"
+      tints:
+        - type: "minecraft:dye"                                                # tintindex=0
+          default: 144,80,62                                                   # << CHANGE THIS
+        - type: "minecraft:grass"                                              # tintindex=1
+          temperature: 0.5                                                     # << CHANGE THIS
+          downfall: 0.5                                                        # << CHANGE THIS
+
+  # --- minecraft:model 着色综合示例 (RGB 三种格式) ---
+  questcraft:tint_rgb_formats:
+    model:
+      type: minecraft:model
+      path: questcraft:item/custom/tint_formats                                # << CHANGE THIS
+      tints:
+        - type: "minecraft:constant"
+          value: 16711680                       # 十进制 (红色)               # << CHANGE THIS
+        - type: "minecraft:constant"
+          value:                                # RGB 列表 (整数 0-255)
+            - 255                                                             # << CHANGE THIS
+            - 0                                                               # << CHANGE THIS
+            - 0                                                               # << CHANGE THIS
+        - type: "minecraft:constant"
+          value: 255,0,0                        # 逗号分隔 RGB               # << CHANGE THIS
+
+
+
+# ============================================================
+# 第三部分: minecraft:condition (布尔条件型)
+# ============================================================
+
+  # --- 谓词: minecraft:using_item ---
+  questcraft:condition_using_item:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:using_item"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/sword_idle"                              # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/sword_blocking"                          # << CHANGE THIS
+
+  # --- 谓词: minecraft:broken ---
+  questcraft:condition_broken:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:broken"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/tool_normal"                             # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/tool_broken"                             # << CHANGE THIS
+
+  # --- 谓词: minecraft:damaged ---
+  questcraft:condition_damaged:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:damaged"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/armor_new"                               # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/armor_damaged"                           # << CHANGE THIS
+
+  # --- 谓词: minecraft:selected ---
+  questcraft:condition_selected:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:selected"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/weapon_holstered"                        # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/weapon_drawn"                            # << CHANGE THIS
+
+  # --- 谓词: minecraft:carried ---
+  questcraft:condition_carried:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:carried"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/item_normal"                             # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/item_carried"                            # << CHANGE THIS
+
+  # --- 谓词: minecraft:extended_view (Shift 查看) ---
+  questcraft:condition_extended_view:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:extended_view"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/icon_small"                              # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/icon_large"                              # << CHANGE THIS
+
+  # --- 谓词: minecraft:fishing_rod/cast ---
+  questcraft:condition_rod_cast:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:fishing_rod/cast"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/rod_idle"                                # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/rod_cast"                                # << CHANGE THIS
+
+  # --- 谓词: minecraft:view_entity ---
+  questcraft:condition_view_entity:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:view_entity"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/third_person"                            # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/first_person"                            # << CHANGE THIS
+
+  # --- 谓词: minecraft:bundle/has_selected_item ---
+  questcraft:condition_bundle_selected:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:bundle/has_selected_item"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/bundle"
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/bundle_filled"
+
+  # --- 谓词: minecraft:has_component ---
+  questcraft:condition_has_enchant:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:has_component"
+      component: "minecraft:enchantments"                                      # << CHANGE THIS
+      ignore-default: false                                                    # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/sword_plain"                             # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/sword_enchanted"                         # << CHANGE THIS
+
+  # --- 谓词: minecraft:keybind_down ---
+  questcraft:condition_sneaking:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:keybind_down"
+      keybind: "key.left"                                                      # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/normal"                                  # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/sneaking"                                # << CHANGE THIS
+
+  # --- 谓词: minecraft:custom_model_data ---
+  questcraft:condition_cmd:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:custom_model_data"
+      index: 0                                                                 # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/default_skin"                            # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/alt_skin"                                # << CHANGE THIS
+
+  # --- 谓词: minecraft:component (1.21.5+) ---
+  questcraft:condition_component_unbreakable:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:component"                                          # 1.21.5+
+      component: "minecraft:unbreakable"                                       # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/tool_normal"                             # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/tool_unbreakable"                        # << CHANGE THIS
+
+  # --- condition + transformation ---
+  questcraft:condition_transformed:
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:using_item"
+      on_false:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/idle"                                    # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "questcraft:item/custom/active"                                  # << CHANGE THIS
+      transformation:
+        scale: 1,1,1                                                           # << CHANGE THIS
+        translation: 0,0,0                                                     # << CHANGE THIS
+        right_rotation:
+          angle: 0.0                                                           # << CHANGE THIS
+          axis: 0,0,0                                                          # << CHANGE THIS
+        left_rotation: 0,0,0,0                                                 # << CHANGE THIS
+
+
+
+# ============================================================
+# 第四部分: minecraft:range_dispatch (值调配型)
+# 选择阈值小于或等于属性值的最后一个条目
+# ============================================================
+
+  # --- 数值属性: minecraft:crossbow/pull ---
+  questcraft:range_crossbow_pull:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:crossbow/pull"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/crossbow_pulling_0"                  # << CHANGE THIS
+          threshold: 0.58                                                      # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/crossbow_pulling_1"                  # << CHANGE THIS
+          threshold: 1.0                                                       # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/crossbow_standby"                        # << CHANGE THIS
+
+  # --- 数值属性: minecraft:bundle/fullness ---
+  questcraft:range_bundle_fullness:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:bundle/fullness"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/bundle_empty"                        # << CHANGE THIS
+          threshold: 0.0                                                       # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/bundle_half"                         # << CHANGE THIS
+          threshold: 0.5                                                       # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/bundle_full"                         # << CHANGE THIS
+          threshold: 1.0                                                       # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/bundle"
+
+  # --- 数值属性: minecraft:cooldown ---
+  questcraft:range_cooldown:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:cooldown"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/ready"                               # << CHANGE THIS
+          threshold: 0.0                                                       # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/cooling_half"                        # << CHANGE THIS
+          threshold: 0.5                                                       # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/cooling_full"                        # << CHANGE THIS
+          threshold: 1.0                                                       # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/cooling_max"                             # << CHANGE THIS
+
+  # --- 数值属性: minecraft:compass (带 target/wobble) ---
+  questcraft:range_compass:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:compass"
+      target: spawn                                                           # << CHANGE THIS
+      wobble: true                                                             # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/compass_00"                          # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/compass_16"                          # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/compass_31"                          # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/compass"
+
+  # --- 数值属性: minecraft:count (带 normalize) ---
+  questcraft:range_count:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:count"
+      normalize: true                                                          # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/stack_single"                        # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/stack_half"                          # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/stack_full"                          # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/stack_overflow"                          # << CHANGE THIS
+
+  # --- 数值属性: minecraft:damage (带 normalize) ---
+  questcraft:range_damage:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:damage"
+      normalize: true                                                          # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/tool_pristine"                       # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/tool_worn"                           # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/tool_battered"                       # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/tool_broken"                             # << CHANGE THIS
+
+  # --- 数值属性: minecraft:time (时钟) ---
+  questcraft:range_time:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:time"
+      source: daytime                                                          # << CHANGE THIS
+      wobble: true                                                             # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/clock_00"                            # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/clock_06"                            # << CHANGE THIS
+          threshold: 0.25
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/clock_12"                            # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/clock_18"                            # << CHANGE THIS
+          threshold: 0.75
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/clock_24"                            # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/clock"
+
+  # --- 数值属性: minecraft:use_cycle ---
+  questcraft:range_use_cycle:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:use_cycle"
+      period: 1.0                                                              # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/cycle_0"                             # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/cycle_1"                             # << CHANGE THIS
+          threshold: 0.33
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/cycle_2"                             # << CHANGE THIS
+          threshold: 0.66
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/cycle_end"                               # << CHANGE THIS
+
+  # --- 数值属性: minecraft:use_duration ---
+  questcraft:range_use_duration:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:use_duration"
+      remaining: false                                                         # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/eating_start"                        # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/eating_half"                         # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/eating_done"                         # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/eating_ready"                            # << CHANGE THIS
+
+  # --- 数值属性: minecraft:custom_model_data (字符串数组下标) ---
+  questcraft:range_cmd:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:custom_model_data"
+      index: 0                                                                 # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/variant_1"                           # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/variant_2"                           # << CHANGE THIS
+          threshold: 1.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/variant_3"                           # << CHANGE THIS
+          threshold: 2.0
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/variant_default"                         # << CHANGE THIS
+
+  # --- range_dispatch + transformation ---
+  questcraft:range_transformed:
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:crossbow/pull"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/pull_0"                              # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "questcraft:item/custom/pull_1"                              # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/pull_none"                               # << CHANGE THIS
+      transformation:
+        scale: 1,1,1                                                           # << CHANGE THIS
+        translation: 0,0,0                                                     # << CHANGE THIS
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+
+
+# ============================================================
+# 第五部分: minecraft:composite (组合)
+# 按数组次序从后向前依次渲染 (后加入的在上层)
+# ============================================================
+
+  # --- 基础组合 ---
+  questcraft:composite_basic:
+    model:
+      type: "minecraft:composite"
+      models:
+        - type: minecraft:model
+          path: "questcraft:item/custom/base_layer"                            # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/overlay_glow"                          # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/overlay_gem"                           # << CHANGE THIS
+
+  # --- 组合 + generation (每层独立生成) ---
+  questcraft:composite_generated:
+    model:
+      type: "minecraft:composite"
+      models:
+        - type: minecraft:model
+          path: "questcraft:item/custom/weapon_blade"                          # << CHANGE THIS
+          generation:
+            parent: "minecraft:item/generated"
+            textures:
+              layer0: "questcraft:item/custom/weapon_blade"                    # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/weapon_handle"                         # << CHANGE THIS
+          generation:
+            parent: "minecraft:item/generated"
+            textures:
+              layer0: "questcraft:item/custom/weapon_handle"                   # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/weapon_gem"                            # << CHANGE THIS
+          generation:
+            parent: "minecraft:item/generated"
+            textures:
+              layer0: "questcraft:item/custom/weapon_gem"                      # << CHANGE THIS
+
+  # --- 组合 + tints (每层独立着色) ---
+  questcraft:composite_tinted:
+    model:
+      type: "minecraft:composite"
+      models:
+        - type: minecraft:model
+          path: "questcraft:item/custom/armor_base"                            # << CHANGE THIS
+          tints:
+            - type: "minecraft:dye"
+              default: -12012264                                               # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/armor_trim"                            # << CHANGE THIS
+          tints:
+            - type: "minecraft:constant"
+              value: 16711680                                                  # << CHANGE THIS
+
+  # --- 组合 + transformation ---
+  questcraft:composite_transformed:
+    model:
+      type: "minecraft:composite"
+      models:
+        - type: minecraft:model
+          path: "questcraft:item/custom/part_a"                                # << CHANGE THIS
+        - type: minecraft:model
+          path: "questcraft:item/custom/part_b"                                # << CHANGE THIS
+      transformation:
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+
+
+# ============================================================
+# 第六部分: minecraft:select (枚举条件型)
+# ============================================================
+
+  # --- 枚举属性: minecraft:charge_type (弩) ---
+  questcraft:select_charge_type:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:charge_type"
+      cases:
+        - when: none
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/crossbow_unloaded"                   # << CHANGE THIS
+        - when: arrow
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/crossbow_arrow"                      # << CHANGE THIS
+        - when: rocket
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/crossbow_firework"                   # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/crossbow_default"
+
+  # --- 枚举属性: minecraft:display_context ---
+  questcraft:select_display_context:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:display_context"
+      cases:
+        - when: thirdperson_lefthand
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/thirdperson_left"                    # << CHANGE THIS
+        - when: thirdperson_righthand
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/thirdperson_right"                   # << CHANGE THIS
+        - when: firstperson_lefthand
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/firstperson_left"                    # << CHANGE THIS
+        - when: firstperson_righthand
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/firstperson_right"                   # << CHANGE THIS
+        - when: gui
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/gui_view"                            # << CHANGE THIS
+        - when: ground
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/ground_view"                         # << CHANGE THIS
+        - when: fixed
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/fixed_view"                          # << CHANGE THIS
+        - when: head
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/head_view"                           # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/default_view"                            # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:main_hand ---
+  questcraft:select_main_hand:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:main_hand"
+      cases:
+        - when: left
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/left_hand"                           # << CHANGE THIS
+        - when: right
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/right_hand"                          # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/hand_unknown"                            # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:context_dimension ---
+  questcraft:select_dimension:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_dimension"
+      cases:
+        - when: minecraft:overworld
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/overworld_form"                      # << CHANGE THIS
+        - when: minecraft:the_nether
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/nether_form"                         # << CHANGE THIS
+        - when: minecraft:the_end
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/end_form"                            # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/void_form"                               # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:context_entity_type ---
+  questcraft:select_entity_type:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_entity_type"
+      cases:
+        - when: minecraft:player
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/held_by_player"                      # << CHANGE THIS
+        - when: minecraft:piglin
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/held_by_piglin"                      # << CHANGE THIS
+        - when: minecraft:armor_stand
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/on_armor_stand"                      # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/held_unknown"                            # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:trim_material ---
+  questcraft:select_trim_material:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:trim_material"
+      cases:
+        - when: minecraft:iron
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/trim_iron"                           # << CHANGE THIS
+        - when: minecraft:gold
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/trim_gold"                           # << CHANGE THIS
+        - when: minecraft:diamond
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/trim_diamond"                        # << CHANGE THIS
+        - when: minecraft:netherite
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/trim_netherite"                      # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/trim_none"                               # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:block_state ---
+  questcraft:select_block_state:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:block_state"
+      block_state_property: "facing"                                           # << CHANGE THIS
+      cases:
+        - when: north
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/facing_north"                        # << CHANGE THIS
+        - when: south
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/facing_south"                        # << CHANGE THIS
+        - when: east
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/facing_east"                         # << CHANGE THIS
+        - when: west
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/facing_west"                         # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/facing_up"                               # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:component (1.21.5+) ---
+  questcraft:select_component:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:component"                                          # 1.21.5+
+      component: "minecraft:unbreakable"                                       # << CHANGE THIS
+      cases:
+        - when: {}
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/unbreakable_on"                      # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/unbreakable_off"                         # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:custom_model_data (字符串) ---
+  questcraft:select_cmd_string:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:custom_model_data"
+      index: 0                                                                 # << CHANGE THIS
+      cases:
+        - when: "season:spring"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/spring_bloom"                        # << CHANGE THIS
+        - when: "season:summer"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/summer_heat"                         # << CHANGE THIS
+        - when: "season:autumn"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/autumn_harvest"                      # << CHANGE THIS
+        - when: "season:winter"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/winter_frost"                        # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/season_default"                          # << CHANGE THIS
+
+  # --- 枚举属性: minecraft:local_time ---
+  questcraft:select_local_time:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:local_time"
+      locale: "zh_CN"                                                          # << CHANGE THIS
+      time_zone: "GMT+8:00"                                                    # << CHANGE THIS
+      pattern: "HH:mm:ss"                                                      # << CHANGE THIS
+      cases:
+        - when: "06:00:00"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/morning"                             # << CHANGE THIS
+        - when: "12:00:00"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/noon"                                # << CHANGE THIS
+        - when: "18:00:00"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/evening"                             # << CHANGE THIS
+        - when: "22:00:00"
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/night"                               # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/daytime_default"                         # << CHANGE THIS
+
+  # --- select + transformation ---
+  questcraft:select_transformed:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:main_hand"
+      cases:
+        - when: left
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/left"                                # << CHANGE THIS
+        - when: right
+          model:
+            type: minecraft:model
+            path: "questcraft:item/custom/right"                               # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "questcraft:item/custom/fallback"                                # << CHANGE THIS
+      transformation:
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+
+
+# ============================================================
+# 第七部分: minecraft:special (特殊模型 / 硬编码渲染器)
+# ============================================================
+
+  # --- 渲染器: minecraft:trident ---
+  questcraft:special_trident:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_trident                              # << CHANGE THIS
+      model:
+        type: minecraft:trident
+
+  # --- 渲染器: minecraft:conduit ---
+  questcraft:special_conduit:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_conduit                             # << CHANGE THIS
+      model:
+        type: minecraft:conduit
+
+  # --- 渲染器: minecraft:shield ---
+  questcraft:special_shield:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_shield                              # << CHANGE THIS
+      model:
+        type: minecraft:shield
+
+  # --- 渲染器: minecraft:decorated_pot ---
+  questcraft:special_decorated_pot:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_pot                                 # << CHANGE THIS
+      model:
+        type: minecraft:decorated_pot
+
+  # --- 渲染器: minecraft:standing_sign ---
+  questcraft:special_standing_sign:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_sign                                # << CHANGE THIS
+      model:
+        type: "minecraft:standing_sign"
+        attachment: "ground"                                                   # << CHANGE THIS
+        wood_type: "oak"                                                       # << CHANGE THIS
+        texture: questcraft:entity/signs/oak                                   # << CHANGE THIS
+
+  # --- 渲染器: minecraft:hanging_sign ---
+  questcraft:special_hanging_sign:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_hanging_sign                        # << CHANGE THIS
+      model:
+        type: "minecraft:hanging_sign"
+        attachment: "ceiling_middle"                                           # << CHANGE THIS
+        wood_type: "oak"                                                       # << CHANGE THIS
+        texture: questcraft:entity/signs/hanging/oak                           # << CHANGE THIS
+
+  # --- 渲染器: minecraft:head (玩家头颅) ---
+  questcraft:special_head:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_head                                # << CHANGE THIS
+      model:
+        type: "minecraft:head"
+        kind: player                                                           # << CHANGE THIS
+        texture: questcraft:entity/player_head/custom                          # << CHANGE THIS
+        animation: 0.0                                                         # << CHANGE THIS
+
+  # --- 渲染器: minecraft:player_head (1.21.6+) ---
+  questcraft:special_player_head:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_player_head                         # << CHANGE THIS
+      model:
+        type: "minecraft:player_head"
+
+  # --- 渲染器: minecraft:chest ---
+  questcraft:special_chest:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_chest                               # << CHANGE THIS
+      model:
+        type: "minecraft:chest"
+        chest_type: "single"                                                   # << CHANGE THIS
+        openness: 0.0                                                          # << CHANGE THIS
+        texture: questcraft:entity/chest/custom                                # << CHANGE THIS
+
+  # --- 渲染器: minecraft:shulker_box ---
+  questcraft:special_shulker_box:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_shulker                             # << CHANGE THIS
+      model:
+        type: "minecraft:shulker_box"
+        openness: 0.0                                                          # << CHANGE THIS
+        orientation: up                                                        # << CHANGE THIS
+        texture: questcraft:entity/shulker/custom                              # << CHANGE THIS
+
+  # --- 渲染器: minecraft:banner ---
+  questcraft:special_banner:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_banner                              # << CHANGE THIS
+      model:
+        type: "minecraft:banner"
+        attachment: "ground"                                                   # << CHANGE THIS
+        color: white                                                           # << CHANGE THIS
+
+  # --- 渲染器: minecraft:copper_golem_statue ---
+  questcraft:special_copper_golem:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_copper_golem                        # << CHANGE THIS
+      model:
+        type: "minecraft:copper_golem_statue"
+        pose: sitting                                                          # << CHANGE THIS
+        texture: questcraft:entity/copper_golem/custom                        # << CHANGE THIS
+
+  # --- 渲染器: minecraft:bell (26.1+) ---
+  questcraft:special_bell:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_bell                                # << CHANGE THIS
+      model:
+        type: "minecraft:bell"
+
+  # --- 渲染器: minecraft:book (26.1+) ---
+  questcraft:special_book:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_book                                # << CHANGE THIS
+      model:
+        type: "minecraft:book"
+        open_angle: 0                                                          # << CHANGE THIS
+        page1: 0                                                               # << CHANGE THIS
+        page2: 0                                                               # << CHANGE THIS
+
+  # --- 渲染器: minecraft:end_cube (26.1+) ---
+  questcraft:special_end_cube:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_end_cube                            # << CHANGE THIS
+      model:
+        type: "minecraft:end_cube"
+        effect: "portal"                                                       # << CHANGE THIS
+
+  # --- special + transformation ---
+  questcraft:special_transformed:
+    model:
+      type: minecraft:special
+      path: questcraft:item/custom/special_transformed                         # << CHANGE THIS
+      model:
+        type: minecraft:trident
+      transformation:
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0

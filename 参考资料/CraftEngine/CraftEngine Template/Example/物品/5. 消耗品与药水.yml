@@ -1,0 +1,222 @@
+# ============================================================
+# 消耗品与药水 - CraftEngine 物品示例
+# ============================================================
+# 参考文档:
+#   - configuration/item/data.md       (物品组件系统)
+#   - reference/events.md              (事件触发器与函数)
+#   - reference/conditions.md          (条件系统)
+#
+# 命名空间: mythica (自定义 - 替换为你的项目命名空间)
+#
+# 本示例包含三种消耗品模式:
+#   1. 可饮用药水 + 饮用后状态效果   (life_elixir)
+#   2. 投掷物品 + 投掷冷却           (poison_flask)
+#   3. 冷却消耗品 + 冷却检查         (strength_blessing)
+#
+# 相关函数速查:
+#   - set_cooldown  : 设置玩家冷却 (events.md)
+#   - remove_cooldown: 移除玩家冷却 (events.md)
+#   - !on_cooldown  : 条件 - 检测是否不在冷却中 (conditions.md)
+# ============================================================
+
+items:
+
+  # ============================================================
+  # 1. 生命恢复药剂 (Drinkable Potion)
+  # ============================================================
+  # 功能: 饮用后获得生命恢复 II + 伤害吸收 II
+  # 机制:
+  #   - food 组件使其可食用 (可随时饮用: can_always_eat: true)
+  #   - consumable 组件定义饮用动画、音效、粒子
+  #   - consume 事件触发后执行 potion_effect 给予状态效果
+  # ============================================================
+  mythica:life_elixir:
+    material: honey_bottle                                        # << CHANGE THIS: 物品基础材质
+    data:
+      item_name: "<!i><#FF6EB4>生命恢复药剂"                      # << CHANGE THIS: 物品名称
+      lore:                                                       # << CHANGE THIS: 物品描述
+        - "<gray>一瓶蕴含生命能量的魔法药剂"
+        - ""
+        - "<#FF6EB4>效果:"
+        - " <green>生命恢复 II (30秒)"
+        - " <gold>伤害吸收 II (2分钟)"
+      food:
+        nutrition: 0                                              # << CHANGE THIS: 恢复饱食度
+        saturation: 0.0                                           # << CHANGE THIS: 恢复饱和度
+        can_always_eat: true                                      # << CHANGE THIS: 满饱时是否可食用
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.6                                    # << CHANGE THIS: 饮用耗时(秒)
+          animation: drink                                        # << CHANGE THIS: 动画: eat / drink / spear / block / bow / crossbow / spyglass / brush / toot_horn
+          sound: minecraft:entity.generic.drink                   # << CHANGE THIS: 饮用音效
+          has_consume_particles: true                             # << CHANGE THIS: 是否显示食用粒子
+    events:
+      - on: consume                                               # 物品被完全消耗时触发
+        functions:
+          - type: potion_effect
+            potion_effect: minecraft:regeneration                 # << CHANGE THIS: 状态效果ID
+            duration: 600                                         # << CHANGE THIS: 持续时间(刻 = 20刻/秒)
+            amplifier: 1                                          # << CHANGE THIS: 效果等级 (0 = I级)
+          - type: potion_effect
+            potion_effect: minecraft:absorption                   # << CHANGE THIS
+            duration: 2400
+            amplifier: 1
+          - type: play_sound
+            sound: minecraft:entity.player.levelup                # << CHANGE THIS: 饮用后音效
+            pitch: 1.5
+            volume: 0.5
+            target: self
+          - type: actionbar
+            actionbar: "<#FF6EB4>✦ 生命能量已注入!"               # << CHANGE THIS: 动作栏提示
+            target: self
+
+  # ============================================================
+  # 2. 剧毒投掷瓶 (Throwable Item)
+  # ============================================================
+  # 功能: 右键投掷, 对使用者造成中毒+饥饿效果
+  # 机制:
+  #   - right_click 事件拦截右键点击
+  #   - swing_hand 播放投掷动画
+  #   - set_cooldown + !on_cooldown 防止高频投掷 (3秒冷却)
+  #   - set_count 消耗物品数量
+  #   - particle 生成粒子效果模拟投掷轨迹
+  #   - command 执行指令施加效果
+  # ============================================================
+  mythica:poison_flask:
+    material: splash_potion                                       # << CHANGE THIS: 物品基础材质
+    data:
+      item_name: "<!i><#55FF55>剧毒投掷瓶"                        # << CHANGE THIS: 物品名称
+      lore:                                                       # << CHANGE THIS: 物品描述
+        - "<gray>用力投掷出去，毒雾会笼罩目标区域"
+        - ""
+        - "<red>⚠ 小心误伤自己！"
+      components:
+        minecraft:consumable: {}                                  # 空对象, 仅启用consumable组件
+    events:
+      - on: right_click                                           # 右键点击时触发
+        functions:
+          - type: swing_hand                                      # 播放挥手动画
+          - type: set_cooldown
+            id: throw_cooldown                                    # << CHANGE THIS: 冷却ID
+            time: 3s                                              # << CHANGE THIS: 冷却时间 (3秒)
+          - type: set_count
+            add: true
+            count: -1                                             # 每次减少1个物品
+            target: self
+          - type: particle                                        # 巫师粒子 (爆炸效果)
+            particle: minecraft:witch
+            count: 10
+            offset_x: 0.5
+            offset_y: 0.5
+            offset_z: 0.5
+            speed: 0.1
+          - type: particle                                        # 物品粒子 (碎片效果)
+            particle: minecraft:item
+            item: mythica:poison_flask                            # 使用自定义物品ID
+            count: 5
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
+            speed: 0.2
+          - type: command                                         # 施加中毒效果
+            command: "effect give <arg:player.name> minecraft:poison 15 2"   # << CHANGE THIS
+          - type: command                                         # 施加饥饿效果
+            command: "effect give <arg:player.name> minecraft:hunger 30 1"   # << CHANGE THIS
+          - type: play_sound                                      # 投掷音效
+            sound: minecraft:entity.splash_potion.throw
+            pitch: 0.8
+            volume: 0.6
+            target: self
+        conditions:                                               # 以下条件全部满足时事件才会执行
+          - type: "!on_cooldown"                                  # 不在冷却中
+            id: throw_cooldown                                    # 对应上面的冷却ID
+
+  # ============================================================
+  # 3. 力量祝福药剂 (Consumable with Cooldown)
+  # ============================================================
+  # 功能: 饮用后获得力量 III + 抗性 I, 冷却 120 秒
+  # 机制:
+  #   - consume 事件中执行 set_cooldown 记录冷却
+  #   - !on_cooldown 条件阻止冷却期间重复获得增益
+  #   - 冷却期间仍可饮用, 但不会触发效果 (消耗品被浪费)
+  #   - remove_cooldown 可手动清除冷却 (见下方注释)
+  # ============================================================
+  mythica:strength_blessing:
+    material: honey_bottle                                        # << CHANGE THIS: 物品基础材质
+    data:
+      item_name: "<!i><#FF4444>力量祝福药剂"                      # << CHANGE THIS: 物品名称
+      lore:                                                       # << CHANGE THIS: 物品描述
+        - "<gray>远古战士的祝福之力"
+        - ""
+        - "<#FF4444>效果:"
+        - " <red>力量 III (60秒)"
+        - " <aqua>抗性 I (60秒)"
+        - ""
+        - "<dark_gray>冷却时间: 120秒"
+      food:
+        nutrition: 0
+        saturation: 0.0
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.6
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+    events:
+      - on: consume                                               # 物品被消耗时触发
+        functions:
+          - type: set_cooldown                                    # 设置冷却 (阻止效果重复触发)
+            id: strength_blessing_cooldown                        # << CHANGE THIS: 冷却ID
+            time: 2m                                              # << CHANGE THIS: 冷却时间 (2分钟)
+          - type: potion_effect
+            potion_effect: minecraft:strength                     # << CHANGE THIS
+            duration: 1200                                        # 60秒
+            amplifier: 2                                          # III 级
+          - type: potion_effect
+            potion_effect: minecraft:resistance                   # << CHANGE THIS
+            duration: 1200
+            amplifier: 0                                          # I 级
+          - type: particle
+            particle: minecraft:flame
+            count: 15
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
+            speed: 0.05
+          - type: play_sound
+            sound: minecraft:entity.player.levelup
+            pitch: 1.2
+            volume: 0.8
+            target: self
+          - type: actionbar
+            actionbar: "<red>⚔ 力量祝福已激活！冷却 120 秒"
+            target: self
+        conditions:
+          - type: "!on_cooldown"                                  # 仅不在冷却中时触发效果
+            id: strength_blessing_cooldown
+
+# ============================================================
+# 附录: 冷却管理函数速查
+# ============================================================
+# 以下函数可用于任意事件的 functions 列表中:
+#
+#   # 移除指定冷却
+#   - type: remove_cooldown
+#     id: strength_blessing_cooldown            # 必填; 冷却ID
+#     all: false                                # 可选; 是否移除所有冷却; 默认 false
+#
+#   # 手动设置冷却时间值 (用于检查等)
+#   - type: set_cooldown
+#     id: my_cooldown                           # 可选; 冷却ID
+#     time: 30s                                 # 必填; 支持: 30s / 5m / 2h / 1d
+#     add: false                                # 可选; 是否累加时间; 默认 false
+#
+#   # 搭配条件使用:
+#   conditions:
+#     - type: "!on_cooldown"                    # 不在冷却中
+#       id: my_cooldown
+#     # 或
+#     - type: on_cooldown                       # 在冷却中
+#       id: my_cooldown
+# ============================================================

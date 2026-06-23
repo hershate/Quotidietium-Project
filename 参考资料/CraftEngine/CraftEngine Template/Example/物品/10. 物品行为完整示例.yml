@@ -1,0 +1,193 @@
+# =============================================================================
+# CraftEngine 物品行为完整示例 (Item Behaviors Complete Example)
+# =============================================================================
+# Wiki 参考 (本地):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/behaviors/
+#
+# 本文件覆盖 CraftEngine 文档中全部 11 种物品行为。
+# 每种行为一个物品条目，含完整可工作配置。
+# 将 "# << CHANGE THIS" 标记的值替换为你的实际值。
+# 命名空间示例使用 "qtiet" (替换为你的自定义命名空间)。
+# =============================================================================
+
+items:
+
+  # =========================================================================
+  # 1. block_item — 标准方块物品
+  # =========================================================================
+  # 绑定到方块，右键点击放置。支持引用外部方块定义或内联定义。
+  # Wiki: block_item.md
+  qtiet:palm_sapling:
+    behavior:
+      type: block_item
+      block: qtiet:palm_sapling                # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 2. ceiling_block_item — 天花板方块物品 (只可放置在方块底面)
+  # =========================================================================
+  # 与 block_item 相同，但只接受目标方块的底面。
+  # Wiki: ceiling_block_item.md
+  qtiet:crystal_chandelier:
+    behavior:
+      type: ceiling_block_item
+      block: qtiet:crystal_chandelier          # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 3. wall_block_item — 墙面方块物品 (只可放置在方块侧面)
+  # =========================================================================
+  # 与 block_item 相同，但只接受目标方块的侧面。
+  # Wiki: wall_block_item.md
+  qtiet:iron_wall_lantern:
+    behavior:
+      type: wall_block_item
+      block: qtiet:iron_wall_lantern           # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 4. ground_block_item — 地面方块物品 (只可放置在方块顶面)
+  # =========================================================================
+  # 与 block_item 相同，但只接受目标方块的顶面。
+  # Wiki: ground_block_item.md
+  qtiet:porcelain_flower_pot:
+    behavior:
+      type: ground_block_item
+      block: qtiet:porcelain_flower_pot        # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 5. double_high_block_item — 双层方块物品 (两格高)
+  # =========================================================================
+  # 专门用于两格高方块，解决标准方块物品的放置错误。
+  # Wiki: double_high_block_item.md
+  qtiet:oak_wooden_door:
+    behavior:
+      type: double_high_block_item
+      block: qtiet:oak_wooden_door             # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 6. multi_high_block_item — 多层方块物品 (多格高)
+  # =========================================================================
+  # 专门用于多格高方块，解决标准方块物品的放置错误。
+  # Wiki: multi_high_block_item.md
+  qtiet:massive_stone_gate:
+    behavior:
+      type: multi_high_block_item
+      block: qtiet:massive_stone_gate          # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 7. liquid_collision_block_item — 液体碰撞方块物品
+  # =========================================================================
+  # 检测交互是否与液体/冰/霜冰/含水方块碰撞。
+  # 适用于放置在水源或熔岩表面的方块 (如芦苇/睡莲)。
+  # Wiki: liquid_collision_block_item.md
+  qtiet:swamp_reed:
+    material: paper                            # << CHANGE THIS: 物品材质
+    behavior:
+      type: liquid_collision_block_item
+      offset_y: 1                              # << CHANGE THIS: 放置位置的垂直偏移
+      block: qtiet:swamp_reed                  # << CHANGE THIS: 方块命名空间ID
+
+  # =========================================================================
+  # 8. furniture_item — 家具物品
+  # =========================================================================
+  # 绑定到家具定义，右键点击放置。支持旋转和对齐规则。
+  # rotation:   any / four / eight / sixteen / north / east / west / south
+  # alignment:  any / center / half / quarter / corner
+  # Wiki: furniture_item.md
+  qtiet:oak_park_bench:
+    behavior:
+      type: furniture_item
+      rules:                                   # << CHANGE THIS: 放置规则
+        ground:                                # << CHANGE THIS: 变体名称 (ground / wall 等)
+          rotation: four                       # << CHANGE THIS: 旋转模式
+          alignment: center                    # << CHANGE THIS: 对齐模式
+      furniture: qtiet:oak_park_bench          # << CHANGE THIS: 家具命名空间ID
+      ignore_placer: false                     # << CHANGE THIS: 放置时是否忽略放置者的碰撞箱
+      ignore_entities: false                   # << CHANGE THIS: 放置时是否忽略所有实体的碰撞箱
+
+  # =========================================================================
+  # 9. liquid_collision_furniture_item — 液体碰撞家具物品
+  # =========================================================================
+  # 结合家具放置与液体碰撞检测。额外支持源方块检测和液体类型过滤。
+  # Wiki: liquid_collision_furniture_item.md
+  qtiet:floating_water_lily_seat:
+    behavior:
+      type: liquid_collision_furniture_item
+      rules:                                   # << CHANGE THIS: 放置规则
+        ground:
+          rotation: eight                      # << CHANGE THIS: 旋转模式
+          alignment: center                    # << CHANGE THIS: 对齐模式
+      furniture: qtiet:floating_water_lily_seat  # << CHANGE THIS: 家具命名空间ID
+      ignore_placer: false                     # << CHANGE THIS: 放置时是否忽略放置者的碰撞箱
+      ignore_entities: false                   # << CHANGE THIS: 放置时是否忽略所有实体的碰撞箱
+      source_only: true                        # << CHANGE THIS: 只检测液体源方块
+      liquid_type:                             # << CHANGE THIS: 允许的液体类型
+        - water
+        # - lava
+
+  # =========================================================================
+  # 10. compostable_item — 可堆肥物品
+  # =========================================================================
+  # 将不可堆肥的物品变为可堆肥。
+  # 注意: 不适用于漏斗 (Minecraft 堆肥系统硬编码)。
+  #       如需漏斗支持，使用原版可堆肥基础材质 + compost_probability 设置。
+  # Wiki: compostable_item.md
+  qtiet:ender_pearl_flower_seeds:
+    behavior:
+      type: compostable_item
+      chance: 0.5                              # << CHANGE THIS: 堆肥成功率 (0.0 - 1.0)
+
+  # =========================================================================
+  # 11. range_mining_item — 范围挖掘工具 (behavior 为数组)
+  # =========================================================================
+  # 范围挖掘工具允许在一片广阔区域内挖掘方块。
+  # range 列表中的每个元素为 "宽度,高度,深度" 三元组，
+  # 范围会根据玩家面对的朝向智能调整。
+  # Wiki: range_mining_item.md
+
+  # -- 11a. 十字形范围 (3 格 + 自身) --
+  qtiet:topaz_hammer:
+    material: golden_pickaxe                   # << CHANGE THIS: 物品材质
+    conditions: []                             # << CHANGE THIS: 使用条件
+    behavior:
+      - type: range_mining_item
+        range:                                 # << CHANGE THIS: 宽度,高度,深度
+          - 0,1,0                              #   前方
+          - 0,-1,0                             #   后方
+          - 1,0,0                              #   右方
+          - -1,0,0                             #   左方
+
+  # -- 11b. 3x3 范围 (9 格完整区域) --
+  qtiet:topaz_wide_hammer:
+    material: diamond_pickaxe                  # << CHANGE THIS: 物品材质
+    conditions: []                             # << CHANGE THIS: 使用条件
+    behavior:
+      - type: range_mining_item
+        range:                                 # << CHANGE THIS: 宽度,高度,深度
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+
+# =============================================================================
+# 参考: 被引用的方块和家具定义 (示例)
+# =============================================================================
+# 取消注释并填写上方物品所引用的定义。
+
+# blocks:
+#   qtiet:palm_sapling:
+#     behavior: ...                            # << CHANGE THIS
+#     settings: ...                            # << CHANGE THIS
+#     states: ...                              # << CHANGE THIS
+#     loot: ...                                # << CHANGE THIS
+#     events: ...                              # << CHANGE THIS
+
+# furniture:
+#   qtiet:oak_park_bench:
+#     settings: ...                            # << CHANGE THIS
+#     variants: ...                            # << CHANGE THIS
+#     loot: ...                                # << CHANGE THIS
+#     events: ...                              # << CHANGE THIS

@@ -1,0 +1,275 @@
+# ============================================================
+# CraftEngine 武器示例配置
+# 参考: ../../CraftEngine Wiki/configuration/item/data.md
+# 参考: ../../CraftEngine Wiki/configuration/item/models.md
+# 参考: ../../CraftEngine Wiki/configuration/item/models/model.md
+# 参考: ../../CraftEngine Wiki/configuration/item/models/condition.md
+# 参考: ../../CraftEngine Wiki/configuration/item/models/range_dispatch.md
+# ============================================================
+# 自定义命名空间: mythic (请替换为你自己的命名空间)
+# 带 "<< CHANGE THIS" 标记的值需根据你的资源包实际情况修改
+# ============================================================
+
+items:
+
+  # ==========================================================
+  # 1. 剑 - mythic:flame_sword
+  #    展示: attribute_modifiers / enchantment / max_damage
+  #    模型: minecraft:model (基础手持模型)
+  # ==========================================================
+  mythic:flame_sword:
+    material: diamond_sword                             # << CHANGE THIS
+    data:
+      # 自定义名称 (不会被铁砧修改)
+      item_name: "<!i><#FF4444>烈焰之刃"
+      # 物品 lore
+      lore:
+        - "<#FF8800>传说级武器"
+        - "<gray>在火焰中锻造而成"
+      # ---------- 最大耐久度 (1.20.5+) ----------
+      max_damage: 1561                                  # << CHANGE THIS
+      # ---------- 魔咒 ----------
+      enchantment:
+        minecraft:sharpness: 5                          # 锋利 V
+        minecraft:fire_aspect: 2                        # 火焰附加 II
+        minecraft:unbreaking: 3                         # 耐久 III
+      # ---------- 属性修饰符 ----------
+      attribute_modifiers:
+        # 主手攻击伤害
+        - type: attack_damage
+          amount: 8.0                                    # << CHANGE THIS
+          operation: add_value                           # add_value / add_multiplied_base / add_multiplied_total
+          slot: mainhand
+          id: "mythic:flame_sword_damage"                # 唯一标识符 (可选)
+        # 主手攻击速度
+        - type: attack_speed
+          amount: 1.6                                    # << CHANGE THIS
+          operation: add_value
+          slot: mainhand
+          id: "mythic:flame_sword_speed"
+        # 全属性移动速度百分比加成
+        - type: movement_speed
+          amount: 0.05
+          operation: add_multiplied_base
+          slot: any
+          id: "mythic:flame_sword_movement"
+        # 1.21.5+ display 字段: 自定义属性显示文本
+        - type: luck
+          amount: 2.0
+          operation: add_value
+          slot: any
+          id: "mythic:flame_sword_luck"
+          display:
+            type: override
+            value: "<yellow>幸运 +2"
+      # 隐藏工具提示中的特定组件显示
+      hide_tooltip:
+        - attribute_modifiers
+    # ---------- 手持物品模型 ----------
+    model:
+      type: minecraft:model
+      path: "mythic:item/flame_sword"                   # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "mythic:item/flame_sword"              # << CHANGE THIS
+      # 模型变换 (26.1+)
+      transformation:
+        scale: 1.0,1.0,1.0
+        translation: 0.0,0.0,0.0
+
+  # ==========================================================
+  # 2. 弓 - mythic:wind_bow
+  #    模型: minecraft:condition + minecraft:range_dispatch
+  #    外层 condition 检测是否正在使用,
+  #    内层 range_dispatch 根据拉弓进度切换 3 阶段模型
+  # ==========================================================
+  mythic:wind_bow:
+    material: bow                                        # << CHANGE THIS
+    data:
+      item_name: "<!i><#55FFFF>逐风之弓"
+      lore:
+        - "<#55FFAA>风之祝福"
+        - "<gray>箭矢被风之力加速"
+      max_damage: 384
+      enchantment:
+        minecraft:power: 4                               # 力量 IV
+        minecraft:punch: 2                               # 冲击 II
+        minecraft:infinity: 1                            # 无限 I
+      attribute_modifiers:
+        - type: projectile_damage
+          amount: 2.0
+          operation: add_value
+          slot: mainhand
+          id: "mythic:wind_bow_damage"
+        - type: draw_speed
+          amount: 0.3
+          operation: add_multiplied_base
+          slot: mainhand
+          id: "mythic:wind_bow_drawspeed"
+    # ---------- 条件模型 ----------
+    # minecraft:condition 根据布尔属性在两个模型间切换
+    model:
+      type: minecraft:condition
+      # 谓词: 是否正在使用物品 (拉弓时 = true)
+      property: minecraft:using_item
+      # 未使用时: 默认弓模型
+      on_false:
+        type: minecraft:model
+        path: "mythic:item/wind_bow"                     # << CHANGE THIS
+        generation:
+          parent: "minecraft:item/bow"
+          textures:
+            layer0: "mythic:item/wind_bow"                # << CHANGE THIS
+      # 正在拉弓时: 使用 range_dispatch 根据使用进度切换 3 阶段模型
+      on_true:
+        type: minecraft:range_dispatch
+        property: minecraft:use_duration
+        scale: 1.0
+        entries:
+          - threshold: 0.45
+            model:
+              type: minecraft:model
+              path: "mythic:item/wind_bow_pulling_0"      # << CHANGE THIS
+              generation:
+                parent: "minecraft:item/bow"
+                textures:
+                  layer0: "mythic:item/wind_bow_pulling_0"
+          - threshold: 0.9
+            model:
+              type: minecraft:model
+              path: "mythic:item/wind_bow_pulling_1"      # << CHANGE THIS
+              generation:
+                parent: "minecraft:item/bow"
+                textures:
+                  layer0: "mythic:item/wind_bow_pulling_1"
+        fallback:
+          type: minecraft:model
+          path: "mythic:item/wind_bow_pulling_2"          # << CHANGE THIS
+          generation:
+            parent: "minecraft:item/bow"
+            textures:
+              layer0: "mythic:item/wind_bow_pulling_2"
+
+  # ==========================================================
+  # 3. 弩 - mythic:storm_crossbow
+  #    模型: minecraft:range_dispatch + minecraft:condition
+  #    range_dispatch 根据拉弦进度切换蓄力阶段模型,
+  #    内层 condition 判断是否已装填 (有 charged_projectiles)
+  # ==========================================================
+  mythic:storm_crossbow:
+    material: crossbow                                    # << CHANGE THIS
+    data:
+      item_name: "<!i><#FFAA00>雷霆弩"
+      lore:
+        - "<#FFFF55>风暴之力"
+        - "<gray>蓄力越久，威力越强"
+      max_damage: 465
+      enchantment:
+        minecraft:quick_charge: 3                         # 快速装填 III
+        minecraft:multishot: 1                            # 多重射击 I
+        minecraft:piercing: 4                             # 穿透 IV
+      hide_tooltip:
+        - enchantments
+    # ---------- 值调配型模型 ----------
+    # minecraft:range_dispatch 根据数值属性 (crossbow/pull) 选择对应阈值阶段
+    # 数值 < 所有阈值 -> 使用 fallback
+    # 否则 -> 使用最后一个 threshold <= 数值 的 entry
+    model:
+      type: minecraft:range_dispatch
+      property: minecraft:crossbow/pull
+      scale: 1.0
+      entries:
+        # 蓄力中期 (0.58 <= pull < 1.0)
+        - threshold: 0.58
+          model:
+            type: minecraft:model
+            path: "mythic:item/storm_crossbow_pulling_1"  # << CHANGE THIS
+            generation:
+              parent: "minecraft:item/crossbow"
+              textures:
+                layer0: "mythic:item/storm_crossbow_pulling_1"
+        # 蓄力完成 / 已装填 (pull >= 1.0)
+        - threshold: 1.0
+          model:
+            type: minecraft:condition
+            property: minecraft:has_component
+            component: "minecraft:charged_projectiles"
+            ignore-default: false
+            on_true:
+              type: minecraft:model
+              path: "mythic:item/storm_crossbow_loaded"   # << CHANGE THIS
+              generation:
+                parent: "minecraft:item/crossbow"
+                textures:
+                  layer0: "mythic:item/storm_crossbow_loaded"
+            on_false:
+              type: minecraft:model
+              path: "mythic:item/storm_crossbow_pulling_2" # << CHANGE THIS
+              generation:
+                parent: "minecraft:item/crossbow"
+                textures:
+                  layer0: "mythic:item/storm_crossbow_pulling_2"
+      # 回退: 未蓄力 / 闲置状态 (pull < 0.58)
+      fallback:
+        type: minecraft:model
+        path: "mythic:item/storm_crossbow"                # << CHANGE THIS
+        generation:
+          parent: "minecraft:item/crossbow"
+          textures:
+            layer0: "mythic:item/storm_crossbow"
+
+  # ==========================================================
+  # 4. 三叉戟 - mythic:aqua_trident
+  #    模型: minecraft:condition (投掷态)
+  #    使用 minecraft:using_item 检测投掷动作,
+  #    未投掷时显示正常模型, 准备投掷时显示蓄力模型
+  # ==========================================================
+  mythic:aqua_trident:
+    material: trident                                     # << CHANGE THIS
+    data:
+      item_name: "<!i><#00AAFF>海神三叉戟"
+      lore:
+        - "<#00FFFF>深海之王的武器"
+        - "<gray>掷出时如海啸般汹涌"
+        - ""
+        - "<#00AAFF>⚔ 攻击伤害: <white>+9"
+        - "<#00AAFF>⚡ 攻击速度: <white>1.1"
+      max_damage: 250
+      enchantment:
+        minecraft:impaling: 5                             # 穿刺 V
+        minecraft:loyalty: 3                              # 忠诚 III
+        minecraft:riptide: 3                              # 激流 III
+      unbreakable: false
+      # 属性修饰符
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 9.0                                     # << CHANGE THIS
+          operation: add_value
+          slot: mainhand
+          id: "mythic:aqua_trident_damage"
+        - type: attack_speed
+          amount: 1.1                                     # << CHANGE THIS
+          operation: add_value
+          slot: mainhand
+          id: "mythic:aqua_trident_speed"
+    # ---------- 条件模型 ----------
+    # on_false: 正常手持模型
+    # on_true:  投掷蓄力模型 (minecraft:using_item = true 时)
+    model:
+      type: minecraft:condition
+      property: minecraft:using_item
+      on_false:
+        type: minecraft:model
+        path: "mythic:item/aqua_trident"                  # << CHANGE THIS
+        generation:
+          parent: "minecraft:item/trident"
+          textures:
+            layer0: "mythic:item/aqua_trident"
+      on_true:
+        type: minecraft:model
+        path: "mythic:item/aqua_trident_throwing"         # << CHANGE THIS
+        generation:
+          parent: "minecraft:item/trident"
+          textures:
+            layer0: "mythic:item/aqua_trident_throwing"
