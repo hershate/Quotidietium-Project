@@ -1,8 +1,0 @@
-# Wiki: configuration/item/behaviors/multi_high_block_item.md
-# 多层方块物品 - 用于放置多格高方块（如门），解决标准方块物品的放置错误
-
-items:
-  custom:my_multi_block_item:
-    behavior:
-      type: multi_high_block_item
-      block: custom:my_block # << CHANGE THIS

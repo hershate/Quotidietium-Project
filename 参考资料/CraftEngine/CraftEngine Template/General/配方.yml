@@ -1,0 +1,415 @@
+# =============================================================================
+# CraftEngine 配方模板
+# =============================================================================
+# 参考文档: 参考资料/CraftEngine/CraftEngine Wiki/configuration/recipe.md
+# 物品参考: 参考资料/CraftEngine/CraftEngine Wiki/configuration/items.md
+# 兼容性  : 参考资料/CraftEngine/CraftEngine Wiki/compatibility/external_item_sources.md
+#
+# 用法:
+#   1. 将 "custom:" 替换为你的命名空间 (例如 mymod:)
+#   2. 将占位 ID (topaz_shovel, palm_planks 等) 替换为你的物品/方块 ID
+#   3. 调整 # << CHANGE THIS 标记的值
+#   4. 将 recipes: 块合并到你的插件配置中
+# =============================================================================
+
+# =============================================================================
+# 全局物品/标签定义（仅供本模板演示，请在你的 items: 部分定义）
+# =============================================================================
+items:
+  # 自定义物品示例 —— 附标签，使其参与原版标签组的配方
+  custom:palm_planks:                                    # << CHANGE THIS
+    material: paper
+    settings:
+      fuel_time: 300
+      tags:
+        - "minecraft:planks"                             # << CHANGE THIS
+        - "minecraft:wooden_tool_materials"              # << CHANGE THIS
+    data:
+      item_name: "<!i>棕榈木板"
+
+# =============================================================================
+# 配方入口
+# =============================================================================
+recipes:
+
+  # --------------------------------------------------------------------------
+  # 1. 有序合成配方 (shaped)
+  #    适用 category: building / redstone / equipment / misc
+  # --------------------------------------------------------------------------
+  custom:topaz_shovel:
+    type: shaped
+    category: tools                                        # << CHANGE THIS (building/redstone/equipment/misc)
+    group: topaz_tools                                     # << CHANGE THIS
+    unlock_on_ingredient_obtained: true                    # << CHANGE THIS
+    pattern:
+      - "A"
+      - "B"
+      - "B"
+    ingredients:
+      A: "custom:topaz"                                    # << CHANGE THIS
+      B: "minecraft:stick"                                 # << CHANGE THIS
+    result:
+      id: custom:topaz_shovel                              # << CHANGE THIS
+      count: 1
+
+  # 有序合成 —— 带后处理器 (自动附魔)
+  custom:enchanted_topaz_pickaxe:
+    type: shaped
+    category: equipment
+    group: topaz_tools
+    pattern:
+      - "AAA"
+      - " B "
+      - " B "
+    ingredients:
+      A: "custom:topaz"                                    # << CHANGE THIS
+      B: "minecraft:stick"                                 # << CHANGE THIS
+    result:
+      id: custom:topaz_pickaxe                             # << CHANGE THIS
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:efficiency: 5                      # << CHANGE THIS
+
+  # 有序合成 —— 原料带数量 (批量消耗)
+  custom:enchanted_cobblestone:
+    type: shaped
+    category: building
+    group: enchanted_stones
+    unlock_on_ingredient_obtained: false
+    pattern:
+      - " A "
+      - "AAA"
+      - " A "
+    ingredients:
+      A:
+        items: "minecraft:cobblestone"                     # << CHANGE THIS
+        count: 32                                          # << CHANGE THIS
+    result:
+      id: custom:enchanted_cobblestone                     # << CHANGE THIS
+      count: 1
+
+  # --------------------------------------------------------------------------
+  # 2. 无序合成配方 (shapeless)
+  #    适用 category: building / redstone / equipment / misc
+  # --------------------------------------------------------------------------
+  custom:palm_planks:
+    type: shapeless
+    category: building                                     # << CHANGE THIS
+    group: planks                                          # << CHANGE THIS
+    unlock_on_ingredient_obtained: true
+    ingredients:
+      - "#custom:palm_logs"                                # << CHANGE THIS (使用标签)
+      # 嵌套列表也受支持 —— 满足其一即可
+      - - custom:ingredient1                               # << CHANGE THIS
+        - custom:ingredient2                               # << CHANGE THIS
+    result:
+      id: custom:palm_planks                               # << CHANGE THIS
+      count: 4
+
+  # 无序合成 —— 批量原料
+  custom:enchanted_cobblestone_shapeless:
+    type: shapeless
+    category: building
+    ingredients:
+      - items: "minecraft:cobblestone"                     # << CHANGE THIS
+        count: 32                                          # << CHANGE THIS
+      - items: "minecraft:cobblestone"
+        count: 32
+      - items: "minecraft:cobblestone"
+        count: 32
+      - items: "minecraft:cobblestone"
+        count: 32
+      - items: "minecraft:cobblestone"
+        count: 32
+    result:
+      id: custom:enchanted_cobblestone                     # << CHANGE THIS
+      count: 1
+
+  # --------------------------------------------------------------------------
+  # 3. 烧炼配方 (smelting / blasting / smoking / campfire_cooking)
+  #    适用 category: food / blocks / misc
+  # --------------------------------------------------------------------------
+  custom:topaz_from_smelting_topaz_ore:
+    type: smelting                                         # << CHANGE THIS (smelting/blasting/smoking/campfire_cooking)
+    experience: 1.0                                        # << CHANGE THIS
+    category: misc                                         # << CHANGE THIS (food/blocks/misc)
+    group: topaz                                           # << CHANGE THIS
+    time: 200                                              # << CHANGE THIS (刻数)
+    ingredient: "custom:topaz_ore"                         # << CHANGE THIS
+    result:
+      id: custom:topaz                                     # << CHANGE THIS
+      count: 1
+
+  # 烧炼 —— 高炉 (blasting)
+  custom:topaz_from_blasting_deepslate_topaz_ore:
+    type: blasting
+    experience: 1.0
+    category: misc
+    group: topaz
+    time: 100
+    ingredient: "custom:deepslate_topaz_ore"               # << CHANGE THIS
+    result:
+      id: custom:topaz
+      count: 1
+
+  # 烧炼 —— 烟熏炉 (smoking)
+  custom:cooked_exotic_meat:
+    type: smoking
+    experience: 0.5
+    category: food
+    group: cooked_meats
+    time: 150
+    ingredient: "custom:exotic_meat"                       # << CHANGE THIS
+    result:
+      id: custom:cooked_exotic_meat                        # << CHANGE THIS
+      count: 1
+
+  # 烧炼 —— 营火 (campfire_cooking)
+  custom:cooked_exotic_meat_campfire:
+    type: campfire_cooking
+    experience: 0.5
+    category: food
+    group: cooked_meats
+    time: 600
+    ingredient: "custom:exotic_meat"                       # << CHANGE THIS
+    result:
+      id: custom:cooked_exotic_meat                        # << CHANGE THIS
+      count: 1
+
+  # --------------------------------------------------------------------------
+  # 4. 切石机配方 (stonecutting)
+  #    注意：不建议使用自定义物品作为原料，可能导致客户端显示问题
+  # --------------------------------------------------------------------------
+  custom:stonecutting_topaz_from_stone:
+    type: stonecutting
+    group: topaz                                            # << CHANGE THIS
+    ingredient: "minecraft:stone"                           # << CHANGE THIS
+    result:
+      id: custom:topaz                                      # << CHANGE THIS
+      count: 1
+
+  # --------------------------------------------------------------------------
+  # 5. 锻造升级配方 (smithing_transform)
+  #    可使用 transform_processors 处理原料数据的继承
+  # --------------------------------------------------------------------------
+  custom:topaz_bow:
+    type: smithing_transform
+    template_type: "custom:topaz"                           # << CHANGE THIS (槽位1, 可选)
+    base: "minecraft:bow"                                   # << CHANGE THIS (槽位2, 必填)
+    addition: "custom:topaz"                                # << CHANGE THIS (槽位3, 可选)
+    merge_components: true                                  # << CHANGE THIS (是否合并组件, 默认 true)
+    result:
+      id: custom:topaz_bow                                  # << CHANGE THIS
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:power: 2                            # << CHANGE THIS
+    # 转化处理器 —— 控制原料数据的保留/合并方式
+    transform_processors:
+      # 合并结果和原料的魔咒信息
+      - type: merge_enchantments
+      # 保留指定组件 (1.20.5+)
+      - type: keep_components
+        components:
+          - minecraft:enchantments                          # << CHANGE THIS
+      # 保留 custom_data 组件的特定路径 (1.20.5+)
+      - type: keep_custom_data
+        paths:
+          - weapon                                          # << CHANGE THIS
+          - energy.fly                                      # << CHANGE THIS
+      # 保留指定 NBT 标签 (1.20-1.20.4)
+      - type: keep_tags
+        tags:
+          - display.Name                                    # << CHANGE THIS
+          - CustomModelData                                 # << CHANGE THIS
+      # 将物品数据应用于合并的物品上
+      - type: apply_data
+        data:
+          item_name: "新名称"                                # << CHANGE THIS
+
+  # --------------------------------------------------------------------------
+  # 6. 有序合成转化配方 (shaped_transform)
+  #    带 source: true 标记原料作为来源物品
+  # --------------------------------------------------------------------------
+  custom:topaz_crossbow_transform:
+    type: shaped_transform
+    pattern:
+      - 'BBB'
+      - 'B  '
+      - 'A  '
+    ingredients:
+      A:
+        item: minecraft:crossbow                            # << CHANGE THIS
+        source: true                                        # 设置为源物品
+      B: custom:topaz                                       # << CHANGE THIS
+    result:
+      id: custom:topaz_crossbow                             # << CHANGE THIS
+      count: 1
+    transform_processors:
+      - type: keep_components
+        components:
+          - enchantments                                    # << CHANGE THIS
+      - type: merge_enchantments
+      - type: keep_custom_data
+        paths:
+          - weapon
+
+  # --------------------------------------------------------------------------
+  # 7. 盔甲纹饰配方 (smithing_trim)
+  #    1.21.5+ 需提供 pattern
+  # --------------------------------------------------------------------------
+  custom:bolt_tool_trims:
+    type: smithing_trim
+    template_type: "minecraft:bolt_armor_trim_smithing_template"  # << CHANGE THIS
+    base: "#minecraft:trimmable_tool"                             # << CHANGE THIS
+    addition: "#minecraft:trim_materials"                         # << CHANGE THIS
+    pattern: minecraft:bolt                                       # << CHANGE THIS (1.21.5+ 必填)
+
+  # --------------------------------------------------------------------------
+  # 8. 酿造配方 (brewing)
+  #    1.20.2+
+  # --------------------------------------------------------------------------
+  custom:cup_of_tea:
+    type: brewing
+    ingredient: custom:tea_leaf                              # << CHANGE THIS
+    container: custom:cup                                    # << CHANGE THIS
+    result:
+      id: custom:cup_of_tea                                  # << CHANGE THIS
+      count: 1
+
+  # --------------------------------------------------------------------------
+  # 9. 附：付费版专属功能
+  #    视觉结果 —— 防止玩家提前预知配方结果
+  #    函数     —— 合成/锻造时执行操作
+  #    条件     —— 限制配方可用性
+  # --------------------------------------------------------------------------
+
+  # 视觉结果 + 后处理器 (visual_result)
+  custom:topaz_sword_visual:
+    type: shaped
+    category: equipment
+    group: topaz_weapons
+    pattern:
+      - "A"
+      - "A"
+      - "B"
+    ingredients:
+      A: "custom:topaz"                                      # << CHANGE THIS
+      B: "minecraft:stick"                                   # << CHANGE THIS
+    result:
+      id: custom:topaz_sword                                 # << CHANGE THIS
+      count: 1
+    visual_result:
+      id: custom:topaz_sword
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            remove_components:
+              - attribute_modifiers
+            lore:
+              - "<gray>攻击伤害 1~3"                          # << CHANGE THIS
+              - "<gray>攻击速度 1~2"                          # << CHANGE THIS
+
+  # 函数 (functions)
+  custom:bench_with_command:
+    type: shaped
+    pattern:
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "custom:plank"                                      # << CHANGE THIS
+    result:
+      id: custom:bench                                       # << CHANGE THIS
+      count: 1
+    functions:
+      - type: command
+        command: say 1                                       # << CHANGE THIS
+
+  # 条件 (conditions)
+  custom:bench_conditional:
+    type: shaped
+    pattern:
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "custom:plank"                                      # << CHANGE THIS
+    result:
+      id: custom:bench                                       # << CHANGE THIS
+      count: 1
+    conditions:
+      - type: permission
+        permission: recipe.unlock.bench                      # << CHANGE THIS
+
+  # 条件 + 函数 + 视觉结果 组合示例
+  custom:legendary_sword:
+    type: smithing_transform
+    template_type: "custom:legendary_template"               # << CHANGE THIS
+    base: "minecraft:diamond_sword"                          # << CHANGE THIS
+    addition: "custom:essence_of_power"                      # << CHANGE THIS
+    merge_components: true
+    unlock_on_ingredient_obtained: true
+    conditions:
+      - type: permission
+        permission: recipe.unlock.legendary_sword            # << CHANGE THIS
+    functions:
+      - type: command
+        command: title @s title {"text":"传说之剑已铸成!"}    # << CHANGE THIS
+    visual_result:
+      id: custom:legendary_sword_template                    # << CHANGE THIS
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            lore:
+              - "<gold>未知的力量在剑中涌动..."               # << CHANGE THIS
+    result:
+      id: custom:legendary_sword                             # << CHANGE THIS
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:sharpness: 10                        # << CHANGE THIS
+              minecraft:fire_aspect: 2                       # << CHANGE THIS
+            lore:
+              - "<gold>传说之剑"
+              - "<yellow>+10 锋利"
+    transform_processors:
+      - type: merge_enchantments
+      - type: keep_components
+        components:
+          - minecraft:enchantments
+
+# =============================================================================
+# 兼容性：外部物品来源
+# 在 config.yml 中启用后，可在配方中使用外部插件的物品作为原料
+#
+# config.yml:
+#   recipe:
+#     ingredient-sources:
+#       - MythicMobs
+#       - MMOItems
+#       - CustomFishing
+#
+# 然后将外部物品映射到 CraftEngine 物品:
+# items:
+#   mythicmobs:mysword:      # 命名空间必须为小写插件名
+#     material: golden_sword
+#     data:
+#       external:
+#         plugin: MythicMobs
+#         id: MySword
+#     settings:
+#       tags:
+#         - add_tag:if_you_want
+#
+# 配方中直接使用:
+#   ingredients:
+#     A: mythicmobs:mysword
+# =============================================================================

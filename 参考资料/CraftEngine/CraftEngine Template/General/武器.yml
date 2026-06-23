@@ -1,0 +1,643 @@
+# =============================================================================
+# CraftEngine 武器/工具 物品配置模板 (General)
+# =============================================================================
+# 参考 Wiki 文件 (本地路径):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item.md
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models.md
+#
+# 使用方式:
+#   - 全局替换 "my:" 为你的自定义命名空间 (例如 "your_plugin:")
+#   - 搜索 "# << CHANGE THIS" 修改每个具体值
+#   - 搜索 "# << OPTIONAL" 按需启用/删除可选章节
+#   - 搜索 "# << PAID" 付费版专属功能调试后可安全删除
+#
+# 覆盖的模型类型:
+#   - minecraft:model        → 剑、投射物 (handheld / generated parent)
+#   - minecraft:condition    → 弓、三叉戟 (属性条件分支)
+#   - minecraft:range_dispatch → 弩 (拉弦进度分档)
+#
+# 物品配置顶层键 (完整列表, 源自 item.md):
+#   material, client_bound_material, custom_model_data, item_model,
+#   client_bound_model, data, client_bound_data, behavior(s), settings,
+#   model, legacy_model, events, category, oversized_in_gui,
+#   hand_animation_on_swap, swap_animation_scale
+# =============================================================================
+
+items:
+
+  # ===========================================================================
+  # 1. 剑 — minecraft:model (handheld) + attribute_modifiers
+  #    展示: data 硬编码组件全套 + model 生成 + legacy_model 回退
+  # ===========================================================================
+  # << CHANGE THIS: 物品 ID (命名空间:路径)
+  my:example_sword:
+
+    # --- 基础 (item.md) ---
+    # << CHANGE THIS: 基础材质 (必填)
+    material: iron_sword
+    # << CHANGE THIS: 自定义模型数据值 (正整数, 同材质内唯一)
+    custom_model_data: 1001
+    # << CHANGE THIS: 物品模型命名空间ID (1.21.2+)
+    item_model: my:example_sword
+    oversized_in_gui: true                         # 1.21.6+, 默认 true
+    hand_animation_on_swap: true                   # 默认 true
+    swap_animation_scale: 1.0                      # 1.21.11+, 默认 1.0
+
+    # --- 服务端数据 (data.md) ---
+    data:
+
+      # 物品名称 (不能用铁砧修改, 控制等级最低)
+      # << CHANGE THIS
+      item_name: "<!i><#FF8C00>烈焰之刃"
+
+      # 自定义名称 (类似铁砧设置)
+      # << OPTIONAL
+      custom_name: "<!i><#FFAA00>炎魔的利齿"
+
+      # 基础 Lore (字符串列表)
+      # << CHANGE THIS
+      lore:
+        - "<gray>一把由远古烈焰淬炼而成的利剑"
+        - "<dark_gray>剑柄上刻着失落的符文"
+
+      # 高级 Lore 格式 (content + priority + split_lines + conditions)
+      # << OPTIONAL: 启用高级 Lore 时可替换上方 lore
+      #lore:
+      #  - content:
+      #      - "<yellow>传说级武器"
+      #      - "<gold>攻击力 +8"
+      #    priority: 1
+      #    split_lines: false
+      #    conditions:
+      #      - type: permission
+      #        permission: my.legendary.lore
+      #  - content: "<dark_gray>被遗忘的符文之剑"
+      #    priority: 2
+
+      # 插入 Lore (基于正则定位插入)
+      # << OPTIONAL
+      insert_lore:
+        position: AFTER              # HEAD / TAIL / BEFORE / AFTER
+        pattern: "烈焰淬炼"          # 仅 BEFORE / AFTER 时需要
+        lore:
+          - content: "<green>+ 火焰附加 II"
+            priority: 1
+        fallback:
+          position: TAIL
+          lore:
+            - content: "<red>回退到尾部"
+
+      # 移除 Lore (正则匹配)
+      # << OPTIONAL
+      #remove_lore: "失落的符文"
+
+      # 属性修饰符 (attribute_modifiers)
+      # << CHANGE THIS
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value              # add_value / add_multiplied_base / add_multiplied_total
+          id: my:sword_attack_damage        # << CHANGE THIS: 可选唯一 ID
+          slot: mainhand                    # any / hand / armor / mainhand / offhand / head / chest / legs / feet / body / saddle
+          display:                          # 1.21.5+ 自定义显示文本
+            type: override
+            value: "<green>攻击伤害 +8"
+        - type: attack_speed
+          amount: 1.6
+          operation: add_value
+          id: my:sword_attack_speed
+          slot: mainhand
+          display:
+            type: override
+            value: "<green>攻击速度 +1.6"
+
+      # 无法破坏
+      # << CHANGE THIS
+      unbreakable: false
+
+      # 魔咒
+      # << CHANGE THIS
+      enchantment:
+        minecraft:sharpness: 5
+        minecraft:fire_aspect: 2
+
+      # 魔咒 (合并模式 — 对配方后处理器有用)
+      # << OPTIONAL
+      #enchantment:
+      #  merge: true
+      #  enchantments:
+      #    minecraft:sharpness: 3
+
+      # 隐藏工具提示 (原 HideFlags)
+      # << OPTIONAL
+      hide_tooltip:
+        - attribute_modifiers
+        # - enchantments
+        # - dyed_color
+
+      # 最大耐久度 (1.20.5+)
+      # << CHANGE THIS
+      max_damage: 500
+
+      # 盔甲纹饰
+      # << OPTIONAL
+      trim:
+        pattern: eye              # 文件名不带 .json, 参考 github.com/InventivetalentDev/minecraft-assets
+        material: iron            # 同上
+
+      # 自定义数据组件 (1.20.5+ 原生格式)
+      # << OPTIONAL: 当硬编码数据不够用时使用
+      #components:
+      #  minecraft:unbreakable: {}
+      #  minecraft:fire_resistant: {}
+
+      # 移除组件 (1.20.5+)
+      # << OPTIONAL
+      #remove_components:
+      #  - minecraft:equippable
+
+      # 持久化数据容器 (PDC)
+      # << OPTIONAL
+      pdc:
+        weapon_type: "sword"
+        rarity: "legendary"
+        damage_base: 8.0
+
+      # NBT (1.20-1.20.4 旧版)
+      # << OPTIONAL: 仅在 1.20.4 以下使用
+      #nbt:
+      #  CustomModelData: 1001
+
+    # --- 客户端专属数据 (付费版专属, item/data.md#客户端侧数据) ---
+    # << PAID / OPTIONAL
+    client_bound_data:
+      # << OPTIONAL: 可在客户端覆写服务端 item_name
+      #overwritable_item_name: "<#FF8C00>烈焰之刃(客户端)"
+      # << OPTIONAL: 客户端侧 Lore, 不覆盖商店显示
+      #overwritable_lore:
+      #  - "<gray>此描述仅在服务端无 Lore 时显示"
+
+      # 条件数据 (付费版专属)
+      # << PAID / OPTIONAL
+      #conditional#1:
+      #  conditions:
+      #    - type: permission
+      #      permission: my.sword.unlock
+      #  data:
+      #    item_name: "烈焰之刃·觉醒"
+      #    lore:
+      #      - "符文已被激活!"
+      #conditional#2:
+      #  conditions:
+      #    - type: "!permission"
+      #      permission: my.sword.unlock
+      #  data:
+      #    item_name: "???之刃"
+      #    lore:
+      #      - "????????"
+
+    # --- 物品模型 (models.md) ---
+    # minecraft:model — 简单位置引用 + 生成定义
+    model:
+      type: minecraft:model
+      # << CHANGE THIS: 模型文件路径 (assets/<命名空间>/models/<路径>.json)
+      path: minecraft:item/custom/my/example_sword
+      generation:
+        # << CHANGE THIS: 手持物品使用 handheld, 平面图标使用 generated
+        parent: minecraft:item/handheld
+        textures:
+          layer0: minecraft:item/custom/my/example_sword
+
+    # 旧版模型回退 (legacy_model, 1.21.3 及以下)
+    # << OPTIONAL: 插件会自动转换, 仅在出现兼容问题时启用
+    #legacy_model:
+    #  path: minecraft:item/custom/my/example_sword_legacy
+    #  overrides:
+    #    - path: minecraft:item/custom/my/example_sword_legacy_enchanted
+    #      predicate:
+    #        enchanted: 1
+
+    # --- 设置 (item.md, 引用 settings.md) ---
+    # << OPTIONAL
+    #settings:
+    #  fuel_time: 200                          # 熔炉燃料时间(tick)
+    #  tags:
+    #    - "my:swords"
+    #    - "minecraft:swords"
+
+    # --- 行为 (item.md, 引用 behaviors.md) ---
+    # << OPTIONAL: 武器通常不需要 behavior, 除非是特殊方块交互
+    #behavior:
+    #  type: block_item
+    #  block: default:example_block
+
+    # --- 事件 (item.md, 引用 events.md) ---
+    # << OPTIONAL
+    #events:
+    #  on_hit_entity:
+    #    - type: damage
+    #      amount: 2
+
+    # --- 分类 (item.md, 引用 category.md) ---
+    # << OPTIONAL
+    #category: combat
+
+
+  # ===========================================================================
+  # 2. 弓 — minecraft:condition + pulling 模型
+  #    展示: condition 分支模型 + enchantment.merge + food + tooltip_style
+  # ===========================================================================
+  # << CHANGE THIS
+  my:example_bow:
+
+    material: bow
+    custom_model_data: 2001
+    item_model: my:example_bow
+
+    # --- 客户端绑定材质 (付费版, 服务端/客户端材质不同) ---
+    # << PAID / OPTIONAL
+    #client_bound_material: bow
+
+    # --- 客户端绑定模型 (付费版, 默认 config.yml 全局设置) ---
+    # << PAID / OPTIONAL
+    #client_bound_model: false
+
+    data:
+      item_name: "<!i><#55FF55>星辰挽歌"
+      lore:
+        - "<gray>拉动弓弦时, 星光便从指尖倾泻"
+        - "<dark_gray>传说每一箭都能射落一颗星辰"
+
+      # 自定义名称 (与 item_name 并存)
+      custom_name: "<!i><#55FF55>§l星辰挽歌"
+
+      # 魔咒 — 合并模式示例
+      enchantment:
+        merge: true
+        enchantments:
+          minecraft:power: 5
+          minecraft:punch: 2
+          minecraft:infinity: 1
+
+      # 食物组件 (1.20.5+) — 弓一般情况下不需要, 仅作演示
+      # << OPTIONAL: 弓不需要食物, 此处仅展示语法
+      #food:
+      #  nutrition: 1
+      #  saturation: 0.5
+      #  can_always_eat: false
+
+      # 唱片机播放曲目 (1.21+)
+      # << OPTIONAL
+      #jukebox_playable: my:credits_music
+
+      # 物品模型组件 (1.21.2+)
+      # << OPTIONAL: 与顶层 item_model 区别见 data.md
+      #item_model: my:example_bow
+
+      # 提示框样式 (1.21.2+)
+      # << OPTIONAL
+      tooltip_style: minecraft:topaz
+
+      # 使用后返还物品 (1.21.2+)
+      # << OPTIONAL
+      #use_remainder: my:bow_string
+
+      # 可穿戴性 (1.21.2+) — 弓可以背在背上
+      # << OPTIONAL
+      equippable:
+        slot: body                            # head / chest / legs / feet / body / mainhand / offhand / saddle
+        dispensable: false
+        swappable: false
+        # << OPTIONAL
+        #asset_id: minecraft:topaz            # assets/<命名空间>/equipment/<路径>.json
+        #camera_overlay: namespace:path       # 第一人称视角纹理遮罩
+        #damage_on_hurt: true
+        #equip_on_interact: false             # >= 1.21.5
+
+      # 自定义数据组件 (1.20.5+)
+      # << OPTIONAL
+      #components:
+      #  minecraft:max_damage: 384
+
+      # NBT (1.20-1.20.4)
+      # << OPTIONAL
+      #nbt:
+      #  CustomModelData: 2001
+
+    # --- 模型: minecraft:condition ---
+    # 根据属性值 (minecraft:bow/pull) 切换模型
+    model:
+      type: minecraft:condition
+      # << CHANGE THIS: 弓使用 minecraft:bow/pull, 三叉戟使用 minecraft:trident/throwing
+      property: minecraft:bow/pull
+      on_false:
+        type: minecraft:model
+        # << CHANGE THIS: 未拉弓时的模型
+        path: minecraft:item/custom/my/example_bow
+        generation:
+          parent: minecraft:item/bow
+          textures:
+            layer0: minecraft:item/custom/my/example_bow
+      on_true:
+        type: minecraft:model
+        # << CHANGE THIS: 拉弓时的模型 (pulling_0)
+        path: minecraft:item/custom/my/example_bow_pulling_1
+        generation:
+          parent: minecraft:item/bow
+          textures:
+            layer0: minecraft:item/custom/my/example_bow_pulling_1
+
+    # 简化写法等效 (若已有模型文件, 可直接使用 textures)
+    # << OPTIONAL: 替换上方 model 块即可
+    #textures:
+    #  - minecraft:item/custom/my/example_bow
+    #  - minecraft:item/custom/my/example_bow_pulling_0
+    #  - minecraft:item/custom/my/example_bow_pulling_1
+    #  - minecraft:item/custom/my/example_bow_pulling_2
+
+    # << OPTIONAL: 手动指定模型路径 (不依赖自动分配)
+    #model: minecraft:item/custom/my/example_bow
+
+
+  # ===========================================================================
+  # 3. 弩 — minecraft:range_dispatch + charge 模型
+  #    展示: range_dispatch 分档 + 自定义组件 + 投射物槽位 + 画变种
+  # ===========================================================================
+  # << CHANGE THIS
+  my:example_crossbow:
+
+    material: crossbow
+    custom_model_data: 3001
+    item_model: my:example_crossbow
+
+    data:
+      item_name: "<!i><#AAAAAA>穿星弩"
+      lore:
+        - "<gray>装填越久, 威力越盛"
+        - "<dark_gray>据说可以射穿末地折跃门"
+
+      # 属性修饰符 (多 slot 示例)
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 9.0
+          operation: add_value
+          id: my:crossbow_damage
+          slot: mainhand
+        - type: attack_speed
+          amount: 0.75
+          operation: add_value
+          id: my:crossbow_speed
+          slot: mainhand
+
+      # 提示框样式
+      # << OPTIONAL
+      tooltip_style: my:netherite_style
+
+      # 自定义组件 (展示复杂数据类型)
+      components:
+        minecraft:max_damage: 465
+        minecraft:food:
+          nutrition: 2
+          saturation: 1.0
+          can_always_eat: false
+        minecraft:block_state:
+          distance: "7"
+          persistent: "false"
+
+      # 画变种 (1.21.2+)
+      # << OPTIONAL
+      #painting_variant: my:custom_mural
+
+      # 玩家档案 (显示头颅)
+      # << OPTIONAL: 通过玩家名
+      #profile: XiaoMoMi
+      # << OPTIONAL: 通过纹理 URL
+      #profile: http://textures.minecraft.net/texture/ed83db5c2294f03bf069f4a2ac5428df93a13c7c7487d6b1f2ed3ce30b5acec8
+      # << OPTIONAL: 通过 Base64
+      #profile: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ4M2RiNWMyMjk0ZjAzYmYwNjlmNGEyYWM1NDI4ZGY5M2ExM2M3Yzc0ODdkNmIxZjJlZDNjZTMwYjVhY2VjOCJ9fX0=
+
+    # --- 模型: minecraft:range_dispatch ---
+    # 根据 minecraft:crossbow/pull 属性的值分档切换模型
+    model:
+      type: minecraft:range_dispatch
+      # << CHANGE THIS: 弩使用 minecraft:crossbow/pull
+      property: minecraft:crossbow/pull
+      # << CHANGE THIS: 缩放因子
+      scale: 0.05
+      entries:
+        - threshold: 0.0
+          model:
+            type: minecraft:model
+            # << CHANGE THIS: 未拉弦
+            path: minecraft:item/custom/my/example_crossbow
+        - threshold: 0.7
+          model:
+            type: minecraft:model
+            # << CHANGE THIS: 拉弦阶段 1
+            path: minecraft:item/custom/my/example_crossbow_pulling_0
+        - threshold: 1.5
+          model:
+            type: minecraft:model
+            # << CHANGE THIS: 拉弦阶段 2
+            path: minecraft:item/custom/my/example_crossbow_pulling_1
+        - threshold: 3.0
+          model:
+            type: minecraft:model
+            # << CHANGE THIS: 拉弦阶段 3 (满弦)
+            path: minecraft:item/custom/my/example_crossbow_pulling_2
+      # << OPTIONAL: 超出范围时的回退模型
+      fallback:
+        type: minecraft:model
+        path: minecraft:item/custom/my/example_crossbow_arrow
+
+    # 旧版模型 (legacy_model) — 手动覆写自动转换
+    # << OPTIONAL: 当自动转换不合预期时启用
+    #legacy_model:
+    #  path: minecraft:item/custom/my/example_crossbow
+    #  overrides:
+    #    - path: minecraft:item/custom/my/example_crossbow_pulling_0
+    #      predicate:
+    #        pull: 0
+    #    - path: minecraft:item/custom/my/example_crossbow_pulling_1
+    #      predicate:
+    #        pull: 0.65
+    #    - path: minecraft:item/custom/my/example_crossbow_pulling_2
+    #      predicate:
+    #        pull: 1.0
+    #    - path: minecraft:item/custom/my/example_crossbow_arrow
+    #      predicate:
+    #        charged: 1
+    #    - path: minecraft:item/custom/my/example_crossbow_firework
+    #      predicate:
+    #        firework: 1
+
+    # 简化写法 (当已有模型文件时)
+    # << OPTIONAL: 替换上方 model 块
+    #textures:
+    #  - minecraft:item/custom/my/example_crossbow
+    #  - minecraft:item/custom/my/example_crossbow_pulling_0
+    #  - minecraft:item/custom/my/example_crossbow_pulling_1
+    #  - minecraft:item/custom/my/example_crossbow_pulling_2
+    #  - minecraft:item/custom/my/example_crossbow_arrow
+    #  - minecraft:item/custom/my/example_crossbow_firework
+
+    # 使用旧版简化写法直接指定模型文件
+    #models:
+    #  - minecraft:item/custom/my/example_crossbow
+    #  - minecraft:item/custom/my/example_crossbow_pulling_0
+    #  - minecraft:item/custom/my/example_crossbow_pulling_1
+    #  - minecraft:item/custom/my/example_crossbow_pulling_2
+    #  - minecraft:item/custom/my/example_crossbow_arrow
+    #  - minecraft:item/custom/my/example_crossbow_firework
+
+
+  # ===========================================================================
+  # 4. 三叉戟 — minecraft:condition (throwing)
+  #    展示: condition + 客户端专用数据 + dyed_color + block_state
+  # ===========================================================================
+  # << CHANGE THIS
+  my:example_trident:
+
+    material: trident
+    custom_model_data: 4001
+    item_model: my:example_trident
+
+    data:
+      item_name: "<!i><#00AAFF>海神戟"
+      lore:
+        - "<gray>波塞冬的愤怒凝聚于此"
+
+      # 染色颜色
+      # << OPTIONAL
+      dyed_color: 0,170,255
+
+      # 方块状态 (放置时应用的方块属性)
+      # << OPTIONAL: 确保 material 与目标方块视觉匹配
+      #block_state:
+      #  note: "1"
+      #  powered: "false"
+      #  instrument: "harp"
+      # << OPTIONAL: 使用自定义方块状态定义
+      #block_state: my:example_block[stage=0]
+
+      # 自定义模型数据 (在 data 中仅表示组件, 不生成资源包)
+      # << OPTIONAL
+      #custom_model_data: 4001
+
+    # --- 客户端专属数据 (付费版) ---
+    # << PAID / OPTIONAL: 服务端/客户端不同数据
+    #client_bound_data:
+    #  # 客户端侧 item_name / lore (可实时刷新)
+    #  item_name: "<!i><#00AAFF>海神戟·幻影"
+    #  lore:
+    #    - "<gray>此描述仅客户端可见"
+    #  # 客户端侧方块状态 (加冒险模式)
+    #  block_state: minecraft:mushroom_stem
+    #  # 客户端侧自定义组件
+    #  components:
+    #    minecraft:can_break:
+    #      blocks: "#mineable/pickaxe"
+
+    # --- 模型: minecraft:condition ---
+    # 根据 minecraft:trident/throwing 属性切换模型
+    model:
+      type: minecraft:condition
+      # << CHANGE THIS: 三叉戟使用 minecraft:trident/throwing
+      property: minecraft:trident/throwing
+      on_false:
+        type: minecraft:model
+        # << CHANGE THIS: 手持状态
+        path: minecraft:item/custom/my/example_trident
+        generation:
+          parent: minecraft:item/trident
+          textures:
+            layer0: minecraft:item/custom/my/example_trident
+      on_true:
+        type: minecraft:model
+        # << CHANGE THIS: 投掷状态
+        path: minecraft:item/custom/my/example_trident_throwing
+        generation:
+          parent: minecraft:item/trident
+          textures:
+            layer0: minecraft:item/custom/my/example_trident_throwing
+
+    # 简化写法 (已有模型文件)
+    # << OPTIONAL
+    #textures:
+    #  - minecraft:item/custom/my/example_trident
+    #  - minecraft:item/custom/my/example_trident_throwing
+
+
+  # ===========================================================================
+  # 5. 投射物 (箭) — minecraft:model (generated) + 投射物组件
+  #    展示: generated parent + 外部插件兼容 + use_remainder + settings
+  # ===========================================================================
+  # << CHANGE THIS
+  my:example_arrow:
+
+    material: arrow
+    custom_model_data: 5001
+    item_model: my:example_arrow
+
+    data:
+
+      item_name: "<!i><#FF5555>爆破箭"
+      lore:
+        - "<gray>击中目标后产生爆炸"
+        - "<red>⚠ 范围伤害"
+
+      # 属性修饰符 (影响投射物本身, 非射出后)
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 2.0
+          operation: add_value
+          id: my:arrow_damage
+          slot: any
+          display:
+            type: override
+            value: "<green>近战伤害 +2"
+
+      # 最大耐久度
+      max_damage: 64
+
+      # 使用后返还物品 (1.21.2+)
+      # << OPTIONAL: 箭用完后返还物品
+      use_remainder: my:arrow_shaft
+
+      # 外部插件兼容 (保留外部插件数据)
+      # << OPTIONAL
+      #external:
+      #  plugin: neigeitems
+      #  id: my_example_arrow
+
+    # --- 设置 (settings.md) ---
+    # << OPTIONAL
+    settings:
+      fuel_time: 100                 # 熔炉燃料
+      tags:
+        - "my:projectiles"
+        - "minecraft:arrows"
+
+    # --- 模型: minecraft:model (generated) ---
+    model:
+      type: minecraft:model
+      # << CHANGE THIS
+      path: minecraft:item/custom/my/example_arrow
+      generation:
+        # << CHANGE THIS: 平面物品使用 generated
+        parent: minecraft:item/generated
+        textures:
+          layer0: minecraft:item/custom/my/example_arrow
+
+    # 简化写法 (仅指定纹理)
+    # << OPTIONAL
+    #texture: minecraft:item/custom/my/example_arrow
+
+    # 简化写法 + 手动指定模型路径
+    # << OPTIONAL
+    #model: minecraft:item/custom/my/example_arrow
+
+    # 分类
+    # << OPTIONAL
+    #category: combat

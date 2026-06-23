@@ -1,8 +1,0 @@
-# Wiki: configuration/item/behaviors/compostable_item.md
-# 将不可堆肥的物品变为可堆肥
-
-items:
-  custom:example_item:
-    behavior:
-      type: compostable_item
-      chance: 0.3  # << CHANGE THIS - 堆肥成功率 0.0~1.0

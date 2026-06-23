@@ -1,0 +1,150 @@
+# ============================================================================
+# CraftEngine 表情 (Emoji) 配置模板
+# 参考文档: ../../../CraftEngine Wiki/configuration/emoji.md
+# 前置依赖: 需先完成图像配置 (参考 image.md)
+# ============================================================================
+#
+# 使用说明:
+# 1. 将顶层命名空间 "my" 替换为你的命名空间
+# 2. 将每条表情的 ID (如 "time", "location") 替换为你需要的 ID
+# 3. 修改 # << CHANGE THIS 标记的值以满足实际需求
+# 4. 本文件可直接放置在插件配置目录下使用
+#
+# 注意: CraftEngine 使用 Paper 现代聊天组件 API 实现表情功能。
+#       依赖 Bukkit 旧版聊天事件的聊天插件无法兼容表情渲染。
+#       已知兼容插件: TrChat (https://github.com/TrPlugins/TrChat)
+# ============================================================================
+
+emoji:
+  # --------------------------------------------------------------------------
+  # 基础表情模板
+  # 必需字段: permission, image, keywords
+  # 可选字段: content, content_overrides
+  #
+  # 字段说明:
+  #   permission - 使用该表情所需的权限节点
+  #   content    - MiniMessage 格式的聊天显示内容 (可选, 默认显示图像)
+  #   image      - 图像配置路径 "命名空间:文件:x:y"
+  #   keywords   - 触发关键词列表, 玩家在聊天中输入这些词会触发表情
+  #                <arg:emoji>  返回对应表情的图像表示
+  #                <arg:keyword> 返回首个可用关键词
+  # --------------------------------------------------------------------------
+
+  # ======================== 基础简易表情 ========================
+
+  my:time:                                          # << CHANGE THIS (namespace:id)
+    permission: "emoji.time"                         # << CHANGE THIS
+    content: "<white><arg:emoji></white>"            # << CHANGE THIS (MiniMessage)
+    image: "my:icons:0:0"                           # << CHANGE THIS (namespace:file:x:y)
+    keywords:
+      - ":time:"                                    # << CHANGE THIS
+      # - ":time2:"                                  # 可添加多个关键词
+
+  my:location:                                      # << CHANGE THIS
+    permission: "emoji.location"                    # << CHANGE THIS
+    content: "<white><arg:emoji></white>"           # << CHANGE THIS
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":pos:"                                     # << CHANGE THIS
+
+  # ======================== 带 Hover 提示的复杂表情 ========================
+
+  my:info:                                          # << CHANGE THIS
+    permission: "emoji.info"                         # << CHANGE THIS
+    # MiniMessage 支持 hover, click, gradient, shadow, bold 等丰富格式
+    # 此处示例: 悬停时显示使用说明, 带阴影和白色文本
+    content: >-
+      <hover:show_text:'使用<yellow>"<arg:keyword>"</yellow>来发送表情"<arg:emoji>"'>
+      <!shadow><white><arg:emoji></white></!shadow>
+      </hover>
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":info:"                                    # << CHANGE THIS
+
+  my:coordinates:                                   # << CHANGE THIS
+    permission: "emoji.coordinates"                  # << CHANGE THIS
+    # 支持 PlaceholderAPI 变量 (papi:player_x 等)
+    content: >-
+      <hover:show_text:'使用<yellow>"<arg:keyword>"</yellow>来发送表情"<arg:emoji>"'>
+      <!shadow><white><arg:emoji></white></!shadow>
+      <bold>当前坐标: <papi:player_x>,<papi:player_y>,<papi:player_z></bold>
+      </hover>
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":pos:"                                     # << CHANGE THIS
+
+  # ======================== 多行格式表情 ========================
+  # CraftEngine 支持 content 使用 YAML 列表, 处理时自动合并为单行字符串
+  # 提升了复杂 MiniMessage 格式的可读性和维护性
+
+  my:multiline_example:                             # << CHANGE THIS
+    permission: "emoji.multiline"                    # << CHANGE THIS
+    content:
+      - >-
+        <hover:show_text:'使用<yellow>"<arg:keyword>"</yellow>
+        来发送表情"<arg:emoji>"'>
+      - <!shadow><white><arg:emoji></white></!shadow>
+      - "<bold>提示: 这是多行格式示例</bold>"
+      - </hover>
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":multi:"                                   # << CHANGE THIS
+
+  # ======================== 场景内容覆盖 (content_overrides) ========================
+  # content_overrides 控制同一表情在不同使用场景下显示不同的内容
+  # 可用场景: chat, book, anvil, sign, command
+  #
+  # 优先级: content_overrides.{场景} > content
+  # 如某场景未定义 override, 则回退使用顶层 content
+
+  my:adaptive_emoji:                                # << CHANGE THIS
+    permission: "emoji.adaptive"                     # << CHANGE THIS
+    # 默认显示 (无 override 时的回退内容)
+    content: <!shadow><white><arg:emoji></white></!shadow>
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":adaptive:"                                # << CHANGE THIS
+    content_overrides:
+      # 聊天场景 - 带 Hover 提示
+      chat: >-
+        <hover:show_text:'<l10n:emoji.tip:"<arg:keyword>":"<arg:emoji>">'>
+        <!shadow><white><arg:emoji></white></!shadow>
+        </hover>
+      # 书本场景 - 仅显示关键词提示
+      book: >-
+        <hover:show_text:'<arg:keyword>'>
+        <!shadow><white><arg:emoji></white></!shadow>
+        </hover>
+      # 铁砧场景 - 移除斜体, 仅显示纯文本
+      anvil: <!i><!shadow><white><arg:emoji></white></!shadow></!i>
+      # 告示牌场景 - 无装饰纯文本
+      sign: <white><arg:emoji></white>
+      # 命令场景 - 可定义不同的命令反馈
+      command: <white><arg:emoji><gray> [已通过命令触发]</gray></white>
+
+  # ======================== 多场景 + 多行混合模板 ========================
+
+  my:advanced_example:                              # << CHANGE THIS
+    permission: "emoji.advanced"                     # << CHANGE THIS
+    content:
+      - <hover:show_text:'默认悬停提示文本'>
+      - <!shadow><white><arg:emoji></white></!shadow>
+      - "<gold>默认 <arg:keyword></gold>"
+      - </hover>
+    image: "my:icons:0:0"                           # << CHANGE THIS
+    keywords:
+      - ":advanced:"                                # << CHANGE THIS
+    content_overrides:
+      chat:
+        - <hover:show_text:'<l10n:emoji.tip:"<arg:keyword>":"<arg:emoji>">'>
+        - <!shadow><white><arg:emoji></white></!shadow>
+        - "<yellow>聊天触发: <papi:player_name></yellow>"
+        - </hover>
+      book:
+        - <hover:show_text:'<arg:keyword>'>
+        - <!shadow><white><arg:emoji></white></!shadow>
+        - <gray>(书本模式)</gray>
+        - </hover>
+      anvil: <!i><!shadow><white><arg:emoji></white></!shadow></!i>
+      sign: <white><arg:emoji></white>
+      command: "<green><arg:emoji> [Command OK]</green>"

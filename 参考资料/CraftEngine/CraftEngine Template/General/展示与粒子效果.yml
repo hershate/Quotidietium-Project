@@ -1,0 +1,328 @@
+# =============================================================================
+# CraftEngine 展示与粒子效果 方块行为配置模板
+# =============================================================================
+# 参考 Wiki 文档（本地路径）：
+#   CraftEngine Wiki/configuration/block/behaviors/display_item_block.md
+#   CraftEngine Wiki/configuration/block/behaviors/item_frame_block.md
+#   CraftEngine Wiki/configuration/block/behaviors/simple_particle_block.md
+#   CraftEngine Wiki/configuration/block/behaviors/wall_torch_particle_block.md
+#   CraftEngine Wiki/configuration/block/behaviors/tint_source_block.md
+#
+# 使用方法：全局替换 `your_namespace` 为实际命名空间，并将 `your_` 前缀
+# 的方块 ID 替换为实际方块 ID。标记 << CHANGE THIS 的值按需修改。
+# 所有示例均包含完整 blocks 结构，可直接复制后修改。
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 1. 物品展示方块 (display_item_block)
+  #    在方块上展示一个掉落的物品。手持物品右键放入，空手右键取出。
+  #    比较器输出：有物品 15 / 无物品 0（需 has_signal: true）
+  # ===========================================================================
+  your_namespace:your_display_item_block: # << CHANGE THIS
+    behavior:
+      type: display_item_block
+      # 展示物品相对于方块原点的偏移量。默认 "0.5,0.5,0.5"
+      position: "0.5,0.5,0.5"             # << CHANGE THIS
+      # 是否启用比较器检测信号。有物品输出 15，否则输出 0。默认 true
+      has_signal: true                     # << CHANGE THIS
+      # 持久化数据的 NBT 键。默认 "craftengine:display_item"
+      data_key: "craftengine:display_item" # << CHANGE THIS
+      # 存储的物品是否作为方块实体颜色提供器（配合 tint_source 体系）。默认 false
+      tint_source: false                   # << CHANGE THIS
+      sounds:
+        put: minecraft:block.decorated_pot.insert        # << CHANGE THIS 放入音效
+        take: minecraft:block.decorated_pot.insert_fail  # << CHANGE THIS 取出音效
+    # 可选：使展示物品朝向特定方向。可选值：north / south / east / west / up / down
+    properties:
+      facing: north # << CHANGE THIS
+
+  # 物品展示方块 —— 最简配置（仅必需项，其余使用默认值）
+  your_namespace:your_simple_display: # << CHANGE THIS
+    behavior:
+      type: display_item_block
+
+  # ===========================================================================
+  # 2. 物品展示框方块 (item_frame_block)
+  #    原版物品展示框的高性能替代方案。支持旋转（8 方向）、发光、隐藏边框。
+  #    空手右键取出，潜行+右键旋转。
+  #    比较器信号 = rotation + 1（有物品时），空时为 0。
+  # ===========================================================================
+  your_namespace:your_item_frame: # << CHANGE THIS
+    behavior:
+      type: item_frame_block
+      # 展示物品的位置偏移。默认 "0,0,0"
+      position: "0,0,0"                    # << CHANGE THIS
+      # 是否发光（类似荧光展示框）。默认 false
+      glow: false                          # << CHANGE THIS
+      # 是否隐藏展示框边框。默认 false
+      invisible: false                     # << CHANGE THIS
+      # 是否启用静态地图渲染。默认 true，有少量性能开销
+      render_map_item: true                # << CHANGE THIS
+      # 持久化数据的 NBT 键。默认 "craftengine:item_frame"
+      data_key: "craftengine:item_frame"   # << CHANGE THIS
+      sounds:
+        put: entity.item_frame.add_item        # << CHANGE THIS 放入音效
+        take: entity.item_frame.remove_item    # << CHANGE THIS 取出音效
+        rotate: entity.item_frame.rotate_item  # << CHANGE THIS 旋转音效
+    # required: facing 为必需属性
+    properties:
+      facing: north # << CHANGE THIS
+
+  # 物品展示框 —— 发光 + 隐形（荧光物品展示框效果）
+  your_namespace:your_glow_item_frame: # << CHANGE THIS
+    behavior:
+      type: item_frame_block
+      glow: true
+      invisible: true
+    properties:
+      facing: west # << CHANGE THIS
+
+  # ===========================================================================
+  # 3. 简单粒子方块 (simple_particle_block)
+  #    按固定间隔生成粒子效果。支持多种粒子类型及各自专有参数。
+  # ===========================================================================
+
+  # --- 3a. 基础烟雾粒子 ---
+  your_namespace:your_particle_block: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      # 粒子生成间隔，单位：刻。默认 10
+      tick_interval: 10 # << CHANGE THIS
+      particles:
+        - particle: smoke                        # << CHANGE THIS 粒子类型（必填）
+          x: 0.5                                   # << CHANGE THIS 相对坐标 x，默认 0
+          y: 0.7                                   # << CHANGE THIS 相对坐标 y，默认 0
+          z: 0.5                                   # << CHANGE THIS 相对坐标 z，默认 0
+          count: 1                                 # << CHANGE THIS 每次生成数量，默认 1
+          offset_x: 0                              # << CHANGE THIS x 方向随机扩散，默认 0
+          offset_y: 0                              # << CHANGE THIS y 方向随机扩散，默认 0
+          offset_z: 0                              # << CHANGE THIS z 方向随机扩散，默认 0
+          speed: 0                                 # << CHANGE THIS 粒子速度，默认 0
+
+  # --- 3b. 多种粒子组合 ---
+  your_namespace:your_multi_particle_block: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 5 # << CHANGE THIS
+      particles:
+        - particle: minecraft:end_rod
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 2
+          offset_x: 0.2
+          offset_y: 0.1
+          offset_z: 0.2
+          speed: 0.1
+        - particle: minecraft:flame
+          x: 0.3
+          y: 0.6
+          z: 0.3
+          count: 1
+          offset_x: 0
+          offset_y: 0
+          offset_z: 0
+          speed: 0
+
+  # --- 3c. 物品粒子 (particle: item) ---
+  your_namespace:your_item_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 20
+      particles:
+        - particle: item
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 1
+          offset_x: 0.3
+          offset_y: 0.3
+          offset_z: 0.3
+          speed: 0
+          # 以下为 item 粒子专用参数：指定展示的物品
+          item: your_namespace:your_item # << CHANGE THIS
+
+  # --- 3d. 方块粒子 (particle: block / block_marker / falling_dust / dust_pillar / block_crumble) ---
+  your_namespace:your_block_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 15
+      particles:
+        - particle: block
+          x: 0.5
+          y: 0.9
+          z: 0.5
+          count: 2
+          offset_x: 0.2
+          offset_y: 0.1
+          offset_z: 0.2
+          speed: 0
+          # 以下为方块粒子专用参数：指定方块状态
+          block_state: your_namespace:your_block[axis=y] # << CHANGE THIS
+
+  # --- 3e. 幽匿块充能粒子 (particle: sculk_charge) ---
+  your_namespace:your_sculk_charge_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 10
+      particles:
+        - particle: sculk_charge
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 1
+          # sculk_charge 专用参数
+          charge: 1.5 # << CHANGE THIS
+
+  # --- 3f. 尖啸粒子 (particle: shriek) ---
+  your_namespace:your_shriek_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 40
+      particles:
+        - particle: shriek
+          x: 0.5
+          y: 1.0
+          z: 0.5
+          count: 1
+          # shriek 专用参数
+          shriek: 1 # << CHANGE THIS
+
+  # --- 3g. 粉末粒子 (particle: dust) ---
+  your_namespace:your_dust_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 5
+      particles:
+        - particle: dust
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 3
+          offset_x: 0.5
+          offset_y: 0.5
+          offset_z: 0.5
+          speed: 0
+          # dust 专用参数
+          color: 255,255,255 # << CHANGE THIS RGB 颜色
+          scale: 1.0         # << CHANGE THIS 粒子尺寸
+
+  # --- 3h. 粉末颜色过渡粒子 (particle: dust_color_transition) ---
+  your_namespace:your_dust_transition_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 8
+      particles:
+        - particle: dust_color_transition
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 2
+          offset_x: 0.3
+          offset_y: 0.3
+          offset_z: 0.3
+          speed: 0
+          # dust_color_transition 专用参数
+          from: 255,255,255 # << CHANGE THIS 起始 RGB 颜色
+          to: 0,0,0         # << CHANGE THIS 结束 RGB 颜色
+          scale: 4.0        # << CHANGE THIS 粒子尺寸
+
+  # --- 3i. 振动粒子 (particle: vibration) ---
+  your_namespace:your_vibration_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 20
+      particles:
+        - particle: vibration
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 1
+          # vibration 专用参数
+          target_x: 0       # << CHANGE THIS 目标 x
+          target_y: 1       # << CHANGE THIS 目标 y
+          target_z: 0       # << CHANGE THIS 目标 z
+          arrival_time: 10  # << CHANGE THIS 到达时间（刻）
+
+  # --- 3j. 轨迹粒子 (particle: trail) ---
+  your_namespace:your_trail_particle: # << CHANGE THIS
+    behavior:
+      type: simple_particle_block
+      tick_interval: 15
+      particles:
+        - particle: trail
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 1
+          # trail 专用参数
+          target_x: 0       # << CHANGE THIS 目标 x
+          target_y: 1       # << CHANGE THIS 目标 y
+          target_z: 0       # << CHANGE THIS 目标 z
+          duration: 10      # << CHANGE THIS 持续时间（刻）
+
+  # ===========================================================================
+  # 4. 墙上火把粒子方块 (wall_torch_particle_block)
+  #    按固定间隔生成粒子效果，粒子位置随方块 facing 朝向自动旋转，
+  #    类似原版墙上的火把。
+  #    required property: facing
+  # ===========================================================================
+  your_namespace:your_wall_torch_particle: # << CHANGE THIS
+    behavior:
+      type: wall_torch_particle_block
+      # 粒子生成间隔，单位：刻。默认 10
+      tick_interval: 10 # << CHANGE THIS
+      particles:
+        - particle: smoke                        # << CHANGE THIS 粒子类型（必填）
+          x: 0.5                                   # << CHANGE THIS 相对坐标 x，默认 0
+          y: 0.7                                   # << CHANGE THIS 相对坐标 y，默认 0
+          z: 0.5                                   # << CHANGE THIS 相对坐标 z，默认 0
+          count: 1                                 # << CHANGE THIS 每次数量，默认 1
+          offset_x: 0                              # << CHANGE THIS x 随机扩散，默认 0
+          offset_y: 0                              # << CHANGE THIS y 随机扩散，默认 0
+          offset_z: 0                              # << CHANGE THIS z 随机扩散，默认 0
+          speed: 0                                 # << CHANGE THIS 粒子速度，默认 0
+    # required: facing 为必需属性
+    properties:
+      facing: north # << CHANGE THIS
+
+  # 墙上火把粒子 —— 带粒子类型专有参数的完整示例
+  your_namespace:your_wall_torch_dust: # << CHANGE THIS
+    behavior:
+      type: wall_torch_particle_block
+      tick_interval: 5
+      particles:
+        - particle: dust
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 2
+          offset_x: 0.1
+          offset_y: 0.1
+          offset_z: 0.1
+          speed: 0
+          color: 255,180,50   # << CHANGE THIS
+          scale: 1.5           # << CHANGE THIS
+    properties:
+      facing: south # << CHANGE THIS
+
+  # ===========================================================================
+  # 5. 颜色提供器方块 (tint_source_block)
+  #    将物品作为颜色提供器存入方块实体，供方块实体渲染器（entity_renderer）
+  #    的元素根据存储物品动态着色。可配置破坏时是否掉落物品。
+  # ===========================================================================
+  your_namespace:your_tint_source: # << CHANGE THIS
+    behavior:
+      type: tint_source_block
+      # 方块破坏后是否掉落存储的物品。默认 true
+      drop_item: true                      # << CHANGE THIS
+      # 持久化数据的 NBT 键。默认 "craftengine:tint_source"
+      data_key: "craftengine:tint_source"  # << CHANGE THIS
+
+  # 颜色提供器方块 —— 不掉落物品版本（配合自定义掉落策略）
+  your_namespace:your_tint_source_node: # << CHANGE THIS
+    behavior:
+      type: tint_source_block
+      drop_item: false                     # << CHANGE THIS

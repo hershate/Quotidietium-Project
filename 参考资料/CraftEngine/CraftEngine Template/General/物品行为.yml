@@ -1,0 +1,229 @@
+# =============================================================================
+# CraftEngine Item Behaviors — Consolidated YAML Template
+# =============================================================================
+# Local wiki reference:
+#  参考资料/CraftEngine/CraftEngine Wiki/configuration/item/behaviors/
+#
+# This template covers ALL documented item behaviors from the CraftEngine wiki.
+# Replace every value marked with # << CHANGE THIS before use.
+# All examples use a custom namespace (replace "your_namespace").
+# =============================================================================
+
+items:
+
+  # =========================================================================
+  # Group 1 — Block Items (standard & constrained placement)
+  # =========================================================================
+  #
+  # Each of these places a block on right-click. The variant types differ only
+  # in which face of the target block they accept: any (block_item), ceiling
+  # (bottom face), wall (side face), ground (top face), or multi-block height.
+  #
+  # Wiki files: block_item.md, ceiling_block_item.md, wall_block_item.md,
+  #             ground_block_item.md, double_high_block_item.md,
+  #             multi_high_block_item.md
+
+  # -- 1a. block_item — standard placement, block reference --
+  your_namespace:palm_sapling:
+    behavior:
+      type: block_item
+      block: your_namespace:palm_sapling    # << CHANGE THIS: block namespace ID
+
+  # -- 1b. block_item — standard placement, inline block definition --
+  # Note: inline blocks are documented but not recommended by the wiki.
+  your_namespace:palm_sapling_inline:
+    behavior:
+      type: block_item
+      block:                                # << CHANGE THIS: inline block definition
+        behavior: ...                       # << CHANGE THIS
+        settings: ...                       # << CHANGE THIS
+        states: ...                         # << CHANGE THIS
+        loot: ...                           # << CHANGE THIS
+        events: ...                         # << CHANGE THIS
+
+  # -- 1c. ceiling_block_item — places on bottom face of a block only --
+  your_namespace:chandelier:
+    behavior:
+      type: ceiling_block_item
+      block: your_namespace:chandelier      # << CHANGE THIS: block namespace ID
+
+  # -- 1d. wall_block_item — places on side face of a block only --
+  your_namespace:torch_holder:
+    behavior:
+      type: wall_block_item
+      block: your_namespace:torch_holder    # << CHANGE THIS: block namespace ID
+
+  # -- 1e. ground_block_item — places on top face of a block only --
+  your_namespace:flower_pot:
+    behavior:
+      type: ground_block_item
+      block: your_namespace:flower_pot      # << CHANGE THIS: block namespace ID
+
+  # -- 1f. double_high_block_item — two-block-high placement --
+  your_namespace:palm_door:
+    behavior:
+      type: double_high_block_item
+      block: your_namespace:palm_door       # << CHANGE THIS: block namespace ID
+
+  # -- 1g. multi_high_block_item — multi-block-high placement --
+  your_namespace:tall_gate:
+    behavior:
+      type: multi_high_block_item
+      block: your_namespace:tall_gate       # << CHANGE THIS: block namespace ID
+
+  # =========================================================================
+  # Group 2 — Liquid-Surface Block Item
+  # =========================================================================
+  #
+  # Checks interaction against liquid / ice / frosted-ice / waterlogged blocks.
+  # Ideal for plants placed on water or lava surfaces.
+  #
+  # Wiki file: liquid_collision_block_item.md
+
+  # -- 2a. liquid_collision_block_item --
+  your_namespace:reed:
+    material: paper                          # << CHANGE THIS: item material
+    behavior:
+      type: liquid_collision_block_item
+      offset_y: 1                            # << CHANGE THIS: vertical offset for placement
+      block: your_namespace:reed             # << CHANGE THIS: block namespace ID
+
+  # =========================================================================
+  # Group 3 — Furniture Items
+  # =========================================================================
+  #
+  # Furniture items bind to a furniture definition. Unlike block items they
+  # carry placement rules (rotation mode + alignment mode) per variant, and
+  # optional collision-box flags.
+  #
+  # Wiki file: furniture_item.md
+
+  # -- 3a. furniture_item — furniture reference --
+  your_namespace:bench:
+    behavior:
+      type: furniture_item
+      rules:                                # << CHANGE THIS: placement rules
+        ground:                             # << CHANGE THIS: variant name (e.g. ground, wall)
+          rotation: four                    # << CHANGE THIS: any / four / eight / sixteen / north / east / west / south
+          alignment: center                 # << CHANGE THIS: any / center / half / quarter / corner
+      furniture: your_namespace:bench       # << CHANGE THIS: furniture namespace ID
+      ignore_placer: false                  # << CHANGE THIS: ignore placer's collision box
+      ignore_entities: false                # << CHANGE THIS: ignore all entity collision boxes
+
+  # -- 3b. furniture_item — inline furniture definition --
+  your_namespace:bench_inline:
+    behavior:
+      type: furniture_item
+      rules:
+        ground:
+          rotation: four
+          alignment: center
+      furniture:                            # << CHANGE THIS: inline furniture definition
+        settings: ...                       # << CHANGE THIS
+        variants: ...                       # << CHANGE THIS
+        loot: ...                           # << CHANGE THIS
+        events: ...                         # << CHANGE THIS
+      ignore_placer: false
+      ignore_entities: false
+
+  # =========================================================================
+  # Group 4 — Liquid-Surface Furniture Item
+  # =========================================================================
+  #
+  # Like furniture_item, but also checks liquid interaction and supports
+  # source-only detection and configurable liquid types.
+  #
+  # Wiki file: liquid_collision_furniture_item.md
+
+  # -- 4a. liquid_collision_furniture_item --
+  your_namespace:water_lily_bench:
+    behavior:
+      type: liquid_collision_furniture_item
+      rules:
+        ground:
+          rotation: four
+          alignment: center
+      furniture: your_namespace:water_lily_bench  # << CHANGE THIS: furniture namespace ID
+      ignore_placer: false
+      ignore_entities: false
+      source_only: true                             # << CHANGE THIS: only detect liquid source blocks
+      liquid_type:                                  # << CHANGE THIS: allowed liquid types
+        - water
+        # - lava
+
+  # =========================================================================
+  # Group 5 — Compostable Item
+  # =========================================================================
+  #
+  # Makes a non-compostable item usable in the composter block.
+  #
+  # Caution: does NOT work with hoppers (Minecraft's composter is hardcoded).
+  # For hopper support, use a vanilla-compostable base material and adjust
+  # via item settings (compost_probability).
+  #
+  # Wiki file: compostable_item.md
+
+  # -- 5a. compostable_item --
+  your_namespace:ender_pearl_flower_seeds:
+    behavior:
+      type: compostable_item
+      chance: 0.5                            # << CHANGE THIS: compost success chance (0.0 — 1.0)
+
+  # =========================================================================
+  # Group 6 — Range Mining Item
+  # =========================================================================
+  #
+  # Area-mining tool that breaks blocks in a configured pattern relative to
+  # the player's facing direction. The range is a list of {width},{height},{depth}
+  # tuples. Note: behavior is an array (list) for this type.
+  #
+  # Wiki file: range_mining_item.md
+
+  # -- 6a. range_mining_item — 3-block cross pattern --
+  your_namespace:topaz_hammer:
+    material: golden_pickaxe                 # << CHANGE THIS: item material
+    conditions: []                           # << CHANGE THIS: usage conditions
+    behavior:
+      - type: range_mining_item
+        range:                               # << CHANGE THIS: width,height,depth tuples
+          - 0,1,0                            #   forward
+          - 0,-1,0                           #   backward
+          - 1,0,0                            #   right
+          - -1,0,0                           #   left
+
+  # -- 6b. range_mining_item — full 3x3 area (9-block pattern) --
+  your_namespace:topaz_wide_hammer:
+    material: diamond_pickaxe
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+
+# =============================================================================
+# Referenced Block & Furniture Definitions (examples)
+# =============================================================================
+# Uncomment and fill in the definitions referenced by the items above.
+
+# blocks:
+#   your_namespace:palm_sapling:
+#     behavior: ...
+#     settings: ...
+#     states: ...
+#     loot: ...
+#     events: ...
+
+# furniture:
+#   your_namespace:bench:
+#     settings: ...
+#     variants: ...
+#     loot: ...
+#     events: ...

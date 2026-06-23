@@ -1,0 +1,136 @@
+# ============================================================================
+# CraftEngine — 楼梯 / 台阶 / 双层方块 / 多层方块 行为配置模板
+# ============================================================================
+# 本地 Wiki 参考路径:
+#   configuration/block/behaviors/stairs_block.md
+#   configuration/block/behaviors/slab_block.md
+#   configuration/block/behaviors/double_high_block.md
+#   configuration/block/behaviors/multi_high_block.md
+#
+# 用法: 将下面 blocks 下的条目复制到您的命名空间配置中，将 "example"
+#       替换为实际方块 ID，并修改 # << CHANGE THIS 标记的值。
+# ============================================================================
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  1. 楼梯方块 (stairs_block)                                           ║
+# ║  与原版楼梯一致的放置/连接逻辑。                                      ║
+# ║  ⚠ 自定义楼梯无法与原版楼梯形成内角、外角等连接形状。                 ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+blocks:
+  # ── 简易楼梯：只声明必要属性，其他使用默认值 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_stairs:
+    behavior:
+      type: stairs_block
+
+  # ── 完整楼梯：显式声明所有属性 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_stairs_full:
+    states:
+      properties:
+        shape:
+          type: stairs_shape
+        half:
+          type: single_block_half
+        facing:
+          type: horizontal_direction
+        waterlogged:
+          type: boolean
+          default: "false"           # << CHANGE THIS >> 可选，默认为 false
+    behavior:
+      type: stairs_block
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  2. 台阶方块 (slab_block)                                             ║
+# ║  与原版台阶一致的放置/合并行为。双层台阶不可含水。                    ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+  # ── 简易台阶：只声明必要行为 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_slab:
+    behavior:
+      type: slab_block
+
+  # ── 完整台阶：显式声明所有属性 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_slab_full:
+    states:
+      properties:
+        type:
+          type: slab_type
+        waterlogged:
+          type: boolean
+          default: "false"           # << CHANGE THIS >> 可选，双层台阶无视此属性
+    behavior:
+      type: slab_block
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  3. 双层方块 (double_high_block)                                      ║
+# ║  由上下两部分组成的两格高结构。破坏时连锁移除配对部分。               ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+  # ── 简易双层方块：只声明必要行为 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_double_high:
+    behavior:
+      type: double_high_block
+
+  # ── 完整双层方块：显式声明所有属性 ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_double_high_full:
+    states:
+      properties:
+        half:
+          type: double_block_half
+    behavior:
+      type: double_high_block
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  4. 多层方块 (multi_high_block)                                       ║
+# ║  通过自定义 int 属性自动生成垂直连续多格结构。                        ║
+# ║  结构层数 = range 最大值 - 最小值 + 1                                ║
+# ║  例: range: 0~2 -> 3 层 (0=底部, 1=中部, 2=顶部)                    ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+  # ── 3 层结构 (底部/中部/顶部) ──
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_multi_high_3:
+    states:
+      properties:
+        # << CHANGE THIS >> 自定义属性名，必须与下方 behavior.property 一致
+        height:
+          type: int
+          default: 0
+          range: 0~2                 # << CHANGE THIS >> 0=底部, 1=中部, 2=顶部
+    behavior:
+      type: multi_high_block
+      # << CHANGE THIS >> 必须与 states 中声明的 int 属性名一致
+      property: height
+
+  # ── 5 层结构 ————
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_multi_high_5:
+    states:
+      properties:
+        # << CHANGE THIS >> 自定义属性名
+        level:
+          type: int
+          default: 0
+          range: 0~4                 # << CHANGE THIS >> 5 层，0=底部, 4=顶部
+    behavior:
+      type: multi_high_block
+      property: level                # << CHANGE THIS >> 与上方属性名一致
+
+  # ── 2 层结构 ————
+  # << CHANGE THIS >>:namespace:block_id
+  namespace:example_multi_high_2:
+    states:
+      properties:
+        # << CHANGE THIS >> 自定义属性名
+        layer:
+          type: int
+          default: 0
+          range: 0~1                 # << CHANGE THIS >> 2 层，0=底部, 1=顶部
+    behavior:
+      type: multi_high_block
+      property: layer                # << CHANGE THIS >> 与上方属性名一致

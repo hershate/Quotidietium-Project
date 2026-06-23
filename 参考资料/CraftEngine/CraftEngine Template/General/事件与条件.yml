@@ -1,0 +1,803 @@
+# ============================================================================
+# CraftEngine 事件与条件 综合模板
+# ============================================================================
+# 本地 Wiki 路径:
+#   事件: 参考资料/CraftEngine/CraftEngine Wiki/reference/events.md
+#   条件: 参考资料/CraftEngine/CraftEngine Wiki/reference/conditions.md
+#
+# 使用方法:
+#   1. 将 'myplugin:' 替换为您的命名空间
+#   2. 将 'my_*' ID 替换为实际物品/方块/家具 ID
+#   3. 取消注释所需的事件块和函数
+# ============================================================================
+
+# ============================================================================
+# 物品配置 - 事件触发器
+# ============================================================================
+items:
+  myplugin:my_item_id:                        # << CHANGE THIS - 物品ID
+    events:
+      # ---------- 物品事件触发器 ----------
+      # item: break, right_click, left_click, consume, pick_up, attack
+
+      # 触发方式1: 单个触发器
+      - on: right_click                       # << CHANGE THIS - 触发器类型
+        functions:
+          - type: command
+            command: "say 你好 <arg:player.name>"  # << CHANGE THIS
+      # 触发方式2: 多个触发器共享同一组函数
+      - on:
+          - left_click
+          - attack
+        functions:
+          - type: message
+            message: "你点击了物品"                # << CHANGE THIS
+
+# ============================================================================
+# 方块配置 - 事件触发器
+# ============================================================================
+blocks:
+  myplugin:my_block_id:                       # << CHANGE THIS - 方块ID
+    events:
+      # ---------- 方块事件触发器 ----------
+      # block: break, place, right_click, left_click, step
+
+      - on: right_click
+        functions:
+          - type: command
+            command: "give <arg:player.name> minecraft:diamond 1"
+
+# ============================================================================
+# 家具配置 - 事件触发器
+# ============================================================================
+furniture:
+  myplugin:my_furniture_id:                   # << CHANGE THIS - 家具ID
+    events:
+      # ---------- 家具事件触发器 ----------
+      # furniture: break, place, right_click
+
+      - on: right_click
+        functions:
+          - type: command
+            command: "say 家具被交互了"
+
+# ============================================================================
+# 函数参考 - functions 列表
+# ============================================================================
+
+  # ------------------------------------------------------------------
+  # 1. 取消事件 (cancel_event)
+  # ------------------------------------------------------------------
+  - type: cancel_event
+
+  # ------------------------------------------------------------------
+  # 2. 运行 (run) - 按顺序运行一系列函数
+  # ------------------------------------------------------------------
+  - type: run
+    delay: 0                                  # << CHANGE THIS - 可选; 数字; 默认值: 0
+    functions:                                # 必填; 映射列表
+      - type: command
+        command: "say 第一个命令"              # << CHANGE THIS
+      - type: message
+        message: "第二条消息"                  # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 3. 命令 (command)
+  # ------------------------------------------------------------------
+  - type: command
+    command: "give <arg:player.name> minecraft:diamond 1"  # << CHANGE THIS - 必填; 字符串列表/字符串
+    target: "self"                                          # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+    as_player: false                                        # << CHANGE THIS - 可选; 布尔; 默认值: false
+    as_op: false                                            # << CHANGE THIS - 可选; 布尔; 默认值: false
+    as_event: false                                         # << CHANGE THIS - 可选; 布尔; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 4. 消息 (message)
+  # ------------------------------------------------------------------
+  - type: message
+    message: "你好 <papi:player_name>"         # << CHANGE THIS - 必填; 字符串列表/字符串
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+    overlay: false                             # << CHANGE THIS - 可选; false=聊天框 / true=动作栏; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 5. 动作栏消息 (actionbar)
+  # ------------------------------------------------------------------
+  - type: actionbar
+    actionbar: "这是一个动作栏消息"             # << CHANGE THIS - 必填; 字符串
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 6. 屏幕标题消息 (title)
+  # ------------------------------------------------------------------
+  - type: title
+    title: "<red>标题</red>"                   # << CHANGE THIS - 必填; 字符串
+    subtitle: "<yellow>副标题</yellow>"        # << CHANGE THIS - 必填; 字符串
+    fade_in: 20                                # << CHANGE THIS - 可选; 数字; 默认值: 10
+    stay: 10                                   # << CHANGE THIS - 可选; 数字; 默认值: 20
+    fade_out: 10                               # << CHANGE THIS - 可选; 数字; 默认值: 5
+
+  # ------------------------------------------------------------------
+  # 7. 打开窗口 (open_window)
+  # ------------------------------------------------------------------
+  - type: open_window
+    gui_type: anvil                            # << CHANGE THIS - 必填; [anvil, enchantment, grindstone, loom, smithing, crafting, cartography]
+    title: "超级铁砧"                           # << CHANGE THIS - 可选; 字符串
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 8. 破坏方块 (break_block)
+  # ------------------------------------------------------------------
+  - type: break_block
+    x: <arg:position.x>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.x>
+    y: <arg:position.y>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.y>
+    z: <arg:position.z>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.z>
+
+  # ------------------------------------------------------------------
+  # 9. 放置方块 (place_block)
+  # ------------------------------------------------------------------
+  - type: place_block
+    block_state: "myplugin:my_block"           # << CHANGE THIS - 必填; 字符串
+    x: <arg:block.block_x>                     # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.x>
+    y: <arg:block.block_y>                     # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.y>
+    z: <arg:block.block_z>                     # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.z>
+
+  # ------------------------------------------------------------------
+  # 10. 更新方块属性 (update_block_property)
+  # ------------------------------------------------------------------
+  - type: update_block_property
+    properties:                                # 必填; 键值对
+      axis: x                                  # << CHANGE THIS
+      age: 7                                   # << CHANGE THIS
+    x: <arg:block.block_x>                     # << CHANGE THIS - 可选; 默认值: <arg:position.x>
+    y: <arg:block.block_y>                     # << CHANGE THIS - 可选; 默认值: <arg:position.y>
+    z: <arg:block.block_z>                     # << CHANGE THIS - 可选; 默认值: <arg:position.z>
+
+  # ------------------------------------------------------------------
+  # 11. 转换方块 (transform_block)
+  # ------------------------------------------------------------------
+  - type: transform_block
+    block: myplugin:new_block                  # << CHANGE THIS - 必填; 新方块ID
+    properties:                                # << CHANGE THIS - 可选; 键值对
+      property_a: b
+    x: <arg:block.block_x>                     # << CHANGE THIS - 可选; 默认值: <arg:position.x>
+    y: <arg:block.block_y>                     # << CHANGE THIS - 可选; 默认值: <arg:position.y>
+    z: <arg:block.block_z>                     # << CHANGE THIS - 可选; 默认值: <arg:position.z>
+
+  # ------------------------------------------------------------------
+  # 12. 掉落战利品 (drop_loot)
+  # ------------------------------------------------------------------
+  - type: drop_loot
+    x: <arg:block.block_x> + 0.5              # << CHANGE THIS - 可选; 默认值: <arg:position.x>
+    y: <arg:block.block_y> + 0.5              # << CHANGE THIS - 可选; 默认值: <arg:position.y>
+    z: <arg:block.block_z> + 0.5              # << CHANGE THIS - 可选; 默认值: <arg:position.z>
+    to_inventory: false                        # << CHANGE THIS - 可选; 布尔
+    loot:
+      pools: ...                               # << CHANGE THIS - 战利品表定义
+
+  # ------------------------------------------------------------------
+  # 13. 更新交互游戏刻 (update_interaction_tick)
+  # ------------------------------------------------------------------
+  - type: update_interaction_tick
+
+  # ------------------------------------------------------------------
+  # 14. 设置物品数量 (set_count)
+  # ------------------------------------------------------------------
+  - type: set_count
+    add: true                                  # << CHANGE THIS - 可选; 默认值: false
+    count: -1                                  # << CHANGE THIS - 必填; 数字
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器
+
+  # ------------------------------------------------------------------
+  # 15. 设置饥饿值 (set_food)
+  # ------------------------------------------------------------------
+  - type: set_food
+    add: true                                  # << CHANGE THIS - 可选; 默认值: false
+    food: 4                                    # << CHANGE THIS - 必填; 数字 (0~20)
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器
+
+  # ------------------------------------------------------------------
+  # 16. 设置饱和度 (set_saturation)
+  # ------------------------------------------------------------------
+  - type: set_saturation
+    add: true                                  # << CHANGE THIS - 可选; 默认值: false
+    saturation: 2.5                            # << CHANGE THIS - 必填; 数字 (0~10)
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器
+
+  # ------------------------------------------------------------------
+  # 17. 挥手 (swing_hand)
+  # ------------------------------------------------------------------
+  - type: swing_hand
+    hand: main_hand                            # << CHANGE THIS - 可选; [main_hand, off_hand]; 不填则从上下文获取
+
+  # ------------------------------------------------------------------
+  # 18. 粒子效果 (particle)
+  # ------------------------------------------------------------------
+  - type: particle
+    particle: minecraft:end_rod                # << CHANGE THIS - 必填; 粒子类型字符串
+    x: "<arg:position.x>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.x>
+    y: "<arg:position.y>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.y>
+    z: "<arg:position.z>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.z>
+    count: 5                                   # << CHANGE THIS - 可选; 数字; 默认值: 1
+    offset_x: 0.3                              # << CHANGE THIS - 可选; 数字; 默认值: 0
+    offset_y: 0.3                              # << CHANGE THIS - 可选; 数字; 默认值: 0
+    offset_z: 0.3                              # << CHANGE THIS - 可选; 数字; 默认值: 0
+    speed: 0                                   # << CHANGE THIS - 可选; 数字; 默认值: 0
+
+    # 以下参数仅在粒子为特定类型时有效。取消注释对应参数组。
+
+    # --- 物品粒子 (particle: minecraft:item) ---
+    # item: myplugin:my_item                   # << CHANGE THIS
+
+    # --- 方块粒子 (particle: block / block_marker / falling_dust / dust_pillar / block_crumble) ---
+    # block_state: myplugin:my_block[axis=y]   # << CHANGE THIS
+
+    # --- 幽匿块充能粒子 (particle: minecraft:sculk_charge) ---
+    # charge: 1.5                              # << CHANGE THIS
+
+    # --- 尖啸粒子 (particle: minecraft:shriek) ---
+    # shriek: 1                                # << CHANGE THIS
+
+    # --- 粉末粒子 (particle: minecraft:dust) ---
+    # color: 255,255,255                       # << CHANGE THIS
+    # scale: 1.0                               # << CHANGE THIS
+
+    # --- 颜色过渡粉末粒子 (particle: minecraft:dust_color_transition) ---
+    # from: 255,255,255                        # << CHANGE THIS
+    # to: 0,0,0                                # << CHANGE THIS
+    # scale: 4.0                               # << CHANGE THIS
+
+    # --- 振动粒子 (particle: minecraft:vibration) ---
+    # target_x: 0                              # << CHANGE THIS
+    # target_y: 1                              # << CHANGE THIS
+    # target_z: 0                              # << CHANGE THIS
+    # arrival_time: 10                         # << CHANGE THIS
+
+    # --- 痕迹粒子 (particle: minecraft:trail) ---
+    # target_x: 0                              # << CHANGE THIS
+    # target_y: 1                              # << CHANGE THIS
+    # target_z: 0                              # << CHANGE THIS
+    # duration: 10                             # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 19. 状态效果 (potion_effect)
+  # ------------------------------------------------------------------
+  - type: potion_effect
+    potion_effect: minecraft:blindness         # << CHANGE THIS - 必填; 字符串
+    duration: 20                               # << CHANGE THIS - 可选; 数字; 默认值: 20
+    amplifier: 0                               # << CHANGE THIS - 可选; 数字; 默认值: 0
+    ambient: false                             # << CHANGE THIS - 可选; 布尔; 是否来自信标
+    particles: true                            # << CHANGE THIS - 可选; 布尔
+
+  # ------------------------------------------------------------------
+  # 20. 移除状态效果 (remove_potion_effect)
+  # ------------------------------------------------------------------
+  - type: remove_potion_effect
+    potion_effect: minecraft:blindness         # << CHANGE THIS - 可选 (当 all 为 true 时可省略); 字符串
+    all: false                                 # << CHANGE THIS - 可选; 布尔; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 21. 等级经验 (leveler_exp)
+  # ------------------------------------------------------------------
+  - type: leveler_exp
+    plugin: AuraSkills                         # << CHANGE THIS - 可选; 字符串; 插件名
+    leveler: fishing                           # << CHANGE THIS - 可选; 字符串; 职业/技能 ID
+    count: 10                                  # << CHANGE THIS - 可选; 数字
+
+  # ------------------------------------------------------------------
+  # 22. 设置冷却时间 (set_cooldown)
+  # ------------------------------------------------------------------
+  - type: set_cooldown
+    time: 1m30s                                # << CHANGE THIS - 必填; 持续时间字符串
+    id: my_cooldown_id                         # << CHANGE THIS - 可选; 字符串
+    add: false                                 # << CHANGE THIS - 可选; 布尔; 是否累加冷却时间; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 23. 移除冷却时间 (remove_cooldown)
+  # ------------------------------------------------------------------
+  - type: remove_cooldown
+    id: my_cooldown_id                         # << CHANGE THIS - 可选 (当 all 为 true 时可省略); 字符串
+    all: false                                 # << CHANGE THIS - 可选; 布尔; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 24. 播放音效 (play_sound)
+  # ------------------------------------------------------------------
+  - type: play_sound
+    sound: minecraft:entity.player.levelup     # << CHANGE THIS - 必填; 音效ID字符串
+    x: <arg:position.x>                        # << CHANGE THIS - 可选 (使用 target 时可省略); 数字
+    y: <arg:position.y>                        # << CHANGE THIS - 可选
+    z: <arg:position.z>                        # << CHANGE THIS - 可选
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器
+    pitch: 1                                   # << CHANGE THIS - 可选; 数字; 默认值: 1
+    volume: 1                                  # << CHANGE THIS - 可选; 数字; 默认值: 1
+    source: master                             # << CHANGE THIS - 可选; [music, master, record, weather, block, hostile, neutral, player, ambient, voice, ui]; 默认值: master
+
+  # ------------------------------------------------------------------
+  # 25. MythicMobs 技能 (cast_mythic_skill)
+  # ------------------------------------------------------------------
+  - type: cast_mythic_skill
+    skill: my_mythic_skill_id                  # << CHANGE THIS - 必填; 字符串
+    power: 1.0                                 # << CHANGE THIS - 可选; 数字; 默认值: 1.0
+
+  # ------------------------------------------------------------------
+  # 26. 生成家具 (spawn_furniture)
+  # ------------------------------------------------------------------
+  - type: spawn_furniture
+    furniture_id: "myplugin:bench"             # << CHANGE THIS - 可选; 字符串
+    x: <arg:position.x>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.x>
+    y: <arg:position.y>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.y>
+    z: <arg:position.z>                        # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.z>
+    pitch: <arg:position.pitch>                # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.pitch>
+    yaw: <arg:position.yaw>                    # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.yaw>
+    variant: ground                            # << CHANGE THIS - 可选
+    play_sound: true                           # << CHANGE THIS - 可选; 布尔; 默认值: true
+
+  # ------------------------------------------------------------------
+  # 27. 移除家具 (remove_furniture)
+  # ------------------------------------------------------------------
+  - type: remove_furniture
+    drop_loot: true                            # << CHANGE THIS - 可选; 布尔; 默认值: true
+    play_sound: true                           # << CHANGE THIS - 可选; 布尔; 默认值: true
+
+  # ------------------------------------------------------------------
+  # 28. 替换家具 (replace_furniture)
+  # ------------------------------------------------------------------
+  - type: replace_furniture
+    furniture_id: "myplugin:new_bench"         # << CHANGE THIS - 必填; 字符串
+    x: <arg:furniture.x>                       # << CHANGE THIS - 可选; 数字; 默认值: <arg:furniture.x>
+    y: <arg:furniture.y>                       # << CHANGE THIS - 可选; 数字; 默认值: <arg:furniture.y>
+    z: <arg:furniture.z>                       # << CHANGE THIS - 可选; 数字; 默认值: <arg:furniture.z>
+    pitch: <arg:furniture.pitch>               # << CHANGE THIS - 可选; 数字; 默认值: <arg:furniture.pitch>
+    yaw: <arg:furniture.yaw>                   # << CHANGE THIS - 可选; 数字; 默认值: <arg:furniture.yaw>
+    variant: ground                            # << CHANGE THIS - 可选
+    drop_loot: true                            # << CHANGE THIS - 可选; 布尔; 默认值: true
+    play_sound: true                           # << CHANGE THIS - 可选; 布尔; 默认值: true
+
+  # ------------------------------------------------------------------
+  # 29. 旋转家具 (rotate_furniture)
+  # ------------------------------------------------------------------
+  - type: rotate_furniture
+    degree: 90                                 # << CHANGE THIS - 必填; 旋转角度
+    on_success: []                             # << CHANGE THIS - 可选; 函数列表
+    on_failure: []                             # << CHANGE THIS - 可选; 函数列表 (碰撞体积阻挡时触发)
+
+  # ------------------------------------------------------------------
+  # 30. 传送 (teleport)
+  # ------------------------------------------------------------------
+  - type: teleport
+    x: <arg:position.x>                        # << CHANGE THIS - 必填; 数字
+    y: 100                                     # << CHANGE THIS - 必填; 数字
+    z: <arg:position.z> + 5                    # << CHANGE THIS - 必填; 数字
+    pitch: <arg:player.pitch>                  # << CHANGE THIS - 可选; 默认值: 0
+    yaw: <arg:player.yaw>                      # << CHANGE THIS - 可选; 默认值: 0
+    world: world                               # << CHANGE THIS - 可选; 字符串
+
+  # ------------------------------------------------------------------
+  # 31. 弹窗 (toast)
+  # ------------------------------------------------------------------
+  - type: toast
+    toast: "这是一个弹窗"                       # << CHANGE THIS - 必填; 字符串
+    advancement_type: goal                     # << CHANGE THIS - 可选; [goal, task, challenge]; 默认值: goal
+    icon: minecraft:stone                      # << CHANGE THIS - 必填; 字符串 (物品ID)
+
+  # ------------------------------------------------------------------
+  # 32. 伤害 (damage)
+  # ------------------------------------------------------------------
+  - type: damage
+    target: self                               # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+    amount: 1.0                                # << CHANGE THIS - 可选; 数字; 默认值: 1.0
+    damage_type: generic                       # << CHANGE THIS - 可选; 字符串; 默认值: generic
+
+  # ------------------------------------------------------------------
+  # 33. 设置变量 (set_variable)
+  # ------------------------------------------------------------------
+  - type: set_variable
+    name: my_variable                          # << CHANGE THIS - 必填; 字符串; 变量名
+    number: 1.0                                # << CHANGE THIS - 可选; 数字
+    as_int: false                              # << CHANGE THIS - 可选; 布尔; 是否储存为整数; 默认值: false
+    text: "你好"                               # << CHANGE THIS - 可选; 字符串
+
+  # ------------------------------------------------------------------
+  # 34. 村民交易 (merchant_trade)
+  # ------------------------------------------------------------------
+  - type: merchant_trade
+    title: "自定义奸商"                         # << CHANGE THIS - 可选; 界面标题
+    offers:                                    # 交易选项列表
+      - cost_1:                                # 第一个收购物品
+          item: minecraft:iron_pickaxe         # << CHANGE THIS
+          components:                          # << CHANGE THIS - 可选; 物品堆叠组件限制
+            minecraft:enchantments:
+              minecraft:unbreaking: 1
+        cost_2:                                # << CHANGE THIS - 可选; 第二个收购物品
+          item: minecraft:cobblestone          # << CHANGE THIS
+          count: 8                             # << CHANGE THIS - 收购数量; 默认值: 1
+        result:                                # 收购结果
+          item: myplugin:topaz                 # << CHANGE THIS
+          count: 4                             # << CHANGE THIS - 输出数量
+      - cost_1:
+          item: minecraft:stone                # << CHANGE THIS
+        result:
+          item: myplugin:topaz                 # << CHANGE THIS
+        experience: 3                          # << CHANGE THIS - 可选; 交易经验值; 默认值: 1
+
+  # ------------------------------------------------------------------
+  # 35. 移除实体 (remove_entity)
+  # ------------------------------------------------------------------
+  - type: remove_entity
+
+  # ------------------------------------------------------------------
+  # 36. 条件判断 (if_else)
+  # ------------------------------------------------------------------
+  - type: if_else
+    rules:
+      - conditions:
+          - type: permission
+            permission: group.admin            # << CHANGE THIS
+        functions:
+          - type: command
+            command: "say 管理员你好"          # << CHANGE THIS
+      - conditions:
+          - type: permission
+            permission: group.vip              # << CHANGE THIS
+        functions:
+          - type: command
+            command: "say VIP你好"             # << CHANGE THIS
+      - functions:                             # 无 conditions = 默认分支
+          - type: command
+            command: "say 玩家你好"             # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 37. 条件匹配 (when) - switch-case
+  # ------------------------------------------------------------------
+  - type: when
+    source: <papi:player_world>                # << CHANGE THIS
+    cases:
+      - when: "world"                          # << CHANGE THIS - 匹配值
+        functions:
+          - type: message
+            message: "您位于主世界。"           # << CHANGE THIS
+      - when:
+          - "world_nether"                     # << CHANGE THIS - 多个匹配值
+          - "world_the_end"
+        functions:
+          - type: message
+            message: "您正处于危险维度！"       # << CHANGE THIS
+    fallback:                                  # 可选; 无匹配时的默认行为
+      - type: message
+        message: "您处于未知世界中。"           # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 38. 消耗物品耐久度 (damage_item)
+  # ------------------------------------------------------------------
+  - type: damage_item
+    amount: 1                                  # << CHANGE THIS - 可选; 数字; 默认值: 1
+    slot: mainhand                             # << CHANGE THIS - 可选; [mainhand, offhand, feet, legs, chest, head]
+
+  # ------------------------------------------------------------------
+  # 39. 循环方块属性 (cycle_block_property)
+  #    方式A: 自动循环 (standard cycling)
+  # ------------------------------------------------------------------
+  - type: cycle_block_property
+    property: axis                             # << CHANGE THIS - 必填; 方块属性名
+    inverse: <arg:player.is_sneaking>          # << CHANGE THIS - 可选; 逆向循环; 默认值: <arg:player.is_sneaking>
+    x: <arg:block.block_x>                     # << CHANGE THIS - 可选; 默认值: <arg:position.x>
+    y: <arg:block.block_y>                     # << CHANGE THIS - 可选; 默认值: <arg:position.y>
+    z: <arg:block.block_z>                     # << CHANGE THIS - 可选; 默认值: <arg:position.z>
+
+  #    方式B: 自定义规则循环 (custom rules)
+  - type: cycle_block_property
+    property: facing                           # << CHANGE THIS - 必填; 方块属性名
+    x: <arg:block.block_x>                     # << CHANGE THIS - 可选; 默认值: <arg:position.x>
+    y: <arg:block.block_y>                     # << CHANGE THIS - 可选; 默认值: <arg:position.y>
+    z: <arg:block.block_z>                     # << CHANGE THIS - 可选; 默认值: <arg:position.z>
+    rules:
+      north: east                              # << CHANGE THIS - 属性值映射
+      east: south
+      south: west
+      west: north
+
+  # ------------------------------------------------------------------
+  # 40. 设置经验值 (set_exp)
+  # ------------------------------------------------------------------
+  - type: set_exp
+    count: 1                                   # << CHANGE THIS - 必填; 数字
+    add: true                                  # << CHANGE THIS - 可选; 布尔; 默认值: false
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 41. 设置经验等级 (set_level)
+  # ------------------------------------------------------------------
+  - type: set_level
+    count: 1                                   # << CHANGE THIS - 必填; 数字
+    add: true                                  # << CHANGE THIS - 可选; 布尔; 默认值: false
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 42. 播放图腾动画 (play_totem_animation)
+  # ------------------------------------------------------------------
+  - type: play_totem_animation
+    item: "myplugin:topaz"                     # << CHANGE THIS - 必填; 字符串
+    sound: minecraft:entity.player.levelup     # << CHANGE THIS - 可选; 字符串
+    pitch: 1                                   # << CHANGE THIS - 可选; 数字; 默认值: 1
+    volume: 1                                  # << CHANGE THIS - 可选; 数字; 默认值: 1
+    silent: false                              # << CHANGE THIS - 可选; 布尔; 默认值: false
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 43. 关闭容器 (close_inventory)
+  # ------------------------------------------------------------------
+  - type: close_inventory
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 44. 清理物品 (clear_item)
+  # ------------------------------------------------------------------
+  - type: clear_item
+    id: "myplugin:topaz"                       # << CHANGE THIS - 必填; 字符串
+    count: 1                                   # << CHANGE THIS - 可选; 数字; 默认值: 1
+
+  # ------------------------------------------------------------------
+  # 45. 治疗玩家 (heal)
+  # ------------------------------------------------------------------
+  - type: heal
+    amount: 1.0                                # << CHANGE THIS - 可选; 数字; 默认值: 1.0
+    target: "self"                             # << CHANGE THIS - 可选; all/self/玩家选择器; 默认值: self
+
+  # ------------------------------------------------------------------
+  # 46. MythicMobs 生物生成 (spawn_mythic_mob)
+  # ------------------------------------------------------------------
+  - type: spawn_mythic_mob
+    mob: "test_mob"                            # << CHANGE THIS - 必填; 字符串
+    level: 1.0                                 # << CHANGE THIS - 可选; 数字; 默认值: 1.0
+    world: "world"                             # << CHANGE THIS - 可选; 字符串
+    x: "<arg:position.x>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.x>
+    y: "<arg:position.y>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.y>
+    z: "<arg:position.z>"                      # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.z>
+    pitch: "<arg:position.pitch>"              # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.pitch>
+    yaw: "<arg:position.yaw>"                  # << CHANGE THIS - 可选; 数字; 默认值: <arg:position.yaw>
+
+# ============================================================================
+# 条件参考 - conditions 列表
+# ============================================================================
+# 提示: 在条件 type 前添加 '!' 可反转判断逻辑,
+#       例如 type: "!permission"
+# ============================================================================
+
+conditions:
+  # ------------------------------------------------------------------
+  # 1. any_of - 满足任意条件即可
+  # ------------------------------------------------------------------
+  - type: any_of
+    terms:
+      - type: permission
+        permission: group.admin                # << CHANGE THIS
+      - type: permission
+        permission: group.vip                  # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 2. all_of - 所有条件都必须满足
+  # ------------------------------------------------------------------
+  - type: all_of
+    terms:
+      - type: permission
+        permission: group.admin                # << CHANGE THIS
+      - type: has_item
+
+  # ------------------------------------------------------------------
+  # 3. inverted - 对条件结果值取反
+  # ------------------------------------------------------------------
+  - type: inverted
+    term:
+      type: permission
+      permission: group.admin                  # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 4. falling_block - 检测掉落物是否由下落方块掉落
+  # ------------------------------------------------------------------
+  - type: falling_block
+
+  # ------------------------------------------------------------------
+  # 5. survives_explosion - 1/爆炸半径 概率通过
+  # ------------------------------------------------------------------
+  - type: survives_explosion
+
+  # ------------------------------------------------------------------
+  # 6. has_item - 检查是否手持物品
+  # ------------------------------------------------------------------
+  - type: has_item
+
+  # ------------------------------------------------------------------
+  # 7. match_item - 检查手持物品ID
+  # ------------------------------------------------------------------
+  - type: match_item
+    id: "minecraft:iron_pickaxe"               # << CHANGE THIS - 必填; 字符串或字符串列表
+    regex: false                               # << CHANGE THIS - 可选; 是否正则匹配; 默认值: false
+
+  #    列表形式:
+  - type: match_item
+    id:
+      - "minecraft:iron_pickaxe"               # << CHANGE THIS
+      - "minecraft:stone_pickaxe"              # << CHANGE THIS
+    regex: false                               # << CHANGE THIS - 可选
+
+  # ------------------------------------------------------------------
+  # 8. match_block_property - 检查方块状态
+  # ------------------------------------------------------------------
+  - type: match_block_property
+    properties:
+      age: 3                                   # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 9. match_block - 匹配方块类型
+  # ------------------------------------------------------------------
+  - type: match_block
+    x: <arg:position.x>                        # << CHANGE THIS - 可选
+    y: <arg:position.y>                        # << CHANGE THIS - 可选
+    z: <arg:position.z>                        # << CHANGE THIS - 可选
+    id: minecraft:stone                        # << CHANGE THIS - 必填; 字符串
+    regex: false                               # << CHANGE THIS - 可选; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 10. match_entity - 匹配实体类型
+  # ------------------------------------------------------------------
+  - type: match_entity
+    id: minecraft:enderman                     # << CHANGE THIS - 必填; 字符串
+    regex: false                               # << CHANGE THIS - 可选; 默认值: false
+
+  # ------------------------------------------------------------------
+  # 11. match_furniture_variant - 匹配家具变体
+  # ------------------------------------------------------------------
+  - type: match_furniture_variant
+    variants:
+      - wall                                   # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 12. enchantment - 检测手中物品的魔咒
+  # ------------------------------------------------------------------
+  - type: enchantment
+    predicate: minecraft:silk_touch>=1         # << CHANGE THIS - 支持 > >= = < <=
+
+  # ------------------------------------------------------------------
+  # 13. table_bonus - 以魔咒等级为索引的概率表
+  # ------------------------------------------------------------------
+  - type: table_bonus
+    enchantment: minecraft:fortune             # << CHANGE THIS
+    chances:
+      - 0.1                                    # << CHANGE THIS - 等级0
+      - 0.5                                    # << CHANGE THIS - 等级1
+      - 0.8                                    # << CHANGE THIS - 等级2
+      - 1                                      # << CHANGE THIS - 等级3
+
+  # ------------------------------------------------------------------
+  # 14. random - 随机概率
+  # ------------------------------------------------------------------
+  - type: random
+    value: 0.1                                 # << CHANGE THIS - 概率 (0.1 = 10%)
+
+  # ------------------------------------------------------------------
+  # 15. permission - 检查玩家权限
+  # ------------------------------------------------------------------
+  - type: permission
+    permission: "craftengine.admin"            # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 16. expression - 检查表达式是否返回 true
+  # ------------------------------------------------------------------
+  - type: expression
+    expression: "<papi:farming_level> >= 10"   # << CHANGE THIS - EvalEx 语法
+
+  # ------------------------------------------------------------------
+  # 17. string_equals - 字符串相等判断
+  # ------------------------------------------------------------------
+  - type: string_equals
+    value1: "<arg:player.name>"                # << CHANGE THIS
+    value2: "玩家A"                            # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 18. string_contains - 字符串包含判断
+  # ------------------------------------------------------------------
+  - type: string_contains
+    value1: "<arg:player.name>"                # << CHANGE THIS
+    value2: "A"                                # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 19. regex - 正则表达式匹配
+  # ------------------------------------------------------------------
+  - type: regex
+    value: "<arg:player.name>"                 # << CHANGE THIS
+    regex: "[a-Z]"                             # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 20. is_null - 检查参数是否为空
+  # ------------------------------------------------------------------
+  - type: is_null
+    argument: "player.main_hand_item"          # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 21. hand - 检查交互手
+  # ------------------------------------------------------------------
+  - type: hand
+    hand: main_hand                            # << CHANGE THIS - [main_hand, off_hand]
+
+  # ------------------------------------------------------------------
+  # 22. on_cooldown - 检查冷却状态
+  # ------------------------------------------------------------------
+  - type: on_cooldown
+    id: my_cooldown_id                         # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 23. worldguard:region - WorldGuard 区域检测
+  # ------------------------------------------------------------------
+  - type: worldguard:region
+    mode: 1                                    # << CHANGE THIS - 1=区域并集, 2=区域交集
+    regions:
+      - A                                      # << CHANGE THIS
+      - B                                      # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 24. distance - 距离范围检测
+  # ------------------------------------------------------------------
+  - type: distance
+    min: 0                                     # << CHANGE THIS
+    max: 32                                    # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 25. has_player - 检测玩家是否存在
+  # ------------------------------------------------------------------
+  - type: has_player
+
+  # ------------------------------------------------------------------
+  # 26. inventory_has_item - 检测物品栏物品
+  # ------------------------------------------------------------------
+  - type: inventory_has_item
+    id: "minecraft:iron_pickaxe"               # << CHANGE THIS
+    count: 1                                   # << CHANGE THIS
+
+  # ------------------------------------------------------------------
+  # 27. is_bedrock_player - 检测基岩版玩家
+  # ------------------------------------------------------------------
+  - type: is_bedrock_player
+
+  # ------------------------------------------------------------------
+  # 28. test_flag - 检查位置权限标志
+  # ------------------------------------------------------------------
+  - type: test_flag
+    flag: break                                # << CHANGE THIS - [break, place, interact, open_container]
+
+# ============================================================================
+# 完整综合示例 - 带条件的物品配置
+# ============================================================================
+# 以下是一个完整的使用示例，展示了事件、函数和条件的组合用法
+# ============================================================================
+items:
+  myplugin:magic_sword:                        # << CHANGE THIS
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"               # 反转: 不在冷却中时执行
+            id: magic_sword_cooldown
+          - type: permission
+            permission: "myplugin.use_magic_sword"  # << CHANGE THIS
+        functions:
+          - type: set_cooldown
+            id: magic_sword_cooldown
+            time: 30s
+          - type: run
+            functions:
+              - type: command
+                command: "effect give <arg:player.name> minecraft:speed 10 2"
+              - type: particle
+                particle: minecraft:end_rod
+                count: 10
+                offset_x: 0.5
+                offset_y: 1.0
+                offset_z: 0.5
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.2
+                functions:
+                  - type: message
+                    message: "你触发了稀有特效！"
+                  - type: play_sound
+                    sound: minecraft:entity.player.levelup

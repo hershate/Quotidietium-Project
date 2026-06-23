@@ -1,0 +1,165 @@
+# ============================================================================
+# CraftEngine — 文本格式 (MiniMessage + 附加标签)  YAML 模板
+# ============================================================================
+# 参考文档（本地）:
+#   CraftEngine Wiki/reference/text_format.md
+#
+# 使用方法:
+#   1. 将 <namespace> 替换为你的命名空间（例如 my_server）
+#   2. 将所有 # << CHANGE THIS 标记的值改为你自己的配置
+#   3. 删除不需要的条目
+#
+# MiniMessage 官方格式参考:
+#   https://docs.papermc.io/adventure/minimessage/format/
+#
+# 注意:
+#   - 标签参数可用 ' 或 " 包裹，例如 <papi:'exp_multiplier':'1'>
+#   - 支持嵌套标签，例如 <expr:'0.##':'<papi:exp_multiplier:1> * 10'>
+#   - 在纯文本中用 \< 转义 <；在引号字符串中用 \' 或 \" 转义引号
+# ============================================================================
+
+# ==================== 通用物品配置示例 ====================
+# 演示大多数标签在物品名称 / lore 中的用法
+items:
+  example_shift_item:                                     # << CHANGE THIS — ID
+    material: fishing_rod                                 # << CHANGE THIS
+    data:
+      # <shift:_像素值_> — 使用插件的偏移字符
+      item_name: "<!i><shift:-100><#FF8C00># << CHANGE THIS — 偏移后文本"  # << CHANGE THIS — 文本和偏移值
+
+  example_papi_item:                                      # << CHANGE THIS — ID
+    material: fishing_rod                                 # << CHANGE THIS
+    data:
+      # <papi:_占位符_:[_默认值_]> — PlaceholderAPI 占位符
+      item_name: "<!i><#FF8C00><papi:player_name># << CHANGE THIS — 后缀"  # << CHANGE THIS — 文本
+
+  example_papi_default_item:                              # << CHANGE THIS — ID
+    material: diamond                                     # << CHANGE THIS
+    data:
+      # 指定默认值，避免占位符不可用时报错
+      item_name: "<papi:exp_multiplier:1># << CHANGE THIS — 使用默认值 1"  # << CHANGE THIS
+
+  example_image_item:                                     # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # <image:_命名空间_:_路径_:[_行_]:[_列_]:[_格式_]>
+      # 使用注册的图片
+      item_name: "<!i><white><image:# << CHANGE THIS 命名空间>:<< CHANGE THIS 路径>><#FF8C00># << CHANGE THIS — 文本"
+
+  example_image_simple_item:                              # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # <image:_命名空间_:_路径_:[_格式_]> — 不带行列参数的简写
+      item_name: "<!i><white><image:# << CHANGE THIS 命名空间>:<< CHANGE THIS 路径>><#FF8C00># << CHANGE THIS — 文本"
+
+  # 图片 + 行/列 + 格式嵌套
+  example_image_fancy_item:                               # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # 指定行、列和格式标签（格式支持 MiniMessage 嵌套）
+      item_name: "<!i><red><image:# << CHANGE THIS 命名空间>:<< CHANGE THIS 路径>:<< CHANGE THIS 行>:<< CHANGE THIS 柱>:'<!shadow><white>'>  << CHANGE THIS — 文本"
+
+  example_i18n_item:                                      # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # <i18n:_标识符_> — 服务端语言翻译（用于非玩家实体等场景）
+      item_name: "<i18n:# << CHANGE THIS — 翻译键（如 item.chinese_lantern）>"
+
+  example_l10n_item:                                      # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # <l10n:_标识符_> — 客户端语言翻译
+      item_name: "<l10n:# << CHANGE THIS — 翻译键（如 item.chinese_lantern）>"
+
+  example_expr_item:                                      # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      # <expr:_格式_:_表达式_> — 数学运算
+      # 格式: Java DecimalFormat 模式 (https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/DecimalFormat.html)
+      # 表达式: EvalEx 语法 (https://ezylang.github.io/EvalEx/references/references.html)
+      item_name: "<!i><#FF8C00><expr:0.##:'# << CHANGE THIS — 表达式（如 70 / 8）'>"
+
+  # expr + papi 嵌套
+  example_expr_papi_item:                                 # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      item_name: "<!i><#FF8C00><expr:0.##:'<papi:# << CHANGE THIS 占位符（如 player_x）> / << CHANGE THIS 除数>>'"
+
+  example_global_item:                                    # << CHANGE THIS — ID
+    material: diamond                                     # << CHANGE THIS
+    data:
+      # <global:_标识符_:[参数...]> — 在配置中定义的全局变量
+      item_name: "<global:# << CHANGE THIS — 全局变量 ID（如 rare_tag）> # << CHANGE THIS — 文本（如 稀有三叉戟）"
+
+# ==================== PlaceholderAPI 标签 ====================
+# 专用示例功能块，展示 papi 在表达式等服务端计算中的用法
+functions:
+  - type: drop_exp                                       # << CHANGE THIS — 功能类型
+    count:
+      type: uniform                                      # << CHANGE THIS — 分布类型
+      min: "<papi:# << CHANGE THIS 占位符（如 exp_multiplier:1）> * 3"  # 默认值 :1
+      max: "<papi:# << CHANGE THIS 占位符（如 exp_multiplier:1）> * 5"  # 默认值 :1
+
+# ==================== 消息 / 广播 ====================
+# 演示 viewer_ 前缀标签（多上下文主体场景）
+broadcast_messages:                                       # << CHANGE THIS — 节名称
+  - target: all                                          # << CHANGE THIS — 目标
+    message:
+      - "你好，<viewer_arg:# << CHANGE THIS — 接收者参数（如 player.name）>！这条消息来自 <arg:# << CHANGE THIS — 发送者参数（如 player.name）>。"
+      - "<arg:player.name> 刚刚与 <arg:block.owner> 方块进行了交互！"
+
+# ==================== 翻译文件参数 ====================
+# 用于 translations/ 目录下的文件
+translations:
+  internal.cooking_info.0: "时间：<arg:# << CHANGE THIS — 参数键（如 cooking_time）>刻"
+  internal.cooking_info.1: "经验：<arg:# << CHANGE THIS — 参数键（如 cooking_experience）>"
+
+# ==================== 通用参数 ====================
+# 不需要额外配置，直接使用的内置参数
+# <arg:random>       — 生成 0~1 随机数
+# <arg:last_random>  — 获取上一个随机数
+
+# ==================== 上下文主体参数 ====================
+# 可在 function 中通过 arg:block.* / arg:player.* 访问不同上下文主体的属性
+contextual_functions:                                     # << CHANGE THIS — 节名称
+  # 在方块位置生成粒子
+  - type: particle                                       # << CHANGE THIS
+    x: '<arg:block.x> + 0.5'
+    y: '<arg:block.y> + 0.5'
+    z: '<arg:block.z> + 0.5'
+  # 在玩家位置生成粒子
+  - type: particle                                       # << CHANGE THIS
+    x: '<arg:player.x> + 0.5'
+    y: '<arg:player.y> + 0.5'
+    z: '<arg:player.z> + 0.5'
+
+# ==================== 关系型 PAPI ====================
+relational_example:                                       # << CHANGE THIS — 节名称
+  # <rel_papi:_占位符_:[_默认值_]> — 关系型 PlaceholderAPI 占位符
+  item_name: "<rel_papi:# << CHANGE THIS — 关系型占位符（如 friends_is_online）:# << CHANGE THIS 默认值>>"
+
+# ==================== 名 牌/气泡/背景 (需要 CustomNameplates) ====================
+# <bubble:_id_:_left_:_right_> — 气泡文字
+# <nameplate:_id_:_left_:_right_> — 铭牌文字
+# <background:_id_:_left_:_right_> — 背景文字
+custom_nameplates_items:                                  # << CHANGE THIS — 节名称
+  bubble_example:                                         # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      item_name: "<bubble:# << CHANGE THIS 气泡 ID（如 chat_1）>:<< CHANGE THIS left>>:<< CHANGE THIS right>>:'<!shadow><black># << CHANGE THIS — 文本>'"
+
+  nameplate_example:                                      # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      item_name: "<nameplate:# << CHANGE THIS 铭牌 ID（如 xmas）>:<< CHANGE THIS left>>:<< CHANGE THIS right>>:'# << CHANGE THIS — 文本'"
+
+  background_example:                                     # << CHANGE THIS — ID
+    material: paper                                       # << CHANGE THIS
+    data:
+      item_name: "<background:# << CHANGE THIS 背景 ID（如 bedrock_1）>:<< CHANGE THIS left>>:<< CHANGE THIS right>>:'# << CHANGE THIS — 文本'"
+
+# ==================== Viewer PAPI ====================
+# <viewer_papi:_占位符_:[_默认值_]> — 从接收消息的玩家视角获取占位符
+# 在多玩家消息广播场景中使用（与 viewer_arg 类似，但使用 PAPI 占位符）
+viewer_papi_example:                                      # << CHANGE THIS — 节名称
+  message: "你好 <viewer_papi:# << CHANGE THIS 占位符（如 player_name）:# << CHANGE THIS 默认值>>>，请注意查收！"

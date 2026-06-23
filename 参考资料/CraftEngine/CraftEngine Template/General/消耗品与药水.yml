@@ -1,0 +1,269 @@
+# =============================================================================
+# CraftEngine 消耗品与药水模板 (Consumables & Potions Template)
+# =============================================================================
+# 参考文档 (本地 CraftEngine Wiki 路径):
+#   configuration/item/data.md        — 物品数据组件 (components, item_name, lore ...)
+#   configuration/item/settings.md    — 物品设置 (food, consume_replacement ...)
+#   reference/events.md               — 事件系统 (set_cooldown 等函数)
+#   reference/conditions.md           — 条件系统 (!on_cooldown)
+#
+# 使用方法:
+#   1. 将 your_namespace 替换为实际命名空间 (如 my_server)
+#   2. 按需修改每个配置 ID 和 # << CHANGE THIS 标记的值
+#   3. 放置在 plugins/CraftEngine/items/ 下即可加载
+# =============================================================================
+
+items:
+
+  # ===========================================================================
+  # 配置 1: 魔力药水 (Mana Potion)
+  # 演示: drink 动画 + on_consume_effects(apply_effects) + consume 事件冷却
+  # ===========================================================================
+  your_namespace:mana_potion:                               # << CHANGE THIS (物品 ID)
+    material: potion                                        # << CHANGE THIS (原版材质)
+    data:
+      item_name: "<!i><#55FFFF>魔力药水"                     # << CHANGE THIS (物品名称)
+      lore:                                                  # << CHANGE THIS (描述)
+        - "<gray>饮用后恢复魔力"
+        - "<dark_gray>冷却时间: 30 秒"
+      components:
+        # consumable 组件 — 控制消耗方式、动画和消耗后效果
+        minecraft:consumable:
+          consume_seconds: 1.6                               # << CHANGE THIS (饮用耗时, 单位: 秒)
+          animation: drink                                    # << CHANGE THIS (动画: drink / eat / block / bow / crossbow / spear / brush / spyglass / toot_horn / none)
+          sound: minecraft:entity.generic.drink               # << CHANGE THIS (消耗音效)
+          has_consume_particles: true                         # << CHANGE THIS (是否显示消耗粒子)
+          on_consume_effects:                                 # 消耗后触发的效果列表 (Minecraft 原版格式)
+            - type: minecraft:apply_effects                   # 施加状态效果
+              effects:
+                - id: minecraft:regeneration                  # << CHANGE THIS (效果 ID)
+                  duration: 100                               # << CHANGE THIS (持续刻数, 20刻 = 1秒)
+                  amplifier: 1                                # << CHANGE THIS (效果等级, 0 = I级)
+                - id: minecraft:absorption                    # << CHANGE THIS (伤害吸收)
+                  duration: 600
+                  amplifier: 0
+        # food 组件 — 饱食度与饱和度
+        minecraft:food:
+          nutrition: 0                                       # << CHANGE THIS (饱食度)
+          saturation: 0.0                                    # << CHANGE THIS (饱和度)
+          can_always_eat: true                                # << CHANGE THIS (是否可始终食用)
+    settings:
+      consume_replacement: minecraft:glass_bottle             # << CHANGE THIS (消耗后返还的物品)
+    events:
+      # consume 事件触发时设置冷却
+      - on: consume
+        functions:
+          - type: set_cooldown                                # 设置冷却
+            id: mana_potion_cooldown                          # << CHANGE THIS (冷却 ID)
+            time: 30s                                         # << CHANGE THIS (冷却时长)
+        conditions:
+          - type: "!on_cooldown"                              # 不在冷却中才执行
+            id: mana_potion_cooldown                          # << CHANGE THIS (必须与上方一致)
+
+
+  # ===========================================================================
+  # 配置 2: 狂战士酿造 (Berserker Brew)
+  # 演示: 多 on_consume_effects(apply_effects + remove_effects + play_sound)
+  #       + 事件粒子/动作栏消息/治疗 + 冷却
+  # ===========================================================================
+  your_namespace:berserker_brew:                              # << CHANGE THIS (物品 ID)
+    material: honey_bottle                                    # << CHANGE THIS (原版材质)
+    data:
+      item_name: "<!i><#FF4444>狂战士酿造"                     # << CHANGE THIS
+      lore:                                                   # << CHANGE THIS
+        - "<red>力量与速度并存，但代价是虚弱"
+        - "<dark_gray>冷却时间: 60 秒"
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0                                # << CHANGE THIS (饮用耗时)
+          animation: drink                                    # << CHANGE THIS
+          sound: minecraft:entity.generic.drink               # << CHANGE THIS
+          has_consume_particles: true
+          on_consume_effects:                                 # 多重消耗后效果
+            # 效果 1: 施加增益效果
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:strength                      # << CHANGE THIS (力量)
+                  duration: 600                               # << CHANGE THIS (30 秒)
+                  amplifier: 1
+                - id: minecraft:speed                         # << CHANGE THIS (速度)
+                  duration: 600
+                  amplifier: 0
+            # 效果 2: 移除减益效果 (清除已有的虚弱)
+            - type: minecraft:remove_effects
+              effects:
+                - minecraft:weakness
+            # 效果 3: 播放升级音效
+            - type: minecraft:play_sound
+              sound: minecraft:entity.player.levelup
+              volume: 0.5
+              pitch: 1.2
+        minecraft:food:
+          nutrition: 2                                        # << CHANGE THIS
+          saturation: 1.0                                     # << CHANGE THIS
+          can_always_eat: true
+      enchantment:                                            # << CHANGE THIS (硬编码魔咒 — data.md 文档)
+        minecraft:unbreaking: 1
+      custom_model_data: 2001                                 # << CHANGE THIS (自定义模型数据 — data.md 文档)
+    settings:
+      consume_replacement: minecraft:glass_bottle             # << CHANGE THIS
+    events:
+      - on: consume
+        functions:
+          # 设置冷却
+          - type: set_cooldown
+            id: berserker_cooldown                            # << CHANGE THIS
+            time: 60s                                         # << CHANGE THIS
+          # 播放火焰粒子效果
+          - type: particle                                    # 粒子效果函数 — events.md 文档
+            particle: minecraft:flame
+            count: 10
+            offset_x: 0.5
+            offset_y: 0.5
+            offset_z: 0.5
+            speed: 0.1
+          # 发送动作栏消息
+          - type: actionbar                                   # 动作栏消息函数 — events.md 文档
+            actionbar: "<red>⚡ 狂战士之力已激活！"
+          # 治疗玩家 (消耗品额外恢复)
+          - type: heal                                        # 治疗函数 — events.md 文档
+            amount: 4.0
+        conditions:
+          - type: "!on_cooldown"
+            id: berserker_cooldown                            # << CHANGE THIS
+
+
+  # ===========================================================================
+  # 配置 3: 天使恩典 (Angel's Grace)
+  # 演示: on_consume_effects 三类效果 (clear_all_effects + teleport_randomly + apply_effects)
+  #       + 事件: 标题动画 + 图腾动画 + 冷却
+  # ===========================================================================
+  your_namespace:angel_grace:                                 # << CHANGE THIS (物品 ID)
+    material: golden_apple                                    # << CHANGE THIS (原版材质)
+    data:
+      item_name: "<!i><#FFDD55>天使恩典"                       # << CHANGE THIS
+      lore:                                                    # << CHANGE THIS
+        - "<yellow>清除所有负面效果并赋予神圣庇护"
+        - "<green>食用后可能随机传送"
+        - "<dark_gray>冷却时间: 120 秒"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.0                                # << CHANGE THIS (食用耗时)
+          animation: eat                                      # << CHANGE THIS (此处用 eat 动画示例)
+          sound: minecraft:entity.player.burp
+          has_consume_particles: true
+          on_consume_effects:                                 # 三类消耗后效果
+            # 效果 1: 清除所有效果
+            - type: minecraft:clear_all_effects
+            # 效果 2: 施加多个强力增益
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:resistance                    # << CHANGE THIS (抗性)
+                  duration: 1200
+                  amplifier: 2
+                - id: minecraft:fire_resistance               # << CHANGE THIS (防火)
+                  duration: 1200
+                  amplifier: 0
+                - id: minecraft:regeneration                  # << CHANGE THIS (生命恢复)
+                  duration: 400
+                  amplifier: 2
+            # 效果 3: 移除特定减益 (兼容旧版本残留效果)
+            - type: minecraft:remove_effects
+              effects:
+                - minecraft:weakness
+                - minecraft:slowness
+            # 效果 4: 随机传送 (有风险!)
+            - type: minecraft:teleport_randomly
+              radius: 15                                      # << CHANGE THIS (传送半径)
+            # 效果 5: 播放音效
+            - type: minecraft:play_sound
+              sound: minecraft:entity.experience_orb.pickup
+              volume: 1.0
+              pitch: 1.5
+        minecraft:food:
+          nutrition: 4                                        # << CHANGE THIS
+          saturation: 2.0                                     # << CHANGE THIS
+          can_always_eat: true
+      hide_tooltip:                                           # << CHANGE THIS (隐藏选中提示框项 — data.md 文档)
+        - enchantments
+    settings:
+      food:                                                   # << CHANGE THIS (插件侧食物 — settings.md 文档)
+        nutrition: 4
+        saturation: 2.0
+    events:
+      - on: consume
+        functions:
+          # 冷却
+          - type: set_cooldown
+            id: angel_grace_cooldown                          # << CHANGE THIS
+            time: 120s                                        # << CHANGE THIS
+          # 屏幕上标题
+          - type: title                                       # 标题函数 — events.md 文档
+            title: "<gold><b>天使恩典"
+            subtitle: "<yellow>你获得了神圣庇护！"
+            fade_in: 10
+            stay: 40
+            fade_out: 10
+          # 图腾动画
+          - type: play_totem_animation                        # 图腾动画函数 — events.md 文档
+            item: "your_namespace:angel_grace"                # << CHANGE THIS
+            sound: minecraft:entity.player.levelup
+        conditions:
+          - type: "!on_cooldown"
+            id: angel_grace_cooldown                          # << CHANGE THIS
+
+
+  # ===========================================================================
+  # (附加) 配置 4: 经验药剂 (Experience Elixir)
+  # 演示: set_food + set_saturation + set_exp 函数组合
+  #       + 消息提示 + 短冷却
+  # ===========================================================================
+  your_namespace:experience_elixir:                           # << CHANGE THIS (物品 ID)
+    material: experience_bottle                               # << CHANGE THIS
+    data:
+      item_name: "<!i><#AAFFAA>经验药剂"                       # << CHANGE THIS
+      lore:                                                    # << CHANGE THIS
+        - "<green>饮用后获得大量经验值和饱食度"
+        - "<dark_gray>冷却时间: 10 秒"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.2                                # << CHANGE THIS
+          animation: drink                                    # << CHANGE THIS
+          sound: minecraft:block.brewing_stand.brew
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:instant_health
+                  duration: 1
+                  amplifier: 0
+        minecraft:food:
+          nutrition: 0
+          saturation: 0.0
+          can_always_eat: true
+    events:
+      - on: consume
+        functions:
+          # 短冷却
+          - type: set_cooldown
+            id: exp_elixir_cooldown                           # << CHANGE THIS
+            time: 10s                                         # << CHANGE THIS
+          # 增加饥饿值
+          - type: set_food                                    # 设置饥饿值函数 — events.md 文档
+            add: true
+            food: 6
+          # 增加饱和度
+          - type: set_saturation                              # 设置饱和度函数 — events.md 文档
+            add: true
+            saturation: 4.0
+          # 增加经验值
+          - type: set_exp                                     # 设置经验值函数 — events.md 文档
+            add: true
+            count: 50
+          # 发送聊天消息
+          - type: message                                     # 消息函数 — events.md 文档
+            message: "<green>你获得了大量经验值！"
+            target: self
+        conditions:
+          - type: "!on_cooldown"
+            id: exp_elixir_cooldown                           # << CHANGE THIS

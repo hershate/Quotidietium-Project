@@ -1,0 +1,1321 @@
+# ====================================================================
+# CraftEngine 物品模型配置模板
+# ====================================================================
+# 本地 Wiki 参考路径（请以实际仓库路径为准）:
+#   models.md (总览 + 简化模型 + 旧版模型):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models.md
+#   model.md (minecraft:model + 着色):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/model.md
+#   condition.md (minecraft:condition 布尔条件型):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/condition.md
+#   range_dispatch.md (minecraft:range_dispatch 值调配型):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/range_dispatch.md
+#   composite.md (minecraft:composite 组合):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/composite.md
+#   select.md (minecraft:select 枚举条件型):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/select.md
+#   special.md (minecraft:special 特殊模型):
+#     参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/special.md
+# ====================================================================
+# 使用说明:
+#   1. 全局替换命名空间 "custom" 为你的实际命名空间
+#   2. 替换所有 # << CHANGE THIS 标记的值
+#   3. 删除不需要的条目和注释
+#   4. 版本依赖: 1.21.4+ (完整), 26.1+ (transformation 等特性)
+# ====================================================================
+
+items:
+
+  # ==================================================================
+  # 【一】简化模型 — 快速定义
+  # ==================================================================
+  # 适用于常见用例，自动分析基础材质并生成对应模型。
+  # 引用: models.md 简化模型部分
+
+  # --- 2D 图标 (texture) ---
+  custom:simple_icon:
+    material: paper # << CHANGE THIS
+    texture: minecraft:item/custom/my_icon # << CHANGE THIS
+
+  # --- 2D 图标 + 手动指定 model 路径 ---
+  custom:simple_icon_with_model:
+    material: paper # << CHANGE THIS
+    model: minecraft:item/custom/my_icon # << CHANGE THIS
+    texture: minecraft:item/custom/my_icon # << CHANGE THIS
+
+  # --- 手持物品 (texture) ---
+  custom:simple_tool:
+    material: golden_axe # << CHANGE THIS
+    texture: minecraft:item/custom/my_tool # << CHANGE THIS
+
+  # --- 多层纹理叠加 (textures) ---
+  # 适用于 2D 图标或手持物品，多个纹理自动叠加渲染
+  custom:layered_icon:
+    material: paper # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/layer_base # << CHANGE THIS
+      - minecraft:item/custom/layer_overlay # << CHANGE THIS
+
+  # --- 钓鱼竿 (textures) ---
+  custom:simple_fishing_rod:
+    material: fishing_rod # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/my_rod # << CHANGE THIS
+      - minecraft:item/custom/my_rod_cast # << CHANGE THIS
+
+  # --- 钓鱼竿 + 手动指定 models ---
+  custom:simple_rod_with_models:
+    material: fishing_rod # << CHANGE THIS
+    models:
+      - minecraft:item/custom/rod_3d # << CHANGE THIS
+      - minecraft:item/custom/rod_3d_cast # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/rod_3d # << CHANGE THIS
+      - minecraft:item/custom/rod_3d_cast # << CHANGE THIS
+
+  # --- 鞘翅 (textures) ---
+  custom:simple_elytra:
+    material: elytra # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/my_elytra # << CHANGE THIS
+      - minecraft:item/custom/my_elytra_broken # << CHANGE THIS
+
+  # --- 弓 (textures) ---
+  custom:simple_bow:
+    material: bow # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/my_bow # << CHANGE THIS
+      - minecraft:item/custom/my_bow_pulling_0 # << CHANGE THIS
+      - minecraft:item/custom/my_bow_pulling_1 # << CHANGE THIS
+      - minecraft:item/custom/my_bow_pulling_2 # << CHANGE THIS
+
+  # --- 弩 (textures) ---
+  custom:simple_crossbow:
+    material: crossbow # << CHANGE THIS
+    textures:
+      - minecraft:item/custom/my_crossbow # << CHANGE THIS
+      - minecraft:item/custom/my_crossbow_pulling_0 # << CHANGE THIS
+      - minecraft:item/custom/my_crossbow_pulling_1 # << CHANGE THIS
+      - minecraft:item/custom/my_crossbow_pulling_2 # << CHANGE THIS
+      - minecraft:item/custom/my_crossbow_arrow # << CHANGE THIS
+      - minecraft:item/custom/my_crossbow_firework # << CHANGE THIS
+
+  # --- 盾牌 (models) ---
+  custom:simple_shield:
+    material: shield # << CHANGE THIS
+    models:
+      - minecraft:item/custom/my_shield # << CHANGE THIS
+      - minecraft:item/custom/my_shield_blocking # << CHANGE THIS
+
+  # --- 纯 model 路径 (无纹理设置) ---
+  custom:simple_exit_icon:
+    material: paper # << CHANGE THIS
+    model: minecraft:item/custom/exit_icon # << CHANGE THIS
+
+  # ==================================================================
+  # 【二】minecraft:model — 标准模型
+  # ==================================================================
+  # 引用: models/model.md
+
+  # --- 基础模型 (type 可省略) ---
+  custom:basic_model:
+    material: diamond_pickaxe # << CHANGE THIS
+    model:
+      type: minecraft:model # type 可选，默认值
+      path: minecraft:item/custom/my_pickaxe # << CHANGE THIS
+
+  # --- 模型 + 生成 (generation) ---
+  custom:generated_model:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/my_item # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/my_item" # << CHANGE THIS
+
+  # --- 手持模型 + 生成 ---
+  custom:handheld_model:
+    material: golden_axe # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/my_tool # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/handheld" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/my_tool" # << CHANGE THIS
+
+  # --- 模型 + 生成 + 变换 (26.1+) ---
+  custom:model_with_transformation:
+    material: diamond_pickaxe # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/my_item # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/my_item" # << CHANGE THIS
+      transformation:
+        scale: 1,1,1 # << CHANGE THIS 以原点为中心缩放
+        translation: 0,0,0 # << CHANGE THIS 平移变换
+        right_rotation:
+          angle: 0.0 # << CHANGE THIS 旋转角度（弧度）
+          axis: 0,0,0 # << CHANGE THIS 旋转轴三维向量
+        left_rotation: 0,0,0,0 # << CHANGE THIS 再次旋转
+
+  # --- 模型 + 着色 (tints) ---
+  # tints 数组索引对应 BlockBench 中的 tintindex
+  custom:model_with_tints:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/my_colored_item # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/my_colored_item" # << CHANGE THIS
+      tints:
+        - type: "minecraft:dye" # tintindex=0
+          default: 144,80,62 # << CHANGE THIS
+        - type: "minecraft:grass" # tintindex=1
+          temperature: 0.5 # << CHANGE THIS
+          downfall: 0.5 # << CHANGE THIS
+
+  # ==================================================================
+  # 【三】minecraft:model — 着色( Tints )类型全集
+  # ==================================================================
+  # 引用: models/model.md 着色部分
+  # 每个 tints 条目支持以下类型之一
+
+  custom:model_tints_constant:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/tinted_item # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/tinted_item" # << CHANGE THIS
+      tints:
+        # --- minecraft:constant ---
+        - type: "minecraft:constant"
+          value: -12012264 # << CHANGE THIS (十进制) 或 RGB 格式
+          # value: 255,0,0           # RGB 逗号分隔
+          # value:                    # RGB 列表
+          #   - 255
+          #   - 0
+          #   - 0
+          # value:                    # RGB 浮点列表
+          #   - 1.0
+          #   - 0.0
+          #   - 0.0
+
+  custom:model_tints_custom_model_data:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/cmd_tinted # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/cmd_tinted" # << CHANGE THIS
+      tints:
+        # --- minecraft:custom_model_data ---
+        - type: "minecraft:custom_model_data"
+          index: 0 # << CHANGE THIS
+          default: -12012264 # << CHANGE THIS
+
+  custom:model_tints_dye:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/dyeable # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/dyeable" # << CHANGE THIS
+      tints:
+        # --- minecraft:dye ---
+        - type: "minecraft:dye"
+          default: -12012264 # << CHANGE THIS
+
+  custom:model_tints_firework:
+    material: firework_rocket # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/firework # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/firework" # << CHANGE THIS
+      tints:
+        # --- minecraft:firework ---
+        - type: "minecraft:firework"
+          default: -12012264 # << CHANGE THIS
+
+  custom:model_tints_grass:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/foliage # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/foliage" # << CHANGE THIS
+      tints:
+        # --- minecraft:grass ---
+        - type: "minecraft:grass"
+          temperature: 0.5 # << CHANGE THIS
+          downfall: 0.5 # << CHANGE THIS
+
+  custom:model_tints_map_color:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/map # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/map" # << CHANGE THIS
+      tints:
+        # --- minecraft:map_color ---
+        - type: "minecraft:map_color"
+          default: -12012264 # << CHANGE THIS
+
+  custom:model_tints_potion:
+    material: potion # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/potion # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/potion" # << CHANGE THIS
+      tints:
+        # --- minecraft:potion ---
+        - type: "minecraft:potion"
+          default: -12012264 # << CHANGE THIS
+
+  custom:model_tints_team:
+    material: paper # << CHANGE THIS
+    model:
+      type: minecraft:model
+      path: minecraft:item/custom/team_colored # << CHANGE THIS
+      generation:
+        parent: "minecraft:item/generated" # << CHANGE THIS
+        textures:
+          layer0: "minecraft:item/custom/team_colored" # << CHANGE THIS
+      tints:
+        # --- minecraft:team ---
+        - type: "minecraft:team"
+          default: -12012264 # << CHANGE THIS
+
+  # ==================================================================
+  # 【四】minecraft:condition — 布尔条件型
+  # ==================================================================
+  # 引用: models/condition.md
+  # property 为布尔谓词, on_false / on_true 分别指定子模型
+
+  # --- 基础结构 ---
+  custom:condition_basic:
+    material: fishing_rod # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:using_item" # << CHANGE THIS 谓词
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/model_false" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/model_true" # << CHANGE THIS
+      transformation: # 可选; 26.1+
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+  # --- minecraft:broken ---
+  custom:condition_broken:
+    material: diamond_sword # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:broken"
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/sword_broken" # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/sword_normal" # << CHANGE THIS
+
+  # --- minecraft:damaged ---
+  custom:condition_damaged:
+    material: diamond_pickaxe # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:damaged"
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/pickaxe_damaged" # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/pickaxe_pristine" # << CHANGE THIS
+
+  # --- minecraft:fishing_rod/cast ---
+  custom:condition_rod_cast:
+    material: fishing_rod # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:fishing_rod/cast"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/my_rod" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/my_rod_cast" # << CHANGE THIS
+
+  # --- minecraft:using_item ---
+  custom:condition_using_item:
+    material: bread # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:using_item"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/food_idle" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/food_eating" # << CHANGE THIS
+
+  # --- minecraft:selected ---
+  custom:condition_selected:
+    material: compass # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:selected"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/compass_offhand" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/compass_selected" # << CHANGE THIS
+
+  # --- minecraft:carried ---
+  custom:condition_carried:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:carried"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_normal" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_carried" # << CHANGE THIS
+
+  # --- minecraft:extended_view ---
+  custom:condition_extended_view:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:extended_view"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_normal" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_shift_details" # << CHANGE THIS
+
+  # --- minecraft:view_entity ---
+  custom:condition_view_entity:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:view_entity"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_third_person" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/item_first_person" # << CHANGE THIS
+
+  # --- minecraft:bundle/has_selected_item ---
+  custom:condition_bundle_selected:
+    material: bundle # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:bundle/has_selected_item"
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/bundle_empty" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/bundle_selected" # << CHANGE THIS
+
+  # --- minecraft:has_component (带参数) ---
+  custom:condition_has_component:
+    material: diamond_sword # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:has_component"
+      component: "minecraft:enchantments" # << CHANGE THIS
+      ignore-default: false # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/sword_plain" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/sword_enchanted" # << CHANGE THIS
+
+  # --- minecraft:keybind_down (带参数) ---
+  custom:condition_keybind:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:keybind_down"
+      keybind: "key.left" # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/key_released" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/key_pressed" # << CHANGE THIS
+
+  # --- minecraft:custom_model_data (带参数) ---
+  custom:condition_custom_model_data:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:custom_model_data"
+      index: 0 # << CHANGE THIS
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/cmd_false" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/cmd_true" # << CHANGE THIS
+
+  # --- minecraft:component (1.21.5+, 数据组件谓词) ---
+  custom:condition_component:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:condition"
+      property: "minecraft:component"
+      # component: ... # 数据组件谓词，见 wiki 文档
+      on_false:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/no_component" # << CHANGE THIS
+      on_true:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/has_component" # << CHANGE THIS
+
+  # ==================================================================
+  # 【五】minecraft:range_dispatch — 值调配型
+  # ==================================================================
+  # 引用: models/range_dispatch.md
+  # 根据数值属性选择模型，entries 按 threshold 升序排列，
+  # 选择 threshold <= 属性值的最后一个条目
+
+  # --- 基础结构 ---
+  custom:range_dispatch_basic:
+    material: crossbow # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:crossbow/pull" # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/model_1" # << CHANGE THIS
+          threshold: 0.58 # << CHANGE THIS
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/model_2" # << CHANGE THIS
+          threshold: 1.0 # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/model_3" # << CHANGE THIS 当小于所有阈值时使用
+      transformation: # 可选; 26.1+
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+  # --- minecraft:crossbow/pull ---
+  custom:range_crossbow_pull:
+    material: crossbow # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:crossbow/pull"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_pull_0" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_pull_1" # << CHANGE THIS
+          threshold: 0.58
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_pull_2" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/crossbow_idle" # << CHANGE THIS
+
+  # --- minecraft:bundle/fullness ---
+  custom:range_bundle_fullness:
+    material: bundle # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:bundle/fullness"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bundle_empty" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bundle_half" # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bundle_full" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/bundle_empty" # << CHANGE THIS
+
+  # --- minecraft:cooldown ---
+  custom:range_cooldown:
+    material: shield # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:cooldown"
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/shield_ready" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/shield_cooling" # << CHANGE THIS
+          threshold: 0.5
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/shield_cooling_max" # << CHANGE THIS
+
+  # --- minecraft:compass (带参数) ---
+  custom:range_compass:
+    material: compass # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:compass"
+      target: spawn # << CHANGE THIS
+      wobble: true # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_00" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_16" # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_32" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/compass_00" # << CHANGE THIS
+
+  # --- minecraft:count (带参数) ---
+  custom:range_count:
+    material: snowball # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:count"
+      normalize: true # << CHANGE THIS 归一化到 0-1
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/snowball_1" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/snowball_8" # << CHANGE THIS
+          threshold: 0.33
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/snowball_16" # << CHANGE THIS
+          threshold: 0.66
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/snowball_64" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/snowball_1" # << CHANGE THIS
+
+  # --- minecraft:damage (带参数) ---
+  custom:range_damage:
+    material: diamond_sword # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:damage"
+      normalize: true # << CHANGE THIS 归一化到 0-1
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/sword_new" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/sword_worn" # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/sword_broken" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/sword_new" # << CHANGE THIS
+
+  # --- minecraft:time (带参数) ---
+  custom:range_time:
+    material: clock # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:time"
+      source: daytime # << CHANGE THIS daytime / moonlight
+      wobble: true # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/clock_00" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/clock_06" # << CHANGE THIS
+          threshold: 0.25
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/clock_12" # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/clock_18" # << CHANGE THIS
+          threshold: 0.75
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/clock_24" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/clock_00" # << CHANGE THIS
+
+  # --- minecraft:use_cycle (带参数) ---
+  custom:range_use_cycle:
+    material: bow # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:use_cycle"
+      period: 1.0 # << CHANGE THIS 取模周期
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bow_cycle_0" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bow_cycle_1" # << CHANGE THIS
+          threshold: 0.33
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bow_cycle_2" # << CHANGE THIS
+          threshold: 0.66
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/bow_cycle_3" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/bow_cycle_0" # << CHANGE THIS
+
+  # --- minecraft:use_duration (带参数) ---
+  custom:range_use_duration:
+    material: bread # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:use_duration"
+      remaining: false # << CHANGE THIS true=剩余时间, false=已使用时间
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/food_full" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/food_half" # << CHANGE THIS
+          threshold: 0.5
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/food_last" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/food_full" # << CHANGE THIS
+
+  # --- minecraft:custom_model_data (字符串索引, 带参数) ---
+  custom:range_custom_model_data:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:range_dispatch"
+      property: "minecraft:custom_model_data"
+      index: 0 # << CHANGE THIS
+      entries:
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/cmd_value_1" # << CHANGE THIS
+          threshold: 0.0
+        - model:
+            type: minecraft:model
+            path: "minecraft:item/custom/cmd_value_2" # << CHANGE THIS
+          threshold: 1.0
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/cmd_fallback" # << CHANGE THIS
+
+  # ==================================================================
+  # 【六】minecraft:composite — 组合
+  # ==================================================================
+  # 引用: models/composite.md
+  # 按数组次序从后向前依次渲染所有子模型
+
+  custom:composite_item:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:composite"
+      models:
+        - type: minecraft:model
+          path: "minecraft:item/custom/base_layer" # << CHANGE THIS 底層
+        - type: minecraft:model
+          path: "minecraft:item/custom/overlay" # << CHANGE THIS 疊加層
+        - type: minecraft:model
+          path: "minecraft:item/custom/glow" # << CHANGE THIS 最上層
+      transformation: # 可选; 26.1+
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+  # ==================================================================
+  # 【七】minecraft:select — 枚举条件型
+  # ==================================================================
+  # 引用: models/select.md
+  # 计算枚举属性，匹配 cases 中的枚举值
+
+  # --- 基础结构 ---
+  custom:select_basic:
+    material: crossbow # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:charge_type" # << CHANGE THIS
+      cases:
+        - when: arrow
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_arrow" # << CHANGE THIS
+        - when: rocket
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_rocket" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/crossbow_empty" # << CHANGE THIS
+      transformation: # 可选; 26.1+
+        scale: 1,1,1
+        translation: 0,0,0
+        right_rotation:
+          angle: 0.0
+          axis: 0,0,0
+        left_rotation: 0,0,0,0
+
+  # --- minecraft:charge_type ---
+  custom:select_charge_type:
+    material: crossbow # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:charge_type"
+      cases:
+        - when: none
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_unloaded" # << CHANGE THIS
+        - when: arrow
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_arrow" # << CHANGE THIS
+        - when: rocket
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/crossbow_rocket" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/crossbow_unloaded" # << CHANGE THIS
+
+  # --- minecraft:context_dimension ---
+  custom:select_dimension:
+    material: compass # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_dimension"
+      cases:
+        - when: "minecraft:overworld"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_overworld" # << CHANGE THIS
+        - when: "minecraft:the_nether"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_nether" # << CHANGE THIS
+        - when: "minecraft:the_end"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/compass_end" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/compass_overworld" # << CHANGE THIS
+
+  # --- minecraft:context_entity_type ---
+  custom:select_entity_type:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_entity_type"
+      cases:
+        - when: "minecraft:player"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/hud_player" # << CHANGE THIS
+        - when: "minecraft:item_frame"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/hud_frame" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/hud_default" # << CHANGE THIS
+
+  # --- minecraft:display_context ---
+  custom:select_display_context:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:display_context"
+      cases:
+        - when: thirdperson_lefthand
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/thirdperson_left" # << CHANGE THIS
+        - when: thirdperson_righthand
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/thirdperson_right" # << CHANGE THIS
+        - when: firstperson_lefthand
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/firstperson_left" # << CHANGE THIS
+        - when: firstperson_righthand
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/firstperson_right" # << CHANGE THIS
+        - when: gui
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/gui" # << CHANGE THIS
+        - when: ground
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/ground" # << CHANGE THIS
+        - when: fixed
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/fixed" # << CHANGE THIS
+        - when: head
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/head" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/default_display" # << CHANGE THIS
+
+  # --- minecraft:main_hand ---
+  custom:select_main_hand:
+    material: shield # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:main_hand"
+      cases:
+        - when: left
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/shield_left" # << CHANGE THIS
+        - when: right
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/shield_right" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/shield_right" # << CHANGE THIS
+
+  # --- minecraft:trim_material ---
+  custom:select_trim_material:
+    material: diamond_chestplate # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:trim_material"
+      cases:
+        - when: "minecraft:iron"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/trim_iron" # << CHANGE THIS
+        - when: "minecraft:gold"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/trim_gold" # << CHANGE THIS
+        - when: "minecraft:diamond"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/trim_diamond" # << CHANGE THIS
+        - when: "minecraft:netherite"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/trim_netherite" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/trim_none" # << CHANGE THIS
+
+  # --- minecraft:block_state (带参数) ---
+  custom:select_block_state:
+    material: minecart # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:block_state"
+      block_state_property: "facing" # << CHANGE THIS
+      cases:
+        - when: "north"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/block_north" # << CHANGE THIS
+        - when: "south"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/block_south" # << CHANGE THIS
+        - when: "east"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/block_east" # << CHANGE THIS
+        - when: "west"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/block_west" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/block_default" # << CHANGE THIS
+
+  # --- minecraft:component (1.21.5+, 带参数) ---
+  custom:select_component:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:component"
+      component: "minecraft:unbreakable" # << CHANGE THIS
+      cases:
+        - when: "{}"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/unbreakable" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/breakable" # << CHANGE THIS
+
+  # --- minecraft:custom_model_data (字符串, 带参数) ---
+  custom:select_custom_model_data:
+    material: paper # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:custom_model_data"
+      index: 0 # << CHANGE THIS
+      cases:
+        - when: "variant_a"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/variant_a" # << CHANGE THIS
+        - when: "variant_b"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/variant_b" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/variant_default" # << CHANGE THIS
+
+  # --- minecraft:local_time (带参数) ---
+  custom:select_local_time:
+    material: clock # << CHANGE THIS
+    model:
+      type: "minecraft:select"
+      property: "minecraft:local_time"
+      locale: "zh_CN" # << CHANGE THIS
+      time_zone: "GMT+8:00" # << CHANGE THIS
+      pattern: "HH:mm:ss" # << CHANGE THIS
+      cases:
+        - when: "06:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/time_morning" # << CHANGE THIS
+        - when: "12:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/time_noon" # << CHANGE THIS
+        - when: "18:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/time_evening" # << CHANGE THIS
+        - when: "00:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/time_midnight" # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom/time_default" # << CHANGE THIS
+
+  # ==================================================================
+  # 【八】minecraft:special — 特殊模型
+  # ==================================================================
+  # 引用: models/special.md
+  # 使用游戏硬编码渲染器渲染物品
+
+  # --- minecraft:trident ---
+  custom:special_trident:
+    material: trident # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_trident # << CHANGE THIS
+      model:
+        type: minecraft:trident
+
+  # --- minecraft:conduit ---
+  custom:special_conduit:
+    material: conduit # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_conduit # << CHANGE THIS
+      model:
+        type: minecraft:conduit
+
+  # --- minecraft:shield ---
+  custom:special_shield:
+    material: shield # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_shield # << CHANGE THIS
+      model:
+        type: minecraft:shield
+
+  # --- minecraft:decorated_pot ---
+  custom:special_decorated_pot:
+    material: decorated_pot # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_pot # << CHANGE THIS
+      model:
+        type: minecraft:decorated_pot
+
+  # --- minecraft:hanging_sign (带参数) ---
+  custom:special_hanging_sign:
+    material: oak_hanging_sign # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_hanging_sign # << CHANGE THIS
+      model:
+        type: "minecraft:hanging_sign"
+        attachment: "ceiling_middle" # << CHANGE THIS 26.1+
+        wood_type: "oak" # << CHANGE THIS
+        texture: minecraft:entity/signs/hanging/oak # << CHANGE THIS
+
+  # --- minecraft:standing_sign (带参数) ---
+  custom:special_standing_sign:
+    material: oak_sign # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_sign # << CHANGE THIS
+      model:
+        type: "minecraft:standing_sign"
+        attachment: "ground" # << CHANGE THIS 26.1+
+        wood_type: "oak" # << CHANGE THIS
+        texture: minecraft:entity/signs/oak # << CHANGE THIS
+
+  # --- minecraft:head (带参数) ---
+  custom:special_head:
+    material: player_head # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_head # << CHANGE THIS
+      model:
+        type: "minecraft:head"
+        kind: player # << CHANGE THIS player / skeleton / wither_skeleton / zombie / creeper / dragon
+        texture: minecraft:entity/steve # << CHANGE THIS 可选
+        animation: 0.0 # << CHANGE THIS 可选
+
+  # --- minecraft:player_head (1.21.6+) ---
+  custom:special_player_head:
+    material: player_head # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/player_head # << CHANGE THIS
+      model:
+        type: "minecraft:player_head"
+
+  # --- minecraft:chest (带参数) ---
+  custom:special_chest:
+    material: chest # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_chest # << CHANGE THIS
+      model:
+        type: "minecraft:chest"
+        chest_type: "single" # << CHANGE THIS single / left / right ; 26.1+
+        openness: 0.0 # << CHANGE THIS 0.0 = 关闭, 1.0 = 完全打开
+        texture: minecraft:entity/chest/normal # << CHANGE THIS
+
+  # --- minecraft:shulker_box (带参数) ---
+  custom:special_shulker_box:
+    material: shulker_box # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_shulker # << CHANGE THIS
+      model:
+        type: "minecraft:shulker_box"
+        openness: 0.0 # << CHANGE THIS 0.0 = 关闭, 1.0 = 完全打开
+        orientation: up # << CHANGE THIS 1.21.4~1.21.11
+        texture: minecraft:entity/shulker/shulker # << CHANGE THIS
+
+  # --- minecraft:banner (带参数) ---
+  custom:special_banner:
+    material: white_banner # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/my_banner # << CHANGE THIS
+      model:
+        type: "minecraft:banner"
+        attachment: "ground" # << CHANGE THIS ground / ceiling / wall ; 26.1+
+        color: white # << CHANGE THIS
+
+  # --- minecraft:copper_golem_statue (带参数) ---
+  custom:special_copper_golem:
+    material: copper_ingot # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/copper_golem # << CHANGE THIS
+      model:
+        type: "minecraft:copper_golem_statue"
+        pose: sitting # << CHANGE THIS sitting / standing / saluting
+        texture: minecraft:entity/copper_golem/copper_golem # << CHANGE THIS
+
+  # --- minecraft:bell (26.1+) ---
+  custom:special_bell:
+    material: bell # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/bell # << CHANGE THIS
+      model:
+        type: "minecraft:bell"
+
+  # --- minecraft:book (26.1+, 带参数) ---
+  custom:special_book:
+    material: book # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/book # << CHANGE THIS
+      model:
+        type: "minecraft:book"
+        open_angle: 0 # << CHANGE THIS
+        page1: 0 # << CHANGE THIS
+        page2: 0 # << CHANGE THIS
+
+  # --- minecraft:end_cube (26.1+, 带参数) ---
+  custom:special_end_cube:
+    material: end_crystal # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/end_cube # << CHANGE THIS
+      model:
+        type: "minecraft:end_cube"
+        effect: "portal" # << CHANGE THIS portal / gateway
+
+  # --- minecraft:bed (已在 26.2 移除) ---
+  custom:special_bed:
+    material: red_bed # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/bed # << CHANGE THIS
+      model:
+        type: "minecraft:bed"
+        part: "head" # << CHANGE THIS head / foot ; 26.1~26.1.2
+        texture: minecraft:entity/bed/red # << CHANGE THIS
+
+  # ==================================================================
+  # 【九】minecraft:special + transformation (26.1+)
+  # ==================================================================
+  # 引用: models/special.md
+
+  custom:special_with_transformation:
+    material: player_head # << CHANGE THIS
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/head_scaled # << CHANGE THIS
+      model:
+        type: minecraft:head
+        kind: player
+      transformation:
+        scale: 1,1,1 # << CHANGE THIS
+        translation: 0,0,0 # << CHANGE THIS
+        right_rotation:
+          angle: 0.0 # << CHANGE THIS
+          axis: 0,0,0 # << CHANGE THIS
+        left_rotation: 0,0,0,0 # << CHANGE THIS
+
+  # ==================================================================
+  # 【十】旧版模型 (legacy_model) — 1.21.3 及更早版本兼容
+  # ==================================================================
+  # 引用: models.md 旧版模型部分
+  # 插件会自动从 1.21.4 模型降级，仅当自动转换失败时使用此配置
+
+  custom:legacy_model_basic:
+    material: fishing_rod # << CHANGE THIS
+    item_model: custom:topaz_rod # << CHANGE THIS
+    settings:
+      tags:
+        - "custom:topaz_tools" # << CHANGE THIS
+    data:
+      item_name: "<!i><#FF8C00><i18n:item.topaz_rod>" # << CHANGE THIS
+      tooltip_style: minecraft:topaz # << CHANGE THIS
+    model:
+      template: custom:model/simplified_fishing_rod_2d # << CHANGE THIS
+      arguments:
+        path: minecraft:item/custom/topaz_rod # << CHANGE THIS
+        cast_path: minecraft:item/custom/topaz_rod_cast # << CHANGE THIS
+    # 手动定义旧版模型，覆盖自动降级
+    legacy_model:
+      path: minecraft:item/custom/topaz_rod # << CHANGE THIS
+      overrides:
+        - path: minecraft:item/custom/topaz_rod_cast # << CHANGE THIS
+          predicate:
+            cast: 1

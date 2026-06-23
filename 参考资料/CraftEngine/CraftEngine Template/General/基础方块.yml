@@ -1,0 +1,821 @@
+# ============================================================================
+# CraftEngine 方块配置综合模板
+# ============================================================================
+# 参考 Wiki 路径（本地）:
+#   CraftEngine Wiki/configuration/block.md
+#   CraftEngine Wiki/configuration/block/settings.md
+#   CraftEngine Wiki/configuration/block/states.md
+#   CraftEngine Wiki/configuration/block/states/properties.md
+#
+# 使用说明:
+#   1. 替换命名空间 "tutorial" 为你的命名空间
+#   2. 替换所有 # << CHANGE THIS 标记的值
+#   3. 删除不需要的区块
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # [示例 1] 单状态方块 —— 最简形式（自动状态 + 单张纹理）
+  # ==========================================================================
+  tutorial:simple_ore:                                              # << CHANGE THIS 方块ID
+
+    # --- 方块状态 -----------------------------------------------------------
+    state:
+      auto_state: solid                                             # << CHANGE THIS 自动状态组
+      model:
+        texture: "tutorial:block/simple_ore"                        # << CHANGE THIS 纹理路径（自动推断 cube_all）
+
+    # --- 方块设置 -----------------------------------------------------------
+    settings:
+      hardness: 3.0                                                 # << CHANGE THIS 硬度（默认 2.0）
+      resistance: 6.0                                               # << CHANGE THIS 爆炸抗性（默认 2.0）
+      map_color: 11                                                 # << CHANGE THIS 地图颜色
+      instrument: basedrum                                          # << CHANGE THIS 音符盒乐器
+
+      sounds:                                                       # << CHANGE THIS 音效
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+
+      tags:
+        - "minecraft:mineable/pickaxe"                              # << CHANGE THIS 挖掘标签
+
+      correct_tools:
+        - "minecraft:wooden_pickaxe"                                # << CHANGE THIS 合适挖掘工具
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+
+  # ==========================================================================
+  # [示例 2] 单状态方块 —— 完整设置（generation 模型 + 全部稳定选项）
+  # ==========================================================================
+  tutorial:fancy_stone:
+
+    state:
+      auto_state:
+        type: note_block                                            # << CHANGE THIS 自动状态组
+        id: "fancy_stone_shared"                                    # << CHANGE THIS 共享 ID（可选）
+
+      model:
+        path: "tutorial:block/fancy_stone"                          # << CHANGE THIS 模型路径（2+纹理时必填）
+        generation:                                                 # << CHANGE THIS 自动生成模型
+          parent: "minecraft:block/cube_bottom_top"                 # << CHANGE THIS 父模型
+          textures:                                                 # << CHANGE THIS 纹理映射（按 parent 需求）
+            top:    "tutorial:block/fancy_stone_top"
+            bottom: "tutorial:block/fancy_stone_bottom"
+            side:   "tutorial:block/fancy_stone_side"
+
+    settings:
+      # --- 基础属性 ---
+      hardness: 1.5
+      resistance: 6.0
+      push_reaction: NORMAL                                         # << CHANGE THIS NORMAL/DESTROY/BLOCK/IGNORE/PUSH_ONLY
+
+      # --- 颜色与燃烧 ---
+      map_color: 36
+      burnable: false
+      fire_spread_chance: 0                                         # << CHANGE THIS 0-100
+      burn_chance: 0                                                # << CHANGE THIS 0-100
+
+      # --- 物品绑定 ---
+      item: "tutorial:fancy_stone"                                  # << CHANGE THIS 方块对应物品 ID
+
+      # --- 物理/红石 ---
+      replaceable: false
+      is_redstone_conductor: true
+      is_suffocating: true
+      is_view_blocking: true
+
+      # --- 音效（精确控制音高音量） ---
+      sounds:
+        break:
+          id: "minecraft:block.deepslate.break"                     # << CHANGE THIS
+          pitch: 1.0
+          volume: 1.0
+        step:  "minecraft:block.deepslate.step"
+        place: "minecraft:block.deepslate.place"
+        hit:   "minecraft:block.deepslate.hit"
+        fall:  "minecraft:block.deepslate.fall"
+
+      # --- 挖掘工具 ---
+      require_correct_tools: true
+      respect_tool_component: false
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+      incorrect_tool_dig_speed: 0.3                                 # << CHANGE THIS 0.0-1.0
+
+      # --- 标签 ---
+      tags:
+        - "minecraft:mineable/pickaxe"
+      client_bound_tags:                                            # << CHANGE THIS 仅原版方块
+        - "minecraft:beacon_base_blocks"
+
+      # --- 流体与碰撞 ---
+      fluid_state: empty                                            # << CHANGE THIS empty/water
+      support_shape: "minecraft:stone"                              # << CHANGE THIS 支撑形状参考方块
+
+      # --- 光照（不稳定设置） ---
+      luminance: 0                                                  # << CHANGE THIS 0-15
+      can_occlude: true
+      block_light: 0
+      propagate_skylight: false
+
+      # --- 移动（不稳定设置） ---
+      jump_factor: 1.0
+      speed_factor: 1.0
+      friction: 0.6
+      bounce_restitution: 0.0
+
+  # ==========================================================================
+  # [示例 3] 单状态方块 —— 加权随机模型列表（models）
+  # ==========================================================================
+  tutorial:flower_patch:
+
+    state:
+      auto_state: solid
+      models:                                                       # << CHANGE THIS 多模型加权随机
+        - path: "tutorial:block/flower_patch_1"                     # << CHANGE THIS
+          weight: 8                                                 # << CHANGE THIS 权重（默认 1）
+        - path: "tutorial:block/flower_patch_2"
+          weight: 5
+        - path: "tutorial:block/flower_patch_3"
+          weight: 3
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      map_color: 7
+      sounds:
+        break: "minecraft:block.grass.break"
+        step:  "minecraft:block.grass.step"
+        place: "minecraft:block.grass.place"
+        hit:   "minecraft:block.grass.hit"
+        fall:  "minecraft:block.grass.fall"
+      tags:
+        - "minecraft:mineable/hoe"
+      instrument: harp
+      luminance: 0
+
+  # ==========================================================================
+  # [示例 4] 多状态方块 —— axis 轴向（原木类型）
+  #   展示: properties → appearances → variants 完整流程
+  #   特殊属性名: axis（自动对齐玩家朝向）
+  # ==========================================================================
+  tutorial:crystal_pillar:
+
+    states:
+      # 可选：固定内部 ID 起始值（配合数据包时使用）
+      # id: 200                                                    # << CHANGE THIS 全局唯一
+
+      properties:                                                   # ① 定义内部属性
+        axis:
+          type: axis                                                # << CHANGE THIS 属性类型
+          default: "y"                                              # << CHANGE THIS 默认值
+          values:                                                   # << CHANGE THIS 可选，显式列出允许值
+            - x
+            - y
+            - z
+
+      appearances:                                                  # ② 定义视觉外观
+        axisY:                                                      # << CHANGE THIS 外观名称
+          auto_state: note_block
+          model:
+            path: "tutorial:block/crystal_pillar"                   # << CHANGE THIS
+            generation:
+              parent: "minecraft:block/cube_column"                 # << CHANGE THIS 2纹理 → cube_column
+              textures:
+                end:  "tutorial:block/crystal_pillar_top"
+                side: "tutorial:block/crystal_pillar_side"
+
+        axisX:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/crystal_pillar_horizontal"
+            x: 90                                                   # << CHANGE THIS 绕 X 轴旋转（90 的倍数）
+            y: 90                                                   # << CHANGE THIS 绕 Y 轴旋转（90 的倍数）
+            uvlock: true                                            # << CHANGE THIS 锁定纹理方向
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end:  "tutorial:block/crystal_pillar_top"
+                side: "tutorial:block/crystal_pillar_side"
+
+        axisZ:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/crystal_pillar_horizontal"
+            x: 90
+            uvlock: true
+            # 注：path 与 axisX 相同，generation 省略（已由 axisX 生成）
+
+      variants:                                                     # ③ 变体匹配规则
+        axis=y:
+          appearance: axisY
+        axis=x:
+          appearance: axisX
+        axis=z:
+          appearance: axisZ
+
+    # 对多状态方块，settings 放在与 states 同级
+    settings:
+      hardness: 2.0
+      resistance: 6.0
+      map_color: 9
+      sounds:
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+      instrument: basedrum
+      luminance: 0
+
+  # ==========================================================================
+  # [示例 5] 多状态方块 —— 含水树叶（waterlogged + persistent + distance）
+  #   展示: 多属性组合，settings 覆写，通配符匹配
+  #   特殊属性名: waterlogged（决定含水逻辑）
+  # ==========================================================================
+  tutorial:magical_leaves:
+
+    states:
+      properties:
+        waterlogged:
+          type: boolean
+          default: false
+        persistent:
+          type: boolean
+          default: true
+        distance:
+          type: int
+          default: 7
+          range: 1~7                                                # << CHANGE THIS 整数范围
+
+      appearances:
+        default:                                                    # ← 第一个外观 → 默认回退
+          auto_state: leaves                                        # << CHANGE THIS 无含水树叶组
+          model:
+            path: "tutorial:block/magical_leaves"
+            textures:                                               # << CHANGE THIS textures 列表自动推断
+              - "tutorial:block/magical_leaves"                     # 1 张 → cube_all（path 可省略但此处显式写出）
+
+        waterlogged:
+          auto_state: waterlogged_leaves                            # << CHANGE THIS 含水树叶组
+          model:
+            path: "tutorial:block/magical_leaves"
+            # textures 与 default 相同，可省略（引用同一模型文件）
+
+      variants:
+        # 利用通配符语义：未列出的属性匹配所有可能值
+        waterlogged=false:                                          # → 覆盖 14 个状态（persistent×distance）
+          appearance: default
+        waterlogged=true:                                           # → 覆盖 14 个状态
+          appearance: waterlogged
+          settings:                                                 # ← 变体级 settings 覆写
+            resistance: 1200.0
+            burnable: false
+            fluid_state: water
+
+    settings:
+      hardness: 0.2
+      resistance: 0.2
+      map_color: 28
+      burnable: true
+      fire_spread_chance: 30
+      burn_chance: 60
+      sounds:
+        break: "minecraft:block.grass.break"
+        step:  "minecraft:block.grass.step"
+        place: "minecraft:block.grass.place"
+        hit:   "minecraft:block.grass.hit"
+        fall:  "minecraft:block.grass.fall"
+      tags:
+        - "minecraft:mineable/hoe"
+        - "minecraft:leaves"
+      instrument: bass
+      luminance: 0
+      can_occlude: false
+      propagate_skylight: true
+
+  # ==========================================================================
+  # [示例 6] 多状态方块 —— 透明 + entity_renderer（展示牌）
+  #   展示: transparent 清空模型，实体渲染器，共享 auto_state id
+  # ==========================================================================
+  tutorial:display_pedestal:
+
+    states:
+      properties:
+        facing:
+          type: horizontal_direction                               # north/south/west/east
+          default: north
+        # 注：特殊属性名 facing → 放置时自动对齐玩家朝向
+
+      appearances:
+        north:
+          auto_state:
+            type: sugar_cane                                       # << CHANGE THIS 透明基础状态
+            id: transparent                                        # ← 推荐固定名称，多个方块可共享
+          transparent: true                                        # ← 清空原版方块模型
+          entity_renderer:                                         # ← 由实体渲染
+            type: item_display                                     # << CHANGE THIS item_display/text_display/item/armor_stand
+            item: "tutorial:display_pedestal"                      # << CHANGE THIS 渲染的物品
+            rotation: 0                                            # << CHANGE THIS 旋转角度
+
+        east:
+          auto_state:
+            type: sugar_cane
+            id: transparent                                        # 相同 id → 共享同一原版状态
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "tutorial:display_pedestal"
+            rotation: 90
+
+        south:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "tutorial:display_pedestal"
+            rotation: 180
+
+        west:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "tutorial:display_pedestal"
+            rotation: 270
+
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+
+    settings:
+      hardness: 2.0
+      resistance: 6.0
+      map_color: 15
+      sounds:
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      instrument: basedrum
+      luminance: 0
+
+  # ==========================================================================
+  # [示例 7] 多状态方块 —— 自定义台阶（slab_type）
+  #   展示: slab_type 属性，三外观
+  # ==========================================================================
+  tutorial:custom_slab:
+
+    states:
+      properties:
+        type:
+          type: slab_type                                           # top/bottom/double
+          default: bottom
+
+        waterlogged:                                                # 台阶可含水
+          type: boolean
+          default: false
+
+      appearances:
+        bottom:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/custom_slab_bottom"
+            generation:
+              parent: "minecraft:block/slab"                        # << CHANGE THIS 台阶父模型
+              textures:
+                bottom: "tutorial:block/custom_slab_bottom"
+                top:    "tutorial:block/custom_slab_top"
+                side:   "tutorial:block/custom_slab_side"
+
+        top:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/custom_slab_top"
+            generation:
+              parent: "minecraft:block/slab_top"
+              textures:
+                bottom: "tutorial:block/custom_slab_bottom"
+                top:    "tutorial:block/custom_slab_top"
+                side:   "tutorial:block/custom_slab_side"
+
+        double:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/custom_slab_double"
+            generation:
+              parent: "minecraft:block/cube_bottom_top"
+              textures:
+                bottom: "tutorial:block/custom_slab_bottom"
+                top:    "tutorial:block/custom_slab_top"
+                side:   "tutorial:block/custom_slab_side"
+
+      variants:
+        type=bottom:
+          appearance: bottom
+        type=top:
+          appearance: top
+        type=double:
+          appearance: double
+        # 含水覆写（会与上述变体叠加）
+        waterlogged=true:
+          settings:
+            fluid_state: water
+
+    settings:
+      hardness: 2.0
+      resistance: 6.0
+      map_color: 8
+      sounds:
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+      instrument: basedrum
+
+  # ==========================================================================
+  # [示例 8] 多状态方块 —— 红石灯（boolean + settings 覆写）
+  #   展示: 单个属性，单外观，变体只覆写 settings
+  # ==========================================================================
+  tutorial:redstone_lamp:
+
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+
+      appearances:
+        default:                                                    # 唯一外观，未匹配 lit=true 时使用
+          auto_state: note_block
+          model:
+            texture: "tutorial:block/redstone_lamp_off"             # << CHANGE THIS
+
+      variants:
+        lit=true:                                                   # 只覆写设置，不动外观
+          settings:
+            luminance: 15                                           # 点亮时发光
+
+    settings:
+      hardness: 0.3
+      resistance: 1.5
+      map_color: 22
+      sounds:
+        break: "minecraft:block.glass.break"
+        step:  "minecraft:block.glass.step"
+        place: "minecraft:block.glass.place"
+        hit:   "minecraft:block.glass.hit"
+        fall:  "minecraft:block.glass.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+      instrument: harp
+      luminance: 0                                                  # 关闭时不发光
+
+  # ==========================================================================
+  # [示例 9] 多状态方块 —— 楼梯（stairs_shape + direction + facing）
+  #   展示: 复合属性，方向+形状组合
+  # ==========================================================================
+  tutorial:custom_stairs:
+
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        half:
+          type: single_block_half                                   # top/bottom
+          default: bottom
+        shape:
+          type: stairs_shape                                        # straight/inner_left/inner_right/outer_left/outer_right
+          default: straight
+        waterlogged:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/custom_stairs"
+            generation:
+              parent: "minecraft:block/stairs"                      # << CHANGE THIS 楼梯父模型
+              textures:
+                bottom: "tutorial:block/custom_stairs_bottom"
+                top:    "tutorial:block/custom_stairs_top"
+                front:  "tutorial:block/custom_stairs_front"
+                side:   "tutorial:block/custom_stairs_side"
+
+      variants:
+        # 方向+形状+半层 的完整组合太多，这里以默认外观为主
+        # 如需精确控制，可添加复合变体键：
+        # facing=north,half=bottom,shape=straight:
+        #   appearance: north_straight_bottom
+
+        waterlogged=true:
+          settings:
+            fluid_state: water
+
+    settings:
+      hardness: 2.0
+      resistance: 6.0
+      map_color: 8
+      sounds:
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+      instrument: basedrum
+
+  # ==========================================================================
+  # [示例 10] 单状态方块 —— exact state + textures 列表（2纹理）
+  #   展示: 精确原版状态指定，textures 简化列表（2张 → cube_column）
+  # ==========================================================================
+  tutorial:compact_ore:
+
+    state:
+      # 精确指定原版状态（而非 auto_state 自动分配）
+      state: "minecraft:note_block[instrument=hat,note=0,powered=false]"  # << CHANGE THIS
+
+      model:
+        path: "tutorial:block/compact_ore"                          # << CHANGE THIS 2+纹理时必填
+        textures:                                                   # 2张 → cube_column
+          - "tutorial:block/compact_ore_end"                        # end
+          - "tutorial:block/compact_ore_side"                       # side
+        # ^ 前缀表示同时用作粒子纹理
+        # - "^tutorial:block/compact_ore_end"
+
+    settings:
+      hardness: 4.0
+      resistance: 10.0
+      map_color: 33
+      sounds:
+        break: "minecraft:block.deepslate.break"
+        step:  "minecraft:block.deepslate.step"
+        place: "minecraft:block.deepslate.place"
+        hit:   "minecraft:block.deepslate.hit"
+        fall:  "minecraft:block.deepslate.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      instrument: basedrum
+      luminance: 7
+
+  # ==========================================================================
+  # [示例 11] 多状态方块 —— 方向 + 字符串类型（多色灯）
+  #   展示: string 属性（自定义枚举值） + direction 属性（6向）
+  #   特殊属性名: facing（放置自动对齐）
+  # ==========================================================================
+  tutorial:colored_lamp:
+
+    states:
+      properties:
+        facing:
+          type: direction                                           # up/down/north/south/west/east
+          default: north
+        color:
+          type: string                                              # << CHANGE THIS 字符串枚举
+          default: white
+          values:                                                   # << CHANGE THIS 预定义选项
+            - white
+            - red
+            - green
+            - blue
+            - yellow
+
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            texture: "tutorial:block/colored_lamp"                  # << CHANGE THIS
+
+      variants:
+        color=white:
+          settings:
+            luminance: 15
+        color=red:
+          settings:
+            luminance: 12
+        color=green:
+          settings:
+            luminance: 12
+        color=blue:
+          settings:
+            luminance: 12
+        color=yellow:
+          settings:
+            luminance: 14
+
+    settings:
+      hardness: 0.3
+      resistance: 0.3
+      map_color: 19
+      sounds:
+        break: "minecraft:block.glass.break"
+        step:  "minecraft:block.glass.step"
+        place: "minecraft:block.glass.place"
+        hit:   "minecraft:block.glass.hit"
+        fall:  "minecraft:block.glass.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      instrument: harp
+      luminance: 0
+
+  # ==========================================================================
+  # [示例 12] 多状态方块 —— 门（double_block_half + hinge + facing）
+  #   展示: double_block_half（upper/lower）、hinge（left/right）属性
+  #   特殊属性名: facing（放置自动对齐）
+  # ==========================================================================
+  tutorial:custom_door:
+
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        half:
+          type: double_block_half                                   # upper/lower
+          default: lower
+        hinge:
+          type: hinge                                               # left/right
+          default: left
+        powered:
+          type: boolean
+          default: false
+        open:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            path: "tutorial:block/custom_door_bottom"
+            generation:
+              parent: "minecraft:block/door_bottom_left"            # << CHANGE THIS 门父模型
+              textures:
+                bottom: "tutorial:block/custom_door_bottom"
+                top:    "tutorial:block/custom_door_top"
+
+      variants:
+        # 门的完整变体（方向+半层+合页+开合）组合较多，仅做示意
+        half=lower:
+          appearance: default
+        half=upper,hinge=left:
+          appearance: default
+        half=upper,hinge=right:
+          appearance: default
+        powered=true:
+          settings:
+            luminance: 0                                            # 门不发光，仅演示 settings 覆写
+
+    settings:
+      hardness: 3.0
+      resistance: 3.0
+      map_color: 23
+      sounds:
+        break: "minecraft:block.wood.break"
+        step:  "minecraft:block.wood.step"
+        place: "minecraft:block.wood.place"
+        hit:   "minecraft:block.wood.hit"
+        fall:  "minecraft:block.wood.fall"
+      tags:
+        - "minecraft:mineable/axe"
+      instrument: bass
+      push_reaction: DESTROY
+
+  # ==========================================================================
+  # [示例 13] 多状态方块 —— 沙发（sofa_shape + anchor_type）
+  #   展示: sofa_shape（straight/inner_left/inner_right）
+  #         anchor_type（floor/wall/ceiling）
+  # ==========================================================================
+  tutorial:custom_sofa:
+
+    states:
+      properties:
+        shape:
+          type: sofa_shape                                          # straight/inner_left/inner_right
+          default: straight
+        face:
+          type: anchor_type                                         # floor/wall/ceiling
+          default: floor
+        waterlogged:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            texture: "tutorial:block/custom_sofa"                   # << CHANGE THIS
+
+      variants:
+        shape=straight:
+          appearance: default
+        shape=inner_left:
+          appearance: default
+        shape=inner_right:
+          appearance: default
+        waterlogged=true:
+          settings:
+            fluid_state: water
+
+    settings:
+      hardness: 1.0
+      resistance: 1.0
+      map_color: 14
+      sounds:
+        break: "minecraft:block.wool.break"
+        step:  "minecraft:block.wool.step"
+        place: "minecraft:block.wool.place"
+        hit:   "minecraft:block.wool.hit"
+        fall:  "minecraft:block.wool.fall"
+      tags:
+        - "minecraft:mineable/axe"
+      instrument: bass
+      luminance: 0
+
+  # ==========================================================================
+  # [示例 14] 多状态方块 —— 旋转 + facing_clockwise（装饰旋钮）
+  #   展示: facing_clockwise 特殊属性名（放置旋转90度）
+  #         rotation 精确旋转（int 0~7 或 0~15）
+  # ==========================================================================
+  tutorial:deco_knob:
+
+    states:
+      properties:
+        facing_clockwise:                                            # << CHANGE THIS 特殊属性名 → 放置时旋转90度
+          type: horizontal_direction
+          default: north
+        rotation:                                                    # << CHANGE THIS 精确旋转
+          type: int
+          default: 0
+          range: 0~7                                                 # << CHANGE THIS 0~7 或 0~15
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "tutorial:block/deco_knob"                         # << CHANGE THIS
+            generation:
+              parent: "minecraft:block/cube_all"
+              textures:
+                all: "tutorial:block/deco_knob"
+
+      variants:                                                      # 利用通配符 → 所有 facing_clockwise + rotation 组合都使用 default 外观
+        # facing_clockwise=north:
+        #   appearance: default
+        # （只需 default 外观即可覆盖所有组合，此处省略显式匹配）
+
+    settings:
+      hardness: 1.0
+      resistance: 1.0
+      map_color: 12
+      sounds:
+        break: "minecraft:block.stone.break"
+        step:  "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit:   "minecraft:block.stone.hit"
+        fall:  "minecraft:block.stone.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+      instrument: basedrum

@@ -1,0 +1,272 @@
+# =============================================================================
+# CraftEngine 链式参数 — 综合配置模板 (YAML)
+# =============================================================================
+# Wiki 参考路径 (本地):
+#   参考资料/CraftEngine/CraftEngine Wiki/reference/text_format/chain_arguments.md
+#
+# 链式参数使用点表示法，以层级结构访问对象相关参数。
+# 标签格式: <arg:命名空间.对象.属性.子属性>
+# 例如: <arg:custom.player.world.name> 获取玩家当前所在世界的名称
+#
+# 使用说明:
+#   1. 将下方所有 "custom:" 命名空间替换为你的实际命名空间
+#   2. 搜索 "<< CHANGE THIS" 标记并替换为实际值
+#   3. 可根据需要引用其他对象链 (如 player.world.name)
+# =============================================================================
+
+namespace: custom                                                        # << CHANGE THIS
+
+# ============================================================================
+# 链式参数可用于以下 CraftEngine 配置场景:
+#
+#   - 消息/提示框文本 (item_name, lore, messages)
+#   - 条件判断 (conditions)
+#   - 命令执行 (commands)
+#   - 行为配置参数 (behavior)
+#   - 家具/方块交互反馈
+#   - PlaceholderAPI 扩展 (<papi:craftengine_...>)
+#
+# 以下按对象分组展示所有可用链式属性路径。
+# ============================================================================
+
+# ============================================================================
+# Group 1 — player (玩家对象)
+# 所有 player 相关链: <arg:player.属性>
+# ============================================================================
+player:
+  # -- 坐标 --
+  coordinates:
+    double: "<arg:custom.player.x> <arg:custom.player.y> <arg:custom.player.z>"
+    block:  "<arg:custom.player.block_x> <arg:custom.player.block_y> <arg:custom.player.block_z>"
+
+  # -- 身份信息 --
+  identity:
+    name: "<arg:custom.player.name>"
+    uuid: "<arg:custom.player.uuid>"
+
+  # -- 状态 --
+  state:
+    is_flying:   "<arg:custom.player.is_flying>"
+    is_sneaking: "<arg:custom.player.is_sneaking>"
+    gamemode:    "<arg:custom.player.gamemode>"
+    game_edition: "<arg:custom.player.game_edition>"
+
+  # -- 手持物品 (子对象: item) --
+  main_hand:
+    id:                "<arg:custom.player.main_hand_item.id>"
+    count:             "<arg:custom.player.main_hand_item.count>"
+    custom_model_data: "<arg:custom.player.main_hand_item.custom_model_data>"
+    is_custom:         "<arg:custom.player.main_hand_item.is_custom>"
+  off_hand:
+    id:                "<arg:custom.player.off_hand_item.id>"
+    count:             "<arg:custom.player.off_hand_item.count>"
+    custom_model_data: "<arg:custom.player.off_hand_item.custom_model_data>"
+    is_custom:         "<arg:custom.player.off_hand_item.is_custom>"
+
+  # -- 所处世界 (子对象: world) --
+  world:
+    name: "<arg:custom.player.world.name>"
+    uuid: "<arg:custom.player.world.uuid>"
+    time: "<arg:custom.player.world.time>"
+
+  # -- 位置 (子对象: position) --
+  position:
+    x:       "<arg:custom.player.position.x>"
+    y:       "<arg:custom.player.position.y>"
+    z:       "<arg:custom.player.position.z>"
+    yaw:     "<arg:custom.player.position.yaw>"
+    pitch:   "<arg:custom.player.position.pitch>"
+    block_x: "<arg:custom.player.position.block_x>"
+    block_y: "<arg:custom.player.position.block_y>"
+    block_z: "<arg:custom.player.position.block_z>"
+    world_name: "<arg:custom.player.position.world.name>"
+    world_uuid: "<arg:custom.player.position.world.uuid>"
+    world_time: "<arg:custom.player.position.world.time>"
+
+# ============================================================================
+# Group 2 — block (方块对象)
+# 所有 block 相关链: <arg:block.属性>
+# ============================================================================
+block:
+  # -- 坐标 --
+  coordinates:
+    double: "<arg:custom.block.x> <arg:custom.block.y> <arg:custom.block.z>"
+    block:  "<arg:custom.block.block_x> <arg:custom.block.block_y> <arg:custom.block.block_z>"
+
+  # -- 方块状态 --
+  block_state: "<arg:custom.block.block_state>"
+
+  # -- 所处世界 (子对象: world) --
+  world:
+    name: "<arg:custom.block.world.name>"
+    uuid: "<arg:custom.block.world.uuid>"
+    time: "<arg:custom.block.world.time>"
+
+  # -- 位置 (子对象: position) --
+  position:
+    x:       "<arg:custom.block.position.x>"
+    y:       "<arg:custom.block.position.y>"
+    z:       "<arg:custom.block.position.z>"
+    yaw:     "<arg:custom.block.position.yaw>"
+    pitch:   "<arg:custom.block.position.pitch>"
+    block_x: "<arg:custom.block.position.block_x>"
+    block_y: "<arg:custom.block.position.block_y>"
+    block_z: "<arg:custom.block.position.block_z>"
+    world_name: "<arg:custom.block.position.world.name>"
+    world_uuid: "<arg:custom.block.position.world.uuid>"
+    world_time: "<arg:custom.block.position.world.time>"
+
+# ============================================================================
+# Group 3 — world (世界对象)
+# 所有 world 相关链: <arg:world.属性>
+# ============================================================================
+world:
+  name: "<arg:custom.world.name>"
+  uuid: "<arg:custom.world.uuid>"
+  time: "<arg:custom.world.time>"
+
+# ============================================================================
+# Group 4 — entity (实体对象)
+# 所有 entity 相关链: <arg:entity.属性>
+# ============================================================================
+entity:
+  # -- 坐标 --
+  coordinates:
+    double: "<arg:custom.entity.x> <arg:custom.entity.y> <arg:custom.entity.z>"
+    block:  "<arg:custom.entity.block_x> <arg:custom.entity.block_y> <arg:custom.entity.block_z>"
+
+  # -- 身份信息 --
+  identity:
+    name: "<arg:custom.entity.name>"
+    uuid: "<arg:custom.entity.uuid>"
+
+  # -- 所处世界 (子对象: world) --
+  world:
+    name: "<arg:custom.entity.world.name>"
+    uuid: "<arg:custom.entity.world.uuid>"
+    time: "<arg:custom.entity.world.time>"
+
+  # -- 位置 (子对象: position) --
+  position:
+    x:       "<arg:custom.entity.position.x>"
+    y:       "<arg:custom.entity.position.y>"
+    z:       "<arg:custom.entity.position.z>"
+    yaw:     "<arg:custom.entity.position.yaw>"
+    pitch:   "<arg:custom.entity.position.pitch>"
+    block_x: "<arg:custom.entity.position.block_x>"
+    block_y: "<arg:custom.entity.position.block_y>"
+    block_z: "<arg:custom.entity.position.block_z>"
+    world_name: "<arg:custom.entity.position.world.name>"
+    world_uuid: "<arg:custom.entity.position.world.uuid>"
+    world_time: "<arg:custom.entity.position.world.time>"
+
+  # -- 掉落物物品 (子对象: item; 仅掉落物实体有效) --
+  item:
+    id:                "<arg:custom.entity.item.id>"
+    count:             "<arg:custom.entity.item.count>"
+    custom_model_data: "<arg:custom.entity.item.custom_model_data>"
+    is_custom:         "<arg:custom.entity.item.is_custom>"
+
+# ============================================================================
+# Group 5 — position (位置对象)
+# 所有 position 相关链: <arg:position.属性>
+# ============================================================================
+position:
+  # -- 坐标 --
+  coordinates:
+    double: "<arg:custom.position.x> <arg:custom.position.y> <arg:custom.position.z>"
+    block:  "<arg:custom.position.block_x> <arg:custom.position.block_y> <arg:custom.position.block_z>"
+
+  # -- 旋转角度 --
+  rotation:
+    yaw:   "<arg:custom.position.yaw>"
+    pitch: "<arg:custom.position.pitch>"
+
+  # -- 所在世界 (子对象: world) --
+  world:
+    name: "<arg:custom.position.world.name>"
+    uuid: "<arg:custom.position.world.uuid>"
+    time: "<arg:custom.position.world.time>"
+
+# ============================================================================
+# Group 6 — item (物品对象)
+# 所有 item 相关链: <arg:item.属性>
+# ============================================================================
+item:
+  id:                "<arg:custom.item.id>"
+  custom_model_data: "<arg:custom.item.custom_model_data>"
+  is_custom:         "<arg:custom.item.is_custom>"
+  count:             "<arg:custom.item.count>"
+
+# ============================================================================
+# Group 7 — furniture (家具对象)
+# 所有 furniture 相关链: <arg:furniture.属性>
+# ============================================================================
+furniture:
+  # -- 身份信息 --
+  identity:
+    id:      "<arg:custom.furniture.id>"
+    uuid:    "<arg:custom.furniture.uuid>"
+    variant: "<arg:custom.furniture.variant>"
+
+  # -- 坐标与旋转 --
+  placement:
+    x:     "<arg:custom.furniture.x>"
+    y:     "<arg:custom.furniture.y>"
+    z:     "<arg:custom.furniture.z>"
+    yaw:   "<arg:custom.furniture.yaw>"
+    pitch: "<arg:custom.furniture.pitch>"
+
+  # -- 位置 (子对象: position) --
+  position:
+    x:       "<arg:custom.furniture.position.x>"
+    y:       "<arg:custom.furniture.position.y>"
+    z:       "<arg:custom.furniture.position.z>"
+    yaw:     "<arg:custom.furniture.position.yaw>"
+    pitch:   "<arg:custom.furniture.position.pitch>"
+    block_x: "<arg:custom.furniture.position.block_x>"
+    block_y: "<arg:custom.furniture.position.block_y>"
+    block_z: "<arg:custom.furniture.position.block_z>"
+    world_name: "<arg:custom.furniture.position.world.name>"
+    world_uuid: "<arg:custom.furniture.position.world.uuid>"
+    world_time: "<arg:custom.furniture.position.world.time>"
+
+# ============================================================================
+# 使用示例 — 将链式参数整合到实际 CraftEngine 配置中
+# ============================================================================
+#
+# 1. 物品名称/描述中使用链式参数
+#    item_name: "<!i><#FF8C00><arg:custom.player.name>的宝剑"
+#    lore:
+#      - "位置: <arg:custom.player.x>, <arg:custom.player.y>, <arg:custom.player.z>"
+#      - "世界: <arg:custom.player.world.name>"
+#
+# 2. 方块交互反馈
+#    conditions:
+#      - type: equals
+#        value: "<arg:custom.block.block_state>"
+#        input: "stage=1"
+#    commands:
+#      - "tell <arg:custom.player.name> 你点击了成熟作物"
+#
+# 3. 实体击杀/交互提示
+#    messages:
+#      - "<#FFAA00>你击杀了 <arg:custom.entity.name> (<arg:custom.entity.uuid>)"
+#      - "<gray>坐标: <arg:custom.entity.block_x> <arg:custom.entity.block_y> <arg:custom.entity.block_z>"
+#
+# 4. 家具交互位置通知
+#    commands:
+#      - "particle flame <arg:custom.furniture.position.x> <arg:custom.furniture.position.y> <arg:custom.furniture.position.z> 0 0 0 0 1"
+#      - "playsound minecraft:block.note_block.pling block <arg:custom.furniture.position.x> <arg:custom.furniture.position.y> <arg:custom.furniture.position.z> 1 1"
+#
+# 5. 物品属性绑定
+#    data:
+#      item_name: "<!i><#FFAA00><arg:custom.main_hand_item.custom_model_data>"
+#      lore:
+#        - "主手持物ID: <arg:custom.player.main_hand_item.id>"
+#        - "数量: <arg:custom.player.main_hand_item.count>"
+#        - "是否自定义: <arg:custom.player.main_hand_item.is_custom>"
+#
+# 6. 命令广播
+#    commands:
+#      - "say 玩家 <arg:custom.player.name> 在 <arg:custom.player.world.name> 坐标 <arg:custom.player.block_x> <arg:custom.player.block_z>"

@@ -1,7 +1,0 @@
-# Wiki: CraftEngine Wiki/configuration/item/behaviors/double_high_block_item.md
-# 双层方块物品 —— 用于放置两格高方块，避免仅使用标准方块物品时的放置错误
-items:
-  custom:my_double_high_item: # << CHANGE THIS (物品ID)
-    behavior:
-      type: double_high_block_item
-      block: custom:my_double_high_block # << CHANGE THIS (对应的双层方块ID)

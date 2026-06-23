@@ -1,0 +1,177 @@
+# =============================================================================
+# CraftEngine 工具物品完整配置模板
+# =============================================================================
+# 本地参考文档:
+#   CraftEngine Wiki/configuration/item/behaviors/range_mining_item.md
+#   CraftEngine Wiki/configuration/item/settings.md
+#
+# 覆盖特性:
+#   1.  range_mining_item 行为 (range 偏移元组)
+#   2.  tags / repairable / anvil_repair_item 设置
+#   3.  projectile 弹射物完全配置 (含高级音效、方块覆盖)
+#
+# 使用方法:
+#   1. 全局替换 "your_namespace" 为你的命名空间 (如 "mythic")
+#   2. 修改各 item 的 material 及 << CHANGE THIS 标记的值
+#   3. 按需调整 range 偏移元组 (宽度,高度,深度)
+# =============================================================================
+
+items:
+  # ===========================================================================
+  # 镐 — 3×3 范围挖掘 (完整方块面)
+  # ===========================================================================
+  your_namespace:pickaxe:                                    # << CHANGE THIS
+    material: diamond_pickaxe                                 # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+    settings:
+      tags:
+        - "your_namespace:pickaxes"                           # << CHANGE THIS
+        - "minecraft:mineable/pickaxe"
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target: "#your_namespace:topaz_tools"               # << CHANGE THIS
+          amount: 20                                          # 固定恢复 20 耐久
+        - target:
+            - "minecraft:diamond"                             # << CHANGE THIS
+          percent: 0.25                                       # 恢复 25% 总耐久
+
+  # ===========================================================================
+  # 斧 — 水平 3×1 范围挖掘 (适合砍树)
+  # ===========================================================================
+  your_namespace:axe:                                         # << CHANGE THIS
+    material: diamond_axe                                     # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 1,0,0
+          - -1,0,0
+          - 0,0,0
+    settings:
+      tags:
+        - "your_namespace:axes"                               # << CHANGE THIS
+        - "minecraft:mineable/axe"
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target: "#your_namespace:topaz_tools"               # << CHANGE THIS
+          amount: 20
+        - target:
+            - "minecraft:diamond"                             # << CHANGE THIS
+          percent: 0.25
+
+  # ===========================================================================
+  # 锹 — 3×3 水平平面挖掘 (适合修地形)
+  # ===========================================================================
+  your_namespace:shovel:                                      # << CHANGE THIS
+    material: diamond_shovel                                  # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,0,1
+          - 0,0,-1
+          - 1,0,1
+          - 1,0,-1
+          - -1,0,1
+          - -1,0,-1
+          - 0,0,0
+    settings:
+      tags:
+        - "your_namespace:shovels"                            # << CHANGE THIS
+        - "minecraft:mineable/shovel"
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target: "#your_namespace:topaz_tools"               # << CHANGE THIS
+          amount: 20
+        - target:
+            - "minecraft:diamond"                             # << CHANGE THIS
+          percent: 0.25
+
+  # ===========================================================================
+  # 锄 — 十字形范围挖掘 (精准采集特殊方块)
+  # ===========================================================================
+  your_namespace:hoe:                                         # << CHANGE THIS
+    material: diamond_hoe                                     # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 0,-1,0
+          - 1,0,0
+          - -1,0,0
+    settings:
+      tags:
+        - "your_namespace:hoes"                               # << CHANGE THIS
+        - "minecraft:mineable/hoe"
+      repairable: true                                         # 简单开关
+      anvil_repair_item:
+        - target: "#your_namespace:topaz_tools"               # << CHANGE THIS
+          amount: 20
+
+  # ===========================================================================
+  # 三叉戟 (远程弹射物) — 展示 projectile 完整配置
+  # ===========================================================================
+  your_namespace:trident:                                     # << CHANGE THIS
+    material: trident                                         # << CHANGE THIS
+    conditions: []
+    settings:
+      tags:
+        - "your_namespace:weapons"                            # << CHANGE THIS
+      repairable:
+        crafting_table: false
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target:
+            - "minecraft:diamond"                             # << CHANGE THIS
+          percent: 0.25
+      projectile:
+        display:
+          item: your_namespace:topaz_trident                  # << CHANGE THIS
+          translation: 0,0,0
+          rotation: 1,1,1,1
+          display_transform: NONE
+          scale: 0.5
+        sounds:
+          # 简易格式
+          throw: minecraft:item.trident.throw
+          # 高级格式 (支持 pitch 范围 / volume)
+          hit_entity:
+            id: minecraft:item.trident.hit
+            pitch: 0.9~1.0
+            volume: 1.0
+          # 带方块类型覆盖
+          hit_block:
+            default: minecraft:item.trident.hit_ground
+            overrides:
+              minecraft:stone: minecraft:item.trident.hit
+              your_namespace:palm_log: minecraft:item.trident.hit_log  # << CHANGE THIS
+        ignore_infinity_enchantment: false
+        pickupable: true
+        remove_on_hit: false
+        gravity: true
+        velocity: 2.5                                         # << CHANGE THIS
+        damage: 12                                            # << CHANGE THIS
+        pierce_level: 3                                       # << CHANGE THIS

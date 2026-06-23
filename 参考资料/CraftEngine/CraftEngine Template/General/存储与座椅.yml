@@ -1,0 +1,98 @@
+# =============================================================================
+# CraftEngine 方块行为模板 — 存储与座椅
+# =============================================================================
+# 本地 Wiki 参考路径:
+#   behaviors/simple_storage_block.md  — 简单存储容器（保险柜/箱子）
+#   behaviors/drawer_block.md          — 单物品大储量抽屉
+#   behaviors/seat_block.md            — 座椅方块
+#   behaviors/sofa_block.md            — 可连接沙发方块
+#   behaviors/stackable_block.md       — 可堆叠方块（类似海泡菜/蜡烛）
+# =============================================================================
+# 使用方法:
+#   1. 将 "your_namespace" 替换为你的命名空间
+#   2. 将 "your_*" 替换为实际 ID
+#   3. 按需调整带 "<< CHANGE THIS" 标记的值
+#   4. 删除不需要的整段示例
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 1. 简单存储方块 (simple_storage_block)
+  #    类似箱子，可自定义行数，支持比较器与音效。
+  # ===========================================================================
+  your_namespace:your_safe_block:                            # << CHANGE THIS
+    behavior:
+      type: simple_storage_block
+      title: "保险柜"                                         # << CHANGE THIS | 容器标题，支持 MiniMessage 格式（默认 "<lang:container.chest>"）
+      rows: 3                                                 # << CHANGE THIS | 行数，范围 1~6（默认 1）
+      has_signal: true                                        # << CHANGE THIS | 根据填充比例输出比较器信号（默认 true）
+      allow_input: true                                       # << CHANGE THIS | 允许漏斗等外部容器放入物品（默认 true）
+      allow_output: true                                      # << CHANGE THIS | 允许漏斗等外部容器取出物品（默认 true）
+      data_key: "craftengine:simple_storage"                  # << CHANGE THIS | 持久化数据的 NBT 键（默认 "craftengine:simple_storage"）
+      sounds:
+        open: minecraft:block.iron_trapdoor.open              # << CHANGE THIS | 容器打开音效（可选）
+        close: minecraft:block.iron_trapdoor.close            # << CHANGE THIS | 容器关闭音效（可选）
+    properties:
+      open: false                                             # << CHANGE THIS | boolean 属性，反映容器开关状态，可在模型中使用（可选）
+
+  # ===========================================================================
+  # 2. 抽屉方块 (drawer_block)
+  #    单物品大储量存储，右键存入 / 左键取出 / 双击批量存入。
+  # ===========================================================================
+  your_namespace:your_drawer_block:                           # << CHANGE THIS
+    behavior:
+      type: drawer_block
+      max_stacks: 32                                          # << CHANGE THIS | 最多容纳的物品组数（默认 32）
+      has_signal: true                                        # << CHANGE THIS | 是否允许比较器输出信号（默认 true）
+      allow_input: true                                       # << CHANGE THIS | 是否允许漏斗放入物品（默认 true）
+      allow_output: true                                      # << CHANGE THIS | 是否允许漏斗取出物品（默认 true）
+      item_position: 0,0,-0.52                                # << CHANGE THIS | 展示物品的位置偏移（默认 0.5,0.5,0.5）
+      text_position: 0,-0.4,-0.52                             # << CHANGE THIS | 数量文本的位置偏移（默认 0.5,0.5,0.5）
+      item_scale: 0.6,0.6,0.6                                 # << CHANGE THIS | 展示物品的缩放（默认 0.5,0.5,0.5）
+      text_scale: 0.5,0.5,0.5                                 # << CHANGE THIS | 数量文本的缩放（默认 0.5,0.5,0.5）
+      data_key: "craftengine:drawer"                          # << CHANGE THIS | 持久化抽屉数据的 NBT 键（默认 "craftengine:drawer"）
+      compatible_mode: false                                  # << CHANGE THIS | 与其他存储插件的兼容模式（默认 false）
+      sounds:
+        put: minecraft:block.decorated_pot.insert             # << CHANGE THIS | 放入物品音效（可选）
+        take: minecraft:block.decorated_pot.insert_fail       # << CHANGE THIS | 取出物品音效（可选）
+    properties:
+      facing: north                                           # << CHANGE THIS | horizontal_direction，抽屉朝向，用于展示物品随朝向旋转（可选）
+
+  # ===========================================================================
+  # 3. 座椅方块 (seat_block)
+  #    右键坐下，可配置多个座位及偏航角锁定。
+  # ===========================================================================
+  your_namespace:your_seat_block:                             # << CHANGE THIS
+    behavior:
+      type: seat_block
+      seats:
+        - 0,0,0 0                                             # << CHANGE THIS | x,y,z [角度]，角度限制玩家偏航旋转；省略则不锁定
+        # - 0.5,0,0.5 45                                      # << CHANGE THIS | 可添加多个座位
+    properties:
+      facing: north                                           # << CHANGE THIS | horizontal_direction，座位位置随朝向自动旋转（可选）
+
+  # ===========================================================================
+  # 4. 沙发方块 (sofa_block)
+  #    可连接的座椅，PP 更新时自动计算 shape 形成连续结构。
+  # ===========================================================================
+  your_namespace:your_sofa_block:                             # << CHANGE THIS
+    behavior:
+      type: sofa_block
+    properties:
+      shape: straight                                         # << CHANGE THIS | sofa_shape（必需），PP 更新时自动计算
+      facing: north                                           # << CHANGE THIS | horizontal_direction（必需）
+      waterlogged: false                                      # << CHANGE THIS | boolean，是否含水（可选，默认 false）
+
+  # ===========================================================================
+  # 5. 可堆叠方块 (stackable_block)
+  #    用指定物品对方块进行堆叠（类似海泡菜/蜡烛），递增 int 属性值。
+  # ===========================================================================
+  your_namespace:your_stackable_block:                        # << CHANGE THIS
+    behavior:
+      type: stackable_block
+      property: pebble                                        # << CHANGE THIS | 记录堆叠数量的 int 属性名（默认 "amount"）
+      items:                                                  # 可用于增加堆叠的物品（必需）
+        - your_namespace:pebble                               # << CHANGE THIS
+    properties:
+      pebble: 0                                               # << CHANGE THIS | int 属性，定义取值范围决定堆叠等级数（必需）

@@ -1,0 +1,70 @@
+# =============================================================================
+# CraftEngine — 画 (Painting) 完整配置模板
+# =============================================================================
+# Wiki 参考路径:
+#   CraftEngine Wiki/configuration/painting.md
+#
+# 用法:
+#   1. 将下方的 "yourmod" 替换为你的命名空间
+#   2. 将 "your_painting" 替换为你的画 ID
+#   3. 纹理文件位于 assets/<命名空间>/textures/painting/<路径>.png
+#   4. 修改后重新进入服务器生效 (Minecraft 注册表在注册后不可变)
+# =============================================================================
+
+# ┌─────────────────────────────────────────────────────────────────────────────
+# │ 画注册
+# │ 注册自定义画 (Painting Variant)，每个条目一个画类型
+# └─────────────────────────────────────────────────────────────────────────────
+paintings:
+
+  # --- 示例 1: 完整配置 (所有选项均显式指定) ---
+  yourmod:your_painting:                                    # << CHANGE THIS: 画的命名空间ID
+    width: 2                                                 # 可选; 默认 1; 范围 1~16; 画宽度 (方块)
+    height: 2                                                # 可选; 默认 1; 范围 1~16; 画高度 (方块)
+    asset_id: yourmod:your_painting                          # 可选; 默认等于该条目键名; 纹理路径 -> textures/painting/<路径>.png
+    title: "<lang:painting.yourmod.your_painting.title>"     # 可选; 需要 1.21.2+; 低版本固定翻译键 painting.<命名空间>.<路径>.title
+    author: "<lang:painting.yourmod.your_painting.author>"   # 可选; 需要 1.21.2+; 低版本固定翻译键 painting.<命名空间>.<路径>.author
+    show_in_op_tab: false                                    # 可选; 默认为 false; true = 管理员用品标签页, false = 工具与实用物品标签页
+
+  # --- 示例 2: 最小配置 (仅命名空间ID, 其余全默认) ---
+  yourmod:minimal_example:                                   # << CHANGE THIS
+
+  # --- 示例 3: 仅自定义尺寸, 其余默认 ---
+  yourmod:wide_painting:                                     # << CHANGE THIS
+    width: 4
+    height: 2
+
+  # --- 示例 4: 大尺寸画, 显示在管理员用品标签页 ---
+  yourmod:op_masterpiece:                                    # << CHANGE THIS
+    width: 3
+    height: 3
+    show_in_op_tab: true
+
+  # --- 示例 5: 仅纹理与标题自定义 (1.21.2+ 特性) ---
+  yourmod:signed_artwork:                                    # << CHANGE THIS
+    asset_id: yourmod:signed_artwork                         # << CHANGE THIS: 实际纹理路径
+    title: "<lang:painting.yourmod.signed_artwork.title>"     # << CHANGE THIS
+    author: "<lang:painting.yourmod.signed_artwork.author>"   # << CHANGE THIS
+
+# ┌─────────────────────────────────────────────────────────────────────────────
+# │ 物品绑定
+# │ 将画注册为可放置的物品 (material: painting + data.painting_variant)
+# └─────────────────────────────────────────────────────────────────────────────
+items:
+
+  # --- 将上面的画作为物品 ---
+  yourmod:your_painting_item:                                # << CHANGE THIS: 物品ID
+    material: painting
+    data:
+      painting_variant: yourmod:your_painting                # << CHANGE THIS: 对应上方注册的画的命名空间ID
+
+  # --- 更多示例 ---
+  yourmod:wide_painting_item:                                # << CHANGE THIS
+    material: painting
+    data:
+      painting_variant: yourmod:wide_painting                # << CHANGE THIS
+
+  yourmod:op_painting_item:                                  # << CHANGE THIS
+    material: painting
+    data:
+      painting_variant: yourmod:op_masterpiece               # << CHANGE THIS
