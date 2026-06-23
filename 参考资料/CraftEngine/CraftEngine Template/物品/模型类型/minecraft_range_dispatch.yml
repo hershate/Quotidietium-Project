@@ -1,584 +1,297 @@
-# =============================================================================
-# CraftEngine - minecraft:range_dispatch 物品模型模板
-# =============================================================================
-# 根据数值属性渲染物品模型。将选择阈值小于或等于属性值的最后一个条目。
-# 参考: https://zh.minecraft.wiki/w/物品模型映射#range_dispatch
-# =============================================================================
-# 快速参考:
-#   类型:       minecraft:range_dispatch
-#   核心字段:   property, entries, fallback
-#   可选字段:   scale, transformation (26.1+)
-#   适用版本:   1.21+
-# =============================================================================
-
+# Wiki: CraftEngine Wiki/configuration/item/models/range_dispatch.md
+# 值调配型 - 根据数值属性渲染物品模型。选择阈值小于或等于属性值的最后一个条目。
 items:
-
-  # ===========================================================================
-  # property: minecraft:crossbow/pull
-  # ===========================================================================
-  # 弩被拉伸的程度；如果物品堆叠没有 charged_projectiles 组件，
-  # 或物品堆叠不在任何生物身上，则返回 0。
-  # 典型阈值: 0.0 -> pulling_0, 0.58 -> pulling_1, 1.0 -> pulling_2
-  # ===========================================================================
-  custom:crossbow_example:
-    material: crossbow
-    custom_model_data: 2001
-    data:
-      item_name: "<!i><#FF6347>炎狱弩"
-      lore:
-        - "<!i><gray>基于拉伸程度切换模型"
+  # ======================================================
+  # minecraft:crossbow/pull
+  # 弩被拉伸的程度；未加载 charged_projectiles 则返回 0
+  # ======================================================
+  custom:crossbow_pull_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:crossbow/pull"
+      scale: 1.0 # << CHANGE THIS
       entries:
-        - threshold: 0.0
+        - threshold: 0.58 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/crossbow_example_pulling_0"
-        - threshold: 0.58
+            path: "minecraft:item/custom/pulling_1" # << CHANGE THIS
+        - threshold: 1.0 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/crossbow_example_pulling_1"
-        - threshold: 1.0
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/crossbow_example_pulling_2"
-      # fallback 在 crossbow/pull 中通常配合 condition 嵌套使用
+            path: "minecraft:item/custom/pulling_2" # << CHANGE THIS
       fallback:
-        type: "minecraft:condition"
-        property: "minecraft:crossbow/charged"
-        on_false:
-          type: "minecraft:model"
-          path: "minecraft:item/custom/crossbow_example_standby"
-        on_true:
-          type: "minecraft:condition"
-          property: "minecraft:crossbow/firework"
-          on_false:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/crossbow_example_arrow"
-          on_true:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/crossbow_example_firework"
+        type: "minecraft:model"
+        path: "minecraft:item/custom/standby" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:bundle/fullness
-  # ===========================================================================
-  # 获取收纳袋的容量，此浮点数只会在 0-1 之间，
-  # 如果物品堆叠没有 bundle_contents 组件则返回 0。
-  # 典型用法: 按填充程度切换模型外观。
-  # ===========================================================================
-  custom:bundle_example:
-    material: bundle
-    custom_model_data: 3001
-    data:
-      item_name: "<!i><#DAA520>魔法收纳袋"
-      lore:
-        - "<!i><gray>根据填充程度切换外观"
+  # ======================================================
+  # minecraft:bundle/fullness
+  # 收纳袋容量 0-1；无 bundle_contents 组件则返回 0
+  # ======================================================
+  custom:bundle_fullness_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:bundle/fullness"
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.25 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/bundle_example_empty"
-        - threshold: 0.25
+            path: "minecraft:item/custom/filled_25" # << CHANGE THIS
+        - threshold: 0.5 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/bundle_example_filled_25"
-        - threshold: 0.5
+            path: "minecraft:item/custom/filled_50" # << CHANGE THIS
+        - threshold: 0.75 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/bundle_example_filled_50"
-        - threshold: 0.75
+            path: "minecraft:item/custom/filled_75" # << CHANGE THIS
+        - threshold: 1.0 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/bundle_example_filled_75"
-        - threshold: 1.0
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/bundle_example_full"
+            path: "minecraft:item/custom/full" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/bundle_example_empty"
+        path: "minecraft:item/custom/empty" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:cooldown
-  # ===========================================================================
-  # 获取物品堆叠的冷却程度；如果物品不在玩家物品栏内，则返回 0。
-  # 返回值范围: 0.0 (无冷却) ~ 1.0 (冷却中)。
-  # 典型用法: 展示技能冷却状态。
-  # ===========================================================================
-  custom:cooldown_example:
-    material: blaze_rod
-    custom_model_data: 4001
-    data:
-      item_name: "<!i><#FF4500>烈焰冲击"
-      lore:
-        - "<!i><gray>根据冷却状态切换模型"
+  # ======================================================
+  # minecraft:cooldown
+  # 物品冷却程度；不在玩家物品栏则返回 0, 范围 0-1
+  # ======================================================
+  custom:cooldown_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:cooldown"
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.001 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/cooldown_example_ready"
-        - threshold: 0.001
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/cooldown_example_active"
+            path: "minecraft:item/custom/on_cooldown" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/cooldown_example_ready"
-      # 模型变换 (26.1+)
-      transformation:
-        scale: 1,1,1
-        translation: 0,0,0
+        path: "minecraft:item/custom/ready" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:compass
-  # ===========================================================================
-  # 读取指南针信息，计算指南针指针摆动进度作为返回值，
-  # 返回值取值为 0-1 的闭区间。
-  # 特有附加字段: target, wobble
-  # 如果指向目标不存在，或指向目标和当前维度不一致，
-  # 或当前位置与指向目标的距离小于 1e-5 时，指针摆动进度会使用随机浮点数。
-  # ===========================================================================
-  custom:compass_example:
-    material: compass
-    custom_model_data: 5001
-    data:
-      item_name: "<!i><#00BFFF>追踪指南针"
-      lore:
-        - "<!i><gray>根据指向状态切换模型"
+  # ======================================================
+  # minecraft:compass
+  # 指南针指针摆动进度 0-1；特有字段 target, wobble
+  # ======================================================
+  custom:compass_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:compass"
-      target: spawn               # 指向目标 (spawn / lodestone ...)
-      wobble: true                # 是否启用摆动效果
+      target: spawn # << CHANGE THIS; spawn / recovery / lodestone / none
+      wobble: true # << CHANGE THIS
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.125 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_00"
-        - threshold: 0.125
+            path: "minecraft:item/custom/compass_12" # << CHANGE THIS
+        - threshold: 0.25 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_12"
-        - threshold: 0.25
+            path: "minecraft:item/custom/compass_25" # << CHANGE THIS
+        - threshold: 0.375 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_25"
-        - threshold: 0.375
+            path: "minecraft:item/custom/compass_37" # << CHANGE THIS
+        - threshold: 0.5 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_37"
-        - threshold: 0.5
+            path: "minecraft:item/custom/compass_50" # << CHANGE THIS
+        - threshold: 0.625 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_50"
-        - threshold: 0.625
+            path: "minecraft:item/custom/compass_62" # << CHANGE THIS
+        - threshold: 0.75 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_62"
-        - threshold: 0.75
+            path: "minecraft:item/custom/compass_75" # << CHANGE THIS
+        - threshold: 0.875 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_75"
-        - threshold: 0.875
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/compass_example_87"
+            path: "minecraft:item/custom/compass_87" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/compass_example_00"
-      transformation:
-        scale: 1,1,1
-        translation: 0,0,0
-        right_rotation:
-          angle: 0.0
-          axis: 0,0,0
-        left_rotation: 0,0,0,0
+        path: "minecraft:item/custom/compass_00" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:count
-  # ===========================================================================
-  # 读取物品堆叠的物品数量作为返回值。
-  # 如果物品数量大于物品最大堆叠数量，则返回物品最大堆叠数量。
-  # 特有附加字段: normalize
-  # normalize: true 时返回值归一化为 0-1，false 时返回实际数量。
-  # ===========================================================================
-  custom:count_example:
-    material: arrow
-    custom_model_data: 6001
-    data:
-      item_name: "<!i><#98FB98>魔法箭袋"
-      lore:
-        - "<!i><gray>根据物品数量切换模型"
+  # ======================================================
+  # minecraft:count
+  # 物品数量；超出最大堆叠则取最大值；特有字段 normalize
+  # ======================================================
+  custom:count_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:count"
-      normalize: true              # true: 归一化 0-1; false: 实际数量
+      normalize: true # << CHANGE THIS; true=归一化 0-1, false=实际数量
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.25 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/count_example_0"
-        - threshold: 0.25
+            path: "minecraft:item/custom/count_1" # << CHANGE THIS
+        - threshold: 0.5 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/count_example_1"
-        - threshold: 0.5
+            path: "minecraft:item/custom/count_2" # << CHANGE THIS
+        - threshold: 0.75 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/count_example_2"
-        - threshold: 0.75
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/count_example_3"
+            path: "minecraft:item/custom/count_3" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/count_example_0"
+        path: "minecraft:item/custom/count_0" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:damage
-  # ===========================================================================
-  # 读取物品堆叠的损坏值（damage 组件）。
-  # 如果物品没有损坏或无法损坏，则返回 0。
-  # 如果损坏值大于最大耐久度（max_damage 组件），则返回最大耐久度。
-  # 特有附加字段: normalize
-  # normalize: true 时返回 (damage / max_damage) 归一化 0-1。
-  # ===========================================================================
-  custom:damage_example:
-    material: diamond_pickaxe
-    custom_model_data: 7001
-    data:
-      item_name: "<!i><#FFD700>破损的皇金镐"
-      lore:
-        - "<!i><gray>根据耐久度百分比切换模型"
-      max_damage: 1561
+  # ======================================================
+  # minecraft:damage
+  # 损坏值；无 damage 组件则返回 0；特有字段 normalize
+  # ======================================================
+  custom:damage_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:damage"
-      normalize: true              # true: 归一化 0-1; false: 实际损坏值
+      normalize: true # << CHANGE THIS; true=归一化 0-1, false=实际损坏值
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.25 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/damage_example_full"
-        - threshold: 0.25
+            path: "minecraft:item/custom/damage_worn" # << CHANGE THIS
+        - threshold: 0.5 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/damage_example_worn"
-        - threshold: 0.5
+            path: "minecraft:item/custom/damage_damaged" # << CHANGE THIS
+        - threshold: 0.75 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/damage_example_broken"
+            path: "minecraft:item/custom/damage_broken" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/damage_example_broken"
+        path: "minecraft:item/custom/damage_new" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:time
-  # ===========================================================================
-  # 读取当前维度的时间，计算并平滑模拟时钟摆动进度，
-  # 将时钟摆动进度作为返回值返回，返回值取值为 0-1 的闭区间。
-  # 特有附加字段: source (daytime / moon_phase), wobble
-  # ===========================================================================
-  custom:time_example:
-    material: clock
-    custom_model_data: 8001
-    data:
-      item_name: "<!i><#FFD700>远古时钟"
-      lore:
-        - "<!i><gray>根据当前时间切换模型"
+  # ======================================================
+  # minecraft:time
+  # 当前维度时间 0-1；特有字段 source, wobble
+  # source: daytime / moon_phase
+  # ======================================================
+  custom:time_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:time"
-      source: daytime              # daytime / moon_phase
-      wobble: true                 # 是否启用摆动效果
+      source: daytime # << CHANGE THIS; daytime / moon_phase
+      wobble: true # << CHANGE THIS
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.125 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_00"
-        - threshold: 0.125
+            path: "minecraft:item/custom/time_12" # << CHANGE THIS
+        - threshold: 0.25 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_12"
-        - threshold: 0.25
+            path: "minecraft:item/custom/time_25" # << CHANGE THIS
+        - threshold: 0.375 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_25"
-        - threshold: 0.375
+            path: "minecraft:item/custom/time_37" # << CHANGE THIS
+        - threshold: 0.5 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_37"
-        - threshold: 0.5
+            path: "minecraft:item/custom/time_50" # << CHANGE THIS
+        - threshold: 0.625 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_50"
-        - threshold: 0.625
+            path: "minecraft:item/custom/time_62" # << CHANGE THIS
+        - threshold: 0.75 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_62"
-        - threshold: 0.75
+            path: "minecraft:item/custom/time_75" # << CHANGE THIS
+        - threshold: 0.875 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_75"
-        - threshold: 0.875
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/time_example_87"
+            path: "minecraft:item/custom/time_87" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/time_example_00"
+        path: "minecraft:item/custom/time_00" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:use_cycle
-  # ===========================================================================
-  # 读取当前物品堆叠的剩余使用时间，并对给定的周期取模作为返回值。
-  # 如果物品堆叠不在任何生物身上，或生物没有使用这个物品堆叠，则返回 0。
-  # 特有附加字段: period (取模周期，浮点数)
-  # ===========================================================================
-  custom:use_cycle_example:
-    material: bow
-    custom_model_data: 9001
-    data:
-      item_name: "<!i><#7CFC00>精灵短弓"
-      lore:
-        - "<!i><gray>根据使用阶段循环切换模型"
+  # ======================================================
+  # minecraft:use_cycle
+  # 使用时间对 period 取模；特有字段 period
+  # ======================================================
+  custom:use_cycle_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:use_cycle"
-      period: 1.0                  # 取模周期步长
+      period: 1.0 # << CHANGE THIS; 取模周期（秒）
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.2 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_cycle_example_stage_0"
-        - threshold: 0.2
+            path: "minecraft:item/custom/cycle_1" # << CHANGE THIS
+        - threshold: 0.4 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_cycle_example_stage_1"
-        - threshold: 0.4
+            path: "minecraft:item/custom/cycle_2" # << CHANGE THIS
+        - threshold: 0.6 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_cycle_example_stage_2"
-        - threshold: 0.6
+            path: "minecraft:item/custom/cycle_3" # << CHANGE THIS
+        - threshold: 0.8 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_cycle_example_stage_3"
-        - threshold: 0.8
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/use_cycle_example_stage_4"
+            path: "minecraft:item/custom/cycle_4" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/use_cycle_example_stage_0"
+        path: "minecraft:item/custom/cycle_0" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:use_duration
-  # ===========================================================================
-  # 读取物品堆叠的使用时间或剩余使用时间作为返回值。
-  # 如果物品堆叠不在任何生物身上，或生物没有使用这个物品堆叠，则返回 0。
-  # 特有附加字段: remaining (true: 剩余使用时间, false: 已使用时间)
-  # 典型用法: 配合 minecraft:condition 的 using_item 属性，实现弓/三叉戟蓄力模型。
-  # ===========================================================================
-  custom:use_duration_example:
-    material: bow
-    custom_model_data: 10001
-    data:
-      item_name: "<!i><#FF69B4>星辉弓"
-      lore:
-        - "<!i><gray>根据使用持续时间切换蓄力模型"
+  # ======================================================
+  # minecraft:use_duration
+  # 使用时间或剩余使用时间；特有字段 remaining
+  # ======================================================
+  custom:use_duration_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:use_duration"
-      remaining: false             # true: 剩余时间; false: 已使用时间
+      remaining: false # << CHANGE THIS; true=剩余时间, false=已使用时间
+      scale: 1.0
       entries:
-        - threshold: 0.0
+        - threshold: 0.65 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_duration_example_pulling_0"
-        - threshold: 0.65
+            path: "minecraft:item/custom/duration_1" # << CHANGE THIS
+        - threshold: 0.9 # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/use_duration_example_pulling_1"
-        - threshold: 0.9
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/use_duration_example_pulling_2"
+            path: "minecraft:item/custom/duration_2" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/use_duration_example_pulling_0"
-      transformation:
-        scale: 1,1,1
-        translation: 0,0,0
-        right_rotation:
-          angle: 0.0
-          axis: 1,0,0
-        left_rotation: 0,0,0,0
+        path: "minecraft:item/custom/duration_0" # << CHANGE THIS
 
-  # ===========================================================================
-  # property: minecraft:custom_model_data
-  # ===========================================================================
-  # 读取物品堆叠的 custom_model_data 组件中的字符串数组，
-  # 获取指定下标的字符串。
-  # 如果下标超过字符串数组的长度范围，或物品堆叠不存在
-  # custom_model_data 组件，则返回 null，无法匹配。
-  # 特有附加字段: index (字符串数组下标，整数)
-  #
-  # 注意: 此属性与传统整型 custom_model_data 不同，
-  # 它使用 1.21.5+ 新增的字符串数组组件。
-  # entries 中的 threshold 使用字符串作为条件。
-  # ===========================================================================
-  custom:custom_model_data_example:
-    material: stick
-    custom_model_data: 11001
-    data:
-      item_name: "<!i><#FFA500>变形法杖"
-      lore:
-        - "<!i><gray>根据 custom_model_data 字符串切换模型"
+  # ======================================================
+  # minecraft:custom_model_data
+  # 读取 custom_model_data 字符串数组指定下标；特有字段 index
+  # entries.threshold 使用字符串而非浮点数
+  # ======================================================
+  custom:custom_model_data_example: # << CHANGE THIS
     model:
       type: "minecraft:range_dispatch"
       property: "minecraft:custom_model_data"
-      index: 0                     # 字符串数组下标
+      index: 0 # << CHANGE THIS; 字符串数组下标
+      scale: 1.0
       entries:
-        - threshold: "fire"
+        - threshold: "value_a" # << CHANGE THIS; 匹配字符串
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/custom_model_data_example_fire"
-        - threshold: "ice"
+            path: "minecraft:item/custom/cmd_a" # << CHANGE THIS
+        - threshold: "value_b" # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/custom_model_data_example_ice"
-        - threshold: "lightning"
+            path: "minecraft:item/custom/cmd_b" # << CHANGE THIS
+        - threshold: "value_c" # << CHANGE THIS
           model:
             type: "minecraft:model"
-            path: "minecraft:item/custom/custom_model_data_example_lightning"
-        - threshold: "arcane"
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/custom_model_data_example_arcane"
+            path: "minecraft:item/custom/cmd_c" # << CHANGE THIS
       fallback:
         type: "minecraft:model"
-        path: "minecraft:item/custom/custom_model_data_example_default"
-
-  # ===========================================================================
-  # 综合示例: 结合 condition + range_dispatch 的弩
-  # ===========================================================================
-  # 展示如何嵌套使用 range_dispatch 与 condition 模型类型，
-  # 实现原版弩的完整模型行为:
-  #   待机 -> 拉弦动画 -> 装填箭/烟花
-  # ===========================================================================
-  custom:heavy_crossbow:
-    material: crossbow
-    custom_model_data: 12001
-    data:
-      item_name: "<!i><#B8860B>重型攻城弩"
-      lore:
-        - "<!i><gray>完整弩模型嵌套示例"
-      max_damage: 512
-    model:
-      type: "minecraft:range_dispatch"
-      property: "minecraft:crossbow/pull"
-      # scale: 1.0       # 可选: 与属性值相乘
-      entries:
-        - threshold: 0.0
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/heavy_crossbow_pulling_0"
-        - threshold: 0.58
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/heavy_crossbow_pulling_1"
-        - threshold: 1.0
-          model:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/heavy_crossbow_pulling_2"
-      fallback:
-        type: "minecraft:condition"
-        property: "minecraft:crossbow/charged"
-        on_false:
-          type: "minecraft:model"
-          path: "minecraft:item/custom/heavy_crossbow_standby"
-        on_true:
-          type: "minecraft:condition"
-          property: "minecraft:crossbow/firework"
-          on_false:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/heavy_crossbow_arrow"
-          on_true:
-            type: "minecraft:model"
-            path: "minecraft:item/custom/heavy_crossbow_firework"
-      transformation:
-        scale: 1,1,1
-        translation: 0,0,0
-
-  # ===========================================================================
-  # 综合示例: 弓 (condition + use_duration range_dispatch)
-  # ===========================================================================
-  custom:storm_bow:
-    material: bow
-    custom_model_data: 13001
-    data:
-      item_name: "<!i><#00CED1>暴风之弓"
-      lore:
-        - "<!i><gray>弓蓄力模型综合示例"
-    model:
-      type: "minecraft:condition"
-      property: "minecraft:using_item"
-      on_false:
-        type: "minecraft:model"
-        path: "minecraft:item/custom/storm_bow"
-      on_true:
-        type: "minecraft:range_dispatch"
-        property: "minecraft:use_duration"
-        entries:
-          - threshold: 0.0
-            model:
-              type: "minecraft:model"
-              path: "minecraft:item/custom/storm_bow_pulling_0"
-          - threshold: 0.65
-            model:
-              type: "minecraft:model"
-              path: "minecraft:item/custom/storm_bow_pulling_1"
-          - threshold: 0.9
-            model:
-              type: "minecraft:model"
-              path: "minecraft:item/custom/storm_bow_pulling_2"
-        fallback:
-          type: "minecraft:model"
-          path: "minecraft:item/custom/storm_bow_pulling_0"
-
-  # ===========================================================================
-  # 完整参数索引
-  # ===========================================================================
-  # 字段名           类型             必填     描述
-  # ────────────────────────────────────────────────────────────────────────────
-  # type             string          是       minecraft:range_dispatch
-  # property         string          是       数值属性类型
-  # scale            float           否       与属性值相乘获得最终检查数值
-  # entries          list<object>    是       阈值与模型映射列表
-  #  ├ threshold     float/string    是       阈值 (数值属性用 float, custom_model_data 用 string)
-  #  └ model         object          是       物品模型映射
-  # fallback         object          否       回落模型 (所有阈值不匹配时使用)
-  # transformation   object          否       模型变换 (26.1+)
-  #  ├ scale         string          否       缩放 "x,y,z"
-  #  ├ translation   string          否       平移 "x,y,z"
-  #  ├ right_rotation object          否       初始旋转
-  #  │ ├ angle       float           否       旋转角度 (弧度)
-  #  │ └ axis        string          否       旋转轴 "x,y,z"
-  #  └ left_rotation string          否       再次旋转 "x,y,z,angle"
-  #
-  # 属性特有附加字段:
-  #   compass:       target (string), wobble (bool)
-  #   time:          source (daytime|moon_phase), wobble (bool)
-  #   count:         normalize (bool)
-  #   damage:        normalize (bool)
-  #   use_cycle:     period (float)
-  #   use_duration:  remaining (bool)
-  #   custom_model_data: index (int)
-  # ===========================================================================
+        path: "minecraft:item/custom/cmd_default" # << CHANGE THIS

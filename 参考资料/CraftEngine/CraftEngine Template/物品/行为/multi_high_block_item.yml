@@ -1,12 +1,8 @@
-# 🔢 多层方块物品 (Multi-High Block Item)
-# 用于放置多格高的方块（如门），解决仅使用标准方块物品时的放置错误。
+# Wiki: configuration/item/behaviors/multi_high_block_item.md
+# 多层方块物品 - 用于放置多格高方块（如门），解决标准方块物品的放置错误
 
 items:
-  example:my_door:
+  custom:my_multi_block_item:
     behavior:
-      # 行为类型：多层方块物品
       type: multi_high_block_item
-
-      # 【必需】放置时使用的方块 ID
-      # 指定当物品被使用时放置的方块。
-      block: example:my_door
+      block: custom:my_block # << CHANGE THIS

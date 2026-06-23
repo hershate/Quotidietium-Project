@@ -1,0 +1,17 @@
+# wiki: configuration/item/behaviors/liquid_collision_furniture_item.md
+
+items:
+  example_item:
+    behavior:
+      type: liquid_collision_furniture_item
+      rules:
+        ground:
+          rotation: four       # << CHANGE THIS: any / four / eight / sixteen / north / east / west / south
+          alignment: center    # << CHANGE THIS: any / center / half / quarter / corner
+      furniture: custom:example_furniture  # << CHANGE THIS
+      ignore_placer: false                 # << CHANGE THIS: 放置时是否忽略放置者的碰撞箱
+      ignore_entities: false               # << CHANGE THIS: 放置时是否忽略所有实体的碰撞箱
+      source_only: true                    # << CHANGE THIS: 只检测液体源
+      liquid_type:                         # << CHANGE THIS
+        - water
+        # - lava

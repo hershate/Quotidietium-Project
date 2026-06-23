@@ -1,99 +1,15 @@
-# ============================================================================
-# 栅栏门方块 (Fence Gate Block) - 行为配置模板
-# ============================================================================
-# 功能：模仿原版栅栏门的开关、方向与红石交互行为。
-# 玩家可手右键切换、红石信号切换、风弹切换。
-# 当门朝向两侧存在 #minecraft:walls 标签方块时，in_wall 属性自动置为 true。
-# ============================================================================
+# Template: fence_gate_block
+# Wiki: configuration/block/behaviors/fence_gate_block.md
+
+# Required block properties (auto-attached by CraftEngine):
+#   open (boolean), powered (boolean), in_wall (boolean), facing (horizontal_direction)
 
 blocks:
-  # --------------------------------------------------------------------------
-  # 自定义栅栏门方块
-  # 命名空间使用 custom: 前缀（请根据项目实际修改）
-  # --------------------------------------------------------------------------
-  custom:example_fence_gate:
+  custom:your_fence_gate:                             # << CHANGE THIS: 方块ID
     behavior:
-      # 行为类型 —— 固定为 fence_gate_block
       type: fence_gate_block
-
-      # --------------------------------------------------------------------------
-      # 交互开关配置
-      # --------------------------------------------------------------------------
-
-      # 是否允许玩家右键点击切换门的开关状态
-      # 类型：boolean
-      # 默认值：true
-      # 设为 false 则玩家无法手动开关，只能通过红石或风弹控制
-      can_open_with_hand: true
-
-      # 是否允许风弹（Wind Charge）切换门的开关状态
-      # 类型：boolean
-      # 默认值：true
-      can_open_by_wind_charge: true
-
-      # --------------------------------------------------------------------------
-      # 音效配置（可选）
-      # --------------------------------------------------------------------------
+      can_open_with_hand: true                        # << CHANGE THIS: 允许右键点击切换 (默认 true)
+      can_open_by_wind_charge: true                   # << CHANGE THIS: 允许风弹切换 (默认 true)
       sounds:
-        # 门打开时播放的音效
-        # 类型：string（原版音效 ID）
-        # 参考值：block.fence_gate.open
-        open: block.fence_gate.open
-
-        # 门关闭时播放的音效
-        # 类型：string（原版音效 ID）
-        # 参考值：block.fence_gate.close
-        close: block.fence_gate.close
-
-  # ==========================================================================
-  # 属性要求 (Property Requirements)
-  # ==========================================================================
-  # 以下四个属性会被自动附加到方块的 BlockState 定义中。
-  # 通常由 CraftEngine 内部自动处理，无需在配置中手动声明，
-  # 但了解其行为有助于理解栅栏门的工作机制：
-  #
-  # | 属性名   | 属性类型                  | 必需 | 说明                              |
-  # |----------|---------------------------|------|-----------------------------------|
-  # | open     | boolean (true/false)      | 是   | 门是否处于打开状态                |
-  # | powered  | boolean (true/false)      | 是   | 门是否被红石信号激活              |
-  # | in_wall  | boolean (true/false)      | 是   | 门两侧是否存在围墙方块            |
-  # | facing   | horizontal_direction      | 是   | 门的朝向 (north/south/east/west)  |
-  #
-  # 自动行为说明：
-  # - open: 手右键、红石信号上升沿、风弹命中时切换
-  # - powered: 邻接红石信号时自动置 true，无信号时置 false
-  # - in_wall: 根据 facing 方向检测两侧方块是否为 #minecraft:walls，自动更新
-  # - facing: 玩家放置时面向玩家；用手打开时若玩家在门后会自动翻转
-
-  # ==========================================================================
-  # 完整示例 (Complete Example)
-  # ==========================================================================
-  custom:cherry_fence_gate:
-    behavior:
-      type: fence_gate_block
-      can_open_with_hand: true
-      can_open_by_wind_charge: true
-      sounds:
-        open: block.fence_gate.open
-        close: block.fence_gate.close
-
-  # --------------------------------------------------------------------------
-  # 最小配置示例 —— 仅必需项，使用所有默认值
-  # --------------------------------------------------------------------------
-  custom:iron_fence_gate:
-    behavior:
-      type: fence_gate_block
-      # can_open_with_hand 和 can_open_by_wind_charge 均默认为 true
-      # sounds 块可完全省略
-
-  # --------------------------------------------------------------------------
-  # 仅红石控制示例 —— 禁止手和风弹交互
-  # --------------------------------------------------------------------------
-  custom:secure_fence_gate:
-    behavior:
-      type: fence_gate_block
-      can_open_with_hand: false
-      can_open_by_wind_charge: false
-      sounds:
-        open: block.fence_gate.open
-        close: block.fence_gate.close
+        open: block.fence_gate.open                   # << CHANGE THIS: 打开音效ID (可选)
+        close: block.fence_gate.close                 # << CHANGE THIS: 关闭音效ID (可选)

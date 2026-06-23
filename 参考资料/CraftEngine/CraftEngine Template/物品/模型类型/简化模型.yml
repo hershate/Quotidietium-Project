@@ -1,186 +1,191 @@
-# ============================================================
-# CraftEngine 简化物品模型参考 (Simplified Item Model Reference)
-# 适用版本: Minecraft 1.21.4+
-# 风格参考: Oraxen 式简洁配置
-# 说明: 简化模型自动分析基础材质并生成模型，多数情况只需指定 texture 参数。
-# ============================================================
+# 来源: CraftEngine Wiki/configuration/item/models.md
+# 简化模型 - 1.21.4+ 物品模型配置模板
 
 # ============================================================
-# 1. 2D 图标 (texture)
-#    用于 flat / generated 类物品（纸、唱片、种子等）
-#    对应普通模型: parent=item/generated, layer0
+# 1. 2D 图标 (简化写法)
 # ============================================================
 items:
-  default:ender_pearl_flower_seeds:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_icon_item:
+    # << CHANGE THIS: 选择合适的材质
     material: paper
-    texture: minecraft:item/custom/ender_pearl_flower_seeds
+    # << CHANGE THIS: 替换为你的纹理路径
+    texture: minecraft:item/custom/my_icon_texture
 
+---
 # ============================================================
-# 2. 手持物品 (texture)
-#    用于工具/武器类物品（斧、剑、镐等）
-#    对应普通模型: parent=item/handheld, layer0
+# 2. 手持物品 (简化写法, 如工具/武器)
 # ============================================================
-  default:topaz_axe:
-    material: golden_axe
-    texture: minecraft:item/custom/topaz_axe
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_handheld_tool:
+    # << CHANGE THIS: 选择合适的工具材质
+    material: iron_sword
+    # << CHANGE THIS: 替换为你的纹理路径
+    texture: minecraft:item/custom/my_handheld_tool
 
+---
 # ============================================================
-# 3. 复合纹理 (textures) —— 多纹理叠加
-#    适用于 2D 图标或手持物品，配置多个纹理会使图像叠加
-#    在 1.21.4+ 中生效
+# 3. 钓鱼竿 (简化写法)
 # ============================================================
-  default:topaz_axe_composite:
-    material: golden_axe
-    textures:
-      - minecraft:item/custom/topaz_axe       # 基础工具纹理
-      - minecraft:item/custom/topaz             # 叠加宝石纹理
-
-# ============================================================
-# 4. 钓鱼竿 (fishing_rod)
-#    textures[0] = 未抛竿状态
-#    textures[1] = 抛竿状态 (cast)
-#    简化模型自动处理 condition + on_true/on_false
-# ============================================================
-  default:topaz_rod:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_fishing_rod:
     material: fishing_rod
+    # << CHANGE THIS: 第一个纹理为未抛竿状态, 第二个为抛竿后状态
     textures:
-      - minecraft:item/custom/topaz_rod           # 未抛竿
-      - minecraft:item/custom/topaz_rod_cast      # 已抛竿
+      - minecraft:item/custom/my_fishing_rod
+      - minecraft:item/custom/my_fishing_rod_cast
 
+---
 # ============================================================
-# 5. 鞘翅 (elytra)
-#    textures[0] = 完好状态
-#    textures[1] = 破损状态 (broken)
+# 4. 鞘翅 (简化写法)
 # ============================================================
-  default:flame_elytra:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_elytra:
     material: elytra
+    # << CHANGE THIS: 第一个纹理为正常状态, 第二个为破损状态
     textures:
-      - minecraft:item/custom/flame_elytra           # 完好
-      - minecraft:item/custom/flame_elytra_broken    # 破损
+      - minecraft:item/custom/my_elytra
+      - minecraft:item/custom/my_elytra_broken
 
+---
 # ============================================================
-# 6. 弓 (bow)
-#    textures[0] = 待拉弓状态
-#    textures[1] = 拉弓阶段 0
-#    textures[2] = 拉弓阶段 1
-#    textures[3] = 拉弓阶段 2
+# 5. 弓 (简化写法)
 # ============================================================
-  default:topaz_bow:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_bow:
     material: bow
+    # << CHANGE THIS: 纹理顺序: 默认 / 拉弓阶段0 / 拉弓阶段1 / 拉弓阶段2
     textures:
-      - minecraft:item/custom/topaz_bow              # 待拉弓
-      - minecraft:item/custom/topaz_bow_pulling_0    # 拉弓 0
-      - minecraft:item/custom/topaz_bow_pulling_1    # 拉弓 1
-      - minecraft:item/custom/topaz_bow_pulling_2    # 拉弓 2
+      - minecraft:item/custom/my_bow
+      - minecraft:item/custom/my_bow_pulling_0
+      - minecraft:item/custom/my_bow_pulling_1
+      - minecraft:item/custom/my_bow_pulling_2
 
+---
 # ============================================================
-# 7. 弩 (crossbow)
-#    textures[0] = 待拉状态
-#    textures[1] = 拉弦阶段 0
-#    textures[2] = 拉弦阶段 1
-#    textures[3] = 拉弦阶段 2
-#    textures[4] = 装填箭
-#    textures[5] = 装填烟花
+# 6. 弩 (简化写法)
 # ============================================================
-  default:topaz_crossbow:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_crossbow:
     material: crossbow
+    # << CHANGE THIS: 纹理顺序: 默认 / 拉弦阶段0 / 拉弦阶段1 / 拉弦阶段2 / 装填箭 / 装填烟花
     textures:
-      - minecraft:item/custom/topaz_crossbow            # 待拉
-      - minecraft:item/custom/topaz_crossbow_pulling_0  # 拉弦 0
-      - minecraft:item/custom/topaz_crossbow_pulling_1  # 拉弦 1
-      - minecraft:item/custom/topaz_crossbow_pulling_2  # 拉弦 2
-      - minecraft:item/custom/topaz_crossbow_arrow      # 装填箭
-      - minecraft:item/custom/topaz_crossbow_firework   # 装填烟花
+      - minecraft:item/custom/my_crossbow
+      - minecraft:item/custom/my_crossbow_pulling_0
+      - minecraft:item/custom/my_crossbow_pulling_1
+      - minecraft:item/custom/my_crossbow_pulling_2
+      - minecraft:item/custom/my_crossbow_arrow
+      - minecraft:item/custom/my_crossbow_firework
 
+---
 # ============================================================
-# 8. 盾牌 (shield)
-#    注意: 盾牌使用 models 字段（复数），而非 textures
-#    models[0] = 举盾状态
-#    models[1] = 格挡状态 (blocking)
+# 7. 盾牌 (简化写法)
 # ============================================================
-  default:shield_3d:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_shield:
     material: shield
+    # << CHANGE THIS: 第一个为默认模型, 第二个为格挡模型
     models:
-      - minecraft:item/custom/shield_3d            # 举盾
-      - minecraft:item/custom/shield_3d_blocking   # 格挡
+      - minecraft:item/custom/my_shield
+      - minecraft:item/custom/my_shield_blocking
 
+---
 # ============================================================
-# 9. 直接指定模型列表 (models)
-#    如果你已有 .json 模型文件，可以直接用 models 字段指定路径。
-#    适用于钓鱼竿等需要多状态模型的自定义 3D 模型。
+# 8. 模型列表 (直接指定已有模型文件)
+# 适用于已制作好模型文件, 不需要自动生成纹理的情况
 # ============================================================
-  default:rod_3d:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_3d_rod:
     material: fishing_rod
+    # << CHANGE THIS: 直接指定模型文件路径 (多个状态)
     models:
-      - minecraft:item/custom/rod_3d            # 未抛竿模型
-      - minecraft:item/custom/rod_3d_cast       # 抛竿模型
+      - minecraft:item/custom/my_3d_rod
+      - minecraft:item/custom/my_3d_rod_cast
 
+---
 # ============================================================
-# 10. 单模型路径快捷方式 (model)
-#     对于单状态的简单物品，可直接用 model 字段（单数）指定模型路径。
+# 9. 模型快捷指定 (单个模型文件)
+# 适用于只有一个静态模型, 无需多状态的物品
 # ============================================================
-  default:exit_icon:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_simple_icon:
     material: paper
-    model: minecraft:item/custom/exit_icon
+    # << CHANGE THIS: 直接指定单个模型文件路径
+    model: minecraft:item/custom/my_simple_icon
 
+---
 # ============================================================
-# 11. 模型路径 + 纹理混合指定
-#     同时指定 model/models 和 texture/textures 是允许的。
-#     model 控制模型文件路径，texture 控制材质纹理路径。
-#     通常情况下，只指定 texture 时模型路径会自动分配。
+# 10. 完整示例: 纹理 + 模型路径同时指定
+# 当你同时需要自定义纹理和模型路径时使用
 # ============================================================
-  default:ender_pearl_flower_seeds_explicit:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_complex_item:
+    # << CHANGE THIS: 选择合适的材质
     material: paper
-    model: minecraft:item/custom/ender_pearl_flower_seeds
-    texture: minecraft:item/custom/ender_pearl_flower_seeds
+    # << CHANGE THIS: 手动指定模型路径
+    model: minecraft:item/custom/my_complex_model
+    # << CHANGE THIS: 指定纹理路径
+    texture: minecraft:item/custom/my_complex_texture
 
-  default:topaz_rod_explicit:
+---
+# ============================================================
+# 11. 完整示例: 钓鱼竿 纹理 + 模型路径同时指定
+# ============================================================
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_complex_rod:
     material: fishing_rod
+    # << CHANGE THIS: 手动指定模型路径 (多状态)
     models:
-      - minecraft:item/custom/topaz_rod
-      - minecraft:item/custom/topaz_rod_cast
+      - minecraft:item/custom/my_complex_rod
+      - minecraft:item/custom/my_complex_rod_cast
+    # << CHANGE THIS: 指定纹理路径 (多状态)
     textures:
-      - minecraft:item/custom/topaz_rod
-      - minecraft:item/custom/topaz_rod_cast
+      - minecraft:item/custom/my_complex_rod
+      - minecraft:item/custom/my_complex_rod_cast
 
+---
 # ============================================================
-# 12. 旧版模型 (legacy_model) + overrides
-#     特指 1.21.3 及更早版本的物品模型格式。
-#     多数情况下插件会自动将 1.21.4 模型转换为旧版格式，
-#     仅在自动转换出问题时才需手动配置此部分。
-#     若无需支持 1.21.4+，可只配置 legacy_model 并完全省略 model。
+# 12. 旧版模型 (legacy_model)
+# 用于 1.21.3 及更早版本的回退配置。
+# 仅在自动转换有问题时使用此部分。
 # ============================================================
-  default:topaz_rod_legacy:
+items:
+  # << CHANGE THIS: 替换为你的物品 ID
+  custom:my_legacy_item:
     material: fishing_rod
-    # 以下为新版模型（1.21.4+）
+    # << CHANGE THIS: 旧版 item_model
+    item_model: custom:my_legacy_item
+    settings:
+      # << CHANGE THIS: 根据需要调整标签
+      tags:
+        - "custom:my_tools"
+    data:
+      # << CHANGE THIS: 根据需要调整名称和描述
+      item_name: "<!i><#FF8C00><i18n:item.my_legacy_item>"
+      tooltip_style: minecraft:default
     model:
-      template: default:model/simplified_fishing_rod_2d
+      # << CHANGE THIS: 使用你的模板
+      template: custom:model/simplified_fishing_rod_2d
       arguments:
-        path: minecraft:item/custom/topaz_rod
-        cast_path: minecraft:item/custom/topaz_rod_cast
-    # 旧版模型回退（1.21.3-）
+        # << CHANGE THIS: 替换纹理路径
+        path: minecraft:item/custom/my_legacy_item
+        cast_path: minecraft:item/custom/my_legacy_item_cast
+    # << CHANGE THIS: 旧版模型覆盖
     legacy_model:
-      path: minecraft:item/custom/topaz_rod
+      # << CHANGE THIS: 默认模型路径
+      path: minecraft:item/custom/my_legacy_item
       overrides:
-        - path: minecraft:item/custom/topaz_rod_cast
+        # << CHANGE THIS: 根据条件添加覆盖
+        - path: minecraft:item/custom/my_legacy_item_cast
           predicate:
             cast: 1
-
-# ============================================================
-# 字段速查表
-# ============================================================
-# ┌──────────────┬──────────┬──────────────────────────────────┐
-# │ 场景          │ 字段      │ 值类型                            │
-# ├──────────────┼──────────┼──────────────────────────────────┤
-# │ 2D 图标       │ texture  │ 单个材质路径 (string)              │
-# │ 手持工具      │ texture  │ 单个材质路径 (string)              │
-# │ 复合纹理      │ textures │ 材质路径列表 (string[])            │
-# │ 钓鱼竿        │ textures │ [未抛竿, 已抛竿]                   │
-# │ 鞘翅          │ textures │ [完好, 破损]                       │
-# │ 弓            │ textures │ [待拉, 拉0, 拉1, 拉2]              │
-# │ 弩            │ textures │ [待拉, 拉0, 拉1, 拉2, 箭, 烟花]    │
-# │ 盾牌          │ models   │ [举盾模型, 格挡模型]               │
-# │ 自定义模型(单) │ model    │ 单个模型路径 (string)              │
-# │ 自定义模型(多) │ models   │ 模型路径列表 (string[])            │
-# │ 旧版回退      │ legacy   │ 含 path + overrides 的对象         │
-# └──────────────┴──────────┴──────────────────────────────────┘

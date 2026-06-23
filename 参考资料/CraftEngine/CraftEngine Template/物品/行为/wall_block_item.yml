@@ -1,9 +1,25 @@
-# 墙面方块物品
-# 只能放到方块侧面，其他行为和方块物品一致。
-# 参考文档: configuration/item/behaviors/wall_block_item.md
+# Wiki: configuration/item/behaviors/wall_block_item.md
+# 墙面方块物品 — 只能放置在方块侧面，其他行为与方块物品 (block_item) 一致
 
 items:
-  <namespace>:<item_id>:
+  custom:example_wall_block:
     behavior:
       type: wall_block_item
-      block: <namespace>:<block_id>
+      block: custom:example_wall_block  # << CHANGE THIS: 要放置的目标方块的命名空间ID
+
+# 你也可以在 block 字段中直接内联完整方块配置（参见 block_item.md 说明）：
+# items:
+#   custom:example_wall_block:
+#     behavior:
+#       type: wall_block_item
+#       block:
+#         behavior:
+#           type: # << CHANGE THIS: 方块行为类型
+#         settings:
+#           # << CHANGE THIS: 方块设置
+#         states:
+#           # << CHANGE THIS: 方块状态
+#         loot:
+#           # << CHANGE THIS: 掉落物
+#         events:
+#           # << CHANGE THIS: 事件

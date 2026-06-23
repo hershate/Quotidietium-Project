@@ -1,0 +1,23 @@
+# Wiki: configuration/block/behaviors/button_block.md
+# 按钮方块 — 红石电源，被按下时激活并输出信号，片刻后自动弹起关闭
+# 依赖行为: face_attached_horizontal_directional_block (提供 face/facing 属性)
+
+blocks:
+  custom:example_button:                                   # << CHANGE THIS
+    behaviors:
+      - type: face_attached_horizontal_directional_block
+        attached_block_tags:
+          - minecraft:dirt                                 # << CHANGE THIS
+
+      - type: button_block
+        ticks_to_stay_pressed: 30                          # << CHANGE THIS (刻数，默认 30)
+        can_be_activated_by_arrows: true                   # << CHANGE THIS (默认 true)
+        sounds:                                            # << CHANGE THIS (可选，可整段删除)
+          on: minecraft:block.wooden_button.click_on       # << CHANGE THIS
+          off: minecraft:block.wooden_button.click_off     # << CHANGE THIS
+
+# 属性要求 (由引擎自动管理状态):
+#   powered: boolean       — 必需，按钮是否被按下 (来源: button_block)
+#   face: anchor_type      — 必需*，附着面 (来源: face_attached_horizontal_directional_block)
+#   facing: horizontal_direction — 必需*，朝向 (来源: face_attached_horizontal_directional_block)
+#   * 仅在需要强充能自身附着的红石导体时必需，否则可省略

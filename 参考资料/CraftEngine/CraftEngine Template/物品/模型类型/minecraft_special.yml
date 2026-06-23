@@ -1,386 +1,257 @@
 # =============================================================================
-# CraftEngine 物品模型模板 — minecraft:special 特殊模型类型
+# CraftEngine — minecraft:special 特殊模型类型
+# Wiki: configuration/item/models/special.md
 # =============================================================================
-# 严格遵循 CraftEngine Wiki:
-#   configuration/item/models/special.md
-# =============================================================================
+# 调用游戏硬编码渲染器渲染物品堆叠。使用 minecraft:special 时必须指定一个
+# 硬编码渲染器。path 参数是基础模型渲染所必需的。
 #
-# minecraft:special 类型用于调用游戏的硬编码渲染器来渲染物品堆叠。
-# 渲染变换和粒子纹理变量等可以从物品模型中获取。
-#
-# 注意: 使用 minecraft:special 时必须指定一个硬编码渲染器。path 参数是
-# 基础模型渲染所必需的。
-#
-# 通用结构:
+# 所有渲染器共享的外层结构:
 #   model:
-#     type: minecraft:special       # 固定值
-#     path: <模型路径>              # 必需 - 基础模型路径
-#     model:                        # 硬编码渲染器配置
-#       type: <渲染器类型>          # 见下方各渲染器
-#       ...                         # 渲染器特有参数
-#     transformation:               # 可选 - 模型变换 (26.1+)
-#       scale: 1,1,1                # 以原点为中心缩放模型
-#       translation: 0,0,0          # 平移变换
-#       right_rotation:             # 初始旋转
-#         angle: 0.0                # 旋转角度（弧度）
-#         axis: 0,0,0               # 旋转轴向量
-#       left_rotation: 0,0,0,0      # 再次旋转模型
+#     type: minecraft:special
+#     path: <基础模型路径>
+#     model:                    # 硬编码渲染器配置
+#       type: <渲染器类型>
+#       ...                     # 渲染器特有参数
+#     transformation:           # 可选; 模型变换 (26.1+)
+#       scale: 1,1,1
+#       translation: 0,0,0
+#       right_rotation:
+#         angle: 0.0            # 旋转角度（弧度）
+#         axis: 0,0,0           # 旋转轴向量
+#       left_rotation: 0,0,0,0
 # =============================================================================
 
 items:
 
-  # ===========================================================================
-  # minecraft:trident — 三叉戟
-  # ===========================================================================
+  # ======================== minecraft:trident =================================
   # 渲染三叉戟
-  custom:special_trident:
-    material: trident
+  custom:special_trident:                                          # << CHANGE THIS
+    material: trident                                              # << CHANGE THIS
     data:
-      item_name: "<!i><#00BFFF>寒冰三叉戟"
+      item_name: "<!i><#00BFFF>寒冰三叉戟"                         # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/trident
+      path: minecraft:item/trident                                 # << CHANGE THIS
       model:
         type: minecraft:trident
-      transformation:
-        scale: 1,1,1
-        translation: 0,0,0
-        right_rotation:
-          angle: 0.0
-          axis: 0,0,0
 
-  # ===========================================================================
-  # minecraft:conduit — 潮涌核心
-  # ===========================================================================
+  # ======================== minecraft:conduit =================================
   # 渲染潮涌核心
-  custom:special_conduit:
-    material: conduit
+  custom:special_conduit:                                          # << CHANGE THIS
+    material: conduit                                              # << CHANGE THIS
     data:
-      item_name: "<!i><#00FFFF>海洋之心"
+      item_name: "<!i><#00FFFF>海洋之心"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/conduit
+      path: minecraft:item/conduit                                 # << CHANGE THIS
       model:
         type: minecraft:conduit
 
-  # ===========================================================================
-  # minecraft:shield — 盾牌
-  # ===========================================================================
-  # 渲染盾牌，底色和图案取决于 base_color 和 banner_patterns 组件
-  custom:special_shield:
-    material: shield
+  # ======================== minecraft:shield ==================================
+  # 渲染盾牌，底色和图案取决于 base_color 和 banner_patterns
+  custom:special_shield:                                           # << CHANGE THIS
+    material: shield                                               # << CHANGE THIS
     data:
-      item_name: "<!i><#FFD700>皇家盾牌"
+      item_name: "<!i><#FFD700>皇家盾牌"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/shield
+      path: minecraft:item/shield                                  # << CHANGE THIS
       model:
         type: minecraft:shield
-        base_color: RED              # 底色
-        banner_patterns:             # 旗帜图案
+        base_color: RED                                            # << CHANGE THIS
+        banner_patterns:                                           # << CHANGE THIS
           - pattern: minecraft:stripe_top
             color: WHITE
           - pattern: minecraft:border
             color: BLACK
       transformation:
-        scale: 1.2,1.2,1.2
-        translation: 0,-0.1,0
+        scale: 1.2,1.2,1.2                                        # << CHANGE THIS
+        translation: 0,-0.1,0                                     # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:decorated_pot — 饰纹陶罐
-  # ===========================================================================
+  # ======================= minecraft:decorated_pot ============================
   # 渲染饰纹陶罐，四个面取决于 pot_decorations 组件
-  custom:special_decorated_pot:
-    material: decorated_pot
+  custom:special_decorated_pot:                                    # << CHANGE THIS
+    material: decorated_pot                                        # << CHANGE THIS
     data:
-      item_name: "<!i><#E8A95B>远古陶罐"
+      item_name: "<!i><#E8A95B>远古陶罐"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/decorated_pot
+      path: minecraft:item/decorated_pot                           # << CHANGE THIS
       model:
         type: minecraft:decorated_pot
 
-  # ===========================================================================
-  # minecraft:hanging_sign — 悬挂式告示牌
-  # ===========================================================================
+  # ====================== minecraft:hanging_sign ==============================
   # 根据指定的纹理渲染悬挂式告示牌 (26.1+)
-  custom:special_hanging_sign:
-    material: oak_hanging_sign
+  custom:special_hanging_sign:                                     # << CHANGE THIS
+    material: oak_hanging_sign                                     # << CHANGE THIS
     data:
-      item_name: "<!i><#8B4513>橡木悬牌"
+      item_name: "<!i><#8B4513>橡木悬牌"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/oak_hanging_sign
+      path: minecraft:item/oak_hanging_sign                        # << CHANGE THIS
       model:
         type: minecraft:hanging_sign
-        attachment: ceiling_middle    # ceiling_middle / center / left / right
-        wood_type: oak               # oak / spruce / birch / jungle / acacia / dark_oak / mangrove / cherry / bamboo / crimson / warped
-        texture: minecraft:entity/signs/hanging/oak
+        attachment: ceiling_middle                                 # << CHANGE THIS
+        wood_type: oak                                             # << CHANGE THIS
+        texture: minecraft:entity/signs/hanging/oak                # << CHANGE THIS
       transformation:
-        scale: 0.8,0.8,0.8
+        scale: 0.8,0.8,0.8                                        # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:standing_sign — 告示牌
-  # ===========================================================================
+  # ====================== minecraft:standing_sign =============================
   # 根据指定的纹理渲染告示牌
-  custom:special_standing_sign:
-    material: oak_sign
+  custom:special_standing_sign:                                    # << CHANGE THIS
+    material: oak_sign                                             # << CHANGE THIS
     data:
-      item_name: "<!i><#8B4513>橡木告示牌"
+      item_name: "<!i><#8B4513>橡木告示牌"                         # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/oak_sign
+      path: minecraft:item/oak_sign                                # << CHANGE THIS
       model:
         type: minecraft:standing_sign
-        attachment: ground             # ground / wall
-        wood_type: oak                # oak / spruce / birch / jungle / acacia / dark_oak / mangrove / cherry / bamboo / crimson / warped
-        texture: minecraft:entity/signs/oak
+        attachment: ground                                         # << CHANGE THIS
+        wood_type: oak                                             # << CHANGE THIS
+        texture: minecraft:entity/signs/oak                        # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:head — 生物头颅 (1.21.4-1.21.5)
-  # ===========================================================================
-  # 按照指定的头颅类型渲染生物头颅。当适用时，使用 minecraft:profile 组件
-  # 中的玩家游戏档案信息。
-  custom:special_creeper_head:
-    material: creeper_head
+  # ======================== minecraft:head ====================================
+  # 渲染生物头颅。当适用时使用 minecraft:profile 组件中的玩家游戏档案信息。
+  # (1.21.4-1.21.5)
+  custom:special_creeper_head:                                     # << CHANGE THIS
+    material: creeper_head                                         # << CHANGE THIS
     data:
-      item_name: "<!i><#00FF00>苦力怕头"
+      item_name: "<!i><#00FF00>苦力怕头"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/creeper_head
+      path: minecraft:item/creeper_head                            # << CHANGE THIS
       model:
         type: minecraft:head
-        kind: creeper                  # skeleton / wither_skeleton / zombie / creeper / dragon / player
-        animation: 0.0                 # 动画角度 (用于龙首等)
+        kind: creeper                                              # << CHANGE THIS
+        texture:                                                   # << CHANGE THIS (可选，仅 player 需要)
+        animation: 0.0                                             # << CHANGE THIS
 
-  # 玩家头颅示例 (带皮肤纹理)
-  custom:special_player_head:
-    material: player_head
+  # 玩家头颅示例 (指定皮肤纹理)
+  custom:special_player_head:                                      # << CHANGE THIS
+    material: player_head                                          # << CHANGE THIS
     data:
-      item_name: "<!i><#FFB6C1>英雄之颅"
+      item_name: "<!i><#FFB6C1>英雄之颅"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/player_head
+      path: minecraft:item/player_head                             # << CHANGE THIS
       model:
         type: minecraft:head
-        kind: player
-        texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzFmMzE2YjE5YjRjN2Q4ZGMzZDVlYzA3ZDQzZTM0OGMyYzY0YzI4OTk4MjY3MDk2M2I3ZTk5NTg4Y2M2Mjk4In19fQ==
-        animation: 0.0
+        kind: player                                               # << CHANGE THIS
+        texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzFmMzE2YjE5YjRjN2Q4ZGMzZDVlYzA3ZDQzZTM0OGMyYzY0YzI4OTk4MjY3MDk2M2I3ZTk5NTg4Y2M2Mjk4In19fQ==  # << CHANGE THIS
+        animation: 0.0                                             # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:player_head — 玩家头 (1.21.6+)
-  # ===========================================================================
-  # 渲染玩家的头，皮肤取决于 profile 组件
-  custom:special_player_head_new:
-    material: player_head
+  # ===================== minecraft:player_head ================================
+  # 渲染玩家的头，皮肤取决于 profile 组件 (1.21.6+)
+  custom:special_player_head_new:                                  # << CHANGE THIS
+    material: player_head                                          # << CHANGE THIS
     data:
-      item_name: "<!i><#FFB6C1>自定义玩家头"
+      item_name: "<!i><#FFB6C1>自定义玩家头"                       # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/player_head
+      path: minecraft:item/player_head                             # << CHANGE THIS
       model:
         type: minecraft:player_head
 
-  # ===========================================================================
-  # minecraft:chest — 箱子
-  # ===========================================================================
+  # ======================== minecraft:chest ===================================
   # 根据指定的纹理和开合程度渲染箱子
-  custom:special_chest:
-    material: chest
+  custom:special_chest:                                            # << CHANGE THIS
+    material: chest                                                # << CHANGE THIS
     data:
-      item_name: "<!i><#D2691E">坚固橡木箱"
+      item_name: "<!i><#D2691E>坚固橡木箱"                         # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/chest
+      path: minecraft:item/chest                                   # << CHANGE THIS
       model:
         type: minecraft:chest
-        chest_type: single              # single / left / right (26.1+)
-        openness: 0.0                   # 0.0(关闭) ~ 1.0(完全打开)
-        texture: minecraft:entity/chest/normal
+        chest_type: single                                         # << CHANGE THIS
+        openness: 0.0                                              # << CHANGE THIS
+        texture: minecraft:entity/chest/normal                     # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:shulker_box — 潜影盒
-  # ===========================================================================
-  # 根据指定的纹理、开合程度和方向渲染潜影盒
-  custom:special_shulker_box:
-    material: shulker_box
+  # ====================== minecraft:shulker_box ===============================
+  # 根据指定的纹理、开合程度和方向渲染潜影盒。orientation 适用于 1.21.4~1.21.11
+  custom:special_shulker_box:                                      # << CHANGE THIS
+    material: shulker_box                                          # << CHANGE THIS
     data:
-      item_name: "<!i><#FF69B4>粉红潜影盒"
+      item_name: "<!i><#FF69B4>粉红潜影盒"                         # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/shulker_box
+      path: minecraft:item/shulker_box                             # << CHANGE THIS
       model:
         type: minecraft:shulker_box
-        openness: 0.0                   # 0.0(关闭) ~ 1.0(完全打开)
-        orientation: up                 # up / down / north / south / east / west (1.21.4~1.21.11)
-        texture: minecraft:entity/shulker/shulker_pink
+        openness: 0.0                                              # << CHANGE THIS
+        orientation: up                                            # << CHANGE THIS
+        texture: minecraft:entity/shulker/shulker_pink             # << CHANGE THIS
       transformation:
-        scale: 0.9,0.9,0.9
+        scale: 0.9,0.9,0.9                                        # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:banner — 旗帜
-  # ===========================================================================
+  # ======================== minecraft:banner ==================================
   # 根据底色和 banner_patterns 物品堆叠组件渲染旗帜
-  custom:special_banner:
-    material: white_banner
+  custom:special_banner:                                           # << CHANGE THIS
+    material: white_banner                                         # << CHANGE THIS
     data:
-      item_name: "<!i><#FF0000>红龙旗帜"
+      item_name: "<!i><#FF0000>红龙旗帜"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/banner/white_banner
+      path: minecraft:item/banner/white_banner                     # << CHANGE THIS
       model:
         type: minecraft:banner
-        attachment: ground              # ground / wall (26.1+)
-        color: red                     # white / orange / magenta / light_blue / yellow / lime / pink / gray / light_gray / cyan / purple / blue / brown / green / red / black
+        attachment: ground                                         # << CHANGE THIS
+        color: red                                                 # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:bell — 钟 (26.1+)
-  # ===========================================================================
-  # 渲染钟的动画部分
-  custom:special_bell:
-    material: bell
+  # ======================== minecraft:bell ====================================
+  # 渲染钟的动画部分 (26.1+)
+  custom:special_bell:                                             # << CHANGE THIS
+    material: bell                                                 # << CHANGE THIS
     data:
-      item_name: "<!i><#FFD700>召唤之钟"
+      item_name: "<!i><#FFD700>召唤之钟"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/bell
+      path: minecraft:item/bell                                    # << CHANGE THIS
       model:
         type: minecraft:bell
 
-  # ===========================================================================
-  # minecraft:book — 附魔台/讲台书 (26.1+)
-  # ===========================================================================
-  # 渲染附魔台和讲台上的书
-  custom:special_book:
-    material: book
+  # ======================== minecraft:book ====================================
+  # 渲染附魔台和讲台上的书 (26.1+)
+  custom:special_book:                                             # << CHANGE THIS
+    material: book                                                 # << CHANGE THIS
     data:
-      item_name: "<!i><#DDA0DD>远古秘典"
+      item_name: "<!i><#DDA0DD>远古秘典"                           # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/book
+      path: minecraft:item/book                                    # << CHANGE THIS
       model:
         type: minecraft:book
-        open_angle: 0                   # 打开角度 (0 = 关闭, 较大值 = 打开)
-        page1: 0                        # 左侧页面的页码
-        page2: 0                        # 右侧页面的页码
+        open_angle: 0                                              # << CHANGE THIS
+        page1: 0                                                   # << CHANGE THIS
+        page2: 0                                                   # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:copper_golem_statue — 铜傀儡像
-  # ===========================================================================
+  # ==================== minecraft:copper_golem_statue =========================
   # 根据指定的纹理渲染铜傀儡像
-  custom:special_copper_golem:
-    material: copper_ingot
+  custom:special_copper_golem:                                     # << CHANGE THIS
+    material: copper_ingot                                         # << CHANGE THIS
     data:
-      item_name: "<!i><#B87333>铜傀儡雕像"
+      item_name: "<!i><#B87333>铜傀儡雕像"                         # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/copper_golem_statue
+      path: minecraft:item/copper_golem_statue                     # << CHANGE THIS
       model:
         type: minecraft:copper_golem_statue
-        pose: sitting                   # standing / sitting / attacking
-        texture: minecraft:entity/copper_golem/copper_golem
+        pose: sitting                                              # << CHANGE THIS
+        texture: minecraft:entity/copper_golem/copper_golem        # << CHANGE THIS
       transformation:
-        scale: 0.8,0.8,0.8
+        scale: 0.8,0.8,0.8                                        # << CHANGE THIS
 
-  # ===========================================================================
-  # minecraft:end_cube — 末地折跃门/传送门 (26.1+)
-  # ===========================================================================
-  # 渲染末地折跃门或末地传送门
-  custom:special_end_cube:
-    material: end_crystal
+  # ====================== minecraft:end_cube ==================================
+  # 渲染末地折跃门或末地传送门 (26.1+)
+  custom:special_end_cube:                                         # << CHANGE THIS
+    material: end_crystal                                          # << CHANGE THIS
     data:
-      item_name: "<!i><#9932CC>末地传送核心"
+      item_name: "<!i><#9932CC>末地传送核心"                       # << CHANGE THIS
     model:
       type: minecraft:special
-      path: minecraft:item/end_crystal
+      path: minecraft:item/end_crystal                             # << CHANGE THIS
       model:
         type: minecraft:end_cube
-        effect: portal                  # portal / beam
-
-  # ===========================================================================
-  # 组合示例: 自定义三叉戟（带完整 transformation）
-  # ===========================================================================
-  # 展示完整的 transformation 配置
-  custom:special_trident_legendary:
-    material: trident
-    custom_model_data: 10001
-    data:
-      item_name: "<!i><#FFD700>传说海神戟"
-      lore:
-        - "<!i><gray>海神尼普顿的武器碎片"
-      enchantment:
-        minecraft:impaling: 5
-        minecraft:loyalty: 3
-        minecraft:riptide: 2
-    model:
-      type: minecraft:special
-      path: minecraft:item/trident
-      model:
-        type: minecraft:trident
-      transformation:
-        scale: 1.5,1.5,1.5
-        translation: 0,0.2,0
-        right_rotation:
-          angle: 0.7854                # 45度弧度值 (PI/4)
-          axis: 0,1,0                  # 绕Y轴旋转
-        left_rotation: 0,0,0,0
-    settings:
-      tags:
-        - "custom:weapons"
-        - "custom:legendary"
-    events:
-      - on: right_click
-        functions:
-          - type: particle
-            particle: minecraft:end_rod
-            count: 10
-            offset_x: 0.3
-            offset_y: 0.5
-            offset_z: 0.3
-            speed: 0.05
-
-  # ===========================================================================
-  # 组合示例: 自定义潜影盒（带 openness 动画和 orientation 方向）
-  # ===========================================================================
-  custom:special_shulker_ender:
-    material: shulker_box
-    custom_model_data: 10002
-    data:
-      item_name: "<!i><#4B0082>末影潜影盒"
-      lore:
-        - "<!i><gray>连接着末地虚空的特殊潜影盒"
-    model:
-      type: minecraft:special
-      path: minecraft:item/shulker_box
-      model:
-        type: minecraft:shulker_box
-        openness: 0.3
-        orientation: up
-        texture: minecraft:entity/shulker/shulker_purple
-
-  # ===========================================================================
-  # 组合示例: 自定义盾牌（带 banner_patterns）
-  # ===========================================================================
-  custom:special_shield_knight:
-    material: shield
-    custom_model_data: 10003
-    data:
-      item_name: "<!i><#C0C0C0>骑士团盾牌"
-      lore:
-        - "<!i><gray>钢铁骑士团的荣誉象征"
-    model:
-      type: minecraft:special
-      path: minecraft:item/shield
-      model:
-        type: minecraft:shield
-        base_color: LIGHT_GRAY
-        banner_patterns:
-          - pattern: minecraft:cross
-            color: RED
-          - pattern: minecraft:flower
-            color: YELLOW
-          - pattern: minecraft:border
-            color: BLACK
-      transformation:
-        scale: 1.1,1.1,1.1
-        translation: 0,-0.05,0
+        effect: portal                                             # << CHANGE THIS

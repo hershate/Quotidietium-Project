@@ -1,0 +1,45 @@
+# 来源: CraftEngine Wiki/configuration/item/updater.md
+# 物品更新器 - 更新服务器上存量物品的数据
+
+# 在 config.yml 中启用触发的更新事件
+item:
+  update-triggers:
+    click-in-inventory: true   # << CHANGE THIS (对创造模式无效)
+    drop: true                 # << CHANGE THIS
+    pick-up: true              # << CHANGE THIS
+
+items:
+  custom:my_sword:
+    material: wooden_sword                                         # << CHANGE THIS
+    updater:
+      # 版本 1: 版本 0 的物品将执行此更新
+      1:
+        type: apply_data
+        data:
+          item_name: "<gold><bold>传奇之刃"                         # << CHANGE THIS
+          lore:
+            - "<gray>已更新的物品"                                    # << CHANGE THIS
+      # 版本 2: 版本 0 和 1 的物品均会执行此更新
+      2:
+        - type: transmute
+          material: diamond_sword                                  # << CHANGE THIS
+        - type: apply_data
+          data:
+            item_name: "<gold><bold>传奇之刃·改"                     # << CHANGE THIS
+            lore:
+              - "<yellow>经过二次强化的传奇武器"                        # << CHANGE THIS
+
+  custom:legacy_helmet:
+    material: iron_helmet                                          # << CHANGE THIS
+    updater:
+      # 单步更新: 重置物品并保留附魔
+      1:
+        type: reset
+        # 1.20.5+ 使用 keep_components
+        keep_components:                                           # << CHANGE THIS
+          - minecraft:enchantments
+          - minecraft:unbreakable
+        # 旧版本使用 keep_tags
+        keep_tags:                                                 # << CHANGE THIS
+          - Enchantments
+          - Unbreakable

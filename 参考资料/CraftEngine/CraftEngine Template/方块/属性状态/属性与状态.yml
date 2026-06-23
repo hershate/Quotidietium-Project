@@ -1,843 +1,843 @@
-# ============================================================================
-# CraftEngine 方块属性与状态 完整参考
-# 样式: Oraxen 风格，注释即文档
-# ============================================================================
-# 核心概念:
-#   视觉方块状态 (客户端看到) = 原版方块状态 + 自定义模型
-#   内部方块状态 (服务端运算) = 属性值的组合 -> 映射到视觉状态
-# 配置键: state (单状态) / states (多状态)
-# ============================================================================
+# -------------------------------------------------------------------
+# CraftEngine 方块状态配置参考模板
+# 本地路径: configuration/block/states.md
+#            configuration/block/states/properties.md
+#            configuration/block/states/entity_renderer.md
+# 用法: 复制需要的 block 定义到你的包中，替换 namespace 和 ID
+# -------------------------------------------------------------------
 
-# ============================================================================
-# 一、单状态方块 (state)
-# ============================================================================
-# 方块只有一种内部状态时使用 state 配置。
-# 格式: state -> auto_state/state + model/entity_renderer
-# ============================================================================
-# state:
-#   auto_state: note_block          # 视觉状态: 自动分配
-#   model:
-#     path: "minecraft:block/custom/my_block"  # 模型路径
+# ===================================================================
+# 一、单状态方块 (state) — 方块只有一种内部状态
+# ===================================================================
 
-# --------------------------------------------------------------------------
-# 1.1 auto_state — 自动分配视觉状态
-# --------------------------------------------------------------------------
-# 插件从预设状态组中自动选择一个空闲的原版方块状态。
-# 同一组内的状态共享关键特性（碰撞箱、渲染属性）。
-# --------------------------------------------------------------------------
-# 简单形式:
-#   auto_state: solid
-# 展开形式 (共享视觉状态, 相同 id 的外观共用同一个原版状态):
-#   auto_state:
-#     type: solid
-#     id: "my_shared_id"            # 推荐透明渲染使用 "transparent"
+# -----------------------------------------------------------
+# 1.1 单状态 + auto_state 简单形式（插件自动分配原版状态）
+# -----------------------------------------------------------
+blocks:
+  custom:my_simple_block:                                    # << CHANGE THIS
+    state:
+      auto_state: solid                                      # << CHANGE THIS（可选值: solid / note_block / mushroom_stem / leaves / sapling / pressure_plate / cactus / sugar_cane / tripwire / etc.）
+      model:
+        path: "minecraft:block/custom/my_simple_block"       # << CHANGE THIS
 
-# auto_state 可用组完整列表:
-#   组名                               | 包含的原版方块                            | 说明
-#   -----------------------------------|-----------------------------------------|--------------
-#   solid                              | 音符盒 + 蘑菇方块                         | 最通用的实心方块组
-#   note_block                         | 音符盒                                   | 完整方块, 可用数量最多
-#   mushroom_stem                      | 蘑菇柄                                   | 完整方块
-#   red_mushroom_block                 | 红色蘑菇方块                              | 完整方块
-#   brown_mushroom_block               | 棕色蘑菇方块                              | 完整方块
-#   mushroom                           | 所有蘑菇方块                              | 完整方块
-#   tintable_leaves                    | 橡树/深色橡树/丛林/金合欢/红树树叶           | 可着色树叶, 不含水
-#   waterlogged_tintable_leaves        | 橡树/深色橡树/丛林/金合欢/红树树叶           | 可着色树叶, 含水
-#   non_tintable_leaves                | 云杉/白桦/杜鹃/盛开杜鹃/樱花/苍白橡树树叶    | 不可着色树叶, 不含水
-#   waterlogged_non_tintable_leaves    | 云杉/白桦/杜鹃/盛开杜鹃/樱花/苍白橡树树叶    | 不可着色树叶, 含水
-#   leaves                             | 所有树叶                                  | 不含水
-#   waterlogged_leaves                 | 所有树叶                                  | 含水
-#   lower_tripwire                     | 绊线                                     | 碰撞箱更矮
-#   higher_tripwire                    | 绊线                                     | 碰撞箱更高
-#   tripwire                           | 所有绊线                                  | -
-#   sapling                            | 所有树苗                                  | -
-#   pressure_plate                     | 所有测重压力板                             | -
-#   cactus                             | 仙人掌                                   | -
-#   sugar_cane                         | 甘蔗                                     | -
-#   weeping_vine                       | 垂泪藤                                   | -
-#   twisting_vine                      | 缠怨藤                                   | -
-#   cave_vine                          | 洞穴藤蔓                                  | -
-#   kelp                               | 海带                                     | -
-#   chorus                             | 紫颂植株                                  | -
+# -----------------------------------------------------------
+# 1.2 单状态 + auto_state 展开形式（多个方块共享同一原版状态）
+# -----------------------------------------------------------
+  custom:shared_visual_block:                                # << CHANGE THIS
+    state:
+      auto_state:
+        type: solid                                          # << CHANGE THIS
+        id: "my_shared_visual"                               # << CHANGE THIS — 相同 id 的方块共用同一个原版方块状态
+      model:
+        path: "minecraft:block/custom/shared_visual_block"   # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 1.2 state — 精确指定原版方块状态
-# --------------------------------------------------------------------------
-# 需要精确控制时使用，两种写法:
-#   state: "minecraft:note_block[instrument=hat,note=0,powered=false]"  # 完整状态
-#   state: "note_block:0"                                              # 映射缩写 (需预配 block_state_mappings)
-# 注意: 同一个原版方块状态只能指定一个自定义模型，冲突会报错。
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 1.3 单状态 + 精确指定原版状态（完整方块状态字符串）
+# -----------------------------------------------------------
+  custom:exact_state_block:                                  # << CHANGE THIS
+    state:
+      state: "minecraft:note_block[instrument=hat,note=0,powered=false]"  # << CHANGE THIS
+      model:
+        path: "minecraft:block/custom/exact_state_block"     # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 1.3 model — 模型配置 (多种形式, 互相冲突)
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 1.4 单状态 + 精确指定原版状态（映射缩写 — 需预先配置 block_state_mappings）
+# -----------------------------------------------------------
+  custom:mapped_state_block:                                 # << CHANGE THIS
+    state:
+      state: "note_block:0"                                  # << CHANGE THIS — 映射缩写
+      model:
+        path: "minecraft:block/custom/mapped_state_block"    # << CHANGE THIS
 
-# ① 仅 path — 已有现成模型文件
-# model:
-#   path: "minecraft:block/custom/my_block"
+# ===================================================================
+# 二、模型配置 (model) 的六种形式
+# ===================================================================
 
-# ② path + generation — 自动生成模型
-# model:
-#   path: "minecraft:block/custom/my_block"
-#   generation:
-#     parent: "minecraft:block/cube_column"
-#     textures:
-#       end: "minecraft:block/custom/top"
-#       side: "minecraft:block/custom/side"
+# -----------------------------------------------------------
+# 2.1 仅 path — 使用已有的模型文件
+# -----------------------------------------------------------
+  custom:model_path_only:                                    # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/existing_model"        # << CHANGE THIS
 
-# ③ path + textures — 只关心纹理, 插件推断模型结构
-# model:
-#   path: "minecraft:block/custom/my_block"
-#   textures:
-#     - "minecraft:block/custom/bottom"
-#     - "minecraft:block/custom/top"
-#     - "minecraft:block/custom/side"
+# -----------------------------------------------------------
+# 2.2 path + generation — 自动生成模型（指定父模型和纹理）
+# -----------------------------------------------------------
+  custom:model_generation:                                   # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/generated_block"       # << CHANGE THIS
+        generation:
+          parent: "minecraft:block/cube_column"              # << CHANGE THIS
+          textures:
+            end: "minecraft:block/custom/top"                # << CHANGE THIS
+            side: "minecraft:block/custom/side"              # << CHANGE THIS
 
-# ④ 仅 texture — 单张纹理, 最简形式
-# model:
-#   texture: "minecraft:block/custom/my_block"  # path 可省略 (自动取纹理路径)
+# -----------------------------------------------------------
+# 2.3 path + textures 列表 — 插件自动推断模型结构
+#      纹理数量 → 推断模型:
+#        1 → cube_all       (path 可省略)
+#        2 → cube_column    (path 必填, 顺序: end, side)
+#        3 → cube_bottom_top(path 必填, 顺序: bottom, side, top)
+#        4 → orientable     (path 必填, 顺序: bottom, front, side, top)
+#       5+ → block/cube     (path 必填, 顺序: down, up, north, south, west, east)
+# -----------------------------------------------------------
+  custom:model_textures_list:                                # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/textures_block"       # << CHANGE THIS — 2 张及以上纹理必填
+        textures:
+          - "minecraft:block/custom/bottom"                  # << CHANGE THIS
+          - "minecraft:block/custom/top"                     # << CHANGE THIS
+          - "minecraft:block/custom/side"                    # << CHANGE THIS
 
-# ⑤ models 列表 — 多个模型加权随机
-# models:
-#   - path: "minecraft:block/custom/flower_1"
-#     weight: 8
-#   - path: "minecraft:block/custom/flower_2"
-#     weight: 5
+# 单张纹理（path 可省略，自动取纹理路径）
+  custom:model_single_texture:                               # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/custom/my_block"           # << CHANGE THIS
 
-# ⑥ transparent — 移除原始模型 (常与 entity_renderer 配合)
-# transparent: true
+# ^ 前缀 — 该纹理同时用作粒子纹理
+  custom:model_particle_texture:                             # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/particle_block"        # << CHANGE THIS
+        textures:
+          - "^minecraft:block/custom/top"                    # << CHANGE THIS — 顶面纹理同时作为粒子效果
+          - "minecraft:block/custom/bottom"                  # << CHANGE THIS
+          - "minecraft:block/custom/side"                    # << CHANGE THIS
 
-# model 子选项完整参考:
-#   子选项        | 类型       | 说明
-#   --------------|------------|----------------------------------------------
-#   path          | string     | 模型文件路径。2+ textures 或 generation 时必填
-#   textures      | list/str   | 简化纹理配置, 自动推断模型结构 (与 generation 冲突)
-#   texture       | list/str   | 同 textures, 单张可用字符串简写
-#   generation    | section    | 自动生成模型, 需 parent + textures (与 textures 冲突)
-#   x/y/z         | int        | 绕轴旋转角度, 90 的倍数 (z 需 1.21.11+)
-#   uvlock        | bool       | 是否锁定纹理方向, 默认 false
-#   weight        | int        | 仅在 models 列表中使用, 权重, 默认 1
+# -----------------------------------------------------------
+# 2.4 models 列表 — 多个模型加权随机
+# -----------------------------------------------------------
+  custom:model_weighted_random:                              # << CHANGE THIS
+    state:
+      auto_state: solid
+      models:
+        - path: "minecraft:block/custom/flower_1"            # << CHANGE THIS
+          weight: 8                                          # << CHANGE THIS
+        - path: "minecraft:block/custom/flower_2"            # << CHANGE THIS
+          weight: 5                                          # << CHANGE THIS
 
-# textures 自动推断规则:
-#   纹理数量 | 推断模型              | path 是否必填 | 纹理顺序
-#   ---------|----------------------|--------------|------------------------------
-#   1        | cube_all             | 否            | all
-#   2        | cube_column          | 是            | end, side
-#   3        | cube_bottom_top      | 是            | bottom, side, top
-#   4        | orientable           | 是            | bottom, front, side, top
-#   5+       | block/cube           | 是            | down, up, north, south, west, east
+# -----------------------------------------------------------
+# 2.5 transparent — 移除原始模型（通常用于配合 entity_renderer）
+# -----------------------------------------------------------
+  custom:model_transparent:                                  # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane                                     # << CHANGE THIS
+        id: transparent                                      # << CHANGE THIS — 推荐使用 "transparent" 作为共享 id
+      transparent: true
+      entity_renderer:
+        type: item_display                                   # << CHANGE THIS
+        item: "custom:my_decoration"                         # << CHANGE THIS
 
-# textures 与 generation 对比:
-#   textures (列表)                | generation (配置部分)
-#   ------------------------------|--------------------------------------------
-#   model 下 path + textures       | model 下 path + generation
-#   简单方块, 只需纹理              | 需要特定 parent (如 leaves/cross/stairs)
-#   单张纹理 path 可省略, 2+ 必填   | path 必填
+# -----------------------------------------------------------
+# 2.6 模型旋转与 uvlock
+# -----------------------------------------------------------
+  custom:model_rotated:                                      # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/rotated_block"         # << CHANGE THIS
+        x: 90                                                # << CHANGE THIS — 绕 X 轴旋转（90 的倍数）
+        y: 0                                                 # << CHANGE THIS — 绕 Y 轴旋转（90 的倍数）
+        z: 0                                                 # << CHANGE THIS — 绕 Z 轴旋转（90 的倍数，1.21.11+）
+        uvlock: false                                        # << CHANGE THIS — 是否锁定纹理方向
 
-# 纹理前加 ^ 前缀表示将该纹理同时用作粒子纹理:
-# textures:
-#   - "^minecraft:block/custom/top"     # 顶面纹理同时作为 particle
-#   - "minecraft:block/custom/bottom"
+# ===================================================================
+# 三、多状态方块 (states) — 方块有多个内部状态
+# ===================================================================
 
-# --------------------------------------------------------------------------
-# 1.4 entity_renderer — 方块实体渲染器
-# --------------------------------------------------------------------------
-# 主要用途: 绕开方块变体的数量限制, 渲染物品/文本/3D模型
-# 常与 transparent: true 配合使用
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   type: item_display                     # 渲染元素类型
-#   item: default:my_decoration
-#
-# 多个渲染元素 (列表格式):
-# entity_renderer:
-#   - type: item_display
-#     item: default:sofa
-#   - type: text_display
-#     text: 沙发
-#
-# 类型自动检测 (省略 type):
-#   - 含 text  -> text_display
-#   - 含 item  -> item_display
-#
-# 详细配置见本文 "四、方块实体渲染器" 章节
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 3.1 最简单：只定义属性，使用默认外观
+# -----------------------------------------------------------
+  custom:palm_log_simple:                                    # << CHANGE THIS
+    states:
+      properties:
+        axis:
+          type: axis                                         # << CHANGE THIS
+          default: "y"
+      appearances:
+        default:                                             # 第一个外观 → 默认回退
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/palm_log"          # << CHANGE THIS
 
+# -----------------------------------------------------------
+# 3.2 为不同属性值配置不同外观 + variants 精确匹配
+# -----------------------------------------------------------
+  custom:palm_log_variants:                                  # << CHANGE THIS
+    states:
+      properties:
+        axis:
+          type: axis
+          default: "y"
+      appearances:
+        axisY:                                               # << CHANGE THIS — 外观名称可自定义
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/palm_log"          # << CHANGE THIS
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "minecraft:block/custom/palm_log_top"   # << CHANGE THIS
+                side: "minecraft:block/custom/palm_log"      # << CHANGE THIS
+        axisX:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/palm_log_horizontal" # << CHANGE THIS
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "minecraft:block/custom/palm_log_top"   # << CHANGE THIS
+                side: "minecraft:block/custom/palm_log"      # << CHANGE THIS
+        axisZ:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/palm_log_horizontal" # << CHANGE THIS
+            x: 90
+      variants:
+        axis=y:
+          appearance: axisY
+        axis=x:
+          appearance: axisX
+        axis=z:
+          appearance: axisZ
 
-# ============================================================================
-# 二、多状态方块 (states)
-# ============================================================================
-# 方块有多种内部状态时使用 states 配置。
-# 结构: properties -> appearances -> variants
-# ============================================================================
-# states:
-#   properties:   # ① 定义内部属性
-#   appearances:  # ② 定义可用的视觉外观
-#   variants:     # ③ 将内部状态映射到外观
+# -----------------------------------------------------------
+# 3.3 用 textures 简化（自动推断模型）+ 特定外观仍需 generation
+# -----------------------------------------------------------
+  custom:palm_log_textures:                                  # << CHANGE THIS
+    states:
+      properties:
+        axis:
+          type: axis
+          default: "y"
+      appearances:
+        axisY:                                               # 使用 textures 简化
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/palm_log"          # << CHANGE THIS — 2 张纹理必填 path
+            textures:
+              - "minecraft:block/custom/palm_log_top"        # << CHANGE THIS
+              - "minecraft:block/custom/palm_log_side"       # << CHANGE THIS
+        axisX:
+          auto_state: solid
+          model:
+            x: 90
+            y: 90
+            path: "minecraft:block/custom/palm_log_horizontal" # << CHANGE THIS
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "minecraft:block/custom/palm_log_top"   # << CHANGE THIS
+                side: "minecraft:block/custom/palm_log"      # << CHANGE THIS
+        axisZ:
+          auto_state: solid
+          model:
+            x: 90
+            path: "minecraft:block/custom/palm_log_horizontal" # << CHANGE THIS
+      variants:
+        axis=y:
+          appearance: axisY
+        axis=x:
+          appearance: axisX
+        axis=z:
+          appearance: axisZ
 
-# --------------------------------------------------------------------------
-# 2.1 properties — 属性配置
-# --------------------------------------------------------------------------
-# 属性定义方块所有可能的内部状态。
-# 插件会计算所有属性值的笛卡尔积, 自动生成全部内部状态。
-# --------------------------------------------------------------------------
-# 示例:
-# properties:
-#   waterlogged:
-#     type: boolean
-#     default: false
-#   distance:
-#     type: int
-#     default: 7
-#     range: 1~7
-#   facing:
-#     type: horizontal_direction
-#     default: north
-#
-# 属性值组合数 = 各属性值数量乘积
-# 例: waterlogged(2) x distance(7) = 14 个内部状态
-#
-# 完整属性类型列表见本文 "三、属性类型" 章节
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 3.4 树叶：waterlogged + persistent + distance 多属性完整示例
+# -----------------------------------------------------------
+  custom:palm_leaves:                                        # << CHANGE THIS
+    states:
+      properties:
+        waterlogged:
+          type: boolean
+          default: false
+        persistent:
+          type: boolean
+          default: true
+        distance:
+          type: int
+          default: 7
+          range: 1~7                                          # << CHANGE THIS
+      appearances:
+        default:
+          auto_state: leaves                                   # << CHANGE THIS
+          model:
+            path: "minecraft:block/custom/palm_leaves"         # << CHANGE THIS
+            textures:
+              - "minecraft:block/custom/palm_leaves"           # << CHANGE THIS
+        waterlogged:
+          auto_state: waterlogged_leaves                       # << CHANGE THIS
+          model:
+            path: "minecraft:block/custom/palm_leaves"         # << CHANGE THIS
+      variants:
+        waterlogged=false:
+          appearance: default
+        waterlogged=true:
+          appearance: waterlogged
+          settings:
+            resistance: 1200.0                                 # << CHANGE THIS
+            burnable: false                                    # << CHANGE THIS
+            fluid_state: water                                 # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 2.2 appearances — 外观配置
-# --------------------------------------------------------------------------
-# 每个外观的配置规则与单状态 state 完全一致。
-# 第一个定义的外观为默认外观 —— 未匹配到变体的内部状态自动使用它。
-# --------------------------------------------------------------------------
-# appearances:
-#   任意名称A:            # ← 第一个为默认外观
-#     auto_state: solid
-#     model:
-#       path: "..."
-#     实体渲染器可省略 (model 和 entity_renderer 可选, 二选一)
-#   任意名称B:
-#     auto_state: solid
-#     entity_renderer:
-#       type: item_display
-#       item: default:something
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 3.5 变体高级用法：多属性约束 + 仅覆写 settings
+# -----------------------------------------------------------
+  custom:advanced_variants:                                   # << CHANGE THIS
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        waterlogged:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/advanced_block"      # << CHANGE THIS
+        waterlogged_app:
+          auto_state: waterlogged_leaves
+          model:
+            path: "minecraft:block/custom/advanced_block"      # << CHANGE THIS
+      variants:
+        # 单个变体约束多个属性（用逗号分隔）
+        waterlogged=true,facing=north:                         # 同时满足 waterlogged=true 和 facing=north
+          appearance: waterlogged_app
+        # 只覆写方块设置，不动外观
+        powered=true:
+          settings:
+            luminance: 7                                       # << CHANGE THIS
+        # 多个变体叠加 — appearance 取第一个匹配，settings 合并
+        waterlogged=true:
+          settings:
+            resistance: 100.0
+            fluid_state: water
+        facing=up:
+          settings:
+            resistance: 50.0                                   # 覆写上面的 100.0
+            luminance: 15
 
-# --------------------------------------------------------------------------
-# 2.3 variants — 变体匹配规则
-# --------------------------------------------------------------------------
-# 将内部状态映射到视觉外观。
-# --------------------------------------------------------------------------
+# -----------------------------------------------------------
+# 3.6 多状态 + 每个外观使用 entity_renderer
+# -----------------------------------------------------------
+  custom:sign_post:                                           # << CHANGE THIS
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:                                                # << CHANGE THIS
+          auto_state:
+            type: sugar_cane                                   # << CHANGE THIS
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "custom:sign_post"                           # << CHANGE THIS
+            rotation: 0
+        east:                                                 # << CHANGE THIS
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "custom:sign_post"                           # << CHANGE THIS
+            rotation: 90
+        south:                                                # << CHANGE THIS
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "custom:sign_post"                           # << CHANGE THIS
+            rotation: 180
+        west:                                                 # << CHANGE THIS
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: "custom:sign_post"                           # << CHANGE THIS
+            rotation: 270
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
 
-# 变体键格式:
-#   "属性名=值"          单属性
-#   "属性名=值,属性名=值"  多属性 (逗号分隔, 顺序不影响匹配)
-#
-# variants:
-#   waterlogged=false:              # 只约束一个属性, 其他属性不限
-#     appearance: default
-#   waterlogged=true:               # 约束一个属性 + 覆写设置
-#     appearance: waterlogged
-#     settings:
-#       resistance: 1200.0
-#       fluid_state: water
-#   facing=up:                      # 只覆写设置, 不改外观
-#     settings:
-#       luminance: 15
+# -----------------------------------------------------------
+# 3.7 配置内部方块 ID（仅当需要固定 ID 时使用）
+# -----------------------------------------------------------
+  custom:fixed_id_block:                                      # << CHANGE THIS
+    states:
+      id: 100                                                  # << CHANGE THIS — 起始 ID，28 个变体占用 100~127（需全局唯一）
+      properties:
+        waterlogged:
+          type: boolean
+          default: false
+        persistent:
+          type: boolean
+          default: true
+        distance:
+          type: int
+          default: 7
+          range: 1~7
+      appearances:
+        default:
+          auto_state: leaves
+          model:
+            path: "minecraft:block/custom/fixed_id_block"     # << CHANGE THIS
+      variants:
+        waterlogged=false:
+          appearance: default
+        waterlogged=true:
+          appearance: default
+          settings:
+            fluid_state: water
 
-# 三条核心匹配规则:
-#   规则 1 — 通配符语义
-#     变体键中未列出的属性 = 匹配该属性的所有可能值
-#     例: waterlogged=false 匹配所有 waterlogged=false 的状态, 不论其他属性
-#
-#   规则 2 — 多变体叠加
-#     同一内部状态匹配多个变体时:
-#     - appearance: 取第一个匹配变体的值 (后续不覆写)
-#     - settings: 所有匹配变体的 settings 合并叠加, 同键后覆盖前
-#
-#   规则 3 — 默认回退
-#     未匹配到任何带 appearance 的变体 -> 使用 appearances 的第一个外观
+# ===================================================================
+# 四、实体渲染器 (entity_renderer) — 各类型完整配置
+# ===================================================================
 
-# 完整示例: 树叶 (waterlogged x persistent x distance = 28 状态)
-# properties:
-#   waterlogged:
-#     type: boolean
-#     default: false
-#   persistent:
-#     type: boolean
-#     default: true
-#   distance:
-#     type: int
-#     default: 7
-#     range: 1~7
-# appearances:
-#   default:
-#     auto_state: leaves
-#     model:
-#       path: "minecraft:block/custom/palm_leaves"
-#       textures:
-#         - "minecraft:block/custom/palm_leaves"
-#   waterlogged:
-#     auto_state: waterlogged_leaves
-#     model:
-#       path: minecraft:block/custom/palm_leaves
-# variants:
-#   waterlogged=false:
-#     appearance: default
-#   waterlogged=true:
-#     appearance: waterlogged
-#     settings:
-#       resistance: 1200.0
-#       burnable: false
-#       fluid_state: water
+# -----------------------------------------------------------
+# 4.1 item_display — 物品展示实体
+# -----------------------------------------------------------
+  custom:entity_item_display:                                 # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: "custom:sofa"                                   # << CHANGE THIS
+        translation: 0,0.5,0                                  # << CHANGE THIS
+        scale: 1,1,1                                          # << CHANGE THIS
+        rotation: 0,45,0                                      # << CHANGE THIS
+        billboard: fixed                                      # << CHANGE THIS (fixed / vertical / horizontal / center)
+        glow_color: 255,200,100                               # << CHANGE THIS
+        brightness:
+          block_light: 15                                     # << CHANGE THIS
+          sky_light: 15                                       # << CHANGE THIS
+        view_range: 1.0                                       # << CHANGE THIS
+        shadow_radius: 0                                      # << CHANGE THIS
+        shadow_strength: 1                                    # << CHANGE THIS
+        display_transform: none                               # << CHANGE THIS (none / third_person_left_hand / third_person_right_hand / first_person_left_hand / first_person_right_hand / head / gui / ground / fixed / on_shelf)
+        tint_source:
+          type: default
+          components:
+            - minecraft:dyed_color                            # << CHANGE THIS
 
-# 更多变体示例:
-#   # A) 多属性约束
-#   waterlogged=true,facing=north:
-#     appearance: waterlogged_north
-#
-#   # B) 只覆写设置, 不动外观
-#   powered=true:
-#     settings:
-#       luminance: 7
-#
-#   # C) 同一状态匹配多变体 (settings 合并叠加)
-#   waterlogged=true:
-#     settings:
-#       resistance: 100.0
-#       fluid_state: water
-#   facing=up:
-#     settings:
-#       resistance: 50.0        # 覆写前面 100.0 -> 最终 50.0
-#       luminance: 15           # 新增 -> 最终 15
+# -----------------------------------------------------------
+# 4.2 text_display — 文本展示实体
+# -----------------------------------------------------------
+  custom:entity_text_display:                                 # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: text_display
+        text: "<yellow>点击交互</yellow>"                     # << CHANGE THIS — 支持 MiniMessage 和 PlaceholderAPI
+        translation: 0,1.2,0                                  # << CHANGE THIS
+        scale: 1.5                                            # << CHANGE THIS
+        billboard: center                                     # << CHANGE THIS
+        alignment: center                                     # << CHANGE THIS (center / left / right)
+        line_width: 200                                       # << CHANGE THIS
+        background_color: 0,0,0,0                             # << CHANGE THIS (A,R,G,B)
+        text_opacity: 200                                     # << CHANGE THIS
+        has_shadow: true                                      # << CHANGE THIS
+        is_see_through: false                                 # << CHANGE THIS
+        view_range: 0.8                                       # << CHANGE THIS
 
-# 内部状态数量速查:
-#   boolean              -> 2
-#   int(min, max)        -> max - min + 1
-#   axis                 -> 3
-#   direction            -> 6
-#   horizontal_direction -> 4
-#   half / hinge         -> 2
-#   slab_type            -> 3
-#   stairs_shape         -> 5
-# ============================================================================
+# -----------------------------------------------------------
+# 4.3 item — 物品实体（带自动旋转动画）
+# -----------------------------------------------------------
+  custom:entity_item:                                         # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item
+        item: "custom:sleeper_sofa"                           # << CHANGE THIS
+        position: 0.5,0.5,0.5                                 # << CHANGE THIS
+        tint_source:
+          type: default
+          components:
+            - minecraft:dyed_color                            # << CHANGE THIS
 
+# -----------------------------------------------------------
+# 4.4 armor_stand — 盔甲架渲染
+# -----------------------------------------------------------
+  custom:entity_armor_stand:                                  # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: armor_stand
+        item: "custom:bench"                                  # << CHANGE THIS
+        position: 0,0.2,0                                     # << CHANGE THIS
+        yaw: 0                                                # << CHANGE THIS
+        pitch: 0                                              # << CHANGE THIS
+        scale: 1                                              # << CHANGE THIS
+        small: false                                          # << CHANGE THIS
+        glow_color: white                                     # << CHANGE THIS (black/dark_blue/dark_green/dark_aqua/dark_red/dark_purple/gold/gray/dark_gray/blue/green/aqua/red/light_purple/yellow/white)
 
-# ============================================================================
-# 三、属性类型 (properties/types)
-# ============================================================================
-# default 选项为可选, 不指定则使用该类型的默认值。
-# values 选项为可选, 可用于限制或排序可行的值。
-# ============================================================================
+# -----------------------------------------------------------
+# 4.5 better_model — BetterModel 插件模型（需安装 BetterModel）
+# -----------------------------------------------------------
+  custom:entity_better_model:                                 # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: better_model
+        model: "custom_model"                                 # << CHANGE THIS
+        position: 0.5,0.5,0.5                                 # << CHANGE THIS
+        yaw: 0                                                # << CHANGE THIS
+        pitch: 0                                              # << CHANGE THIS
+        sight_trace: true                                     # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.1 boolean
-# --------------------------------------------------------------------------
-# 值: true, false (2种)
-# --------------------------------------------------------------------------
-# properties:
-#   happy:
-#     type: boolean
-#     default: false
+# -----------------------------------------------------------
+# 4.6 model_engine — ModelEngine 插件模型（需安装 ModelEngine）
+# -----------------------------------------------------------
+  custom:entity_model_engine:                                 # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: model_engine
+        model: "custom_model"                                 # << CHANGE THIS
+        position: 0.5,0.5,0.5                                 # << CHANGE THIS
+        yaw: 0                                                # << CHANGE THIS
+        pitch: 0                                              # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.2 int
-# --------------------------------------------------------------------------
-# 值: 指定范围内的任何整数
-# --------------------------------------------------------------------------
-# properties:
-#   mode:
-#     type: int
-#     default: 1
-#     range: 1~3         # 最小值~最大值
+# -----------------------------------------------------------
+# 4.7 多个渲染元素叠加（列表格式）
+# -----------------------------------------------------------
+  custom:entity_multi_element:                                # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - type: item_display
+          item: "custom:sofa"                                 # << CHANGE THIS
+          translation: 0,0.5,0
+        - type: text_display
+          text: "沙发"                                        # << CHANGE THIS
+          translation: 0,1.2,0
+          billboard: center
+          alignment: center
 
-# --------------------------------------------------------------------------
-# 3.3 string
-# --------------------------------------------------------------------------
-# 值: 预定义选项集合中的任意字符串
-# --------------------------------------------------------------------------
-# properties:
-#   color:
-#     type: string
-#     default: red
-#     values:
-#       - red
-#       - green
-#       - blue
+# -----------------------------------------------------------
+# 4.8 颜色提供器（tint_source）多元素着色
+# -----------------------------------------------------------
+  custom:entity_tinted:                                       # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - item: "custom:element_1"                            # << CHANGE THIS
+          tint_source:
+            type: default
+            components:
+              - minecraft:dyed_color                          # << CHANGE THIS
+            index: 0                                          # 对应第 1 个颜色提供器
+        - item: "custom:element_2"                            # << CHANGE THIS
+          tint_source:
+            type: default
+            components:
+              - minecraft:dyed_color                          # << CHANGE THIS
+            index: 1                                          # 对应第 2 个颜色提供器
 
-# --------------------------------------------------------------------------
-# 3.4 direction
-# --------------------------------------------------------------------------
-# 值: east, south, west, north, up, down (6种)
-# --------------------------------------------------------------------------
-# properties:
-#   facing:
-#     type: direction
-#     default: north
-#     values:               # 可选
-#       - north
-#       - east
-#       - south
-#       - west
-#       - up
-#       - down
+# -----------------------------------------------------------
+# 4.9 实体剔除 (entity_culling) 与渲染条件 (conditions)
+# -----------------------------------------------------------
+  custom:entity_with_culling:                                 # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - type: item_display
+          item: "custom:secret_block"                         # << CHANGE THIS
+          translation: 0,0.5,0
+      entity_culling:
+        aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5                     # << CHANGE THIS
+        view_distance: 64                                     # << CHANGE THIS
+        aabb_expansion: 0.5                                   # << CHANGE THIS
+        ray_tracing: true                                     # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.5 horizontal_direction
-# --------------------------------------------------------------------------
-# 值: east, south, west, north (4种)
-# --------------------------------------------------------------------------
-# properties:
-#   facing:
-#     type: horizontal_direction
-#     default: north
-#     values:               # 可选
-#       - north
-#       - south
-#       - west
-#       - east
+# -----------------------------------------------------------
+# 4.10 entity_culling: false — 禁用剔除（实体始终可见）
+# -----------------------------------------------------------
+  custom:entity_no_culling:                                   # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: "custom:always_visible"                         # << CHANGE THIS
+      entity_culling: false
 
-# --------------------------------------------------------------------------
-# 3.6 axis
-# --------------------------------------------------------------------------
-# 值: x, y, z (3种)
-# --------------------------------------------------------------------------
-# properties:
-#   axis:
-#     type: axis
-#     default: y
-#     values:               # 可选
-#       - x
-#       - y
-#       - z
+# -----------------------------------------------------------
+# 4.11 渲染条件 — 仅对指定玩家可见
+# -----------------------------------------------------------
+  custom:entity_conditional:                                  # << CHANGE THIS
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - type: item_display
+          item: "custom:secret_block"                         # << CHANGE THIS
+          conditions:
+            - type: permission
+              permission: "vip.secret"                        # << CHANGE THIS
+            - type: world
+              world: "world_nether"                           # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.7 single_block_half
-# --------------------------------------------------------------------------
-# 值: top, bottom (2种)
-# 单方块的一半 (用于台阶/按钮等)
-# --------------------------------------------------------------------------
-# properties:
-#   half:
-#     type: single_block_half
-#     default: bottom
-#     values:               # 可选
-#       - top
-#       - bottom
+# ===================================================================
+# 五、属性类型参考 (properties) — 每个类型一个独立 block 示例
+# ===================================================================
 
-# --------------------------------------------------------------------------
-# 3.8 double_block_half
-# --------------------------------------------------------------------------
-# 值: upper, lower (2种)
-# 双方块的一半 (用于门/床等)
-# --------------------------------------------------------------------------
-# properties:
-#   half:
-#     type: double_block_half
-#     default: lower
-#     values:               # 可选
-#       - upper
-#       - lower
+# -----------------------------------------------------------
+# 5.1 boolean — true / false
+# -----------------------------------------------------------
+  custom:prop_boolean:                                        # << CHANGE THIS
+    states:
+      properties:
+        active:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_boolean"       # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.9 hinge
-# --------------------------------------------------------------------------
-# 值: left, right (2种)
-# --------------------------------------------------------------------------
-# properties:
-#   hinge:
-#     type: hinge
-#     default: left
-#     values:               # 可选
-#       - left
-#       - right
+# -----------------------------------------------------------
+# 5.2 int — 整数范围
+# -----------------------------------------------------------
+  custom:prop_int:                                            # << CHANGE THIS
+    states:
+      properties:
+        mode:
+          type: int
+          default: 1
+          range: 1~3                                          # << CHANGE THIS
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_int"           # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.10 slab_type
-# --------------------------------------------------------------------------
-# 值: top, bottom, double (3种)
-# --------------------------------------------------------------------------
-# properties:
-#   type:
-#     type: slab_type
-#     default: bottom
-#     values:               # 可选
-#       - top
-#       - bottom
-#       - double
+# -----------------------------------------------------------
+# 5.3 string — 预定义字符串集合
+# -----------------------------------------------------------
+  custom:prop_string:                                         # << CHANGE THIS
+    states:
+      properties:
+        color:
+          type: string
+          default: red
+          values:                                             # << CHANGE THIS
+            - red
+            - green
+            - blue
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_string"        # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.11 stairs_shape
-# --------------------------------------------------------------------------
-# 值: straight, inner_left, inner_right, outer_left, outer_right (5种)
-# --------------------------------------------------------------------------
-# properties:
-#   shape:
-#     type: stairs_shape
-#     default: straight
-#     values:               # 可选
-#       - straight
-#       - inner_left
-#       - inner_right
-#       - outer_left
-#       - outer_right
+# -----------------------------------------------------------
+# 5.4 direction — 六方向 (east/south/west/north/up/down)
+# -----------------------------------------------------------
+  custom:prop_direction:                                      # << CHANGE THIS
+    states:
+      properties:
+        facing:
+          type: direction
+          default: north
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_direction"     # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.12 sofa_shape
-# --------------------------------------------------------------------------
-# 值: straight, inner_left, inner_right (3种)
-# --------------------------------------------------------------------------
-# properties:
-#   shape:
-#     type: sofa_shape
-#     default: straight
-#     values:               # 可选
-#       - straight
-#       - inner_left
-#       - inner_right
+# -----------------------------------------------------------
+# 5.5 horizontal_direction — 水平四方向 (east/south/west/north)
+# -----------------------------------------------------------
+  custom:prop_horizontal_dir:                                 # << CHANGE THIS
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_horizontal"    # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 3.13 anchor_type
-# --------------------------------------------------------------------------
-# 值: floor, wall, ceiling (3种)
-# --------------------------------------------------------------------------
-# properties:
-#   face:
-#     type: anchor_type
-#     default: floor
-#     values:               # 可选
-#       - floor
-#       - wall
-#       - ceiling
-# ============================================================================
+# -----------------------------------------------------------
+# 5.6 axis — 三轴 (x/y/z)
+# -----------------------------------------------------------
+  custom:prop_axis:                                           # << CHANGE THIS
+    states:
+      properties:
+        axis:
+          type: axis
+          default: "y"
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_axis"          # << CHANGE THIS
 
+# -----------------------------------------------------------
+# 5.7 single_block_half — top / bottom
+# -----------------------------------------------------------
+  custom:prop_single_half:                                    # << CHANGE THIS
+    states:
+      properties:
+        half:
+          type: single_block_half
+          default: bottom
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_single_half"   # << CHANGE THIS
 
-# ============================================================================
-# 四、硬编码属性名称 (Hardcoded Names)
-# ============================================================================
-# 部分属性名会被插件硬编码特殊的放置行为。使用这些名称触发自动行为。
-# ============================================================================
+# -----------------------------------------------------------
+# 5.8 double_block_half — upper / lower
+# -----------------------------------------------------------
+  custom:prop_double_half:                                    # << CHANGE THIS
+    states:
+      properties:
+        half:
+          type: double_block_half
+          default: lower
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_double_half"   # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 4.1 axis
-# --------------------------------------------------------------------------
-# 触发行为: 放置时自动对齐玩家朝向的轴向
-# 推荐属性类型: axis
-# --------------------------------------------------------------------------
-# properties:
-#   axis:
-#     type: axis
-#     default: y
+# -----------------------------------------------------------
+# 5.9 hinge — left / right
+# -----------------------------------------------------------
+  custom:prop_hinge:                                          # << CHANGE THIS
+    states:
+      properties:
+        hinge:
+          type: hinge
+          default: left
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_hinge"         # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 4.2 waterlogged
-# --------------------------------------------------------------------------
-# 触发行为: 决定方块是否可以含水
-# 推荐属性类型: boolean
-# 注意: 确保对应的视觉方块状态也含水, 否则客户端无法正确渲染水
-# --------------------------------------------------------------------------
-# properties:
-#   waterlogged:
-#     type: boolean
-#     default: false
+# -----------------------------------------------------------
+# 5.10 slab_type — top / bottom / double
+# -----------------------------------------------------------
+  custom:prop_slab_type:                                      # << CHANGE THIS
+    states:
+      properties:
+        type:
+          type: slab_type
+          default: bottom
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_slab_type"     # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 4.3 facing
-# --------------------------------------------------------------------------
-# 触发行为: 放置时自动对齐玩家朝向 (上下东南西北)
-# 推荐属性类型: direction
-# --------------------------------------------------------------------------
-# properties:
-#   facing:
-#     type: direction
-#     default: north
+# -----------------------------------------------------------
+# 5.11 stairs_shape — straight / inner_left / inner_right / outer_left / outer_right
+# -----------------------------------------------------------
+  custom:prop_stairs_shape:                                   # << CHANGE THIS
+    states:
+      properties:
+        shape:
+          type: stairs_shape
+          default: straight
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_stairs_shape"  # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 4.4 facing_clockwise
-# --------------------------------------------------------------------------
-# 触发行为: 放置时自动对齐玩家朝向, 旋转 90 度 (东南西北)
-# 推荐属性类型: horizontal_direction
-# --------------------------------------------------------------------------
-# properties:
-#   facing_clockwise:
-#     type: horizontal_direction
-#     default: north
+# -----------------------------------------------------------
+# 5.12 sofa_shape — straight / inner_left / inner_right
+# -----------------------------------------------------------
+  custom:prop_sofa_shape:                                     # << CHANGE THIS
+    states:
+      properties:
+        shape:
+          type: sofa_shape
+          default: straight
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_sofa_shape"    # << CHANGE THIS
 
-# --------------------------------------------------------------------------
-# 4.5 rotation
-# --------------------------------------------------------------------------
-# 触发行为: 精确控制旋转
-# 推荐属性类型: int (range: 0~7 或 0~15)
-# --------------------------------------------------------------------------
-# properties:
-#   rotation:
-#     type: int
-#     default: 0
-#     range: 0~15
-#
-# 提示: 不使用特殊名称 (如 custom_axis) 则不会触发自动旋转,
-#       方块始终使用默认值。
-# ============================================================================
-
-
-# ============================================================================
-# 五、方块实体渲染器 (entity_renderer)
-# ============================================================================
-# 工作原理: 移除原版方块模型并放置展示实体, 实现无限自定义方块。
-# 在 state 或 appearance 的配置部分中添加 entity_renderer 选项。
-# ============================================================================
-
-# --------------------------------------------------------------------------
-# 5.1 展示实体通用参数 (适用于 item_display 和 text_display)
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   # 平移、位置与缩放
-#   translation: 0,0.5,0         # 偏移量 (x,y,z) — 推荐用于调整位置
-#   position: 0.5,0.5,0.5        # 相对位置 (x,y,z) — 默认方块中心
-#   scale: 1,1,1                 # 缩放 (x,y,z), 也支持单数字如 1.5
-#
-#   # 旋转
-#   yaw: 0                       # 绕 Y 轴旋转
-#   pitch: 0                     # 绕 X 轴旋转
-#   rotation: 45                 # 基于 Y 轴旋转
-#   rotation: 45,45,0            # 欧拉角
-#   rotation: 0,0,0.707,0.707    # 四元数
-#
-#   # 展示
-#   billboard: fixed             # fixed(固定垂直和水平轴) / vertical(固定垂直轴)
-#                                # horizontal(固定水平轴) / center(按中心旋转跟随视角)
-#   glow_color: 255,255,255      # 发光边框颜色 (R,G,B)
-#   brightness:                  # 渲染亮度
-#     block_light: 15
-#     sky_light: 15
-#   view_range: 1.0              # 可视距离系数
-#
-#   # 阴影
-#   shadow_radius: 0             # 阴影半径
-#   shadow_strength: 1           # 阴影不透明度
-#
-# 建议: 使用 translation 代替 position, rotation 代替 yaw/pitch,
-#       插件可无需发送位置同步包更新渲染, 保证最佳视觉效果。
-# --------------------------------------------------------------------------
-
-# --------------------------------------------------------------------------
-# 5.2 item_display — 物品展示实体
-# --------------------------------------------------------------------------
-# 基于原版物品展示实体渲染自定义物品模型。
-# 未指定 type 且包含 item 时自动推导为此类型。
-# --------------------------------------------------------------------------
-# 必填:
-#   type: item_display
-#   item: default:sofa            # 物品命名空间ID
-# 可选:
-#   display_transform: none       # 物品展示实体变换模式:
-#                                 # none / third_person_left_hand / third_person_right_hand
-#                                 # first_person_left_hand / first_person_right_hand
-#                                 # head / gui / ground / fixed / on_shelf
-# 完整示例:
-# entity_renderer:
-#   type: item_display
-#   item: default:sofa
-#   translation: 0,0.5,0
-#   scale: 1,1,1
-#   rotation: 0,45,0
-#   billboard: fixed
-#   glow_color: 255,200,100
-#   brightness:
-#     block_light: 15
-#     sky_light: 15
-#   view_range: 1.0
-#   shadow_radius: 0
-#   shadow_strength: 1
-#   display_transform: none
-#   tint_source:                   # 颜色提供器
-#     type: default
-#     components:
-#       - minecraft:dyed_color
-
-# --------------------------------------------------------------------------
-# 5.3 text_display — 文本展示实体
-# --------------------------------------------------------------------------
-# 基于原版文本展示实体渲染文本。
-# 未指定 type 且包含 text 时自动推导为此类型。
-# --------------------------------------------------------------------------
-# 必填:
-#   type: text_display
-#   text: 你好 <papi:player_name>   # 文本, 支持 MiniMessage 和文本格式
-# 可选:
-#   line_width: 200                 # 一行最大宽度
-#   background_color: 64,0,0,0      # 背景颜色 (A,R,G,B), 默认 0x40000000
-#   text_opacity: -1                # 不透明度 (0-255), 默认 -1
-#   has_shadow: false               # 是否显示阴影
-#   is_see_through: false           # 是否能穿过方块渲染
-#   use_default_background_color: false  # 是否使用默认文本背景
-#   alignment: center               # 对齐: center / left / right
-# 完整示例:
-# entity_renderer:
-#   type: text_display
-#   text: <yellow>点击交互</yellow>
-#   translation: 0,1.2,0
-#   scale: 1.5
-#   billboard: center
-#   alignment: center
-#   line_width: 200
-#   background_color: 0,0,0,0       # 全透明
-#   text_opacity: 200
-#   has_shadow: true
-#   is_see_through: false
-#   view_range: 0.8
-
-# --------------------------------------------------------------------------
-# 5.4 item — 物品实体
-# --------------------------------------------------------------------------
-# 渲染一个物品实体, 自动带有旋转动画, 适合简单物品展示。
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   type: item
-#   item: default:sleeper_sofa      # 必填: 物品命名空间ID
-#   position: 0.5,0.5,0.5          # 可选: 位置, 默认方块中心
-#   tint_source:                    # 可选: 颜色提供器
-#     type: default
-#     components:
-#       - minecraft:dyed_color
-
-# --------------------------------------------------------------------------
-# 5.5 armor_stand — 盔甲架
-# --------------------------------------------------------------------------
-# 基于盔甲架渲染物品模型 (使用头盔装备槽位渲染)
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   type: armor_stand
-#   item: default:bench             # 必填: 物品命名空间ID
-#   position: 0,0.2,0              # 可选: 位置, 默认方块中心
-#   yaw: 0                         # 可选: 绕 Y 轴旋转
-#   pitch: 0                       # 可选: 绕 X 轴旋转
-#   scale: 1                       # 可选: 缩放, 默认 1
-#   small: false                   # 可选: 小盔甲架, 默认 false
-#   glow_color: white              # 可选: 发光颜色 (仅支持旧版颜色名)
-# glow_color 支持的颜色名:
-#   black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple,
-#   gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
-
-# --------------------------------------------------------------------------
-# 5.6 better_model — BetterModel 插件集成
-# --------------------------------------------------------------------------
-# 需要安装 BetterModel 插件
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   type: better_model
-#   model: custom_model             # 必填: 模型名称
-#   position: 0.5,0.5,0.5          # 可选: 位置, 默认方块中心
-#   yaw: 0                         # 可选: 绕 Y 轴旋转
-#   pitch: 0                       # 可选: 绕 X 轴旋转
-#   sight_trace: true              # 可选: 视线追踪可见性, 默认 true
-
-# --------------------------------------------------------------------------
-# 5.7 model_engine — ModelEngine 插件集成
-# --------------------------------------------------------------------------
-# 需要安装 ModelEngine 插件
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   type: model_engine
-#   model: custom_model             # 必填: 模型名称
-#   position: 0.5,0.5,0.5          # 可选: 位置, 默认方块中心
-#   yaw: 0                         # 可选: 绕 Y 轴旋转
-#   pitch: 0                       # 可选: 绕 X 轴旋转
-
-# --------------------------------------------------------------------------
-# 5.8 颜色提供器 (tint_source)
-# --------------------------------------------------------------------------
-# 为渲染物品动态着色。从方块行为中读取颜色数据并应用到渲染物品上。
-# --------------------------------------------------------------------------
-# 简单用法 (字符串简写):
-# entity_renderer:
-#   type: item_display
-#   item: default:sofa
-#   tint_source: minecraft:dyed_color
-#
-# 完整形式:
-# entity_renderer:
-#   type: item_display
-#   item: default:sofa
-#   tint_source:
-#     type: default
-#     components:
-#       - minecraft:dyed_color
-#     index: 0                        # 着色索引, 默认 0
-#
-# 多元素着色 (不同索引对应不同颜色提供器):
-# entity_renderer:
-#   - item: example:element_1
-#     tint_source:
-#       type: default
-#       components:
-#         - minecraft:dyed_color
-#       index: 0                      # 第 1 个颜色提供器
-#   - item: example:element_2
-#     tint_source:
-#       type: default
-#       components:
-#         - minecraft:dyed_color
-#       index: 1                      # 第 2 个颜色提供器
-# components 常见值:
-#   - minecraft:dyed_color          # 所染颜色
-#   - minecraft:custom_model_data   # 自定义模型数据
-
-# --------------------------------------------------------------------------
-# 5.9 实体剔除 (entity_culling)
-# --------------------------------------------------------------------------
-# 控制方块实体在客户端的可见性以优化性能。
-# --------------------------------------------------------------------------
-# 禁用剔除 (实体始终可见):
-# entity_renderer: ...
-# entity_culling: false
-#
-# 启用剔除 (可自定义参数):
-# entity_renderer: ...
-# entity_culling:
-#   aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5   # 剔除包围盒 (minX,minY,minZ,maxX,maxY,maxZ)
-#                                       # 默认覆盖整个方块
-#   view_distance: 64                   # 最大可视距离, -1 无限
-#   aabb_expansion: 0.5                 # 包围盒扩展量, 默认 0.5
-#   ray_tracing: true                   # 是否启用光线追踪剔除
-# 参数说明:
-#   aabb             | 6 numbers | 方块边界        | 自定义剔除包围盒, 大型模型可调整
-#   view_distance    | int       | config.yml 决定 | 超出此距离不渲染, 不建议 -1 + ray_tracing
-#   aabb_expansion   | number    | 0.5            | 包围盒扩展量
-#   ray_tracing      | bool      | true           | 光线追踪判断遮挡
-
-# --------------------------------------------------------------------------
-# 5.10 渲染条件 (conditions)
-# --------------------------------------------------------------------------
-# 每个渲染元素可配置 conditions, 使元素仅对满足条件的玩家可见。
-# 条件之间使用 "与" 逻辑, 需全部满足才渲染。
-# --------------------------------------------------------------------------
-# entity_renderer:
-#   - type: item_display
-#     item: default:secret_block
-#     conditions:
-#       - type: permission
-#         permission: "vip.secret"
-#       - type: world
-#         world: "world_nether"
-# 支持的条件类型见 CraftEngine reference/conditions.md
-# ============================================================================
-
-
-# ============================================================================
-# 六、内部方块 ID (可选)
-# ============================================================================
-# 通常不需要手动配置, 仅当需要固定内部 ID (如配合数据包) 时使用。
-# ============================================================================
-# 单状态:
-# state:
-#   id: 0
-#   auto_state: note_block
-#   model: ...
-#
-# 多状态 (指定起始 ID, 后续变体自动占连续范围):
-# states:
-#   id: 100           # 28 个变体 -> 占用 100~127
-#   properties: ...
-#
-# 约束:
-#   - ID 必须全局唯一
-#   - 不能超出 config.yml 中 serverside-blocks 的值
-# ============================================================================
+# -----------------------------------------------------------
+# 5.13 anchor_type — floor / wall / ceiling
+# -----------------------------------------------------------
+  custom:prop_anchor_type:                                    # << CHANGE THIS
+    states:
+      properties:
+        face:
+          type: anchor_type
+          default: floor
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/prop_anchor_type"   # << CHANGE THIS

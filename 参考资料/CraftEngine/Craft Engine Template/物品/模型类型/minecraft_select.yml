@@ -1,0 +1,286 @@
+# 本地 Wiki 路径: 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/models/select.md
+# 枚举条件型物品模型映射 (minecraft:select)
+# 计算物品堆叠内给定的一个枚举属性，根据枚举值选择对应的物品模型映射
+
+items:
+  # << CHANGE THIS: 替换为你的物品命名空间ID
+  custom:example_item:
+    model:
+      # --- 基础结构 ---
+      type: "minecraft:select"
+      property: "minecraft:charge_type"  # << CHANGE THIS: 选择枚举属性 (见下方各示例)
+      cases:
+        # 至少需要一个 case 分支
+        - when: "arrow"                   # << CHANGE THIS: 枚举值
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/arrow_model"  # << CHANGE THIS: 模型路径
+        - when: "rocket"                  # << CHANGE THIS: 枚举值
+          model:
+            type: minecraft:model
+            path: "minecraft:item/custom/rocket_model"  # << CHANGE THIS: 模型路径
+      fallback:                           # 可省略; 无匹配时使用的回落模型
+        type: minecraft:model
+        path: "minecraft:item/custom/fallback"          # << CHANGE THIS: 回落模型路径
+      # transformation:                   # 可选; 模型变换 (1.26.1+)
+      #   scale: 1,1,1                    # 以原点为中心缩放模型
+      #   translation: 0,0,0              # 平移变换
+      #   right_rotation:                 # 初始旋转
+      #     angle: 0.0                    # 旋转角度 (弧度)
+      #     axis: 0,0,0                   # 旋转轴向量
+      #   left_rotation: 0,0,0,0          # 再次旋转模型
+
+# ============================================================
+# 枚举属性各类型完整示例
+# ============================================================
+
+# === 1. minecraft:charge_type ===
+# 弩内部包含的物品类型。检查物品堆叠的 charged_projectiles 组件
+# 返回值: none (无/空), rocket (烟花火箭), arrow (其他)
+items:
+  custom:crossbow_example:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:charge_type"
+      cases:
+        - when: arrow
+          model:
+            type: minecraft:model
+            path: "minecraft:item/crossbow_arrow"  # << CHANGE THIS
+        - when: rocket
+          model:
+            type: minecraft:model
+            path: "minecraft:item/crossbow_firework"  # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/crossbow_standby"  # << CHANGE THIS
+
+# === 2. minecraft:context_dimension ===
+# 当前玩家所在维度的命名空间ID
+items:
+  custom:dimension_aware_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_dimension"
+      cases:
+        - when: "minecraft:overworld"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/overworld_model"   # << CHANGE THIS
+        - when: "minecraft:the_nether"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/nether_model"      # << CHANGE THIS
+        - when: "minecraft:the_end"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/end_model"          # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/default_dimension"      # << CHANGE THIS
+
+# === 3. minecraft:context_entity_type ===
+# 持有此物品堆叠的实体类型
+items:
+  custom:entity_aware_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:context_entity_type"
+      cases:
+        - when: "minecraft:player"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/player_held"        # << CHANGE THIS
+        - when: "minecraft:piglin"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/piglin_held"        # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/entity_default"         # << CHANGE THIS
+
+# === 4. minecraft:display_context ===
+# 当前物品堆叠渲染位置。枚举值见 模型->渲染变换
+items:
+  custom:display_context_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:display_context"
+      cases:
+        - when: "thirdperson_lefthand"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/thirdperson_left"   # << CHANGE THIS
+        - when: "thirdperson_righthand"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/thirdperson_right"  # << CHANGE THIS
+        - when: "firstperson_lefthand"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/firstperson_left"   # << CHANGE THIS
+        - when: "firstperson_righthand"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/firstperson_right"  # << CHANGE THIS
+        - when: "gui"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/gui_model"           # << CHANGE THIS
+        - when: "ground"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/ground_model"        # << CHANGE THIS
+        - when: "fixed"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/fixed_model"         # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/display_default"         # << CHANGE THIS
+
+# === 5. minecraft:main_hand ===
+# 玩家主手是左手(left)还是右手(right); 不在玩家身上则null无法匹配
+items:
+  custom:main_hand_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:main_hand"
+      cases:
+        - when: left
+          model:
+            type: minecraft:model
+            path: "minecraft:item/left_hand_model"     # << CHANGE THIS
+        - when: right
+          model:
+            type: minecraft:model
+            path: "minecraft:item/right_hand_model"    # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/main_hand_default"       # << CHANGE THIS
+
+# === 6. minecraft:trim_material ===
+# 读取盔甲纹饰材料(trim组件); 无此组件则null无法匹配
+items:
+  custom:trim_aware_armor:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:trim_material"
+      cases:
+        - when: "minecraft:redstone"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/redstone_trim"       # << CHANGE THIS
+        - when: "minecraft:emerald"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/emerald_trim"        # << CHANGE THIS
+        - when: "minecraft:diamond"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/diamond_trim"        # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/no_trim"                 # << CHANGE THIS
+
+# === 7. minecraft:block_state ===
+# 读取物品堆叠的 block_state 组件，获取指定方块属性的值
+# 需要额外指定 block_state_property
+items:
+  custom:block_state_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:block_state"
+      block_state_property: "facing"                  # << CHANGE THIS: 方块属性名
+      cases:
+        - when: "north"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/facing_north"         # << CHANGE THIS
+        - when: "south"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/facing_south"         # << CHANGE THIS
+        - when: "east"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/facing_east"          # << CHANGE THIS
+        - when: "west"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/facing_west"          # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/block_state_default"      # << CHANGE THIS
+
+# === 8. minecraft:component (1.21.5+) ===
+# 读取物品堆叠可持久化组件数据，完全匹配组件值
+# 需要额外指定 component
+items:
+  custom:component_aware_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:component"
+      component: "minecraft:unbreakable"               # << CHANGE THIS: 组件ID
+      cases:
+        - when: "{}"                                    # << CHANGE THIS: 组件值(完全匹配)
+          model:
+            type: minecraft:model
+            path: "minecraft:item/unbreakable_model"    # << CHANGE THIS
+        # - when: "{\"some_key\":\"some_value\"}"
+        #   model:
+        #     type: minecraft:model
+        #     path: "minecraft:item/special_unbreakable"
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/breakable_model"          # << CHANGE THIS
+
+# === 9. minecraft:custom_model_data ===
+# 读取 custom_model_data 组件中的 strings，获取指定下标的字符串
+# 需要额外指定 index
+items:
+  custom:custom_model_data_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:custom_model_data"
+      index: 0                                          # << CHANGE THIS: strings数组下标
+      cases:
+        - when: "variant_a"                             # << CHANGE THIS: 字符串值
+          model:
+            type: minecraft:model
+            path: "minecraft:item/variant_a"             # << CHANGE THIS
+        - when: "variant_b"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/variant_b"             # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/custom_model_default"      # << CHANGE THIS
+
+# === 10. minecraft:local_time ===
+# 读取当前时间，根据时区、地区设置和日期格式获得日期字符串
+# 需要额外指定 locale, time_zone, pattern
+items:
+  custom:time_aware_item:
+    model:
+      type: "minecraft:select"
+      property: "minecraft:local_time"
+      locale: "zh_CN"                                   # << CHANGE THIS: 地区设置
+      time_zone: "GMT+8:00"                             # << CHANGE THIS: 时区
+      pattern: "HH:mm:ss"                               # << CHANGE THIS: 日期格式
+      cases:
+        - when: "08:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/morning_model"         # << CHANGE THIS
+        - when: "12:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/noon_model"            # << CHANGE THIS
+        - when: "18:00:00"
+          model:
+            type: minecraft:model
+            path: "minecraft:item/evening_model"         # << CHANGE THIS
+      fallback:
+        type: minecraft:model
+        path: "minecraft:item/night_model"               # << CHANGE THIS

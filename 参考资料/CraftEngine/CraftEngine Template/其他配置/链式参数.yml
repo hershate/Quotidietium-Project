@@ -1,290 +1,155 @@
-# ============================================================================
-# 链式参数 (Chain Arguments) 引用
-# ============================================================================
-# 使用点表示法（通过 . 连接）以层级结构访问与对象相关的参数。
-# 格式: <arg:对象.属性.子属性>
-# 示例: <arg:player.world.name> → 获取玩家当前所在世界的名称
-#
-# Oraxen 风格参考表 — 完整覆盖所有可用对象及其属性链
-# ============================================================================
+# CraftEngine Wiki: reference/text_format/chain_arguments.md
+# 链式参数 — 使用点表示法以层级结构访问对象相关参数
+# 标签格式: <arg:对象.属性.子属性>
+# 例如 <arg:player.world.name> 获取玩家当前所在世界的名称
+
+namespace: custom                                                        # << CHANGE THIS
 
 # ============================================================================
-# player — 玩家
+# player — 玩家对象链式参数演示
 # ============================================================================
-# 在交互/触发事件中通过 player 访问玩家实例及其链式属性
-# 用法: <arg:player.属性>
-player:
-  x:
-    type: double
-    description: 玩家的 x 坐标
-  y:
-    type: double
-    description: 玩家的 y 坐标
-  z:
-    type: double
-    description: 玩家的 z 坐标
-  block_x:
-    type: int
-    description: 玩家的方块 x 坐标（整数）
-  block_y:
-    type: int
-    description: 玩家的方块 y 坐标（整数）
-  block_z:
-    type: int
-    description: 玩家的方块 z 坐标（整数）
-  name:
-    type: string
-    description: 玩家的名称
-  uuid:
-    type: uuid
-    description: 玩家的通用唯一识别码
-  is_flying:
-    type: boolean
-    description: 检查玩家是否处于飞行状态
-  is_sneaking:
-    type: boolean
-    description: 检查玩家是否处于潜行状态
-  gamemode:
-    type: string
-    description: 玩家的游戏模式
-  game_edition:
-    type: string
-    description: 玩家的游戏版本
-  main_hand_item:
-    type: item
-    description: 玩家主手中的物品
-    chain: <arg:player.main_hand_item.属性>  # 见 item 表
-  off_hand_item:
-    type: item
-    description: 玩家副手中的物品
-    chain: <arg:player.off_hand_item.属性>   # 见 item 表
+player_example:
+  coordinates:
+    double: "<arg:player.x> <arg:player.y> <arg:player.z>"
+    block: "<arg:player.block_x> <arg:player.block_y> <arg:player.block_z>"
+  identity:
+    name: "<arg:player.name>"
+    uuid: "<arg:player.uuid>"
+  state:
+    is_flying: "<arg:player.is_flying>"
+    is_sneaking: "<arg:player.is_sneaking>"
+    gamemode: "<arg:player.gamemode>"
+    game_edition: "<arg:player.game_edition>"
+  held_items:
+    main_hand_id: "<arg:player.main_hand_item.id>"
+    main_hand_count: "<arg:player.main_hand_item.count>"
+    main_hand_custom_model_data: "<arg:player.main_hand_item.custom_model_data>"
+    main_hand_is_custom: "<arg:player.main_hand_item.is_custom>"
+    off_hand_id: "<arg:player.off_hand_item.id>"
+    off_hand_count: "<arg:player.off_hand_item.count>"
+    off_hand_custom_model_data: "<arg:player.off_hand_item.custom_model_data>"
+    off_hand_is_custom: "<arg:player.off_hand_item.is_custom>"
   world:
-    type: world
-    description: 玩家所在的世界
-    chain: <arg:player.world.属性>            # 见 world 表
+    name: "<arg:player.world.name>"
+    uuid: "<arg:player.world.uuid>"
+    time: "<arg:player.world.time>"
   position:
-    type: position
-    description: 玩家的位置
-    chain: <arg:player.position.属性>          # 见 position 表
+    x: "<arg:player.position.x>"
+    y: "<arg:player.position.y>"
+    z: "<arg:player.position.z>"
+    yaw: "<arg:player.position.yaw>"
+    pitch: "<arg:player.position.pitch>"
+    block_x: "<arg:player.position.block_x>"
+    block_y: "<arg:player.position.block_y>"
+    block_z: "<arg:player.position.block_z>"
+    world_name: "<arg:player.position.world.name>"
 
 # ============================================================================
-# block — 方块
+# block — 方块对象链式参数演示
 # ============================================================================
-# 用法: <arg:block.属性>
-block:
-  x:
-    type: double
-    description: 方块的 x 坐标
-  y:
-    type: double
-    description: 方块的 y 坐标
-  z:
-    type: double
-    description: 方块的 z 坐标
-  block_x:
-    type: int
-    description: 方块的方块 x 坐标（整数）
-  block_y:
-    type: int
-    description: 方块的方块 y 坐标（整数）
-  block_z:
-    type: int
-    description: 方块的方块 z 坐标（整数）
+block_example:
+  coordinates:
+    double: "<arg:block.x> <arg:block.y> <arg:block.z>"
+    block: "<arg:block.block_x> <arg:block.block_y> <arg:block.block_z>"
   world:
-    type: world
-    description: 方块所在的世界
-    chain: <arg:block.world.属性>
-  block_state:
-    type: block_state
-    description: 方块的方块状态
+    name: "<arg:block.world.name>"
+    uuid: "<arg:block.world.uuid>"
+    time: "<arg:block.world.time>"
+  block_state: "<arg:block.block_state>"
   position:
-    type: position
-    description: 方块的位置
-    chain: <arg:block.position.属性>
+    x: "<arg:block.position.x>"
+    y: "<arg:block.position.y>"
+    z: "<arg:block.position.z>"
+    yaw: "<arg:block.position.yaw>"
+    pitch: "<arg:block.position.pitch>"
+    block_x: "<arg:block.position.block_x>"
+    block_y: "<arg:block.position.block_y>"
+    block_z: "<arg:block.position.block_z>"
+    world_name: "<arg:block.position.world.name>"
 
 # ============================================================================
-# world — 世界
+# world — 世界对象链式参数演示
 # ============================================================================
-# 作为 player/block/entity/position 的链式子属性
-# 用法: <arg:对象.world.属性>
-world:
-  name:
-    type: string
-    description: 世界的名称
-    example: <arg:player.world.name>
-  uuid:
-    type: uuid
-    description: 世界的通用唯一识别码
-  time:
-    type: long
-    description: 世界的时间
+world_example:
+  name: "<arg:world.name>"
+  uuid: "<arg:world.uuid>"
+  time: "<arg:world.time>"
 
 # ============================================================================
-# entity — 实体
+# entity — 实体对象链式参数演示
 # ============================================================================
-# 用法: <arg:entity.属性>
-entity:
-  x:
-    type: double
-    description: 实体的 x 坐标
-  y:
-    type: double
-    description: 实体的 y 坐标
-  z:
-    type: double
-    description: 实体的 z 坐标
-  block_x:
-    type: int
-    description: 实体的方块 x 坐标（整数）
-  block_y:
-    type: int
-    description: 实体的方块 y 坐标（整数）
-  block_z:
-    type: int
-    description: 实体的方块 z 坐标（整数）
-  name:
-    type: string
-    description: 实体的名称
-  uuid:
-    type: uuid
-    description: 实体的通用唯一识别码
+entity_example:
+  coordinates:
+    double: "<arg:entity.x> <arg:entity.y> <arg:entity.z>"
+    block: "<arg:entity.block_x> <arg:entity.block_y> <arg:entity.block_z>"
+  identity:
+    name: "<arg:entity.name>"
+    uuid: "<arg:entity.uuid>"
   world:
-    type: world
-    description: 实体所在的世界
-    chain: <arg:entity.world.属性>
+    name: "<arg:entity.world.name>"
+    uuid: "<arg:entity.world.uuid>"
+    time: "<arg:entity.world.time>"
   position:
-    type: position
-    description: 实体的位置
-    chain: <arg:entity.position.属性>
+    x: "<arg:entity.position.x>"
+    y: "<arg:entity.position.y>"
+    z: "<arg:entity.position.z>"
+    yaw: "<arg:entity.position.yaw>"
+    pitch: "<arg:entity.position.pitch>"
+    block_x: "<arg:entity.position.block_x>"
+    block_y: "<arg:entity.position.block_y>"
+    block_z: "<arg:entity.position.block_z>"
+    world_name: "<arg:entity.position.world.name>"
   item:
-    type: item
-    description: 掉落物实体的物品
-    chain: <arg:entity.item.属性>
+    id: "<arg:entity.item.id>"
+    custom_model_data: "<arg:entity.item.custom_model_data>"
+    is_custom: "<arg:entity.item.is_custom>"
+    count: "<arg:entity.item.count>"
 
 # ============================================================================
-# position — 位置
+# position — 位置对象链式参数演示
 # ============================================================================
-# 作为 player/block/entity/furniture 的链式子属性
-# 用法: <arg:对象.position.属性>
-position:
-  x:
-    type: double
-    description: 位置的 x 坐标
-  y:
-    type: double
-    description: 位置的 y 坐标
-  z:
-    type: double
-    description: 位置的 z 坐标
-  yaw:
-    type: float
-    description: 水平旋转角度
-  pitch:
-    type: float
-    description: 垂直旋转角度
-  block_x:
-    type: int
-    description: 位置的方块 x 坐标（整数）
-  block_y:
-    type: int
-    description: 位置的方块 y 坐标（整数）
-  block_z:
-    type: int
-    description: 位置的方块 z 坐标（整数）
+position_example:
+  coordinates:
+    double: "<arg:position.x> <arg:position.y> <arg:position.z>"
+    block: "<arg:position.block_x> <arg:position.block_y> <arg:position.block_z>"
+  rotation:
+    yaw: "<arg:position.yaw>"
+    pitch: "<arg:position.pitch>"
   world:
-    type: world
-    description: 位置所在的世界
-    chain: <arg:对象.position.world.属性>
+    name: "<arg:position.world.name>"
+    uuid: "<arg:position.world.uuid>"
+    time: "<arg:position.world.time>"
 
 # ============================================================================
-# item — 物品
+# item — 物品对象链式参数演示
 # ============================================================================
-# 作为 player.main_hand_item / player.off_hand_item / entity.item 的链式子属性
-# 用法: <arg:对象.item.属性>
-item:
-  id:
-    type: string
-    description: 物品的标识符（命名空间ID）
-    example: <arg:player.main_hand_item.id>
-  custom_model_data:
-    type: int
-    description: 物品的自定义模型数据
-  is_custom:
-    type: boolean
-    description: 检查物品是否为 CraftEngine 自定义物品
-  count:
-    type: int
-    description: 物品的数量
+item_example:
+  id: "<arg:item.id>"
+  custom_model_data: "<arg:item.custom_model_data>"
+  is_custom: "<arg:item.is_custom>"
+  count: "<arg:item.count>"
 
 # ============================================================================
-# furniture — 家具
+# furniture — 家具对象链式参数演示
 # ============================================================================
-# 用法: <arg:furniture.属性>
-furniture:
-  id:
-    type: string
-    description: 家具的标识符（命名空间ID）
-  uuid:
-    type: uuid
-    description: 家具的通用唯一识别码
-  variant:
-    type: string
-    description: 家具的变体
-  x:
-    type: double
-    description: 家具的 x 坐标
-  y:
-    type: double
-    description: 家具的 y 坐标
-  z:
-    type: double
-    description: 家具的 z 坐标
-  yaw:
-    type: float
-    description: 家具的水平旋转角度
-  pitch:
-    type: float
-    description: 家具的垂直旋转角度
+furniture_example:
+  identity:
+    id: "<arg:furniture.id>"
+    uuid: "<arg:furniture.uuid>"
+    variant: "<arg:furniture.variant>"
+  coordinates:
+    x: "<arg:furniture.x>"
+    y: "<arg:furniture.y>"
+    z: "<arg:furniture.z>"
+    yaw: "<arg:furniture.yaw>"
+    pitch: "<arg:furniture.pitch>"
   position:
-    type: position
-    description: 家具的位置
-    chain: <arg:furniture.position.属性>
-
-# ============================================================================
-# 链式路径速查表
-# ============================================================================
-# 常用完整链式路径示例:
-#
-#   <arg:player.x>                          → 玩家 X 坐标
-#   <arg:player.y>                          → 玩家 Y 坐标
-#   <arg:player.z>                          → 玩家 Z 坐标
-#   <arg:player.name>                       → 玩家名称
-#   <arg:player.uuid>                       → 玩家 UUID
-#   <arg:player.gamemode>                   → 玩家游戏模式
-#   <arg:player.is_flying>                  → 玩家是否飞行
-#   <arg:player.is_sneaking>                → 玩家是否潜行
-#   <arg:player.game_edition>               → 玩家游戏版本
-#   <arg:player.main_hand_item.id>          → 主手物品 ID
-#   <arg:player.main_hand_item.count>       → 主手物品数量
-#   <arg:player.off_hand_item.id>           → 副手物品 ID
-#   <arg:player.world.name>                 → 玩家所在世界名称
-#   <arg:player.world.time>                 → 玩家所在世界时间
-#   <arg:player.position.x>                 → 玩家位置 X
-#   <arg:player.position.y>                 → 玩家位置 Y
-#   <arg:player.position.z>                 → 玩家位置 Z
-#   <arg:player.position.yaw>               → 玩家水平旋转角度
-#   <arg:player.position.pitch>             → 玩家垂直旋转角度
-#
-#   <arg:block.x>                           → 方块 X 坐标
-#   <arg:block.block_state>                 → 方块状态
-#   <arg:block.world.name>                  → 方块所在世界名称
-#
-#   <arg:entity.name>                       → 实体名称
-#   <arg:entity.uuid>                       → 实体 UUID
-#   <arg:entity.world.time>                 → 实体所在世界时间
-#   <arg:entity.item.id>                    → 掉落物物品 ID（仅掉落物实体）
-#   <arg:entity.position.block_x>           → 实体所在方块 X
-#
-#   <arg:furniture.id>                      → 家具 ID
-#   <arg:furniture.variant>                 → 家具变体
-#   <arg:furniture.position.world.name>     → 家具所在世界名称
+    x: "<arg:furniture.position.x>"
+    y: "<arg:furniture.position.y>"
+    z: "<arg:furniture.position.z>"
+    yaw: "<arg:furniture.position.yaw>"
+    pitch: "<arg:furniture.position.pitch>"
+    block_x: "<arg:furniture.position.block_x>"
+    block_y: "<arg:furniture.position.block_y>"
+    block_z: "<arg:furniture.position.block_z>"
+    world_name: "<arg:furniture.position.world.name>"

@@ -1,65 +1,15 @@
-# ============================================================================
-# 压力板方块 (Pressure Plate Block)
-# ============================================================================
-# 压力板方块是一种开关型红石元件，当实体踩上时发出 15 强度的强充能信号。
-# 实体离开后，压力板会在 pressed_time 刻后弹起。
-# ============================================================================
+# Wiki: CraftEngine Wiki/configuration/block/behaviors/pressure_plate_block.md
+# 压力板方块 - 探测玩家/生物等实体，踩上发出 15 级强充能信号
+# 必须放置于方块支撑形状上表面中心完整或边缘完整的方块上方
 
 blocks:
-  # ==========================================================================
-  # 自定义命名空间下的压力板方块
-  # 请将 "custom" 替换为你的项目/插件命名空间，例如 your_project:amethyst_plate
-  # ==========================================================================
-  custom:your_pressure_plate:
-
-    # ---- 行为定义 ---------------------------------------------------------
+  custom:my_pressure_plate: # << CHANGE THIS block ID
     behavior:
-      # 行为类型：压力板方块 (必须)
       type: pressure_plate_block
-
-      # 触发灵敏度 (可选，默认: all)
-      # all - 任意实体（玩家、生物、掉落物等）均可触发
-      # mob - 仅限生物触发
-      sensitivity: all
-
-      # 按下保持时长 (可选，默认: 20)
-      # 实体离开后压力板持续保持按下状态的时长，单位：刻 (1秒 = 20刻)
-      pressed_time: 20
-
-      # 音效配置 (可选，可不填)
-      sounds:
-        # 按下时播放的音效 (可选)
-        on: "minecraft:block.wooden_pressure_plate.click_on"
-        # 释放时播放的音效 (可选)
-        off: "minecraft:block.wooden_pressure_plate.click_off"
-
-    # ---- 属性定义 ---------------------------------------------------------
-    # 压力板方块拥有以下属性，可在配置或游戏内修改
+      sensitivity: all       # << CHANGE THIS "all"（任意实体）或 "mob"（仅限生物），默认 all
+      pressed_time: 20        # << CHANGE THIS 实体离开后保持按下的时长（刻），默认 20
+      sounds:                 # << CHANGE THIS optional
+        on: minecraft:block.stone_pressure_plate.click_on   # << CHANGE THIS 按下时音效
+        off: minecraft:block.stone_pressure_plate.click_off # << CHANGE THIS 释放时音效
     properties:
-      # powered: boolean (必需)
-      # 表示压力板当前是否处于激活（按下）状态
-      # 若为 true，则发出 15 强度红石信号
-      powered: false
-
-    # ---- 完整示例（含全部可选字段）----------------------------------------
-    # 下方为另一个压力板的完整配置示例，展示全部可用选项
-    # 取消注释即可使用
-    # custom:obsidian_plate:
-    #   behavior:
-    #     type: pressure_plate_block
-    #     sensitivity: mob              # 仅生物触发
-    #     pressed_time: 40              # 保持 2 秒（40刻）
-    #     sounds:
-    #       on: "minecraft:block.stone_pressure_plate.click_on"
-    #       off: "minecraft:block.stone_pressure_plate.click_off"
-    #   properties:
-    #     powered: false
-
-# ============================================================================
-# 注意事项:
-# 1. 压力板必须放置于方块支撑形状上表面中心完整或边缘完整的方块上方。
-# 2. 触发后始终发出 15 信号强度，与原版测重压力板不同，不论实体数量。
-# 3. 属性 powered 是唯一必需属性，类型为 boolean。
-# 4. sensitivity 默认为 all，若只想被生物触发请设为 mob。
-# 5. pressed_time 最小值为 0，表示实体离开后立即弹起。
-# ============================================================================
+      powered: false          # required boolean, 当前是否被激活

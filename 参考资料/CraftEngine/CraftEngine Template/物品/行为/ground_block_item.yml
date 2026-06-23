@@ -1,10 +1,27 @@
-# ⬆️ 地面方块物品 (ground_block_item)
-# 只能放到方块顶面，其他行为和 block_item 一致。
-
+# =============================================================================
+# 地面方块物品 (ground_block_item)
+# 本地 Wiki: configuration/item/behaviors/ground_block_item.md
+# 只能放到方块顶面，其他行为与方块物品 (block_item) 一致
+# =============================================================================
+#
+# 方式一: 通过命名空间 ID 引用已有方块
+#
 items:
-  example:my_ground_block:
+  custom:my_ground_block:                # << CHANGE THIS: 物品命名空间 ID
     behavior:
-      # 行为类型：地面方块物品
       type: ground_block_item
-      # 放置时对应的方块 (命名空间:方块ID)
-      block: example:my_ground_block
+      block: custom:my_ground_block      # << CHANGE THIS: 目标方块命名空间 ID
+
+# ---------------------------------------------------------------------------
+# 方式二: 内联定义完整方块 (不推荐，混淆方块与物品的区分)
+#
+# items:
+#   custom:my_ground_block:              # << CHANGE THIS: 物品命名空间 ID
+#     behavior:
+#       type: ground_block_item
+#       block:                           # << CHANGE THIS: 内联方块定义
+#         behavior: ...
+#         settings: ...
+#         states: ...
+#         loot: ...
+#         events: ...

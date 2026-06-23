@@ -1,138 +1,17 @@
-# ============================================================================
-#  fence_block 行为模板 | CraftEngine 方块配置
-#  行为类型: fence_block — 栅栏方块
-#  描述: 栅栏方块在四个水平方向自动与相邻方块连接，行为与原版栅栏相同
-# ============================================================================
-
+# 参考资料: CraftEngine Wiki/configuration/block/behaviors/fence_block.md
+# 栅栏方块 - 在四个水平方向自动与相邻方块连接，行为与原版栅栏相同
 blocks:
-  # ==========================================================================
-  # 【自定义命名空间:方块ID】
-  #   命名空间建议使用自定义名称（如 custom:）而非 default:，避免覆盖原版注册
-  #   - 命名空间: 通常为插件/模组名
-  #   - 方块ID:   小写英文 + 下划线，唯一标识
-  # ==========================================================================
-  custom:my_fence:
-    # ==========================================================================
-    # behavior 节 — 定义方块行为
-    # ==========================================================================
+  custom:my_fence:                            # << CHANGE THIS
     behavior:
-      # 行为类型 (必需) — 固定值 fence_block
-      #   可选值: fence_block, wall_block, gate_block, door_block, trapdoor_block,
-      #           stair_block, slab_block, log_block, leaf_block, 等
       type: fence_block
-
-      # connectable_block_tag (可选)
-      #   描述: 指定此栅栏可连接的方块标签
-      #   类型: string (命名空间标签)
-      #   默认: minecraft:wooden_fences
-      #   说明: 相邻方块若具备此标签中的任意一个，栅栏会自动连接过去
-      #   示例: "minecraft:wooden_fences" — 与原版木栅栏互连
-      #          "c:glass_fences"       — 自定义玻璃栅栏
-      #          ""                     — 仅同类型互连
-      connectable_block_tag: minecraft:wooden_fences
-
-      # can_leash (可选)
-      #   描述: 右键栅栏时是否允许拴绳 (拴绳) 系在方块上
-      #   类型: boolean
-      #   默认: false
-      #   说明: true  — 可以右键拴绳，效果类似原版拴绳桩
-      #          false — 不允许拴绳
-      can_leash: false
-
-    # ==========================================================================
-    # properties 节 — 方块状态属性 (必需)
-    #   栅栏方块的四个水平方向连接状态均为必需属性。
-    #   每个属性控制该方向是否有相邻可连接方块。
-    #   CraftEngine 会根据周围方块自动计算这些值。
-    # ==========================================================================
+      connectable_block_tag: custom:fences    # << CHANGE THIS 可连接方块的标签（默认 minecraft:wooden_fences）
+      can_leash: false                        # << CHANGE THIS 是否允许拴绳拴上
     properties:
-      # north (必需) — 北面连接状态
-      #   类型: boolean
       north:
         default: false
-      # east (必需) — 东面连接状态
-      #   类型: boolean
       east:
         default: false
-      # south (必需) — 南面连接状态
-      #   类型: boolean
       south:
         default: false
-      # west (必需) — 西面连接状态
-      #   类型: boolean
       west:
         default: false
-      # # waterlogged (可选) — 是否含水
-      # #   类型: boolean
-      # waterlogged:
-      #   default: false
-
-    # ==========================================================================
-    # display 节 (可选) — 方块显示/模型配置
-    # ==========================================================================
-    # display:
-    #   model:
-    #     type: MODEL_JSON
-    #     path: custom/models/block/my_fence.json
-    #   texture: custom/textures/block/my_fence.png
-
-    # ==========================================================================
-    # hardness 节 (可选) — 方块硬度
-    # ==========================================================================
-    # hardness: 2.0
-
-    # ==========================================================================
-    # resistance 节 (可选) — 爆炸抗性
-    # ==========================================================================
-    # resistance: 3.0
-
-    # ==========================================================================
-    # tool 节 (可选) — 采集工具类型
-    # ==========================================================================
-    # tool: axe
-
-    # ==========================================================================
-    # sounds 节 (可选) — 方块音效组
-    # ==========================================================================
-    # sounds: wood
-
-    # ==========================================================================
-    # drops 节 (可选) — 掉落物
-    # ==========================================================================
-    # drops:
-    #   - item: custom:my_fence
-    #     amount: 1
-
-    # ==========================================================================
-    # tags 节 (可选) — 方块标签，用于 behavior 中的 connectable_block_tag 配对
-    # ==========================================================================
-    # tags:
-    #   minecraft:wooden_fences: true
-    #   c:glass_fences: true
-
-# ============================================================================
-# 完整示例
-# ============================================================================
-# blocks:
-#   custom:oak_glass_fence:
-#     behavior:
-#       type: fence_block
-#       connectable_block_tag: c:glass_fences
-#       can_leash: true
-#     properties:
-#       north:
-#         default: false
-#       east:
-#         default: false
-#       south:
-#         default: false
-#       west:
-#         default: false
-#     hardness: 2.5
-#     resistance: 6.0
-#     tool: axe
-#     sounds: glass
-#     drops:
-#       - item: custom:oak_glass_fence
-#     tags:
-#       c:glass_fences: true

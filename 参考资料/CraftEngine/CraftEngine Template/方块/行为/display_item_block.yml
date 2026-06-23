@@ -1,109 +1,17 @@
-# ============================================================================
-# 物品展示方块 (display_item_block) 配置模板
-# 方块实体 — 在方块上展示一个掉落的物品
-# ============================================================================
-# 【行为概述】
-# - 手持物品右键方块 → 放入展示（替换已有物品）
-# - 空手右键方块     → 取出展示的物品
-# - 同一时间只能展示一件物品
-# - 比较器检测：有物品时输出信号 15，无物品时输出 0（需启用 has_signal）
-# ============================================================================
+# Wiki: configuration/block/behaviors/display_item_block.md
+# 物品展示方块 — 方块实体，手持物品右键放入，空手右键取出，同时只能展示一件物品。
+# 比较器：有物品输出 15，无物品输出 0（需启用 has_signal）。
 
-# ─── 方块根键 ──────────────────────────────────────────────────────────────
 blocks:
-
-  # 自定义命名空间（请替换为你的项目名称，如 your_project:display_table）
-  custom_namespace:display_item_block:
-
-    # ─── 行为定义 ───────────────────────────────────────────────────────
-    behavior:
-      # 行为类型：固定为 display_item_block
-      type: display_item_block
-
-      # ─── 展示位置偏移 ────────────────────────────────────────────────
-      # 物品在方块内的相对位置（浮点数坐标, 格式 "x,y,z"）
-      # 默认值: "0.5,0.5,0.5"（方块中心）
-      # 范围: 0.0 ~ 1.0（相对于方块边长的比例）
-      # 示例: "0.5,0.2,0.5" 将物品下沉到方块底部附近
-      position: "0.5,0.5,0.5"
-
-      # ─── 比较器信号 ──────────────────────────────────────────────────
-      # 是否允许比较器检测物品存在状态
-      # true  → 有物品输出 15，无物品输出 0
-      # false → 比较器始终输出 0
-      # 默认值: true
-      has_signal: true
-
-      # ─── NBT 持久化键名 ───────────────────────────────────────────────
-      # 存储物品数据的 NBT 键路径
-      # 仅当与其他插件/NBT 操作冲突时需要修改
-      # 默认值: "craftengine:display_item"
-      data_key: "craftengine:display_item"
-
-      # ─── 染色源 ──────────────────────────────────────────────────────
-      # 存储的物品是否作为方块实体的颜色来源（用于染色方块）
-      # true  → 物品的某种属性会影响方块实体的颜色
-      # false → 物品仅展示，不影响方块颜色
-      # 默认值: false
-      tint_source: false
-
-      # ─── 音效配置（可选） ─────────────────────────────────────────────
-      sounds:
-        # 放入物品时播放的音效
-        # 留空或移除该项则无音效
-        put: "minecraft:block.decorated_pot.insert"
-
-        # 取出物品时播放的音效
-        take: "minecraft:block.decorated_pot.insert_fail"
-
-      # ─── 方块属性（可选） ─────────────────────────────────────────────
-      # 参见：blocks/<namespace>:<id>/properties/
-    properties:
-      # 展示面朝向（可选的方块状态属性）
-      # 取值范围: north / east / south / west / up / down
-      # 不设置则默认朝上（up）
-      facing: "up"
-
-
-# ============================================================================
-# 完整示例 — 展示柜台
-# ============================================================================
-blocks:
-  my_shop:display_counter:
-
+  custom:display_item_block:
     behavior:
       type: display_item_block
-      position: "0.5,0.3,0.5"          # 物品略微下沉，模拟放在台面上
-      has_signal: true
-      data_key: "my_shop:display_item"
-      tint_source: false
+      position: "0.5,0.5,0.5"                 # << CHANGE THIS 物品展示位置偏移，默认 "0.5,0.5,0.5"
+      has_signal: true                         # << CHANGE THIS 启用比较器信号，默认 true
+      data_key: "craftengine:display_item"     # << CHANGE THIS NBT 持久化键名，默认 "craftengine:display_item"
+      tint_source: false                       # << CHANGE THIS 存储物品是否为方块实体提供颜色，默认 false
       sounds:
-        put: "minecraft:block.stone_place"
-        take: "minecraft:block.stone_break"
-
+        put: "minecraft:block.decorated_pot.insert"        # << CHANGE THIS 放入音效（可选）
+        take: "minecraft:block.decorated_pot.insert_fail"  # << CHANGE THIS 取出音效（可选）
     properties:
-      facing: "up"
-
-    # ─── 可选：额外行为组合 ─────────────────────────────────────────────
-    # display_item_block 可与其他行为共存（如 light 发光、interactable 交互等）
-    # 示例：让展示柜台在放入物品时发光
-    # extra_behaviors:
-    #   - type: light
-    #     level: 8
-    #   - type: breakable
-    #     hardness: 2.0
-
-    # ─── 可选：掉落物与合成 ────────────────────────────────────────────
-    # drops:
-    #   type: block
-    #   drop: my_shop:display_counter
-    #
-    # craft:
-    #   type: shaped
-    #   pattern:
-    #     - "SSS"
-    #     - "S S"
-    #     - "S S"
-    #   key:
-    #     S: minecraft:stone
-    #   result: my_shop:display_counter
+      facing: north                            # << CHANGE THIS 展示物品朝向（north/south/east/west，可选）

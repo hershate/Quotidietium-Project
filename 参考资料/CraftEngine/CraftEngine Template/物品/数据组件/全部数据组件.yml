@@ -1,869 +1,548 @@
 # =============================================================================
-# CraftEngine 全部数据组件参考手册
-# =============================================================================
-# 基于 CraftEngine Wiki: configuration/item/data.md
-# 涵盖所有硬编码数据组件、自定义数据组件 (NBT/Components)、
-# 客户端侧数据 (client_bound_data) 以及外部插件兼容配置.
+# CraftEngine 物品数据组件 - 完整模板参考
+# 本地 Wiki 路径: 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
 #
-# 命名空间: custom (示例均使用 custom: 前缀)
-# 风格: Oraxen 风格 — 每个组件独立示例, 清晰注释, 开箱即用.
-# =============================================================================
-#
-# === 目录 ===
-#   [硬编码数据 - 基础]
-#   1.  item_name              物品名称
-#   2.  custom_name            自定义名称
-#   3.  lore                   物品提示框描述
-#   4.  overwritable_lore      可覆写的提示框描述
-#   5.  insert_lore            插入提示框描述行
-#   6.  remove_lore            移除提示框描述行
-#   7.  overwritable_item_name 可覆写的物品名称
-#   8.  unbreakable            无法破坏
-#   9.  enchantment            魔咒
-#   10. dyed_color             染色颜色
-#   11. custom_model_data      自定义模型数据
-#   12. hide_tooltip           隐藏提示框
-#   13. block_state            方块状态
-#   14. attribute_modifiers    属性修饰符
-#   15. food                   食物 (1.20.5+)
-#   16. max_damage             最大耐久度 (1.20.5+)
-#   17. damage                 当前耐久度损伤
-#   18. jukebox_playable       唱片机播放 (1.21+)
-#   19. item_model             物品模型 (1.21.2+)
-#   20. tooltip_style          提示框样式 (1.21.2+)
-#   21. use_remainder          使用后返还物品 (1.21.2+)
-#   22. trim                   盔甲纹饰
-#   23. equippable             可穿戴性 (1.21.2+)
-#   24. pdc                    持久化数据容器
-#   25. profile                玩家游戏档案 (头颅)
-#   26. conditional            条件数据 (付费版)
-#   27. painting_variant       画变种
-#   28. charged_projectile     充能弹射物 (1.21+)
-#   29. debug_stick            调试棒状态
-#   [自定义数据]
-#   30. nbt                    NBT 原始数据 (1.20-1.20.4)
-#   31. components             原生组件 (1.20.5+)
-#   32. remove_components      移除组件 (1.20.5+)
-#   [外部插件兼容]
-#   33. external               外部插件物品引用
-#   [客户端侧数据]
-#   34. client_bound_data      客户端侧数据 (付费版)
+# 每个数据组件均有独立的 items: 配置块, 修改命名空间和物品 ID 后即可使用。
+# 命名空间示例: "custom"。所有需自定义的值均标有 # << CHANGE THIS。
 # =============================================================================
 
+# =============================================================================
+# 1. item_name (物品名称)
+# 控制物品的默认名称。无法通过铁砧修改,不能在物品展示框中显示名称,
+# 带有该组件的旗帜在充当地图标记时也不会显示名称。
+# 此组件对物品名称的控制等级永远最低,会被其他所有影响物品名称的组件覆盖。
+# =============================================================================
 items:
-
-  # ===========================================================================
-  # 1. item_name — 物品名称
-  # ===========================================================================
-  # 控制物品的默认名称.
-  # - 无法通过铁砧修改.
-  # - 不在物品展示框中显示名称.
-  # - 带有此组件的旗帜在充当地图标记时不显示名称.
-  # - 控制等级永久最低, 会被其他影响名称的组件覆盖.
-  # ===========================================================================
-  custom:item_name_example:
-    material: diamond
+  custom:example_item_name:
     data:
-      item_name: "<!i><#FF8C00>炎阳之刃"
+      item_name: "<!i><#FF8C00>黄玉钓竿" # << CHANGE THIS
 
-  # ===========================================================================
-  # 2. custom_name — 自定义名称
-  # ===========================================================================
-  # 控制物品的自定义名称, 类似于在铁砧中设置的名称.
-  # ===========================================================================
-  custom:custom_name_example:
-    material: diamond_sword
+# =============================================================================
+# 2. custom_name (自定义名称)
+# 控制物品的自定义名称,类似于在铁砧中设置的名称。
+# =============================================================================
+items:
+  custom:example_custom_name:
     data:
-      custom_name: "<#FF4500>熔铸之刃"
+      custom_name: "<!i><#FF8C00>黄玉钓竿" # << CHANGE THIS
 
-  # ===========================================================================
-  # 3. lore — 物品提示框中的描述信息
-  # ===========================================================================
-  # 控制物品提示框中所显示的描述信息.
-  #
-  # 基础用法: 字符串列表
-  # 高级用法: 支持 priority (优先级)、split_lines (分割)、conditions (条件)
-  # ===========================================================================
-  custom:lore_basic_example:
-    material: diamond
+# =============================================================================
+# 3. lore (物品提示框中的描述信息)
+# 控制物品提示框中所显示的描述信息。
+# =============================================================================
+items:
+  custom:example_lore:
     data:
       lore:
-        - "<!i><gray>一块稀有的红色钻石"
-        - "<!i><yellow>传闻它在火山深处形成"
+        - "我去这鱼竿直接把我24K狗眼闪瞎了" # << CHANGE THIS
 
-  # 高级用法 — 分段优先级、分割、条件
-  custom:lore_advanced_example:
-    material: diamond
+# =============================================================================
+# 4. lore - 高级格式 (分段优先级、自动分割、条件)
+# priority 决定文本段的最终显示位置,数值越低越靠近顶部。
+# split_lines: true 时 \n 会被分割为多行。
+# conditions 支持按权限等条件控制显示。
+# =============================================================================
+items:
+  custom:example_lore_advanced:
     data:
       lore:
-        # 段 1: 无优先级, 默认置于底部
         - content:
-            - "<!i><gray>第一段描述"
-            - "<!i><dark_gray>副描述文本"
-        # 段 2: priority 2, 靠近顶部
-        - content: "<!i><green>稀有品质"
+            - "hello"
+            - 123456
+        - content: "优先级 2" # << CHANGE THIS
           priority: 2
-        # 段 3: priority 1, 位于最顶部
-        - content: "<!i><gold><bold>传说之石"
+        - content: "优先级 1" # << CHANGE THIS
           priority: 1
-        # 段 4: 继承上一段的优先级
-        - content: "<!i><gray>同样在最顶部区域"
-        # 段 5: 自动换行
-        - content: "<!i><red>第一行\n<!i><blue>换行后的第二行"
+        - content: "此行继承上一行的优先级"
+        - content: "分割\n此行文本" # << CHANGE THIS
           split_lines: true
-        # 段 6: 带权限条件
-        - content: "<!i><light_purple>管理员专属标识"
           conditions:
             - type: permission
-              permission: "custom.admin"
+              permission: craftengine.admin # << CHANGE THIS
 
-  # ===========================================================================
-  # 4. overwritable_lore — 可覆写的物品提示框中的描述信息
-  # ===========================================================================
-  # 专为 client_bound_data 设计.
-  # 仅在物品提示框中的描述信息为空时生效.
-  # 优先显示其他插件设置的 lore，不会被此值覆盖.
-  # 适用于商店插件等场景.
-  # ===========================================================================
-  custom:overwritable_lore_example:
-    material: diamond
+# =============================================================================
+# 5. overwritable_lore (可覆写的物品提示框中的描述信息)
+# 专为 client_bound_data 设计。仅在物品提示框中的描述信息为空时才会生效。
+# 会优先显示其他插件设置的 lore(例如商店插件展示售卖物品时不会覆盖商店的 lore)。
+# =============================================================================
+items:
+  custom:example_overwritable_lore:
     client_bound_data:
       overwritable_lore:
-        - "<!i><gray>此物品的描述可被其他插件覆写"
-        - "<!i><yellow>若商店插件设置了描述则优先显示商店的描述"
+        - "我去这鱼竿直接把我24K狗眼闪瞎了" # << CHANGE THIS
 
-  # ===========================================================================
-  # 5. insert_lore — 插入物品提示框中的描述信息
-  # ===========================================================================
-  # 在现有的 lore 中动态插入新行.
-  # 支持基于正则表达式的定位插入以及失败回退.
-  # ===========================================================================
-  custom:insert_lore_example:
-    material: diamond_sword
+# =============================================================================
+# 6. insert_lore (插入物品提示框中的描述信息)
+# 在现有 lore 中动态插入新行。支持基于正则表达式的定位插入及失败回退。
+# position: HEAD / TAIL / BEFORE / AFTER (HEAD 和 TAIL 不需要 pattern)
+# =============================================================================
+items:
+  custom:example_insert_lore:
     data:
-      # 基础插入: 在匹配行之后插入
       insert_lore:
-        position: AFTER
-        pattern: "攻击伤害"
+        position: AFTER # << CHANGE THIS (HEAD / TAIL / BEFORE / AFTER)
+        pattern: "匹配此行" # << CHANGE THIS (仅 BEFORE / AFTER 时需要)
         lore:
-          - content: "<green>额外: <yellow>+5 火焰伤害"
+          - content: "<green>插入的行" # << CHANGE THIS
             priority: 1
         fallback:
-          position: TAIL
+          position: TAIL # << CHANGE THIS
           lore:
-            - content: "<red>未找到目标行, 回退至尾部"
+            - content: "<red>回退到尾部" # << CHANGE THIS
 
-  # 插入到头部 / 尾部 (无需 pattern) — 支持列表形式
-  custom:insert_lore_head_tail_example:
-    material: diamond_sword
+# =============================================================================
+# 7. remove_lore (移除物品提示框中的描述信息)
+# 根据正则表达式从现有 lore 中移除匹配的行。
+# =============================================================================
+items:
+  custom:example_remove_lore:
     data:
-      insert_lore:
-        - position: HEAD
-          lore:
-            - content: "<gold>=== 传奇武器 ==="
-        - position: TAIL
-          lore:
-            - content: "<gold>=== 小心使用 ==="
+      remove_lore: "删除此行" # << CHANGE THIS (正则表达式)
 
-  # ===========================================================================
-  # 6. remove_lore — 移除物品提示框中的描述信息
-  # ===========================================================================
-  # 根据正则表达式从现有的 lore 中移除匹配的行.
-  # ===========================================================================
-  custom:remove_lore_example:
-    material: diamond_sword
-    data:
-      remove_lore: "过期的描述文本"
-
-  # 移除多行 (列表形式)
-  custom:remove_lore_multi_example:
-    material: diamond_sword
-    data:
-      remove_lore:
-        - "攻击伤害"
-        - "攻击速度"
-        - "耐久度:.*"
-
-  # ===========================================================================
-  # 7. overwritable_item_name — 可覆写的物品名称
-  # ===========================================================================
-  # 类似于 overwritable_lore, 但专为 item_name 设计.
-  # ===========================================================================
-  custom:overwritable_item_name_example:
-    material: diamond_sword
+# =============================================================================
+# 8. overwritable_item_name (可覆写的物品名称)
+# 类似于 overwritable_lore,但专为 item_name 设计。位于 client_bound_data 中。
+# =============================================================================
+items:
+  custom:example_overwritable_item_name:
     client_bound_data:
-      overwritable_item_name: "<#FF8C00>神秘之刃"
+      overwritable_item_name: "<#FF8C00>黄玉钓竿" # << CHANGE THIS
 
-  # ===========================================================================
-  # 8. unbreakable — 无法破坏
-  # ===========================================================================
-  # 控制物品是否无法被破坏 (不会消耗耐久度).
-  # ===========================================================================
-  custom:unbreakable_example:
-    material: diamond_sword
+# =============================================================================
+# 9. unbreakable (无法破坏)
+# 控制物品是否无法被破坏。
+# =============================================================================
+items:
+  custom:example_unbreakable:
     data:
-      unbreakable: true
+      unbreakable: true # << CHANGE THIS
 
-  # ===========================================================================
-  # 9. enchantment — 魔咒
-  # ===========================================================================
-  # 控制物品存储的魔咒信息.
-  # 当物品类型为附魔书时, 任何魔咒将自动转换为"无活性"魔咒.
-  # ===========================================================================
-  custom:enchantment_basic_example:
-    material: diamond_sword
+# =============================================================================
+# 10. enchantment (魔咒)
+# 控制物品存储的魔咒信息。当物品类型为附魔书时,魔咒将自动转换为"无活性"魔咒。
+# =============================================================================
+items:
+  custom:example_enchantment:
     data:
       enchantment:
-        minecraft:sharpness: 5
-        minecraft:fire_aspect: 2
-        minecraft:unbreaking: 3
-        custom:my_enchantment: 1
+        minecraft:sharpness: 1  # << CHANGE THIS
+        custom:enchant: 3       # << CHANGE THIS
 
-  # 带 merge 选项 — 与物品已有魔咒合并
-  custom:enchantment_merge_example:
-    material: diamond_sword
+# =============================================================================
+# 11. enchantment - 带 merge 选项
+# merge: true 时,魔咒将与物品已有的魔咒合并,对配方的结果后处理器很有用。
+# =============================================================================
+items:
+  custom:example_enchantment_merge:
     data:
       enchantment:
-        merge: true
+        merge: true # << CHANGE THIS
         enchantments:
-          minecraft:sharpness: 3
-          minecraft:knockback: 1
+          minecraft:sharpness: 1 # << CHANGE THIS
+          custom:enchant: 3      # << CHANGE THIS
 
-  # ===========================================================================
-  # 10. dyed_color — 所染颜色
-  # ===========================================================================
-  # 控制可染色物品 (皮革盔甲等) 存储的颜色值.
-  # 格式: R,G,B (范围 0-255)
-  # ===========================================================================
-  custom:dyed_color_example:
-    material: leather_chestplate
+# =============================================================================
+# 12. dyed_color (所染颜色)
+# 控制物品存储的颜色值(RGB)。
+# =============================================================================
+items:
+  custom:example_dyed_color:
     data:
-      dyed_color: "255,100,50"
+      dyed_color: 255,255,255 # << CHANGE THIS
 
-  # 白色染色
-  custom:dyed_color_white_example:
-    material: leather_helmet
+# =============================================================================
+# 13. custom_model_data (自定义模型数据)
+# 在 data 中设置仅表示使用该组件本身。
+# 如需生成对应的资源包文件,请在物品根层级设置 custom_model_data。
+# 此处仅支持整数值。如需使用较新版本的功能,请用 components 代替。
+# =============================================================================
+items:
+  custom:example_custom_model_data:
     data:
-      dyed_color: "255,255,255"
+      custom_model_data: 100 # << CHANGE THIS
 
-  # ===========================================================================
-  # 11. custom_model_data — 自定义模型数据
-  # ===========================================================================
-  # 注意: 在 data 中配置仅表示使用此组件本身.
-  # 如需生成资源包文件, 请在物品顶级配置中设置.
-  # 此处仅支持整数值 (向后兼容).
-  # ===========================================================================
-  custom:custom_model_data_example:
-    material: diamond
-    data:
-      custom_model_data: 100
-
-  # 生成资源包的写法 (在顶级而非 data 内)
-  custom:custom_model_data_pack_example:
-    material: diamond
-    custom_model_data: 10001   # 顶级: 会生成对应的资源包文件
-    data:
-      item_name: "<!i><gray>测试模型物品"
-
-  # ===========================================================================
-  # 12. hide_tooltip — 隐藏物品提示框
-  # ===========================================================================
-  # 隐藏此物品上由指定组件提供的工具提示.
-  # 原名 HideFlags (1.20.4 及以下).
-  # ===========================================================================
-  custom:hide_tooltip_example:
-    material: diamond_sword
+# =============================================================================
+# 14. hide_tooltip (隐藏物品提示框)
+# 隐藏此物品上由指定 components 提供的任何工具提示。(原名 HideFlags)
+# =============================================================================
+items:
+  custom:example_hide_tooltip:
     data:
       hide_tooltip:
-        - dye_color
-        - enchantments
-        - attribute_modifiers
-        - unbreakable
-        - can_break
-        - can_place_on
-        - trim
-        - debug_stick_state
-        - food
-        - max_stack_size
+        - dyed_color          # << CHANGE THIS
+        - enchantments        # << CHANGE THIS
+        - attribute_modifiers # << CHANGE THIS
 
-  # ===========================================================================
-  # 13. block_state — 方块状态
-  # ===========================================================================
-  # 控制方块物品放置时将应用的方块状态.
-  # 未指定的属性使用默认值.
-  # 对于高延迟玩家尤其有益, 能显著提升方块放置体验.
-  # ===========================================================================
-  # 方式一: 精细的原版方块属性键值对
-  custom:block_state_keyvalue_example:
-    material: note_block
+# =============================================================================
+# 15. block_state (方块状态) - 精细格式
+# 控制方块物品被放置时将应用于方块的方块状态。
+# 未指定的属性使用默认值。材质必须与目标方块外观匹配。
+# 对高延迟玩家尤其有益,能显著提升方块放置体验。
+# =============================================================================
+items:
+  custom:example_block_state:
+    material: note_block # << CHANGE THIS
     data:
       block_state:
-        note: "1"
-        powered: "false"
-        instrument: "harp"
+        note: "1"          # << CHANGE THIS
+        powered: "false"   # << CHANGE THIS
+        instrument: "harp" # << CHANGE THIS
 
-  # 方式二: 自动应用自定义方块状态定义的视觉属性
-  custom:block_state_auto_example:
-    material: oak_sapling
+# =============================================================================
+# 16. block_state (方块状态) - 自动应用格式
+# 自动应用自定义方块状态定义的视觉属性。
+# =============================================================================
+items:
+  custom:example_block_state_auto:
+    material: oak_sapling # << CHANGE THIS
     data:
-      block_state: "custom:palm_sapling[stage=0]"
+      block_state: custom:palm_sapling[stage=0] # << CHANGE THIS
 
-  # 方式三: client_bound_data + client_bound_material (付费版)
-  # 保持服务端原版物品机制, 同时优化客户端体验.
-  custom:block_state_clientbound_example:
-    material: nether_brick
-    client_bound_material: mushroom_stem
-    data:
-      item_name: "<!i><i18n:item.custom_palm_planks>"
-    client_bound_data:
-      block_state: "custom:palm_planks"
-
-  # ===========================================================================
-  # 14. attribute_modifiers — 属性修饰符
-  # ===========================================================================
-  # 将属性修饰符应用于物品.
-  # 可在旧版本上安全使用最新的属性名称, 插件会帮助转换.
-  # ===========================================================================
-  custom:attribute_modifiers_basic_example:
-    material: diamond_sword
+# =============================================================================
+# 17. attribute_modifiers (属性修饰符)
+# 将属性修饰符应用于物品。可在旧版本上安全使用最新的属性名称。
+# operation: add_value / add_multiplied_base / add_multiplied_total
+# slot: any / hand / armor / mainhand / offhand / head / chest / legs / feet / body / saddle
+# =============================================================================
+items:
+  custom:example_attribute_modifiers:
     data:
       attribute_modifiers:
-        - type: attack_damage
-          amount: 8.0
-          operation: add_value        # add_value, add_multiplied_base, add_multiplied_total
-          slot: mainhand
-        - type: attack_speed
-          amount: 0.5
-          operation: add_multiplied_base
-          slot: mainhand
-
-  # 完整属性修饰符 — 带 id 和 display
-  custom:attribute_modifiers_full_example:
-    material: diamond_sword
-    data:
-      attribute_modifiers:
-        - type: attack_damage
-          amount: 10.0
-          operation: add_value
-          id: "custom:legendary_damage"
-          slot: mainhand
-          display:
+        - type: attack_speed  # << CHANGE THIS
+          amount: 1.0         # << CHANGE THIS
+          operation: add_value # << CHANGE THIS
+          id: custom:custom_attribute # << CHANGE THIS (可选)
+          slot: any # << CHANGE THIS
+          display: # 1.21.5+, 可选
             type: override
-            value: "<yellow>攻击伤害 +10"
+            value: "<yellow>攻击速度 +1" # << CHANGE THIS
 
-        - type: movement_speed
-          amount: 0.05
-          operation: add_multiplied_base
-          id: "custom:speed_boost"
-          slot: any
-          display:
-            type: override
-            value: "<green>移动速度 +5%"
-
-        - type: armor
-          amount: 4.0
-          operation: add_value
-          id: "custom:bonus_armor"
-          slot: chest
-          display:
-            type: override
-            value: "<aqua>额外护甲 +4"
-
-  # ===========================================================================
-  # 15. food — 食物 (1.20.5+)
-  # ===========================================================================
-  # 设置物品的食物属性: 营养值、饱和度、是否可随时食用.
-  # 旧版请使用 settings.food.
-  # ===========================================================================
-  custom:food_example:
-    material: apple
+# =============================================================================
+# 18. food (食物) (1.20.5+)
+# 控制物品的食物属性。旧版 Minecraft 请使用 settings 中的 food。
+# =============================================================================
+items:
+  custom:example_food:
+    material: apple # << CHANGE THIS
     data:
       food:
-        nutrition: 5
-        saturation: 3.5
-        can_always_eat: false
+        nutrition: 5    # << CHANGE THIS
+        saturation: 3.5 # << CHANGE THIS
+        can_always_eat: false # << CHANGE THIS
 
-  # 可随时食用的特殊食物
-  custom:food_always_eat_example:
-    material: golden_apple
+# =============================================================================
+# 19. max_damage (最大耐久度) (1.20.5+)
+# 与 damage 组件一起控制物品能否被损坏。
+# 此组件不存在时若物品被损坏,游戏将最大耐久度视为 0。
+# =============================================================================
+items:
+  custom:example_max_damage:
+    material: wooden_sword # << CHANGE THIS
     data:
-      food:
-        nutrition: 8
-        saturation: 12.0
-        can_always_eat: true
+      max_damage: 100 # << CHANGE THIS
 
-  # ===========================================================================
-  # 16. max_damage — 最大耐久度 (1.20.5+)
-  # ===========================================================================
-  # 存储物品的最大耐久度, 与 damage 组件一起控制物品能否被损坏.
-  # 此组件不存在时, 若物品被损坏则游戏将最大耐久度视为 0.
-  # ===========================================================================
-  custom:max_damage_example:
-    material: wooden_sword
+# =============================================================================
+# 20. damage (当前耐久度损伤) (1.20.5+)
+# 表示物品已经损失的耐久度值。与 max_damage 配合使用。
+# 当前耐久度 = max_damage - damage。
+# 注意: 此组件在 wiki 文档的 max_damage 章节上下文中提及,非独立章节。
+# =============================================================================
+items:
+  custom:example_damage:
+    material: diamond_pickaxe # << CHANGE THIS
     data:
-      max_damage: 100
+      max_damage: 1561 # << CHANGE THIS
+      damage: 500      # << CHANGE THIS (已损失耐久度)
 
-  # ===========================================================================
-  # 17. damage — 当前耐久度损伤 (1.20.5+)
-  # ===========================================================================
-  # 与 max_damage 配合使用. damage 表示已经损失的耐久度.
-  # 耐久度 = max_damage - damage (已损失)
-  # ===========================================================================
-  custom:damage_example:
-    material: diamond_pickaxe
+# =============================================================================
+# 21. jukebox_playable (插入唱片机所播放的音乐) (1.21+)
+# 控制物品存储的音乐信息,以及是否能插进唱片机中播放。
+# =============================================================================
+items:
+  custom:example_jukebox_playable:
+    material: stick # << CHANGE THIS
     data:
-      max_damage: 1561
-      damage: 500   # 显示为剩余约 2/3 耐久
+      jukebox_playable: custom:credits_music # << CHANGE THIS
 
-  # ===========================================================================
-  # 18. jukebox_playable — 插入唱片机所播放的音乐 (1.21+)
-  # ===========================================================================
-  # 控制物品存储的音乐信息, 以及是否能插进唱片机中播放.
-  # ===========================================================================
-  custom:jukebox_playable_example:
-    material: stick
+# =============================================================================
+# 22. item_model (物品模型) (1.21.2+)
+# 控制物品的物品模型映射。在 data 中设置仅表示使用该组件本身。
+# 如需生成对应的资源包文件,请在物品根层级设置 item_model。
+# =============================================================================
+items:
+  custom:example_item_model:
     data:
-      jukebox_playable: "custom:my_custom_music"
+      item_model: custom:music_stick # << CHANGE THIS
 
-  # ===========================================================================
-  # 19. item_model — 物品模型 (1.21.2+)
-  # ===========================================================================
-  # 控制物品的物品模型映射.
-  # 注意: 在 data 中配置仅表示使用此组件本身.
-  # 如需生成资源包文件, 请在物品顶级配置中设置.
-  # ===========================================================================
-  custom:item_model_data_example:
-    material: stick
+# =============================================================================
+# 23. tooltip_style (物品提示框背景和边框样式) (1.21.2+)
+# 控制物品的提示框外观。纹理需放置在 assets/<命名空间>/textures/gui/sprites/tooltip/ 下。
+# =============================================================================
+items:
+  custom:example_tooltip_style:
     data:
-      item_model: "custom:music_stick"
+      tooltip_style: minecraft:topaz # << CHANGE THIS
 
-  # 生成资源包的写法 (在顶级)
-  custom:item_model_pack_example:
-    material: stick
-    item_model: "custom:music_stick"   # 顶级: 会生成资源包文件
-    data:
-      item_name: "<!i><gray>音乐棒"
+# =============================================================================
+# 24. use_remainder (使用后返还物品) (1.21.2+)
+# 注意: use_remainder 位于物品根层级,不在 data 下。
+# =============================================================================
+items:
+  custom:example_use_remainder:
+    use_remainder: custom:chicken_bone # << CHANGE THIS
 
-  # ===========================================================================
-  # 20. tooltip_style — 物品提示框背景和边框样式 (1.21.2+)
-  # ===========================================================================
-  # 控制物品的提示框的外观.
-  # 纹理须放置在 assets/<命名空间>/textures/gui/sprites/tooltip/ 下.
-  # ===========================================================================
-  custom:tooltip_style_example:
-    material: diamond
-    data:
-      tooltip_style: "custom:legendary_tooltip"
-
-  # ===========================================================================
-  # 21. use_remainder — 使用后返还物品 (1.21.2+)
-  # ===========================================================================
-  # 物品使用后返还的另一物品.
-  # ===========================================================================
-  custom:use_remainder_example:
-    material: cooked_chicken
-    use_remainder: "custom:chicken_bone"
-
-  # ===========================================================================
-  # 22. trim — 盔甲纹饰
-  # ===========================================================================
-  # 存储物品的盔甲纹饰数据.
-  # 提示框中会显示盔甲纹饰的名称.
-  # pattern: 盔甲纹饰图案文件名 (不带 .json 后缀)
-  # material: 盔甲纹饰材料文件名 (不带 .json 后缀)
-  # ===========================================================================
-  custom:trim_example:
-    material: diamond_chestplate
+# =============================================================================
+# 25. trim (盔甲纹饰)
+# 控制物品存储的盔甲纹饰数据。提示框中会显示盔甲纹饰的名称。
+# pattern/material 对应 trim_pattern/trim_material 注册表文件名(不含 .json 后缀)。
+# =============================================================================
+items:
+  custom:example_trim:
     data:
       trim:
-        pattern: eye
-        material: iron
+        pattern: eye   # << CHANGE THIS
+        material: iron # << CHANGE THIS
 
-  # 高级盔甲纹饰
-  custom:trim_advanced_example:
-    material: netherite_chestplate
-    data:
-      trim:
-        pattern: sentry
-        material: diamond
-
-  # ===========================================================================
-  # 23. equippable — 可穿戴性 (1.21.2+)
-  # ===========================================================================
-  # 控制物品是否可被生物装备穿戴.
-  # slot: head / chest / legs / feet / body / mainhand / offhand / saddle
-  # ===========================================================================
-  custom:equippable_helmet_example:
-    material: diamond_helmet
+# =============================================================================
+# 26. equippable (可穿戴性) (1.21.2+)
+# 控制物品是否可被生物装备穿戴。
+# slot: head / chest / legs / feet / body / mainhand / offhand / saddle
+# =============================================================================
+items:
+  custom:example_equippable:
     data:
       equippable:
-        slot: head
-        asset_id: "custom:my_helmet"
-        dispensable: true
-        damage_on_hurt: true
-        swappable: true
-        equip_on_interact: true
+        slot: head           # << CHANGE THIS
+        asset_id: minecraft:topaz # << CHANGE THIS (可选)
+        camera_overlay: "命名空间:路径" # << CHANGE THIS (可选)
+        dispensable: true    # << CHANGE THIS (可选)
+        damage_on_hurt: true # << CHANGE THIS (可选)
+        swappable: true      # << CHANGE THIS (可选)
+        equip_on_interact: true # << CHANGE THIS (可选, 1.21.5+)
 
-  # 自定义马铠 (鞍)
-  custom:equippable_saddle_example:
-    material: leather_horse_armor
-    data:
-      equippable:
-        slot: saddle
-        asset_id: "custom:my_saddle"
-        camera_overlay: "custom:textures/overlay"
-
-  # 可穿戴身体装备
-  custom:equippable_body_example:
-    material: diamond
-    data:
-      equippable:
-        slot: body
-        asset_id: "custom:body_armor"
-
-  # ===========================================================================
-  # 24. pdc — 持久化数据容器 (Persistent Data Container)
-  # ===========================================================================
-  # 在物品上存储自定义键值数据, 供其他插件 (如 PlaceholderAPI) 识别.
-  # 支持: 字符串、数字、列表、映射.
-  # ===========================================================================
-  custom:pdc_example:
-    material: diamond_sword
+# =============================================================================
+# 27. pdc (持久化数据容器)
+# 在物品上存储自定义键值数据,供其他插件识别。
+# 支持字符串、数字、列表、映射。
+# =============================================================================
+items:
+  custom:example_pdc:
     data:
       pdc:
-        custom:owner: "Zurker"
-        custom:level: 99
-        custom:rarity: "legendary"
-        custom:soulbound: true
-        custom:drops:
-          - "custom:item_1"
-          - "custom:item_2"
-          - "custom:item_3"
-        custom:stats:
-          strength: 15
-          agility: 8
-          intelligence: 12
+        key1: string_value   # << CHANGE THIS
+        key2: 114514         # << CHANGE THIS
+        example_list:        # << CHANGE THIS
+          - 1
+          - 2
+          - 3
+        map_example:         # << CHANGE THIS
+          key: "value"
 
-  # ===========================================================================
-  # 25. profile — 玩家游戏档案信息 (头颅)
-  # ===========================================================================
-  # 用于显示玩家的头颅/头像.
-  # 支持: 玩家名、纹理 URL、Base64 字符串.
-  # ===========================================================================
-  # 通过玩家名
-  custom:profile_name_example:
-    material: player_head
+# =============================================================================
+# 28. profile (玩家游戏档案信息)
+# 用于显示玩家头像。支持玩家名、纹理 URL、Base64 字符串三种方式。
+# =============================================================================
+items:
+  custom:example_profile_by_name:
     data:
-      profile: "XiaoMoMi"
+      profile: XiaoMoMi # << CHANGE THIS
 
-  # 通过 PlaceholderAPI 占位符
-  custom:profile_papi_example:
-    material: player_head
+items:
+  custom:example_profile_by_url:
     data:
-      profile: "<arg:player.name>"
+      profile: "http://textures.minecraft.net/texture/ed83db5c2294f03bf069f4a2ac5428df93a13c7c7487d6b1f2ed3ce30b5acec8" # << CHANGE THIS
 
-  # 通过纹理 URL
-  custom:profile_url_example:
-    material: player_head
+items:
+  custom:example_profile_by_base64:
     data:
-      profile: "http://textures.minecraft.net/texture/ed83db5c2294f03bf069f4a2ac5428df93a13c7c7487d6b1f2ed3ce30b5acec8"
+      profile: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ4M2RiNWMyMjk0ZjAzYmYwNjlmNGEyYWM1NDI4ZGY5M2ExM2M3Yzc0ODdkNmIxZjJlZDNjZTMwYjVhY2VjOCJ9fX0=" # << CHANGE THIS
 
-  # 通过 Base64 字符串
-  custom:profile_base64_example:
-    material: player_head
-    data:
-      profile: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ4M2RiNWMyMjk0ZjAzYmYwNjlmNGEyYWM1NDI4ZGY5M2ExM2M3Yzc0ODdkNmIxZjJlZDNjZTMwYjVhY2VjOCJ9fX0="
-
-  # ===========================================================================
-  # 26. conditional — 条件数据 (付费版)
-  # ===========================================================================
-  # 根据条件动态切换物品数据.
-  # 适用于根据权限、变量等显示不同名称/描述的物品.
-  # ===========================================================================
-  custom:conditional_example:
-    material: diamond_sword
+# =============================================================================
+# 29. conditional (条件数据) [付费版专属]
+# 根据条件动态切换物品显示数据(名称、描述等)。
+# =============================================================================
+items:
+  custom:example_conditional:
     client_bound_data:
       conditional#1:
         conditions:
           - type: permission
-            permission: "custom.item.unlock"
+            permission: item.unlock # << CHANGE THIS
         data:
-          item_name: "<gold>神话之剑"
+          item_name: "神话剑" # << CHANGE THIS
           lore:
-            - "<!i><gray>由星辰打造而来"
-            - "<!i><yellow>你被选中挥舞此剑"
+            - "由星辰打造而来" # << CHANGE THIS
       conditional#2:
         conditions:
           - type: "!permission"
-            permission: "custom.item.unlock"
+            permission: item.unlock # << CHANGE THIS
         data:
-          item_name: "<dark_gray>??? 之剑"
+          item_name: "????剑" # << CHANGE THIS
           lore:
-            - "<!i><dark_gray>????????"
+            - "????????" # << CHANGE THIS
 
-  # ===========================================================================
-  # 27. painting_variant — 画变种
-  # ===========================================================================
-  # 指定物品放置后显示的画作变种.
-  # ===========================================================================
-  custom:painting_variant_example:
-    material: painting
+# =============================================================================
+# 30. painting_variant (画变种)
+# =============================================================================
+items:
+  custom:example_painting_variant:
     data:
-      painting_variant: "custom:painting_dragon"
+      painting_variant: custom:painting_custom # << CHANGE THIS
 
-  # ===========================================================================
-  # 28. charged_projectile — 充能弹射物 (1.21+)
-  # ===========================================================================
-  # 控制物品作为弩箭/风弹等弹射物时的充能行为.
-  # ===========================================================================
-  custom:charged_projectile_example:
-    material: firework_rocket
+# =============================================================================
+# 31. external (外部插件兼容)
+# 使 CraftEngine 物品保留外部插件物品的数据。
+# =============================================================================
+items:
+  custom:example_external:
     data:
-      charged_projectile:
-        item:
-          minecraft:firework_rocket: {}
+      external:
+        plugin: neigeitems # << CHANGE THIS
+        id: example_item   # << CHANGE THIS
 
-  # ===========================================================================
-  # 29. debug_stick — 调试棒状态
-  # ===========================================================================
-  # 控制调试棒存储的方块状态修改信息.
-  # ===========================================================================
-  custom:debug_stick_example:
-    material: debug_stick
+# 对使用命名空间 ID 的插件
+items:
+  custom:example_external_namespace_id:
     data:
-      debug_stick:
-        minecraft:note_block:
-          note: "instrument"
-        minecraft:oak_fence_gate:
-          facing: "open"
+      external:
+        id: "test_namespace:test/my_path" # << CHANGE THIS
 
-  # ===========================================================================
-  # ===========================================================================
-  # 自定义数据部分
-  # ===========================================================================
-  # ===========================================================================
+# 对包含类型的插件(如 MMOItems),使用冒号分隔类型与标识符
+items:
+  custom:example_external_typed:
+    data:
+      external:
+        id: "MATERIAL:IRON_INGOT" # << CHANGE THIS
 
-  # ===========================================================================
-  # 30. nbt — NBT 原始数据 (1.20-1.20.4)
-  # ===========================================================================
-  # 使用原版 NBT 格式, 不做格式转换.
-  # 注意: NBT 已过时, 仅用于旧版兼容.
-  # ===========================================================================
-  custom:nbt_example:
-    material: diamond
+# =============================================================================
+# 32. NBT (自定义 NBT 数据) (1.20-1.20.4)
+# 注意: NBT 格式已过时,此处仅作参考。格式遵循 Minecraft Wiki 物品格式。
+# =============================================================================
+items:
+  custom:example_nbt:
     data:
       nbt:
-        CustomModelData: 1000
-        HideFlags: 1
-        display:
-          Name: '{"text":"测试物品"}'
+        CustomModelData: 1000 # << CHANGE THIS
 
-  # ===========================================================================
-  # 31. components — 原生组件 (1.20.5+)
-  # ===========================================================================
-  # 严格遵循 Minecraft Wiki 数据组件规范.
-  # 格式: minecraft:<组件名>: <值>
-  # 当组件只需存在而无需赋值时使用 {}.
-  # ===========================================================================
+# =============================================================================
+# 33. components (自定义组件) (1.20.5+)
+# 严格遵循 Minecraft Wiki 数据组件规范。格式与游戏原生数据组件完全一致。
+# =============================================================================
 
-  # [★] max_damage — 接受整数 (I)
-  custom:components_max_damage_example:
-    material: diamond_pickaxe
+# --- max_damage [接受整数 I] ---
+items:
+  custom:example_components_max_damage:
     data:
       components:
-        minecraft:max_damage: 128
+        minecraft:max_damage: 128 # << CHANGE THIS
 
-  # [★★] food — 接受复合对象 (nutrition/saturation/can_always_eat)
-  custom:components_food_example:
-    material: apple
+# --- food [复合对象: nutrition(整数)/saturation(浮点数)/can_always_eat(布尔值)] ---
+items:
+  custom:example_components_food:
     data:
       components:
         minecraft:food:
-          nutrition: 4
-          saturation: 2.0
-          can_always_eat: false
+          nutrition: 4    # << CHANGE THIS
+          saturation: 2.0 # << CHANGE THIS
+          can_always_eat: false # << CHANGE THIS
 
-  # [★★] block_state — 接受键值对, 值必须为字符串
-  custom:components_block_state_example:
-    material: oak_leaves
+# --- block_state [字符串键值对,值必须是字符串类型] ---
+items:
+  custom:example_components_block_state:
     data:
       components:
         minecraft:block_state:
-          distance: "1"
-          persistent: "false"
-          waterlogged: "false"
+          distance: '1'       # << CHANGE THIS
+          persistent: 'false' # << CHANGE THIS
+          waterlogged: 'false' # << CHANGE THIS
 
-  # [★★★] instrument — 支持字符串 (ID) 或复合对象 (自定义)
-  custom:components_instrument_id_example:
-    material: goat_horn
+# --- instrument [支持简单字符串 ID 或完整复合对象] ---
+items:
+  custom:example_components_instrument_simple:
+    material: goat_horn # << CHANGE THIS
     data:
       components:
-        minecraft:instrument: "seek_goat_horn"
+        minecraft:instrument: "seek_goat_horn" # << CHANGE THIS
 
-  custom:components_instrument_custom_example:
-    material: goat_horn
+items:
+  custom:example_components_instrument_complex:
+    material: goat_horn # << CHANGE THIS
     data:
       components:
         minecraft:instrument:
           description:
-            text: "自定义号角"
-            color: "red"
-          sound_event: "minecraft:block.note_block.bell"
-          use_duration: 1
-          range: 16
+            text: "自定义乐器" # << CHANGE THIS
+            color: "red"       # << CHANGE THIS
+          sound_event: minecraft:block.note_block.bell # << CHANGE THIS
+          use_duration: 1 # << CHANGE THIS
+          range: 16       # << CHANGE THIS
 
-  # [★★★★] fireworks — 烟花火箭
-  custom:components_fireworks_example:
-    material: firework_rocket
+# --- fireworks [复杂嵌套: flight_duration + explosions 列表] ---
+items:
+  custom:example_components_fireworks:
+    material: firework_rocket # << CHANGE THIS
     data:
       components:
         minecraft:fireworks:
-          flight_duration: 3
+          flight_duration: 3 # << CHANGE THIS
           explosions:
-            - shape: small_ball
-              colors: [16711680]      # 十进制 RGB
-              fade_colors: [16776960]
-              has_trail: true
-              has_twinkle: true
+            - shape: small_ball # << CHANGE THIS
+              colors: [11223344]  # << CHANGE THIS
+              fade_colors: [0]    # << CHANGE THIS
+              has_trail: true     # << CHANGE THIS
+              has_twinkle: true   # << CHANGE THIS
 
-  # 组件仅需存在 — 使用 {} 空对象
-  custom:components_empty_example:
-    material: diamond_sword
+# --- 仅需存在无需赋值的组件,使用 {} ---
+items:
+  custom:example_components_empty:
     data:
       components:
-        minecraft:unbreakable: {}
+        minecraft:unbreakable: {} # << CHANGE THIS
 
-  # ===========================================================================
-  # 32. remove_components — 移除组件 (1.20.5+)
-  # ===========================================================================
-  # 去除物品上已存在的原生组件.
-  # ===========================================================================
-  custom:remove_components_example:
-    material: diamond_chestplate
+# =============================================================================
+# 34. remove_components (移除组件) (1.20.5+)
+# 去除物品上已存在的原生组件。
+# =============================================================================
+items:
+  custom:example_remove_components:
     data:
       remove_components:
-        - "minecraft:equippable"
-        - "minecraft:trim"
-        - "minecraft:dyed_color"
+        - minecraft:equippable # << CHANGE THIS
 
-  # ===========================================================================
-  # ===========================================================================
-  # 外部插件兼容
-  # ===========================================================================
-  # ===========================================================================
-
-  # ===========================================================================
-  # 33. external — 外部插件物品引用
-  # ===========================================================================
-  # 引用其他插件的物品数据, CraftEngine 将保留原物品的数据.
-  # ===========================================================================
-  # 通过插件名 + ID
-  custom:external_neigeitems_example:
-    data:
-      external:
-        plugin: neigeitems
-        id: "example_item"
-
-  # 通过命名空间 ID
-  custom:external_namespace_example:
-    data:
-      external:
-        id: "test_namespace:test/my_path"
-
-  # 带类型的插件 (如 MMOItems)
-  custom:external_mmoitems_example:
-    data:
-      external:
-        id: "MATERIAL:IRON_INGOT"
-
-  # ===========================================================================
-  # ===========================================================================
-  # 客户端侧数据 (付费版)
-  # ===========================================================================
-  # ===========================================================================
-
-  # ===========================================================================
-  # 34. client_bound_data — 客户端侧数据 (付费版)
-  # ===========================================================================
-  # 仅存在于客户端侧, 不涉及任何服务端侧数据.
-  # 可实时更新提示框信息, 包括 item_model 和 custom_model_data.
-  # 在创造模式下不会被摸坏.
-  # ===========================================================================
-  # 基础: 客户端侧名称 (与 data 共存)
-  custom:client_bound_data_basic_example:
-    material: diamond_sword
+# =============================================================================
+# 35. client_bound_data (客户端侧数据) [付费版专属]
+# 仅存在于客户端侧,不涉及任何服务端侧数据。
+# 可实时更新提示框信息,包括 item_model 和 custom_model_data。
+# 在创造模式下不会被摸坏。
+# =============================================================================
+items:
+  custom:example_client_bound_data_basic:
     client_bound_data:
-      item_name: "<!i><#FF8C00>客户端显示名称"
+      item_name: "<!i><#FF8C00>骗你的我不是黄玉钓竿" # << CHANGE THIS
     data:
-      item_name: "<!i><#FF8C00>服务端显示名称"
+      item_name: "<!i><#FF8C00>黄玉钓竿" # << CHANGE THIS
 
-  # 客户端侧模型 + 方块破坏标签
-  custom:client_bound_data_pickaxe_example:
-    material: golden_pickaxe
+# =============================================================================
+# 36. client_bound_data + components (客户端侧自定义组件)
+# 在冒险模式中,允许玩家在服务端破坏某些自定义方块。
+# 服务端侧和客户端侧可以有不同的 can_break 配置。
+# =============================================================================
+items:
+  custom:example_client_bound_data_components:
+    material: golden_pickaxe # << CHANGE THIS
     settings:
       tags:
-        - "custom:topaz_tools"
+        - "custom:topaz_tools" # << CHANGE THIS
     data:
       components:
-        minecraft:max_damage: 64
+        minecraft:max_damage: 64 # << CHANGE THIS
         can_break:
-          blocks: "#mineable/pickaxe"
+          blocks: "#mineable/pickaxe" # << CHANGE THIS
     client_bound_data:
       components:
         can_break:
-          blocks: "minecraft:mushroom_stem"
+          blocks: minecraft:mushroom_stem # << CHANGE THIS
     model:
-      template: "default:model/simplified_handheld"
+      template: default:model/simplified_handheld
       arguments:
-        path: "minecraft:item/custom/topaz_pickaxe"
-
-  # 客户端侧 overwritable_lore — 商店插件友好
-  custom:client_bound_data_shop_example:
-    material: diamond
-    client_bound_data:
-      overwritable_lore:
-        - "<!i><gray>商店商品 — 购买前请检查详情"
-      overwritable_item_name: "<#FF8C00>待售宝石"
-
-  # ===========================================================================
-  # ===========================================================================
-  # 附录: 快速参考 — 组件速查表
-  # ===========================================================================
-  # ===========================================================================
-  #
-  # 组件名称               | 版本要求      | 类型          | 说明
-  # ---------------------------------------------------------------------------
-  # item_name              | 1.20.5+      | 硬编码        | 物品名称 (最低优先级)
-  # custom_name            | 1.20.5+      | 硬编码        | 自定义名称
-  # lore                   | 全部版本     | 硬编码        | 提示框描述
-  # overwritable_lore      | 全部版本     | 硬编码        | 可覆写的提示框描述
-  # insert_lore            | 全部版本     | 硬编码        | 动态插入提示框行
-  # remove_lore            | 全部版本     | 硬编码        | 移除提示框行
-  # overwritable_item_name | 全部版本     | 硬编码        | 可覆写的物品名称
-  # unbreakable            | 全部版本     | 硬编码        | 无法破坏
-  # enchantment            | 全部版本     | 硬编码        | 魔咒
-  # dyed_color             | 全部版本     | 硬编码        | 染色颜色
-  # custom_model_data      | 全部版本     | 硬编码        | 自定义模型数据 (整数)
-  # hide_tooltip           | 全部版本     | 硬编码        | 隐藏提示框组件
-  # block_state            | 全部版本     | 硬编码        | 方块状态
-  # attribute_modifiers    | 全部版本     | 硬编码        | 属性修饰符
-  # food                   | 1.20.5+      | 硬编码        | 食物属性
-  # max_damage             | 1.20.5+      | 硬编码        | 最大耐久度
-  # damage                 | 1.20.5+      | 硬编码        | 耐久度损伤
-  # jukebox_playable       | 1.21+        | 硬编码        | 唱片机播放
-  # item_model             | 1.21.2+      | 硬编码        | 物品模型
-  # tooltip_style          | 1.21.2+      | 硬编码        | 提示框样式
-  # use_remainder          | 1.21.2+      | 硬编码        | 使用后返还
-  # trim                   | 全部版本     | 硬编码        | 盔甲纹饰
-  # equippable             | 1.21.2+      | 硬编码        | 可穿戴性
-  # pdc                    | 全部版本     | 硬编码        | 持久化数据容器
-  # profile                | 全部版本     | 硬编码        | 玩家档案 (头颅)
-  # conditional            | 付费版       | 硬编码        | 条件数据
-  # painting_variant       | 全部版本     | 硬编码        | 画变种
-  # charged_projectile     | 1.21+        | 硬编码        | 充能弹射物
-  # debug_stick            | 全部版本     | 硬编码        | 调试棒状态
-  # nbt                    | 1.20-1.20.4  | 自定义数据     | NBT 原始标签
-  # components             | 1.20.5+      | 自定义数据     | 原生组件
-  # remove_components      | 1.20.5+      | 自定义数据     | 移除组件
-  # external               | 全部版本     | 外部兼容       | 外部插件引用
-  # client_bound_data      | 付费版       | 客户端侧       | 客户端专属数据
+        path: "minecraft:item/custom/topaz_pickaxe" # << CHANGE THIS

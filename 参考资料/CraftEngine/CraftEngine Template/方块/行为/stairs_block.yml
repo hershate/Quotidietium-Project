@@ -1,89 +1,41 @@
 # ============================================================================
 # 楼梯方块行为模板 | stairs_block
+# Wiki: configuration/block/behaviors/stairs_block.md
 # ============================================================================
-# 行为 ID:    stairs_block
-# 类    型:   方块行为 (block behavior)
-# 作    用:   使自定义方块获得与原版楼梯完全相同的放置、连接与碰撞逻辑
-# 等    同:   minecraft:stairs
-# 限    制:   自定义楼梯无法与原版楼梯形成内角/外角等连接形状（硬编码限制）
+# 行为: stairs_block
+# 作用: 使自定义方块获得与原版楼梯一致的放置、朝向、半区与形状连接逻辑
+# 限制: 自定义楼梯无法与原版楼梯形成内角/外角连接（Minecraft 硬编码限制）
 # ============================================================================
 
 blocks:
   # --------------------------------------------------------------------------
-  # 示例：自定义楼梯方块 —— 棕榈木楼梯
-  # 命名空间格式: <命名空间>:<方块ID>
-  # 建议使用项目专属命名空间避免冲突
+  # 自定义楼梯方块
+  # 修改 <命名空间>:<方块ID> 后即可使用
   # --------------------------------------------------------------------------
-  custom:palm_stairs:
+  custom:palm_stairs:  # << CHANGE THIS (方块ID)
     behavior:
       type: stairs_block
 
-      # ---------------------- 必需属性 (Required) ---------------------------
+      # ==================== 必需属性 (Required) ====================
 
       # 楼梯朝向 | horizontal_direction
       # 玩家放置楼梯时，楼梯背板所朝的方向
       # 可选值: north, east, south, west
-      # 对应原版: stairs_block.facing
-      facing: north
+      facing: north  # << CHANGE THIS
 
       # 楼梯半区 | single_block_half
       # 楼梯位于方块的上半部分还是下半部分
       # 可选值: top, bottom
-      # 对应原版: stairs_block.half
-      half: bottom
+      half: bottom  # << CHANGE THIS
 
       # 楼梯形状 | stairs_shape
-      # 根据相邻楼梯自动计算，也可手动指定初始形状
+      # 根据相邻楼梯自动计算；手动指定初始形状后，游戏仍会按周围环境自动覆盖
       # 可选值: straight, inner_left, inner_right, outer_left, outer_right
-      # 注意: 即使手动指定，游戏仍会按周围环境自动覆盖该值
-      # 对应原版: stairs_block.shape
-      shape: straight
+      shape: straight  # << CHANGE THIS
 
-      # ---------------------- 可选属性 (Optional) ---------------------------
+      # ==================== 可选属性 (Optional) ====================
 
       # 含水 | boolean
-      # 楼梯方块是否可以含水（水源方块占据楼梯内空间）
+      # 楼梯方块内是否可容纳水源
       # 默认值: false
-      # 启用后可在楼梯内放置水源，水流会沿楼梯形状流动
-      # 对应原版: stairs_block.waterlogged
-      waterlogged: false
-
-  # ==========================================================================
-  # 完整示例 (Complete Example)
-  # ==========================================================================
-  # 此处展示一个完整的自定义楼梯方块配置，涵盖所有属性及其推荐值
-  # ==========================================================================
-  custom:marble_stairs:
-    display_name: "&f大理石楼梯"
-    material: STONE
-    behavior:
-      type: stairs_block
-      facing: east
-      half: bottom
-      shape: straight
-      waterlogged: false
-    hardness: 2.0
-    resistance: 6.0
-    # 可选: 设置挖掘工具与等级
-    # tool: PICKAXE
-    # harvest_level: 0  # 0=木, 1=石, 2=铁, 3=钻石, 4=下界合金
-    drop:
-      type: self  # 默认掉落自身，可覆盖为其他物品
-    # sound:
-    #   break: block.stone.break
-    #   place: block.stone.place
-    #   step: block.stone.step
-
-# ============================================================================
-# 属性明细表 (Property Reference)
-# ============================================================================
-# 属性名        | 类型 (Type)                | 必需 | 说明
-# --------------+----------------------------+------+-----------------------
-# shape         | stairs_shape               | 是   | 楼梯形状: straight/
-#               |                            |      | inner_left/inner_right/
-#               |                            |      | outer_left/outer_right
-# half          | single_block_half          | 是   | 上下半区: top/bottom
-# facing        | horizontal_direction       | 是   | 朝向: north/east/
-#               |                            |      | south/west
-# waterlogged   | boolean                    | 否   | 是否含水 (默认 false)
-# ============================================================================
+      waterlogged: false  # << CHANGE THIS

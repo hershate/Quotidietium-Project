@@ -1,5 +1,6 @@
 # =============================================================================
 # CraftEngine 活板门方块 (trapdoor_block) 行为模板
+# 来源文档: configuration/block/behaviors/trapdoor_block.md
 # =============================================================================
 #
 # 说明:
@@ -58,9 +59,9 @@ blocks:
   # ===========================================================================
 
   # ===========================================================================
-  # 示例: 自定义木质活板门
+  # 示例: 自定义活板门
   # ===========================================================================
-  custom:example_trapdoor:
+  custom:example_trapdoor:                                                # << CHANGE THIS 方块 ID
 
     # ---- 状态定义 (states) ----
     # 多状态方块: 定义所有属性及其默认值
@@ -92,16 +93,14 @@ blocks:
         default:
           auto_state: solid                           # 使用通用 solid 状态组
           model:
-            path: "minecraft:block/custom/example_trapdoor"  # 模型路径
+            path: "minecraft:block/custom/example_trapdoor"              # << CHANGE THIS
             generation:
-              parent: "minecraft:block/template_trapdoor_bottom"
+              parent: "minecraft:block/template_trapdoor_bottom"         # << CHANGE THIS
               textures:
-                texture: "minecraft:block/custom/example_trapdoor"
+                texture: "minecraft:block/custom/example_trapdoor"       # << CHANGE THIS
 
       # --- 变体映射 (variants) ---
       # 通配符语义: 只约束关键属性，其余不限
-      # 此处未显式指定 open/half/facing 的变体 => 所有匹配 waterlogged 的状态
-      # 均使用 default 外观，但 settings 会根据变体覆写含水状态
       variants:
         # 不含水 (默认，也可省略)
         waterlogged=false:
@@ -110,24 +109,23 @@ blocks:
         waterlogged=true:
           appearance: default
           settings:
-            fluid_state: water                         # 方块内部含水体
+            fluid_state: water
 
     # ---- 方块设置 (settings) ----
     # 控制方块的物理属性、音效、工具、标签等
     settings:
-      # 使用预定义的木质方块模板 (参见功能方块模板文件)
       template:
-        - "custom:template/block_settings_wood"
+        - "custom:template/block_settings_wood"                           # << CHANGE THIS
 
       # 活板门特有的物理属性
       is_suffocating: false                           # 活板门不造成窒息
       is_redstone_conductor: false                    # 活板门不传导红石信号
-      item: "custom:example_trapdoor"                 # 对应的物品 ID (中键选取)
+      item: "custom:example_trapdoor"                 # << CHANGE THIS 对应物品 ID
 
     # ---- 行为定义 (behavior) ----
     # 核心: 活板门行为
     behavior:
-      type: trapdoor_block                            # 行为类型 (必填)
+      type: trapdoor_block
       can_open_with_hand: true                        # 允许右键点击切换 (默认 true)
       can_open_by_wind_charge: true                   # 允许风弹切换 (默认 true)
       sounds:                                         # 自定义开关音效 (可选)
@@ -139,7 +137,7 @@ blocks:
     loot:
       type: generic
       entries:
-        - item: "custom:example_trapdoor"
+        - item: "custom:example_trapdoor"                                 # << CHANGE THIS
 
 
 # =============================================================================

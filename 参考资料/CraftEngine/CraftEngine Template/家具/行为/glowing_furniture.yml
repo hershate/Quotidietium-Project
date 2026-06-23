@@ -1,25 +1,24 @@
-# glowing_furniture 行为模板
-# 使家具成为实际光源方块，可照亮周围环境
-# 支持统一配置所有变体的光源，或为每个变体单独配置
+# Wiki: configuration/furniture/behaviors/glowing_furniture.md
+# 发光家具 - 使家具成为实际光源方块
 
+# --- 统一光源配置（所有变体共用）---
 furniture:
-  example:candelabrum:
-    behavior:
+  custom:my_glowing_furniture: # << CHANGE THIS namespace:item_id
+    behaviors:
       type: glowing_furniture
-
-      # 方式一：统一配置所有变体的光源
       lights:
-        - position: 0,0,0       # 光源位置 (x,y,z)，相对于家具坐标
-          level: 15              # 光照等级 0~15
+        - position: 0,0,0  # << CHANGE THIS 光源相对位置 (x,y,z)
+          level: 15         # << CHANGE THIS 亮度等级 (0-15)
 
-      # 方式二：为每个变体单独配置光源位置
-      # variants:
-      #   ground_lit:
-      #     - position: 0,0,0
-      #       level: 15
-      #   wall_lit:
-      #     - position: 0,0,0.3
-      #       level: 15
-      #   ceiling_lit:
-      #     - position: 0,-1,0
-      #       level: 15
+# --- 按变体单独配置光源 ---
+#furniture:
+#  custom:my_glowing_furniture: # << CHANGE THIS namespace:item_id
+#    behaviors:
+#      type: glowing_furniture
+#      variants:
+#        variant_name_1:    # << CHANGE THIS 变体名称
+#          - position: 0,0,0
+#            level: 15
+#        variant_name_2:
+#          - position: 0,0.5,0.3
+#            level: 12

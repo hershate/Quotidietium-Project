@@ -1,269 +1,115 @@
-# ============================================================================
-# CraftEngine 文本格式参考 (Text Format Reference)
-# 基于 MiniMessage 格式，附加 CraftEngine 扩展标签
-# ============================================================================
-# 官方 MiniMessage 文档: https://docs.papermc.io/adventure/minimessage/format/
-# ============================================================================
+# CraftEngine Wiki: reference/text_format.md
+# MiniMessage text formatting tags — complete working config for all tag types
+# namespace: custom
 
-# ============================================================
-# 一、MiniMessage 基础
-# ============================================================
-# MiniMessage 是 Adventure 库的文本格式，使用 <tag> 语法。
-# 支持的标准标签包括：
-#   <color>         —— 颜色名称 (red, dark_red, gold, yellow, green 等)
-#   <#RRGGBB>       —— 十六进制颜色
-#   <bold> </bold>  —— 粗体 (可简写为 <b> </b>)
-#   <italic>        —— 斜体 (<i>)
-#   <underlined>    —— 下划线 (<u>)
-#   <strikethrough>  —— 删除线 (<st>)
-#   <obfuscated>    —— 混淆/随机字符 (<obf>)
-#   <reset>         —— 重置格式
-#   <!italic>       —— 取消斜体 (以此类推：<!bold> <!underlined> 等)
-#   <newline>       —— 换行
-#   <click:action:value>  —— 可点击文本
-#   <hover:action:value>  —— 悬停提示
-#   <key:key_name>  —— 按键显示
-#   <lang:key>      —— 语言键
-#   <rainbow>       —— 彩虹效果
-#   <gradient>      —— 渐变色
-#   <transition>    —— 颜色过渡
-#
-# 转义规则:
-#   - 纯文本中: \< 输出字面量 <
-#   - 引号字符串中: \" 或 \' 转义引号
-#   - 反斜杠本身: \\ 输出字面量 \
-# ============================================================
+items:
+  # <shift:_像素值_> — 像素级文本偏移
+  example_shift:
+    material: STICK
+    data:
+      item_name: "<!i><shift:-100><#FF8C00>向左偏移的文本" # << CHANGE THIS
+      lore:
+        - "<!i><shift:50>向右偏移的文本" # << CHANGE THIS
 
-# ============================================================
-# 二、CraftEngine 扩展标签
-# ============================================================
+  # <papi:_占位符_:[_默认值_]> — PlaceholderAPI 占位符
+  example_papi:
+    material: DIAMOND
+    data:
+      item_name: "<!i><#FF8C00><papi:player_name>的钻石" # << CHANGE THIS
+      lore:
+        - "经验倍率: <papi:exp_multiplier:1>" # << CHANGE THIS
+        - "在线人数: <papi:server_online:0>" # << CHANGE THIS
 
-# 注意：以下标签示例中的 "<" ">" 是 MiniMessage 格式标记，不是占位符！
-# 错误写法: <shift:_666_>  ❌
-# 正确写法: <shift:666>    ✔️
-# 请勿在参数中使用 < > [ ] _ 等不必要的包围符号。
+  # <viewer_papi:_占位符_:[_默认值_]> — 观察者视角 PlaceholderAPI
+  example_viewer_papi:
+    material: PAPER
+    data:
+      item_name: "<viewer_papi:player_name>看到的名字" # << CHANGE THIS
+      lore:
+        - "观察者血量: <viewer_papi:player_health:0>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# shift - 像素级偏移
-# ------------------------------------------------------------
-# 使用插件内置的偏移字符微调文本位置（负值左移，正值右移）。
-shift:
-  description: "像素级文本偏移。允许直接使用插件的偏移字符微调文本位置。"
-  syntax: "<shift:_像素值_>"
-  example: '<!i><shift:-100><#FF8C00>黄玉钓竿'
-  caution: "参数中的 _ 是文档标记，实际使用时不要加。正确写法: <shift:-100>"
+  # <rel_papi:_占位符_:[_默认值_]> — 关系型 PlaceholderAPI
+  example_rel_papi:
+    material: PLAYER_HEAD
+    data:
+      item_name: "<rel_papi:rel_faction_name:无派系>的玩家" # << CHANGE THIS
+      lore:
+        - "好友数量: <rel_papi:rel_friend_count:0>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# papi - PlaceholderAPI 占位符
-# ------------------------------------------------------------
-# 使用 PlaceholderAPI 的占位符，支持可选的默认值以防止报错。
-papi:
-  description: "使用 PlaceholderAPI 提供的占位符。支持设置默认值以在无占位符时安全回退。"
-  syntax: "<papi:_占位符_:[_默认值_]>"
-  example: '<!i><#FF8C00><papi:player_name>的黄玉钓竿'
-  example_with_default: '<papi:exp_multiplier:1>'
-  usage_context: "可用于计数值、显示名称、表达式等几乎所有文本场景。"
+  # <image:_命名空间_:_路径_:[_行_]:[_列_]:[_格式_]> — 字体图片
+  example_image:
+    material: BOOK
+    data:
+      item_name: "<!i><white><image:custom:icons><#FF8C00>带图标的物品" # << CHANGE THIS
+      lore:
+        - "<!i><white><image:custom:icons:0:1> 指定行列图标" # << CHANGE THIS
+        - "<!i><red><image:custom:icons:'<!shadow><white>'> 带格式图标" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# viewer_papi - 观察者的 PlaceholderAPI 占位符
-# ------------------------------------------------------------
-# 用于多实体上下文：显示给"观察者/接收者"的值，而非触发者。
-viewer_papi:
-  description: "观察者的 PlaceholderAPI 占位符。在多实体场景中（如广播消息），
-    此标签返回的是接收消息的玩家的占位符值，而非触发事件的玩家。"
-  syntax: "<viewer_papi:_占位符_:[_默认值_]>"
-  example_context: |
-    当玩家A触发广播时，玩家B收到的消息中 <viewer_papi:player_name> 返回的是"B"而不是"A"。
-  caution: "仅在多实体上下文中有效。单玩家场景下等同于 <papi>。"
+  # <i18n:_标识符_> — 服务端侧翻译
+  example_i18n:
+    material: PAPER
+    data:
+      item_name: "<i18n:item.custom_example>" # << CHANGE THIS
+      lore:
+        - "<i18n:lore.custom_example_desc>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# rel_papi - 关系型 PlaceholderAPI 占位符
-# ------------------------------------------------------------
-# 用于需要两个玩家之间关系的占位符（如 Factions、Friends 等插件）。
-rel_papi:
-  description: "关系型 PlaceholderAPI 占位符。用于需要两个实体之间关系的场景。
-    常见用途：检测两个玩家是否在同一公会、是否为朋友关系、PVP状态等。"
-  syntax: "<rel_papi:_占位符_:[_默认值_]>"
-  caution: "需要 PlaceholderAPI 的关系型占位符扩展支持。"
+  # <l10n:_标识符_> — 客户端侧翻译
+  example_l10n:
+    material: PAPER
+    data:
+      item_name: "<l10n:item.custom_example>" # << CHANGE THIS
+      lore:
+        - "<l10n:lore.custom_example_desc>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# image - 字体图片
-# ------------------------------------------------------------
-# 使用插件中已注册的图片（通过资源配置的字体图集）。
-image:
-  description: "在文本中嵌入已注册的字体图片（图标/符号）。
-    图片必须先在插件的图片资源中注册（命名空间:路径）。"
-  syntax:
-    basic: "<image:_命名空间_:_路径_:[_格式_]>"
-    with_row_col: "<image:_命名空间_:_路径_:[_行_]:[_列_]:[_格式_]>"
-  parameters:
-    namespace: "图片注册所在的命名空间"
-    path: "图片的路径/标识符"
-    row: "可选。字体图片中的行索引（从0开始）"
-    column: "可选。字体图片中的列索引（从0开始）"
-    format: "可选。应用于图片的 MiniMessage 格式字符串，如 '<!shadow><white>'"
-  examples:
-    - '<!i><white><image:default:icons><#FF8C00>黄玉钓竿'
-    - '<!i><white><image:default:icons:0:1><#FF8C00>黄玉钓竿'
-    - "<!i><red><image:default:icons:'<!shadow><white>'> 黄玉钓竿"
-  caution: |
-    不要在命名空间和路径外加 < >，例子：
-    - %image_mm_<default>:<icons>% ❌
-    - %image_mm_default:icons% ✔️
-    如果你不需要行和列参数，请完全删除它们（包括冒号）。
+  # <expr:_格式_:_表达式_> — 数学运算
+  example_expr:
+    material: CLOCK
+    data:
+      item_name: "<!i><#FF8C00><expr:0.##:'70 / 8'>" # << CHANGE THIS
+      lore:
+        - "<expr:0.00:'<papi:player_x> / 8'>" # << CHANGE THIS
+        - "<expr:#.##%:'<papi:player_health> / <papi:player_max_health> * 100'>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# i18n - 国际化翻译 (服务端侧)
-# ------------------------------------------------------------
-# 根据服务端语言设置查找翻译。
-i18n:
-  description: "国际化标签。根据服务端语言设置查找对应的翻译文本。"
-  syntax: "<i18n:_标识符_>"
-  example: '<i18n:item.chinese_lantern>'
-  usage_context: "用于物品名称、描述等会随服务端语言改变的文本。"
-  caution: "i18n 使用服务端语言，l10n 使用客户端语言，两者不同。"
+  # <arg:_索引_> / <arg:_标识符_> — 索引参数 / 命名参数 / 通用参数 / 上下文主体参数
+  example_arg:
+    material: WRITABLE_BOOK
+    data:
+      item_name: "时间: <arg:cooking_time>刻" # << CHANGE THIS
+      lore:
+        - "经验: <arg:cooking_experience>" # << CHANGE THIS
+        - "随机数: <arg:random>"
+        - "方块坐标: <arg:block.x> <arg:block.y> <arg:block.z>"
 
-# ------------------------------------------------------------
-# l10n - 本地化翻译 (客户端侧)
-# ------------------------------------------------------------
-# 根据客户端语言设置查找翻译。
-l10n:
-  description: "本地化标签。根据客户端语言设置查找对应的翻译文本。"
-  syntax: "<l10n:_标识符_>"
-  example: '<l10n:item.chinese_lantern>'
-  usage_context: "用于需要随客户端语言变化的文本（如原版物品名称）。"
-  caution: "l10n 使用客户端语言，i18n 使用服务端语言。一般优先使用 l10n 以获得客户端语言匹配。"
+  # <viewer_arg:_标识符_> — 观察者视角命名参数
+  example_viewer_arg:
+    material: WRITTEN_BOOK
+    data:
+      item_name: "你好, <viewer_arg:player.name>" # << CHANGE THIS
+      lore:
+        - "<arg:player.name> 与方块进行了交互" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# expr - 数学表达式
-# ------------------------------------------------------------
-# 执行数学运算，支持嵌套标签（如 papi）。
-expr:
-  description: "数学表达式计算。在文本中嵌入数学运算结果。"
-  syntax: "<expr:_格式_:_表达式_>"
-  parameters:
-    format: "DecimalFormat 格式字符串，如 '0.##' 表示最多保留两位小数"
-    expression: "数学表达式，支持 EvalEx 语法，可嵌套其他标签"
-  examples:
-    - "<expr:0.##:'70 / 8'>"
-    - "<expr:0.##:'<papi:player_x> / 8'>"
-  reference_links:
-    DecimalFormat: "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/DecimalFormat.html"
-    EvalEx: "https://ezylang.github.io/EvalEx/references/references.html"
-  caution: "表达式中的乘号使用 * 而非 x。涉及浮点数时注意精度问题。"
+  # <global:_标识符_:[参数...]> — 全局变量引用
+  example_global:
+    material: NETHER_STAR
+    data:
+      item_name: "<global:rare_tag> 稀有三叉戟" # << CHANGE THIS
+      lore:
+        - "<global:custom_prefix>全局前缀示例" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# arg - 索引/命名参数
-# ------------------------------------------------------------
-# 用于 translations 目录下的文件或上下文参数。
-arg:
-  description: "上下文参数引用。可用于索引参数或命名参数。"
-  syntax:
-    index: "<arg:_索引_>"
-    named: "<arg:_标识符_>"
-  parameter_sources:
-    - "上下文特定参数：在特定场景中传递的明确参数（如烹饪时间、经验值）"
-    - "通用参数：
-      - <arg:random> 生成 0~1 随机数
-      - <arg:last_random> 上一个随机数"
-    - "上下文主体参数：如玩家的坐标、方块持有者等：
-      - <arg:player.x> <arg:player.y> <arg:player.z>
-      - <arg:block.x> <arg:block.y> <arg:block.z>
-      - <arg:block.owner>"
-  examples:
-    translations: |
-      internal.cooking_info.0: "时间：<arg:cooking_time>刻"
-      internal.cooking_info.1: "经验：<arg:cooking_experience>"
-    particles: |
-      - type: particle
-        x: '<arg:block.x> + 0.5'
-        y: '<arg:block.y> + 0.5'
-        z: '<arg:block.z> + 0.5'
-  caution: "请勿给参数名加 < > 包围。错误写法: <arg:<player.name>>，正确写法: <arg:player.name>"
+  # <bubble:_id_:_left_:_right_:_内容_> — 气泡文字 (需要 CustomNameplates)
+  example_bubble:
+    material: NAME_TAG
+    data:
+      item_name: "<bubble:chat_1:1:1:'<black><!shadow>发生了什么'>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# viewer_arg - 观察者的命名参数
-# ------------------------------------------------------------
-# 用于多实体上下文：获取消息接收者的参数值，而非触发者。
-viewer_arg:
-  description: "观察者的命名参数。在多实体场景中返回消息接收者的参数值。
-    例：广播消息时，触发者是玩家A，但玩家B收到 <viewer_arg:player.name> 时显示的是B的名字。"
-  syntax: "<viewer_arg:_标识符_>"
-  example: |-
-    message: |
-      嗨，<viewer_arg:player.name>。
-      你有没有注意到 <arg:player.name> 与一个自定义方块进行了交互？
-    # 当玩家A触发，玩家B看到："嗨，B。你有没有注意到 A 与一个自定义方块进行了交互？"
-  caution: "仅在多接收者上下文中与 <arg> 配合使用时体现差异。单玩家场景下等同于 <arg>。"
+  # <nameplate:_id_:_left_:_right_:_内容_> — 铭牌文字 (需要 CustomNameplates)
+  example_nameplate:
+    material: NAME_TAG
+    data:
+      item_name: "<nameplate:xmas:1:1:'ABCDEFG'>" # << CHANGE THIS
 
-# ------------------------------------------------------------
-# global - 全局变量
-# ------------------------------------------------------------
-# 引用在配置中定义的全局变量，用于统一管理和复用文本片段。
-global:
-  description: "引用配置中定义的全局变量。便于统一管理和复用常用的文本片段（如品质标签）。"
-  syntax: "<global:_标识符_:[参数...]>"
-  example: '<global:rare_tag> 稀有三叉戟'
-  usage_context: "在全局配置中定义通用标签（如品质、前缀），在物品配置中通过 <global> 引用。"
-
-# ------------------------------------------------------------
-# bubble - 气泡文字 (需 CustomNameplates)
-# ------------------------------------------------------------
-# 创建带有对话框气泡样式的文字。
-bubble:
-  description: "气泡文字。在文本周围创建对话气泡样式边框。
-    需要安装 CustomNameplates 插件。"
-  syntax: "<bubble:_id_:_left_:_right_:_内容_>"
-  parameters:
-    id: "气泡样式的配置ID"
-    left: "左侧留白/边距像素"
-    right: "右侧留白/边距像素"
-    content: "气泡内的文本内容，可嵌套 MiniMessage 格式"
-  example: "<bubble:chat_1:1:1:'<black><!shadow>What Happened'>"
-  caution: "需要 CustomNameplates 插件。参数顺序不可颠倒。"
-
-# ------------------------------------------------------------
-# nameplate - 铭牌文字 (需 CustomNameplates)
-# ------------------------------------------------------------
-# 创建带有铭牌/名牌样式的文字。
-nameplate:
-  description: "铭牌文字。在文本周围创建铭牌样式边框。
-    需要安装 CustomNameplates 插件。"
-  syntax: "<nameplate:_id_:_left_:_right_:_内容_>"
-  parameters:
-    id: "铭牌样式的配置ID"
-    left: "左侧留白/边距像素"
-    right: "右侧留白/边距像素"
-    content: "铭牌内的文本内容"
-  example: "<nameplate:xmas:1:1:'ABCDEFG'>"
-  caution: "需要 CustomNameplates 插件。参数顺序不可颠倒。"
-
-# ------------------------------------------------------------
-# background - 背景文字 (需 CustomNameplates)
-# ------------------------------------------------------------
-# 创建带有背景方框样式的文字。
-background:
-  description: "背景文字。在文本周围创建背景方框样式。
-    需要安装 CustomNameplates 插件。"
-  syntax: "<background:_id_:_left_:_right_:_内容_>"
-  parameters:
-    id: "背景样式的配置ID"
-    left: "左侧留白/边距像素"
-    right: "右侧留白/边距像素"
-    content: "背景框内的文本内容"
-  example: "<background:bedrock_1:1:1:'ABCDEFG'>"
-  caution: "需要 CustomNameplates 插件。参数顺序不可颠倒。"
-
-# ============================================================
-# 三、通用注意事项
-# ============================================================
-caution_notes:
-  - "不要保留文档中的标记符号：< > [ ] _ 这些符号在文档中表示参数名，实际使用时请去掉。"
-  - "错误例子：<shift:_666_>  →  正确：<shift:666>"
-  - "错误例子：%image_mm_<default>:<icons>%  →  正确：%image_mm_default:icons%"
-  - "如果不需要可选参数，请完全删除该参数及其分隔符。"
-  - "不要去掉必要的下划线分隔符：image_mm 中的 _ 不能省略。"
-  - "参数可以使用单引号或双引号包裹，特别是当参数包含空格或特殊字符时。"
-  - "标签可以嵌套使用，如 <expr:'0.##':'<papi:exp_multiplier:1> * 10'>"
-  - "viewer_ 前缀的标签在广播/多玩家消息场景中发挥作用，单玩家场景等同于无 viewer_ 版本。"
-  - "bubble、nameplate、background 需要额外安装 CustomNameplates 插件。"
+  # <background:_id_:_left_:_right_:_内容_> — 背景文字 (需要 CustomNameplates)
+  example_background:
+    material: NAME_TAG
+    data:
+      item_name: "<background:bedrock_1:1:1:'ABCDEFG'>" # << CHANGE THIS

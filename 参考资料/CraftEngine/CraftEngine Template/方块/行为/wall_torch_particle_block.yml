@@ -1,338 +1,55 @@
-# ============================================================================
-# 墙上火把粒子方块 (wall_torch_particle_block) 行为模板
-# ============================================================================
-# 对应 Wiki: configuration/block/behaviors/wall_torch_particle_block.md
-# 墙上火把粒子方块按固定间隔生成粒子效果，类似原版墙上的火把。
-# 粒子位置会随方块的 facing 朝向自动旋转，使粒子始终从火把上方飘出。
-#
-# 行为特性:
-#   - 按固定刻间隔 (tick_interval) 生成粒子
-#   - 支持所有 Minecraft 粒子类型及特定类型专属参数
-#   - facing 属性决定粒子发射方向，随方块放置朝向自动适配
-#   - 作为方块实体 (Block Entity)，支持完整粒子参数
-#
-# 注意: 本文件为模板文件，不直接加载。使用时请将内容复制到实际的
-#       方块配置文件中，或作为参考查阅。
-# ============================================================================
+# CraftEngine Wiki: configuration/block/behaviors/wall_torch_particle_block.md
+# 墙上火把粒子方块 - 按固定间隔生成粒子效果，类似原版墙上的火把
+# 方块实体，必须提供 facing 属性
 
-# --------------------------------------------------------------------------
-# blocks 根键
-# 所有自定义方块都定义在此根键下。每个方块以 "命名空间:方块ID" 为键。
-# 命名空间建议使用你的项目名或作者标识，例如 custom, myproject, server 等。
-# --------------------------------------------------------------------------
 blocks:
-
-  # ==========================================================================
-  # 示例 1: 紫水晶壁挂火把 (完整配置)
-  # 使用 custom 命名空间，展示所有可用选项。
-  # ==========================================================================
-  custom:amethyst_wall_torch:
-
-    # ---------- 显示与基础属性 ----------
-    display_name: "&d紫水晶壁挂火把"                # 方块显示名称，支持 & 颜色代码
-    material: REDSTONE_TORCH                      # 基础材质，建议使用 WALL_TORCH 或相近材质
-    placed_model:
-      path: custom/block/amethyst_wall_torch      # 模型路径 (相对于 models/ 目录)
-
-    # ---------- 方块属性 ----------
-    # facing (必需): 方块的附着方向，决定粒子发射朝向
-    # 可选值: north, south, east, west
-    #   north - 附着在北侧墙面，粒子向南偏移 (Z+)
-    #   south - 附着在南侧墙面，粒子向北偏移 (Z-)
-    #   east  - 附着在东侧墙面，粒子向西偏移 (X-)
-    #   west  - 附着在西侧墙面，粒子向东偏移 (X+)
-    # 类型: direction (枚举字符串)
-    # --------------------------------------------------------------------------
-    facing: north
-
-    # ---------- 行为: wall_torch_particle_block ----------
-    behavior:
-      type: wall_torch_particle_block              # 行为类型，固定为 wall_torch_particle_block
-
-      # ----------------------------------------------------------------
-      # tick_interval: integer (可选)
-      # 粒子生成间隔，单位：游戏刻 (Minecraft tick)。
-      # 每个 tick_interval 刻生成一次粒子。
-      #   20 刻 = 1 秒
-      #   10 刻 = 0.5 秒 (默认值)
-      #   5  刻 = 0.25 秒
-      # 值越小粒子越密集。不建议低于 2 刻，以免产生性能问题。
-      # 未设置时默认值: 10
-      # ----------------------------------------------------------------
-      tick_interval: 10
-
-      # ----------------------------------------------------------------
-      # particles: list (可选)
-      # 粒子配置列表。每个条目定义一个粒子效果，可同时配置多个粒子。
-      # 每次生成时，列表中所有粒子效果会同时触发。
-      # ----------------------------------------------------------------
-      particles:
-        # ------------------------------------------------------------------
-        # 粒子 1: 基础烟雾粒子
-        # ------------------------------------------------------------------
-        - particle: smoke                          # (必需) 粒子类型，Minecraft 原版粒子 ID
-                                                   # 常用值: flame, smoke, soul, portal,
-                                                   #         end_rod, campfire_cosy_smoke,
-                                                   #         enchanted_hit, crit, etc.
-          x: 0.5                                   # (可选) X 相对坐标，相对于方块原点
-                                                   # 默认值: 0
-          y: 0.7                                   # (可选) Y 相对坐标
-                                                   # 默认值: 0
-          z: 0.5                                   # (可选) Z 相对坐标
-                                                   # 默认值: 0
-          count: 1                                 # (可选) 每次生成的粒子数量
-                                                   # 默认值: 1
-          offset_x: 0                              # (可选) X 方向随机扩散范围
-                                                   # 默认值: 0
-          offset_y: 0                              # (可选) Y 方向随机扩散范围
-                                                   # 默认值: 0
-          offset_z: 0                              # (可选) Z 方向随机扩散范围
-                                                   # 默认值: 0
-          speed: 0                                 # (可选) 粒子速度
-                                                   # 默认值: 0
-
-        # ------------------------------------------------------------------
-        # 粒子 2: 火焰粒子
-        # ------------------------------------------------------------------
-        - particle: flame
-          x: 0.5
-          y: 0.7
-          z: 0.5
-          count: 2
-          offset_x: 0.1
-          offset_y: 0.1
-          offset_z: 0.1
-          speed: 0.02
-
-    # ---------- 可选: 硬度与破坏属性 ----------
-    hardness: 0.1                                 # 方块硬度 (原版火把为 0)
-    resistance: 0.1                               # 爆炸抗性
-    break_tool: ANY                               # 推荐破坏工具
-    drops:
-      type: self                                  # 破坏后掉落自身
-
-    # ---------- 可选: 发光等级 ----------
-    light_level: 14                               # 发光等级 (0-15)，原版火把为 14
-
-    # ---------- 可选: 合成配方 ----------
-    recipes:
-      shaped:
-        amethyst_wall_torch:
-          result: custom:amethyst_wall_torch
-          amount: 4
-          pattern:
-            - "A"
-            - "S"
-          ingredients:
-            A: AMETHYST_SHARD
-            S: STICK
-
-  # ==========================================================================
-  # 示例 2: 灵魂壁挂火把 (焰色粒子 + 专属参数)
-  # 展示使用粒子类型专属参数 (soul_fire_flame / colored 等)。
-  # ==========================================================================
-  custom:soul_wall_torch:
-
-    display_name: "&b灵魂壁挂火把"
-    material: SOUL_TORCH
-    placed_model:
-      path: custom/block/soul_wall_torch
-
-    # 附着方向
-    facing: south
-
-    # 发光等级
-    light_level: 10
-
+  custom:example_wall_torch:                                       # << CHANGE THIS block ID
+    facing: north                                                   # << CHANGE THIS required; direction: north/south/east/west
     behavior:
       type: wall_torch_particle_block
-      tick_interval: 8
+      tick_interval: 10                                             # << CHANGE THIS 粒子生成间隔，单位：刻（默认 10）
       particles:
-        - particle: soul
-          x: 0.5
-          y: 0.7
-          z: 0.5
-          count: 1
-          offset_x: 0.1
-          offset_y: 0.1
-          offset_z: 0.1
-          speed: 0
+        - particle: minecraft:smoke                                 # << CHANGE THIS 粒子类型（必填）
+          x: 0.5                                                    # << CHANGE THIS 生成 x 相对坐标（可选，默认 0）
+          y: 0.7                                                    # << CHANGE THIS 生成 y 相对坐标（可选，默认 0）
+          z: 0.5                                                    # << CHANGE THIS 生成 z 相对坐标（可选，默认 0）
+          count: 1                                                  # << CHANGE THIS 每次生成数量（可选，默认 1）
+          offset_x: 0                                               # << CHANGE THIS x 方向随机扩散（可选，默认 0）
+          offset_y: 0                                               # << CHANGE THIS y 方向随机扩散（可选，默认 0）
+          offset_z: 0                                               # << CHANGE THIS z 方向随机扩散（可选，默认 0）
+          speed: 0                                                  # << CHANGE THIS 粒子速度（可选，默认 0）
 
-        # ---- 使用 dust 粒子类型 (彩色粉末粒子) ----
-        - particle: dust
-          x: 0.5
-          y: 0.7
-          z: 0.5
-          count: 1
-          offset_x: 0.1
-          offset_y: 0
-          offset_z: 0.1
-          speed: 0
-          # dust 专属参数:
-          color: 0,200,255                        # (必需) RGB 颜色值，格式: R,G,B
-                                                   # 范围 0-255
-          scale: 0.8                              # (可选) 粒子缩放大小
-                                                   # 默认值: 1.0
+          # --- 以下参数仅在特定粒子类型下生效 ---
 
-  # ==========================================================================
-  # 示例 3: 末地壁挂火把 (多粒子组合 + 复杂专属参数)
-  # 展示 dust_color_transition、item、block_state 等高级参数用法。
-  # ==========================================================================
-  custom:end_wall_torch:
+          # 粒子类型 item 时使用
+          item: custom:chinese_lantern                              # << CHANGE THIS
 
-    display_name: "&5末地壁挂火把"
-    material: REDSTONE_TORCH
-    placed_model:
-      path: custom/block/end_wall_torch
+          # 粒子类型 block / block_marker / falling_dust / dust_pillar / block_crumble 时使用
+          block_state: custom:plam_log[axis=y]                      # << CHANGE THIS
 
-    facing: east
-    light_level: 14
+          # 粒子类型 sculk_charge 时使用
+          charge: 1.5                                               # << CHANGE THIS
 
-    behavior:
-      type: wall_torch_particle_block
-      tick_interval: 5                           # 高频率粒子生成
-      particles:
+          # 粒子类型 shriek 时使用
+          shriek: 1                                                 # << CHANGE THIS
 
-        # ---- 基础 portal 粒子 ----
-        - particle: portal
-          x: 0.5
-          y: 0.8
-          z: 0.5
-          count: 3
-          offset_x: 0.3
-          offset_y: 0.2
-          offset_z: 0.3
-          speed: 0.5
+          # 粒子类型 dust 时使用
+          color: 255,255,255                                        # << CHANGE THIS
+          scale: 1.0                                                # << CHANGE THIS
 
-        # ---- 使用 dust_color_transition 粒子类型 (颜色过渡粉末) ----
-        - particle: dust_color_transition
-          x: 0.5
-          y: 0.7
-          z: 0.5
-          count: 2
-          offset_x: 0
-          offset_y: 0
-          offset_z: 0
-          speed: 0
-          # dust_color_transition 专属参数:
-          from: 180,0,255                         # (必需) 起始 RGB 颜色
-          to: 0,200,255                           # (必需) 结束 RGB 颜色
-          scale: 1.5                              # (可选) 粒子缩放大小
+          # 粒子类型 dust_color_transition 时使用
+          from: 255,255,255                                         # << CHANGE THIS
+          to: 0,0,0                                                 # << CHANGE THIS
+          scale: 4.0                                                # << CHANGE THIS
 
-        # ---- 使用 end_rod 粒子 ----
-        - particle: end_rod
-          x: 0.5
-          y: 0.9
-          z: 0.5
-          count: 1
-          offset_x: 0.05
-          offset_y: 0
-          offset_z: 0.05
-          speed: 0
+          # 粒子类型 vibration 时使用
+          target_x: 0                                               # << CHANGE THIS
+          target_y: 1                                               # << CHANGE THIS
+          target_z: 0                                               # << CHANGE THIS
+          arrival_time: 10                                          # << CHANGE THIS
 
-  # ==========================================================================
-  # 示例 4: 极简配置 (仅必需项)
-  # ==========================================================================
-  default:minimal_wall_torch:
-
-    # 仅设置必需的 facing 属性
-    facing: west
-
-    behavior:
-      type: wall_torch_particle_block
-      # tick_interval 省略，使用默认值 10
-      # particles 省略，使用默认粒子效果 (无)
-
-  # ==========================================================================
-  # 示例 5: 物品粒子与方块粒子类型演示
-  # 展示 item 和 block_state 粒子类型专属参数。
-  # ==========================================================================
-  custom:magic_wall_torch:
-
-    display_name: "&d魔法壁挂火把"
-    material: REDSTONE_TORCH
-    placed_model:
-      path: custom/block/magic_wall_torch
-
-    facing: north
-    light_level: 7
-
-    behavior:
-      type: wall_torch_particle_block
-      tick_interval: 6
-      particles:
-
-        # ---- 使用 item 粒子类型 (显示物品图标粒子) ----
-        - particle: item
-          x: 0.5
-          y: 0.8
-          z: 0.5
-          count: 1
-          offset_x: 0.2
-          offset_y: 0.1
-          offset_z: 0.2
-          speed: 0
-          # item 专属参数:
-          item: custom:magic_dust                    # (必需) 显示的物品 ID
-
-        # ---- 使用 block 粒子类型 (显示方块碎片粒子) ----
-        - particle: block
-          x: 0.5
-          y: 0.6
-          z: 0.5
-          count: 2
-          offset_x: 0.1
-          offset_y: 0
-          offset_z: 0.1
-          speed: 0
-          # block 专属参数:
-          block_state: minecraft:amethyst_block      # (必需) 方块状态，支持属性语法
-                                                     # 格式: 命名空间:方块ID[属性=值,...]
-                                                     # 示例: minecraft:oak_log[axis=y]
-
-# ============================================================================
-# 粒子类型专属参数速查表
-# ============================================================================
-# 以下参数仅在 particle 设置为特定类型时才有效。
-#
-# | 粒子类型 (particle)                       | 专属参数                                            | 必需 |
-# |-------------------------------------------|-----------------------------------------------------|------|
-# | item                                      | item: <物品ID>                                      | 是   |
-# | block, block_marker, falling_dust,        | block_state: <方块状态>                              | 是   |
-# | dust_pillar, block_crumble               |                                                     |      |
-# | sculk_charge                              | charge: <数字>                                      | 是   |
-# | shriek                                    | shriek: <数字 (延迟刻)>                              | 是   |
-# | dust                                      | color: <R,G,B>                                      | 是   |
-# |                                           | scale: <数字> (可选, 默认 1.0)                       | 否   |
-# | dust_color_transition                     | from: <R,G,B>                                       | 是   |
-# |                                           | to: <R,G,B>                                         | 是   |
-# |                                           | scale: <数字> (可选, 默认 1.0)                       | 否   |
-# | vibration                                 | target_x: <数字>                                    | 是   |
-# |                                           | target_y: <数字>                                    | 是   |
-# |                                           | target_z: <数字>                                    | 是   |
-# |                                           | arrival_time: <数字>                                | 是   |
-# | trail                                     | target_x: <数字>                                    | 是   |
-# |                                           | target_y: <数字>                                    | 是   |
-# |                                           | target_z: <数字>                                    | 是   |
-# |                                           | duration: <数字>                                    | 是   |
-# ============================================================================
-
-# ============================================================================
-# 属性速查表
-# ============================================================================
-# | 属性            | 类型        | 必需 | 默认值   | 说明                           |
-# |-----------------|-------------|------|----------|--------------------------------|
-# | facing          | direction   | 是   | —        | 火把附着墙面方向: north/south/east/west |
-# | behavior.type   | string      | 是   | —        | 必须为 "wall_torch_particle_block"    |
-# | tick_interval   | integer     | 否   | 10       | 粒子生成间隔 (刻)               |
-# | particles       | list        | 否   | —        | 粒子配置列表                    |
-# | particles[].particle | string | 是   | —        | Minecraft 粒子类型 ID           |
-# | particles[].x    | number      | 否   | 0        | X 相对坐标                     |
-# | particles[].y    | number      | 否   | 0        | Y 相对坐标                     |
-# | particles[].z    | number      | 否   | 0        | Z 相对坐标                     |
-# | particles[].count | integer    | 否   | 1        | 每次生成的粒子数量              |
-# | particles[].offset_x | number | 否   | 0        | X 方向随机扩散                 |
-# | particles[].offset_y | number | 否   | 0        | Y 方向随机扩散                 |
-# | particles[].offset_z | number | 否   | 0        | Z 方向随机扩散                 |
-# | particles[].speed | number     | 否   | 0        | 粒子运动速度                   |
-# ============================================================================
+          # 粒子类型 trail 时使用
+          target_x: 0                                               # << CHANGE THIS
+          target_y: 1                                               # << CHANGE THIS
+          target_z: 0                                               # << CHANGE THIS
+          duration: 10                                              # << CHANGE THIS

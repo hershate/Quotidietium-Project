@@ -1,115 +1,25 @@
-# ============================================================================
-# 门方块 (door_block) - 行为配置模板
-# ============================================================================
-# 门方块由下半部分与上半部分组成，是两个方块高的结构。
-# 放置一个方块可自动创建两半。门可通过手、红石或风弹开启。
-#
-# 行为特性：
-# - 手：右键点击切换开关。
-# - 红石：开关与两半同步——上、下半同时切换。
-# - 风弹：风弹击中下半部分可切换（仅在未被红石充能时）。
-# - hinge 侧在放置时根据相邻方块的碰撞形状与附近门自动判定，
-#   模拟原版门的铰链逻辑。
-# - 当门的一半被破坏时，另一半也会同步移除，以保持门结构完整
-#   并避免重复掉落。
-# ============================================================================
+# 本地文档: CraftEngine Wiki/configuration/block/behaviors/door_block.md
+# 门方块 - 由上下两半组成的双格方块,放置时自动生成两半
 
 blocks:
-  # ==========================================================================
-  # 自定义命名空间示例：yournamespace:your_door
-  # 将 "yournamespace" 替换为你的项目命名空间，
-  # "your_door" 替换为方块 ID。
-  # ==========================================================================
-  yournamespace:your_door:
+  custom:example_door:
     behavior:
       type: door_block
 
-      # ---- 手开关 ----
-      # 是否允许玩家通过右键点击切换门的状态。
-      # 类型: boolean
-      # 默认: true
-      # 设为 false 则只能通过红石或风弹控制门。
-      can_open_with_hand: true
+      # 是否允许右键点击切换开关 (默认: true)
+      can_open_with_hand: true             # << CHANGE THIS
 
-      # ---- 风弹开关 ----
-      # 是否允许风弹击中下半部分时切换门的状态。
-      # 类型: boolean
-      # 默认: true
-      # 仅在未被红石充能时生效。
-      can_open_by_wind_charge: true
+      # 是否允许风弹击中下半部分时切换 (默认: true)
+      can_open_by_wind_charge: true        # << CHANGE THIS
 
-      # ---- 音效配置 ----
-      # 开门与关门时播放的音效（均为可选）。
-      # 若省略，则使用默认门音效。
+      # 音效 (可选)
       sounds:
-        # 开门音效
-        # 格式: 命名空间:音效ID
-        # 示例: block.wooden_door.open
-        open: block.wooden_door.open
+        open: block.wooden_door.open       # << CHANGE THIS
+        close: block.wooden_door.close     # << CHANGE THIS
 
-        # 关门音效
-        # 格式: 命名空间:音效ID
-        # 示例: block.wooden_door.close
-        close: block.wooden_door.close
-
-    # ========================================================================
-    # 必要属性 (properties)
-    # 门的运行需要以下 5 个属性，缺一不可。
-    # ========================================================================
-    properties:
-      # 开关状态 (boolean)
-      # true  = 门已打开
-      # false = 门已关闭
-      open: false
-
-      # 红石充能状态 (boolean)
-      # true  = 门被红石信号激活
-      # false = 未被红石激活
-      powered: false
-
-      # 门的一半 (double_block_half)
-      # 可选值: lower (下半), upper (上半)
-      half: lower
-
-      # 朝向 (horizontal_direction)
-      # 可选值: north, south, east, west
-      facing: north
-
-      # 铰链侧 (hinge)
-      # 可选值: left, right
-      hinge: left
-
-# ============================================================================
-# 完整示例 - 一扇自定义 "紫檀木门"
-# ============================================================================
-# blocks:
-#   myquest:rosewood_door:
-#     display_name: "紫檀木门"
-#     material: OAK_DOOR
-#     behavior:
-#       type: door_block
-#       can_open_with_hand: true
-#       can_open_by_wind_charge: false
-#       sounds:
-#         open: block.wooden_door.open
-#         close: block.wooden_door.close
-#     properties:
-#       open: false
-#       powered: false
-#       half: lower
-#       facing: south
-#       hinge: right
-#     # ... 其他配置（掉落物、合成配方、模型、标签等）
-#
-# 说明：
-# - can_open_with_hand: true   → 允许玩家手动开关门
-# - can_open_by_wind_charge: false → 禁止风弹开关门（紫檀门厚重，风弹无效）
-# - sounds: 使用原版木门音效
-# - properties: open/powered/half/facing/hinge 五项必需，缺一不可
-# - 完整属性列表：
-#   • open  (boolean)              - 门的开关状态
-#   • powered (boolean)            - 红石充能状态
-#   • half  (double_block_half)    - 上半/下半 (lower/upper)
-#   • facing (horizontal_direction) - 朝向 (north/south/east/west)
-#   • hinge (hinge)                - 铰链侧 (left/right)
-# ============================================================================
+# 必需属性 (由方块定义/状态自动管理,无需在此声明)
+#   open:        boolean               - 门是否开启
+#   powered:     boolean               - 门是否被红石充能
+#   half:        double_block_half     - 上半部分/下半部分
+#   facing:      horizontal_direction  - 门朝向
+#   hinge:       hinge                 - 铰链侧 (left/right)
