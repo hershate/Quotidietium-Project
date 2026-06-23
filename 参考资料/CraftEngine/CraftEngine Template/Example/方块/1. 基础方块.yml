@@ -43,12 +43,11 @@ blocks:
       hardness: 3.0                                  # << CHANGE THIS 硬度
       resistance: 6.0                                # << CHANGE THIS 爆炸抗性
       luminance: 5                                   # << CHANGE THIS 发光等级
-      luminance_on: 8                                # << CHANGE THIS 激活时发光等级
       map_color: 12                                  # << CHANGE THIS 地图颜色值
       instrument: basedrum                            # << CHANGE THIS 音符盒音色
       is_suffocating: true                           # 是否窒息
       is_redstone_conductor: true                    # 是否传导红石
-      requires_tool_for_drops: true                  # 需要正确工具才掉落
+      require_correct_tools: true                    # 需要正确工具才掉落
       item: wiki:fancy_ore                           # 方块对应的物品 ID
       sounds:                                        # << CHANGE THIS 自定义音效
         break:  minecraft:block.stone.break
@@ -67,12 +66,17 @@ blocks:
         - minecraft:mineable/pickaxe
         - minecraft:needs_iron_tool
     loot:                                            # 破坏时掉落自身
-      type: self
-      count: 1
-    events:                                          # 玩家右键时打开 GUI
-      on_interact:
-        - action: execute_command
-          command: "say 你点击了 wiki:fancy_ore！"
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: wiki:fancy_ore
+              weight: 1
+    events:                                          # 玩家右键时执行命令
+      - on: right_click
+        functions:
+          - type: command
+            command: "say 你点击了 wiki:fancy_ore！"
 
   # ==========================================================================
   # 示例 3: 方块带战利品表 — 多种掉落方式
@@ -95,19 +99,27 @@ blocks:
       tags:
         - minecraft:mineable/pickaxe
     loot:
-      - type: item                                        # 掉落物品
-        item: wiki:gem_shard                               # << CHANGE THIS 物品 ID
-        min_count: 2                                       # << CHANGE THIS 最少数量
-        max_count: 4                                       # << CHANGE THIS 最多数量
-        conditions:                                        # 条件: 精准采集时不触发此条
-          - condition: not_enchantment
-            enchantment: minecraft:silk_touch
-      - type: item
-        item: wiki:gem_crystal                             # 精准采集时掉落自身
-        condition: silk_touch
-      - type: experience                                   # 额外掉落经验
-        min_count: 3
-        max_count: 7
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: wiki:gem_shard                               # << CHANGE THIS 物品 ID
+              weight: 1
+              functions:
+                - type: set_count
+                  count: 2~4                                     # << CHANGE THIS 最少~最多数量
+              conditions:
+                - type: "!enchantment"                           # 非精准采集时掉落碎块
+                  predicate: "minecraft:silk_touch>=1"
+            - type: item                                         # 精准采集时掉落自身
+              item: wiki:gem_crystal
+              weight: 1
+              conditions:
+                - type: enchantment
+                  predicate: "minecraft:silk_touch>=1"
+          functions:                                             # 额外掉落经验
+            - type: drop_exp
+              count: 3~7                                         # << CHANGE THIS 经验范围
 
   # ==========================================================================
   # 示例 4: 多状态方块 — axis 属性 (原木风格)
@@ -163,7 +175,11 @@ blocks:
       type: strippable_block                            # 可用斧剥皮
       stripped: wiki:stripped_palm_log                   # << CHANGE THIS 剥皮后的方块 ID
     loot:
-      type: self
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: wiki:palm_log
 
   # ==========================================================================
   # 示例 5: 多状态方块 — waterlogged + persistent + distance
@@ -212,16 +228,24 @@ blocks:
         - minecraft:mineable/hoe
         - minecraft:leaves
     loot:
-      - type: item
-        item: wiki:palm_sapling                           # << CHANGE THIS 掉落树苗
-        min_count: 0
-        max_count: 1
-        conditions:
-          - condition: not_enchantment
-            enchantment: minecraft:silk_touch
-      - type: item                                        # 精准采集时掉落树叶自身
-        condition: silk_touch
-        item: wiki:palm_leaves
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: wiki:palm_sapling                           # << CHANGE THIS 掉落树苗
+              weight: 1
+              functions:
+                - type: set_count
+                  count: 0~1
+              conditions:
+                - type: "!enchantment"                          # 非精准采集时掉落树苗
+                  predicate: "minecraft:silk_touch>=1"
+            - type: item                                        # 精准采集时掉落树叶自身
+              item: wiki:palm_leaves
+              weight: 1
+              conditions:
+                - type: enchantment
+                  predicate: "minecraft:silk_touch>=1"
 
   # ==========================================================================
   # 示例 6: 多状态方块 — facing + 四种外观

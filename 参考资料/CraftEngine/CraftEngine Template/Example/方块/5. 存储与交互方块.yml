@@ -32,6 +32,11 @@ blocks:
   # 功能: 只存一种物品但可存大量，右键放入、左键取出、双击全部存入。
   # ===========================================================================
   mythic:mineral_drawer:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        facing:
+          type: direction                           # << CHANGE THIS 属性类型：direction/horizontal_direction
+          default: north
     behavior:
       type: drawer_block
       max_stacks: 48                               # << CHANGE THIS: 最多容纳物品组数
@@ -47,46 +52,58 @@ blocks:
       sounds:
         put: minecraft:block.decorated_pot.insert       # << CHANGE THIS: 放入音效
         take: minecraft:block.decorated_pot.insert_fail # << CHANGE THIS: 取出音效
-    properties:
-      facing: north                                # 朝向
 
   # ===========================================================================
   # 3. seat_block —— 圆凳
   # 功能: 右键坐下，可配置多个座位及偏航锁定。
   # ===========================================================================
   mythic:stool:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        facing:
+          type: horizontal_direction                # << CHANGE THIS 属性类型
+          default: south
     behavior:
       type: seat_block
       seats:
         - 0.5,0.4,0.5 90                          # x,y,z [偏航角] 锁定朝东
         - 0.5,0.4,0.5                             # 不锁定角度，自由旋转
-    properties:
-      facing: south
 
   # ===========================================================================
   # 4. sofa_block —— 转角沙发
   # 功能: 可连接座椅，shape 属性根据周围沙发自动计算直形/内角。
   # ===========================================================================
   mythic:corner_sofa:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        shape:
+          type: sofa_shape                          # << CHANGE THIS straight/inner_left/inner_right
+          default: straight
+        facing:
+          type: horizontal_direction                # << CHANGE THIS 朝向
+          default: north
+        waterlogged:
+          type: boolean                             # << CHANGE THIS 是否含水
+          default: false
     behavior:
       type: sofa_block
-    properties:
-      shape: none                                # 初始形状，PP 更新后自动计算
-      facing: north                              # 朝向
-      waterlogged: false                         # 是否含水
 
   # ===========================================================================
   # 5. stackable_block —— 金币堆
   # 功能: 使用同物品右击递增 int 属性，达到最大值后停止。
   # ===========================================================================
   mythic:coin_pile:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        coins:
+          type: int                                 # << CHANGE THIS int 属性
+          default: 1
+          range: 1~8                                # << CHANGE THIS 取值范围
     behavior:
       type: stackable_block
       property: coins                            # 记录堆叠数量的 int 属性名
       items:
         - mythic:coin_pile                       # 允许堆叠的物品
-    properties:
-      coins: 1                                   # int 属性，取值范围 1~8
     # 注意: 模型应配置 8 种 variant，对应 coins 属性的 1~8
 
   # ===========================================================================
@@ -94,6 +111,11 @@ blocks:
   # 功能: 在方块上展示一个掉落物品，手持物品右键放入，空手右键取出。
   # ===========================================================================
   mythic:pedestal:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        facing:
+          type: direction                           # << CHANGE THIS 属性类型：direction/horizontal_direction
+          default: north
     behavior:
       type: display_item_block
       position: "0.5,1.0,0.5"                   # << CHANGE THIS: 展示物品位置偏移
@@ -103,14 +125,17 @@ blocks:
       sounds:
         put: minecraft:block.decorated_pot.insert        # << CHANGE THIS: 放入音效
         take: minecraft:block.decorated_pot.insert_fail  # << CHANGE THIS: 取出音效
-    properties:
-      facing: north
 
   # ===========================================================================
   # 7. item_frame_block —— 自定义展示框
   # 功能: 高性能物品展示框替代品，支持发光/隐形/旋转(8方向)/地图渲染。
   # ===========================================================================
   mythic:custom_frame:
+    states:                                        # Wiki: 属性须在 states.properties 中定义
+      properties:
+        facing:
+          type: direction                           # << CHANGE THIS 属性类型：direction/horizontal_direction
+          default: north
     behavior:
       type: item_frame_block
       position: 0.5,0.5,0                         # << CHANGE THIS: 展示物品位置偏移
@@ -122,5 +147,3 @@ blocks:
         put: entity.item_frame.add_item           # << CHANGE THIS: 放入音效
         take: entity.item_frame.remove_item       # << CHANGE THIS: 取出音效
         rotate: entity.item_frame.rotate_item     # << CHANGE THIS: 旋转音效
-    properties:
-      facing: north                               # 朝向

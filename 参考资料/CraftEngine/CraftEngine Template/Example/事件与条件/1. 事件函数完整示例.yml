@@ -445,7 +445,7 @@ blocks:
                 - rolls: 1
                   entries:
                     - type: item
-                      name: "minecraft:diamond"
+                      item: "minecraft:diamond"
                       weight: 1
 
           # --- 45. teleport — 传送（示例: 传送到出生点） ---
@@ -463,7 +463,8 @@ blocks:
           - type: if_else
             rules:
               - conditions:
-                  - type: sneaking                           # 潜行条件
+                  - type: hand                               # 主手交互条件
+                    hand: main_hand
                 functions:
                   - type: cycle_block_property
                     property: axis
