@@ -1,0 +1,74 @@
+# =============================================================================
+# CraftEngine 方块标签参考模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: reference/block_tags.md
+# =============================================================================
+#
+# 方块标签用于 settings.tags 部分，控制方块的挖掘工具、特殊机制等。
+# 格式: "命名空间:标签名" (如 "minecraft:mineable/pickaxe")
+
+# ===========================================================================
+# 可挖掘标签 — 决定哪种工具挖掘更快
+# ===========================================================================
+# minecraft:mineable/axe        # 让斧挖掘得更快
+# minecraft:mineable/hoe        # 让锄挖掘得更快
+# minecraft:mineable/pickaxe    # 让镐挖掘得更快
+# minecraft:mineable/shovel     # 让锹挖掘得更快
+# minecraft:sword_efficient     # 让剑挖掘得更快
+
+# ===========================================================================
+# 特殊机制标签
+# ===========================================================================
+# minecraft:climbable                     # 允许玩家攀爬 (客户端)
+# minecraft:beacon_base_blocks            # 可用作信标底座
+# minecraft:fall_damage_resetting         # 重置摔落伤害
+# minecraft:soul_fire_base_blocks         # 上方火焰变为灵魂火
+# minecraft:infiniburn_overworld          # 在主世界无限燃烧
+# minecraft:infiniburn_nether             # 在下界无限燃烧
+# minecraft:infiniburn_end                # 在末地无限燃烧
+# minecraft:enchantment_power_provider    # 提供附魔等级
+# minecraft:replaceable_by_trees          # 树木生长时可替换
+
+# ===========================================================================
+# 使用示例
+# ===========================================================================
+blocks:
+  custom:example_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example"
+    settings:
+      hardness: 2.0
+      correct_tools:                      # 可挖掘的工具类型
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      tags:
+        - "minecraft:mineable/pickaxe"    # 镐可挖掘
+        - "minecraft:beacon_base_blocks"  # 可用作信标底座
+
+  # 可攀爬方块 (如自定义藤蔓)
+  custom:climbable_vine:
+    state:
+      auto_state: vine
+      model:
+        texture: "minecraft:block/custom/vine"
+    settings:
+      tags:
+        - "minecraft:climbable"           # 可用攀爬
+        - "minecraft:replaceable_by_trees"
+
+  # 自定义原木 (可在主世界无限燃烧)
+  custom:custom_log:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/log"
+    settings:
+      tags:
+        - "minecraft:mineable/axe"        # 斧可挖掘
+        - "minecraft:logs"               # 原木标签
+        - "minecraft:infiniburn_overworld" # 主世界无限燃烧

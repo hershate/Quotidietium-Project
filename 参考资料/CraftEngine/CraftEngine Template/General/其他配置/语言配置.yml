@@ -1,0 +1,64 @@
+# =============================================================================
+# CraftEngine 语言/国际化配置模板
+# =============================================================================
+# 基于 CraftEngine 官方文档:
+#   configuration/lang.md
+#   configuration/i18n.md
+# =============================================================================
+#
+# 两种语言系统:
+#   lang        - 客户端资源包语言 (需重载资源包)
+#   translations - 服务端语言系统 (i18n/l10n)
+
+# ===========================================================================
+# lang — 客户端资源包语言
+# ===========================================================================
+lang:
+  # 按语言代码配置 (缺省时默认使用 en_us)
+  en_us:
+    item.custom.palm_leaves: "Palm Leaves"
+    item.custom.palm_log: "Palm Log"
+    block_name:custom:chinese_lantern: "Chinese Lantern"
+  zh_cn:
+    item.custom.palm_leaves: "棕榈树叶"
+    item.custom.palm_log: "棕榈原木"
+    block_name:custom:chinese_lantern: "灯笼"
+
+  # "all" 覆盖所有语言
+  all:
+    container.inventory: ""
+
+# ===========================================================================
+# translations — 服务端国际化 (i18n: 服务端语言, l10n: 客户端语言)
+# ===========================================================================
+translations:
+  en:
+    item.chinese_lantern: "Chinese Lantern"
+    item.bench: "Bench"
+    item.wooden_chair: "Wooden Chair"
+  zh_cn:
+    item.chinese_lantern: "灯笼"
+    item.bench: "长椅"
+    item.wooden_chair: "木椅"
+
+# ===========================================================================
+# 在物品中使用翻译键
+# ===========================================================================
+items:
+  # <i18n:key> — 服务端语言 (实际替换为翻译文本)
+  custom:chinese_lantern:
+    material: paper
+    data:
+      item_name: "<i18n:item.chinese_lantern>"
+
+  # <l10n:key> — 客户端语言 (发送原始标签, 客户端自行替换)
+  custom:bench:
+    material: paper
+    data:
+      item_name: "<l10n:item.bench>"
+
+  # <lang:key> — Minecraft 原版语言键 (客户端资源包)
+  custom:translated_item:
+    material: paper
+    data:
+      item_name: "<lang:item.custom.palm_log>"

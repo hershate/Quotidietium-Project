@@ -1,0 +1,40 @@
+# =============================================================================
+# CraftEngine 画配置模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: configuration/painting.md
+# =============================================================================
+#
+# 使用 "paintings:" 作为根键。
+# 注意: 修改后需要重新进入服务器才能生效 (Minecraft 注册表不可变)。
+
+paintings:
+  # ===========================================================================
+  # 1. 基础画作
+  # ===========================================================================
+  custom:momi:
+    width: 1                             # 可选; 默认: 1; 范围 1~16 (方块)
+    height: 1                            # 可选; 默认: 1; 范围 1~16 (方块)
+    asset_id: custom:momi                # 可选; 纹理路径: assets/<ns>/textures/painting/<path>.png
+    title: <lang:painting.custom.momi.title>    # 可选; 1.21.2+ 标题
+    author: <lang:painting.custom.momi.author>  # 可选; 1.21.2+ 作者
+    show_in_op_tab: false                # 可选; 默认: false; 管理员用品标签页显示
+
+  # ===========================================================================
+  # 2. 大型画作
+  # ===========================================================================
+  custom:wide_landscape:
+    width: 4
+    height: 2
+    asset_id: custom:wide_landscape
+    title: <lang:painting.custom.wide_landscape.title>
+    author: <lang:painting.custom.wide_landscape.author>
+    show_in_op_tab: true
+
+# ===========================================================================
+# 将画绑定到物品
+# ===========================================================================
+items:
+  custom:momi_painting:
+    material: painting
+    data:
+      painting_variant: custom:momi       # 指向画作ID

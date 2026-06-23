@@ -1,0 +1,1471 @@
+# =============================================================================
+# CraftEngine 功能方块模板 — 功能性方块完整合集
+# =============================================================================
+#
+# 概述:
+#   本模板展示了如何使用 CraftEngine 创建各类带有交互行为的自定义方块, 涵盖:
+#     - 门方块 (door_block):         双格高, 铰链, 朝向, 手/红石/风弹控制
+#     - 活板门方块 (trapdoor_block):  铰链面板, 含水和开关状态
+#     - 按钮方块 (button_block):      红石电源, 组合水平面定向附着行为
+#     - 压力板方块 (pressure_plate_block): 实体检测, 红石输出
+#     - 栅栏方块 (fence_block):       四面连接, 拴绳系留
+#     - 栅栏门方块 (fence_gate_block): 开关门, 与墙体联动 (in_wall)
+#     - 楼梯方块 (stairs_block):      自动形状计算 (直/内角/外角)
+#     - 台阶方块 (slab_block):        双层合并, 含水和无含水
+#     - 灯方块 (lamp_block):          红石点亮/延迟熄灭
+#     - 可切换灯方块 (toggleable_lamp_block): 红石或手动翻转开关
+#     - 震响方块 (chime_block):       弹射物击中发出音效
+#     - 简单存储方块 (simple_storage_block): 自定义行数容器
+#     - 抽屉方块 (drawer_block):       单物品大量存储, 展示物品
+#     - 简单粒子方块 (simple_particle_block): 定时生成粒子效果
+#     - 墙上火把粒子方块 (wall_torch_particle_block): 带朝向的粒子
+#
+# 兼容版本:
+#   - CraftEngine 26.2+
+#   - 所有行为均来自 CraftEngine 官方文档, 属性名称与类型为硬编码要求
+#   - 多状态方块 (如门、活板门) 需要配置 states + properties + appearances
+#   - 单状态方块 (如灯、震响) 使用 state 即可
+#
+# 命名空间约定:
+#   - 所有示例使用 custom: 命名空间
+#   - 纹理路径使用 minecraft:block/custom/ 前缀
+#   - 物品绑定默认与方块同 id
+# =============================================================================
+
+
+# =============================================================================
+# 模板: 通用方块设置
+# 用途: 提供基础的硬度、抗性、音效、挖掘工具等通用属性
+# =============================================================================
+templates:
+
+  # --- 通用实心方块基础设置 (石头级) ---
+  custom:template/block_settings_stone:
+    settings:
+      hardness: 1.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: true
+      instrument: basedrum
+      map_color: 11
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+        fall: minecraft:block.stone.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:golden_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # --- 通用木质方块基础设置 (斧挖掘) ---
+  custom:template/block_settings_wood:
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      burnable: true
+      fire_spread_chance: 5
+      burn_chance: 20
+      instrument: bass
+      map_color: 27
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+        fall: minecraft:block.wood.fall
+      correct_tools:
+        - minecraft:wooden_axe
+        - minecraft:stone_axe
+        - minecraft:iron_axe
+        - minecraft:golden_axe
+        - minecraft:diamond_axe
+        - minecraft:netherite_axe
+      tags:
+        - minecraft:mineable/axe
+
+  # --- 通用方块物品绑定 (用于将方块与物品关联) ---
+  # 此模板用于物品侧, 让物品可放置方块
+  custom:template/block_item_binding:
+    behavior:
+      type: block_item
+      block: "${block_id}"
+
+
+# =============================================================================
+# 方块配置
+# =============================================================================
+blocks:
+
+  # ===========================================================================
+  # 1. 门方块 (door_block) — 双格高, 铰链, 朝向, 多控制方式
+  # ===========================================================================
+  #
+  # 说明:
+  #   门方块由下半部分与上半部分组成的两格高结构.
+  #   放置一个方块可自动创建上下两半.
+  #   - 手:   右键点击切换开关
+  #   - 红石: 开关与两半同步 —— 上/下半同时切换
+  #   - 风弹: 击中下半部分可切换 (仅在未被红石充能时)
+  #
+  #   hinge (铰链) 侧在放置时根据相邻方块自动判定.
+  #   当一半被破坏时, 另一半也会同步移除.
+  #
+  # 必需属性:
+  #   open    (boolean)              — 是否开启
+  #   powered (boolean)              — 是否被红石充能
+  #   half    (double_block_half)    — upper / lower
+  #   facing  (horizontal_direction) — north / south / west / east
+  #   hinge   (hinge)                — left / right
+  #
+  # 注意:
+  #   自定义门无法被村民或僵尸交互 (Minecraft 硬编码 AI 限制).
+  #
+  custom:example_door:
+    states:
+      # --- 属性定义 ---
+      # 5 个属性, 每种值组合构成一个内部状态:
+      #   open(2) x powered(2) x half(2) x facing(4) x hinge(2) = 64 个状态
+      properties:
+        open:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+        half:
+          type: double_block_half
+          default: lower
+        facing:
+          type: horizontal_direction
+          default: north
+        hinge:
+          type: hinge
+          default: left
+
+      # --- 外观定义 ---
+      appearances:
+        # 默认外观 (第一个 → 未匹配到变体时使用)
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_door
+            textures:
+              - minecraft:block/custom/example_door_bottom
+              - minecraft:block/custom/example_door_top
+
+      # --- 变体映射 ---
+      # 利用通配符语义: 只约束关键属性, 其余不限
+      variants:
+        half=upper:
+          appearance: default
+        half=lower:
+          appearance: default
+
+    # --- 方块设置 ---
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false          # 门不窒息生物
+      is_redstone_conductor: false   # 门不是红石导体
+      hardness: 3.0
+      item: custom:example_door      # 绑定到同名物品
+
+    # --- 方块行为 ---
+    behavior:
+      type: door_block
+      can_open_with_hand: true       # 允许右键点击切换 (默认 true)
+      can_open_by_wind_charge: true  # 允许风弹切换 (默认 true)
+      sounds:
+        open: minecraft:block.wooden_door.open   # 打开时播放的音效 (可选)
+        close: minecraft:block.wooden_door.close  # 关闭时播放的音效 (可选)
+
+    # --- 战利品表 (可选) ---
+    # 破坏后掉落对应物品
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_door
+          count: 1
+
+
+  # ===========================================================================
+  # 2. 活板门方块 (trapdoor_block) — 铰链面板, 含水, 开关
+  # ===========================================================================
+  #
+  # 说明:
+  #   可开合的铰链面板, 通过玩家交互、红石或风弹切换状态.
+  #   - 手:   右键点击开关
+  #   - 红石: 相邻信号激活时打开, 信号切断时关闭
+  #   - 风弹: 爆炸可切换活板门状态
+  #   放置时自动检测周围红石信号与水体状态.
+  #
+  # 必需属性:
+  #   open        (boolean)              — 是否打开
+  #   powered     (boolean)              — 是否被充能
+  #   half        (single_block_half)    — top / bottom
+  #   facing      (horizontal_direction) — north / south / west / east
+  #   waterlogged (boolean)              — 是否含水 (可选)
+  #
+  custom:example_trapdoor:
+    states:
+      properties:
+        open:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+        half:
+          type: single_block_half
+          default: bottom
+        facing:
+          type: horizontal_direction
+          default: north
+        waterlogged:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_trapdoor
+            generation:
+              parent: minecraft:block/template_trapdoor_bottom
+              textures:
+                texture: minecraft:block/custom/example_trapdoor
+
+      # 通过变体匹配覆写含水设置
+      variants:
+        waterlogged=true:
+          appearance: default
+          settings:
+            fluid_state: water           # 方块内部含水体
+        waterlogged=false:
+          appearance: default
+
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false
+      is_redstone_conductor: false
+      item: custom:example_trapdoor
+
+    behavior:
+      type: trapdoor_block
+      can_open_with_hand: true
+      can_open_by_wind_charge: true
+      sounds:
+        open: minecraft:block.wooden_trapdoor.open
+        close: minecraft:block.wooden_trapdoor.close
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_trapdoor
+
+
+  # ===========================================================================
+  # 3. 按钮方块 (button_block) — 红石电源, 组合水平面定向附着
+  # ===========================================================================
+  #
+  # 说明:
+  #   按钮是一种短时红石电源, 激活后片刻自动弹起.
+  #   触发方式: 玩家使用, 箭/三叉戟命中, 风弹风暴.
+  #   激活时会强充能自身附着的红石导体至充能等级 15.
+  #
+  #   本行为需要组合 face_attached_horizontal_directional_block 行为:
+  #     - button_block 提供 powered 状态
+  #     - face_attached_horizontal_directional_block 提供 face + facing 朝向
+  #   两者组合后才能正确充能附着的方块.
+  #
+  # 属性 (组合后):
+  #   powered (boolean)              — 是否激活 (来自 button_block)
+  #   face    (anchor_type)          — floor/wall/ceiling (来自附着行为)
+  #   facing  (horizontal_direction) — 水平朝向 (来自附着行为)
+  #
+  # 注意:
+  #   按钮变体数量少 (3 属性 = 2x3x4 = 24), 可轻松容纳.
+  #
+  custom:example_button:
+    states:
+      properties:
+        powered:
+          type: boolean
+          default: false
+        face:
+          type: anchor_type
+          default: wall
+        facing:
+          type: horizontal_direction
+          default: north
+
+      appearances:
+        default:
+          auto_state:
+            type: solid
+          model:
+            path: minecraft:block/custom/example_button
+            textures:
+              - minecraft:block/custom/example_button
+        pressed:
+          auto_state:
+            type: solid
+          model:
+            path: minecraft:block/custom/example_button_pressed
+            textures:
+              - minecraft:block/custom/example_button_pressed
+
+      variants:
+        powered=false:
+          appearance: default
+        powered=true:
+          appearance: pressed
+
+    settings:
+      is_suffocating: false
+      is_redstone_conductor: false
+      hardness: 0.5
+      resistance: 0.5
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+        fall: minecraft:block.stone.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+        - minecraft:buttons
+
+    # --- 复合行为: 水平面定向附着 + 按钮 ---
+    behaviors:
+      - type: face_attached_horizontal_directional_block
+        blacklist: true                            # true = 黑名单, false = 白名单
+        attached_blocks:                           # 可附着的方块列表 (黑名单模式则排除)
+          - custom:example_glass                   # 示例: 不可附着于自定义玻璃
+        attached_block_tags:                       # 可附着的方块标签 (黑名单模式则排除)
+          - minecraft:transparent                  # 示例: 不可附着于透明方块
+      - type: button_block
+        ticks_to_stay_pressed: 30                  # 激活保持时长 (刻), 默认 30
+        can_be_activated_by_arrows: true           # 箭/三叉戟是否触发, 默认 true
+        sounds:
+          on: minecraft:block.wooden_button.click_on
+          off: minecraft:block.wooden_button.click_off
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_button
+
+
+  # ===========================================================================
+  # 4. 压力板方块 (pressure_plate_block) — 实体检测, 红石输出
+  # ===========================================================================
+  #
+  # 说明:
+  #   探测玩家、生物等实体的方块. 实体踩上时发出 15 强度的强充能信号.
+  #   sensitivity 控制触发实体类型:
+  #     - all (默认): 任意实体
+  #     - mob:       仅限生物
+  #   实体离开后持续保持 pressed_time 刻的按下状态.
+  #   压力板必须放置于完整上表面的方块上方.
+  #
+  # 属性:
+  #   powered (boolean) — 是否被触发
+  #
+  # 注意:
+  #   只输出开关信号 (15 强度), 与原版测重压力板不同, 不论实体数量.
+  #
+  custom:example_pressure_plate:
+    states:
+      properties:
+        powered:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: pressure_plate            # 使用压力板状态组
+          model:
+            path: minecraft:block/custom/example_pressure_plate
+            textures:
+              - minecraft:block/custom/example_pressure_plate
+        powered:
+          auto_state: pressure_plate
+          model:
+            path: minecraft:block/custom/example_pressure_plate_down
+            textures:
+              - minecraft:block/custom/example_pressure_plate_down
+
+      variants:
+        powered=false:
+          appearance: default
+        powered=true:
+          appearance: powered
+
+    settings:
+      is_suffocating: false
+      is_redstone_conductor: false
+      hardness: 0.5
+      resistance: 0.5
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+        fall: minecraft:block.wood.fall
+      correct_tools:
+        - minecraft:wooden_axe
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:pressure_plates
+
+    behavior:
+      type: pressure_plate_block
+      sensitivity: all                          # "all" 或 "mob" (默认 all)
+      pressed_time: 20                          # 保持按下的时长 (刻), 默认 20
+      sounds:
+        on: minecraft:block.wooden_pressure_plate.click_on
+        off: minecraft:block.wooden_pressure_plate.click_off
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_pressure_plate
+
+
+  # ===========================================================================
+  # 5. 栅栏方块 (fence_block) — 四面连接, 拴绳系留
+  # ===========================================================================
+  #
+  # 说明:
+  #   在四个水平方向自动与相邻方块连接, 行为与原版栅栏一致.
+  #   可通过 connectable_block_tag 指定与其他带有相同标签的方块连接.
+  #   can_leash 启用后可用拴绳系在方块上.
+  #
+  # 属性:
+  #   north / east / south / west (boolean) — 四个方向的连接状态
+  #
+  custom:example_fence:
+    states:
+      properties:
+        north:
+          type: boolean
+          default: false
+        east:
+          type: boolean
+          default: false
+        south:
+          type: boolean
+          default: false
+        west:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_fence
+            generation:
+              parent: minecraft:block/fence_post
+              textures:
+                texture: minecraft:block/custom/example_fence
+
+      # 通过变体覆写: 有任意连接时外观不变 (仅碰撞箱自动变化)
+      variants: {}
+
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false
+      is_redstone_conductor: false
+      item: custom:example_fence
+
+    behavior:
+      type: fence_block
+      connectable_block_tag: minecraft:wooden_fences   # 连接标签, 默认 minecraft:wooden_fences
+      can_leash: true                                  # 允许拴绳拴上
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_fence
+
+
+  # ===========================================================================
+  # 6. 栅栏门方块 (fence_gate_block) — 开关门, 与墙体联动
+  # ===========================================================================
+  #
+  # 说明:
+  #   行为与原版栅栏门一致. 可通过手、红石或风弹开关.
+  #   用手打开时, facing 会根据玩家方向自动翻转.
+  #   in_wall 属性根据门朝向两侧的方块状态自动更新:
+  #     若两侧存在 #minecraft:walls 标签方块 → in_wall = true
+  #
+  # 属性:
+  #   open    (boolean)              — 是否打开
+  #   powered (boolean)              — 是否被充能
+  #   in_wall (boolean)              — 是否处于墙中 (影响门轴位置)
+  #   facing  (horizontal_direction) — 朝向
+  #
+  custom:example_fence_gate:
+    states:
+      properties:
+        open:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+        in_wall:
+          type: boolean
+          default: false
+        facing:
+          type: horizontal_direction
+          default: north
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_fence_gate
+            generation:
+              parent: minecraft:block/template_fence_gate
+              textures:
+                texture: minecraft:block/custom/example_fence_gate
+        open:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_fence_gate_open
+            generation:
+              parent: minecraft:block/template_fence_gate_open
+              textures:
+                texture: minecraft:block/custom/example_fence_gate
+        in_wall:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_fence_gate_wall
+            generation:
+              parent: minecraft:block/template_fence_gate_wall
+              textures:
+                texture: minecraft:block/custom/example_fence_gate
+
+      variants:
+        open=false:
+          appearance: default
+          # in_wall 状态通过额外变体覆写
+        open=true:
+          appearance: open
+
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false
+      is_redstone_conductor: false
+      item: custom:example_fence_gate
+
+    behavior:
+      type: fence_gate_block
+      can_open_with_hand: true
+      can_open_by_wind_charge: true
+      sounds:
+        open: minecraft:block.fence_gate.open
+        close: minecraft:block.fence_gate.close
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_fence_gate
+
+
+  # ===========================================================================
+  # 7. 楼梯方块 (stairs_block) — 自动形状计算
+  # ===========================================================================
+  #
+  # 说明:
+  #   行为与原版楼梯一致.
+  #   放置时根据点击位置自动设置 facing 与 half.
+  #   shape 属性根据周围楼梯自动计算为 straight / inner_left / inner_right /
+  #   outer_left / outer_right.
+  #
+  # 属性:
+  #   shape       (stairs_shape)          — straight/inner_left/inner_right/outer_left/outer_right
+  #   half        (single_block_half)     — top / bottom
+  #   facing      (horizontal_direction)  — north/south/west/east
+  #   waterlogged (boolean)               — 是否含水 (可选)
+  #
+  # 注意:
+  #   自定义楼梯无法与原版楼梯形成内角/外角连接 (Minecraft 硬编码限制).
+  #
+  custom:example_stairs:
+    states:
+      properties:
+        shape:
+          type: stairs_shape
+          default: straight
+        half:
+          type: single_block_half
+          default: bottom
+        facing:
+          type: horizontal_direction
+          default: north
+        waterlogged:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_stairs
+            generation:
+              parent: minecraft:block/stairs
+              textures:
+                bottom: minecraft:block/custom/example_planks
+                top: minecraft:block/custom/example_planks
+                side: minecraft:block/custom/example_planks
+
+      variants:
+        waterlogged=false:
+          appearance: default
+        waterlogged=true:
+          appearance: default
+          settings:
+            fluid_state: water
+
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false
+      is_redstone_conductor: false
+      item: custom:example_stairs
+
+    behavior:
+      type: stairs_block
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_stairs
+
+
+  # ===========================================================================
+  # 8. 台阶方块 (slab_block) — 双层合并, 含水
+  # ===========================================================================
+  #
+  # 说明:
+  #   行为与原版台阶一致.
+  #   放置在下半/上半部分创建下半/上半台阶.
+  #   将相同台阶放置在已有单层台阶上会将两者合并为双层台阶.
+  #   双层台阶无法含水, 液体无法流入双层台阶.
+  #
+  # 属性:
+  #   type        (slab_type)  — top / bottom / double
+  #   waterlogged (boolean)    — 是否含水 (可选)
+  #
+  custom:example_slab:
+    states:
+      properties:
+        type:
+          type: slab_type
+          default: bottom
+        waterlogged:
+          type: boolean
+          default: false
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_slab
+            generation:
+              parent: minecraft:block/slab
+              textures:
+                bottom: minecraft:block/custom/example_planks
+                top: minecraft:block/custom/example_planks
+                side: minecraft:block/custom/example_planks
+
+      variants:
+        type=double:
+          appearance: default
+          # settings 不设置 fluid_state (双层不应含水)
+        waterlogged=true:
+          appearance: default
+          settings:
+            fluid_state: water
+
+    settings:
+      template:
+        - custom:template/block_settings_wood
+      is_suffocating: false
+      is_redstone_conductor: false
+      item: custom:example_slab
+
+    behavior:
+      type: slab_block
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_slab
+
+
+  # ===========================================================================
+  # 9. 灯方块 (lamp_block) — 红石点亮, 延迟熄灭
+  # ===========================================================================
+  #
+  # 说明:
+  #   根据红石信号切换 lit 点亮状态, 类似原版红石灯.
+  #   收到红石信号立刻点亮, 失去红石信号后需 4 刻才能熄灭.
+  #   放置时自动检测附近的红石信号并设置正确的初始状态.
+  #
+  # 属性:
+  #   lit (boolean) — 是否点亮
+  #
+  custom:example_lamp:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+
+      appearances:
+        off:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_lamp
+            textures:
+              - minecraft:block/custom/example_lamp
+        on:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_lamp_on
+            textures:
+              - minecraft:block/custom/example_lamp_on
+
+      variants:
+        lit=false:
+          appearance: off
+          settings:
+            luminance: 0
+        lit=true:
+          appearance: on
+          settings:
+            luminance: 15                 # 点亮时发光
+
+    settings:
+      hardness: 0.3
+      resistance: 0.3
+      is_suffocating: false
+      is_redstone_conductor: false
+      map_color: 36
+      instrument: chime
+      sounds:
+        break: minecraft:block.glass.break
+        step: minecraft:block.glass.step
+        place: minecraft:block.glass.place
+        hit: minecraft:block.glass.hit
+        fall: minecraft:block.glass.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    behavior:
+      type: lamp_block
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_lamp
+
+
+  # ===========================================================================
+  # 10. 可切换灯方块 (toggleable_lamp_block) — 红石/手动翻转
+  # ===========================================================================
+  #
+  # 说明:
+  #   通过切换 lit 属性控制亮灭状态.
+  #   - 红石: 从未充能变为充能时 flip 一次 lit 状态
+  #           powered 属性记录当前是否受红石信号
+  #   - 手动: 当 can_open_with_hand 启用时, 玩家右键可直接切换 lit 状态
+  #
+  # 属性:
+  #   lit     (boolean) — 是否点亮
+  #   powered (boolean) — 是否被充能 (can_open_with_hand=false 时必需)
+  #
+  custom:example_toggleable_lamp:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+
+      appearances:
+        off:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_toggle_lamp
+            textures:
+              - minecraft:block/custom/example_toggle_lamp
+        on:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_toggle_lamp_on
+            textures:
+              - minecraft:block/custom/example_toggle_lamp_on
+
+      variants:
+        lit=false:
+          appearance: off
+          settings:
+            luminance: 0
+        lit=true:
+          appearance: on
+          settings:
+            luminance: 15
+
+    settings:
+      hardness: 0.3
+      resistance: 0.3
+      is_suffocating: false
+      is_redstone_conductor: false
+      map_color: 36
+      instrument: chime
+      sounds:
+        break: minecraft:block.copper.break
+        step: minecraft:block.copper.step
+        place: minecraft:block.copper.place
+        hit: minecraft:block.copper.hit
+        fall: minecraft:block.copper.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true               # 允许右键点击切换 (默认 false)
+
+    # --- 事件: 右键切换时播放反馈 ---
+    events:
+      - on: right_click
+        functions:
+          - type: play_sound
+            sound: minecraft:block.copper_bulb.turn_on
+            target: self
+            pitch: 1.0
+            volume: 0.8
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_toggleable_lamp
+
+
+  # ===========================================================================
+  # 11. 震响方块 (chime_block) — 被弹射物击中发出音效
+  # ===========================================================================
+  #
+  # 说明:
+  #   被弹射物 (箭、三叉戟、风弹等) 击中时播放音效, 类似原版紫水晶块.
+  #   该行为非常轻量, 仅包含音效配置.
+  #
+  # 属性:
+  #   无必需属性 (单状态方块)
+  #
+  custom:example_chime:
+    state:
+      auto_state: solid
+      model:
+        path: minecraft:block/custom/example_chime
+        generation:
+          parent: minecraft:block/cube_all
+          textures:
+            all: minecraft:block/custom/example_chime
+
+    settings:
+      hardness: 1.5
+      resistance: 1.5
+      is_suffocating: false
+      is_redstone_conductor: false
+      map_color: 44
+      instrument: chime                      # 音符盒下为钟琴
+      sounds:
+        break: minecraft:block.amethyst_block.break
+        step: minecraft:block.amethyst_block.step
+        place: minecraft:block.amethyst_block.place
+        hit: minecraft:block.amethyst_block.hit
+        fall: minecraft:block.amethyst_block.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    behavior:
+      type: chime_block
+      sounds:
+        chime: minecraft:block.amethyst_block.chime  # 被击中时播放的音效
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_chime
+
+
+  # ===========================================================================
+  # 12. 简单存储方块 (simple_storage_block) — 自定义行数容器
+  # ===========================================================================
+  #
+  # 说明:
+  #   类似箱子的容器, 可自定义行数 (1~6 行).
+  #   右键可打开容器界面以存储物品.
+  #   比较器根据填充程度输出 0~15 红石信号.
+  #   可选 open 属性用于显示开/关视觉效果.
+  #
+  # 属性:
+  #   open (boolean) — 是否打开 (可选)
+  #
+  # 方块实体: 是
+  #
+  custom:example_storage:
+    state:
+      auto_state: solid
+      model:
+        path: minecraft:block/custom/example_storage
+        textures:
+          - minecraft:block/custom/example_storage_top
+          - minecraft:block/custom/example_storage_side
+
+    settings:
+      hardness: 2.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: false
+      map_color: 10
+      instrument: basedrum
+      sounds:
+        break: minecraft:block.metal.break
+        step: minecraft:block.metal.step
+        place: minecraft:block.metal.place
+        hit: minecraft:block.metal.hit
+        fall: minecraft:block.metal.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    behavior:
+      type: simple_storage_block
+      title: "保险柜"                            # 容器标题, 支持 MiniMessage (默认 "<lang:container.chest>")
+      rows: 3                                   # 行数 1~6 (默认 1)
+      has_signal: true                          # 比较器输出信号 (默认 true)
+      allow_input: true                         # 允许漏斗放入物品 (默认 true)
+      allow_output: true                        # 允许漏斗取出物品 (默认 true)
+      data_key: "craftengine:simple_storage"    # 持久化数据 NBT 键 (默认 "craftengine:simple_storage")
+      sounds:
+        open: minecraft:block.iron_trapdoor.open      # 打开音效
+        close: minecraft:block.iron_trapdoor.close    # 关闭音效
+
+    # --- 事件: 打开关闭时同步 open 状态 ---
+    events:
+      - on: open
+        functions:
+          - type: play_sound
+            sound: minecraft:block.chest.open
+            target: self
+            pitch: 1.0
+            volume: 0.5
+      - on: close
+        functions:
+          - type: play_sound
+            sound: minecraft:block.chest.close
+            target: self
+            pitch: 1.0
+            volume: 0.5
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_storage
+
+
+  # ===========================================================================
+  # 13. 抽屉方块 (drawer_block) — 单物品大量存储, 物品展示
+  # ===========================================================================
+  #
+  # 说明:
+  #   只能存放一种物品但能大量存储的容器.
+  #   记住首次存入的物品类型, 此后只接受相同物品.
+  #   - 右键:          放入手中物品
+  #   - 右键双击 (0.5s): 将背包所有相同物品全部放入
+  #   - 左键:          取出一个物品
+  #   - 潜行+左键:      取出一组物品
+  #
+  #   比较器信号范围为 0~15, 与填充比例成正比.
+  #
+  # 属性:
+  #   facing (direction) — 朝向 (可选, 用于展示物品旋转)
+  #
+  # 方块实体: 是
+  #
+  custom:example_drawer:
+    states:
+      properties:
+        facing:
+          type: direction
+          default: north
+          values:
+            - north
+            - east
+            - south
+            - west
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_drawer
+            textures:
+              - minecraft:block/custom/example_drawer_front
+              - minecraft:block/custom/example_drawer_side
+              - minecraft:block/custom/example_drawer_top
+
+      variants:
+        facing=north:
+          appearance: default
+        facing=east:
+          appearance: default
+        facing=south:
+          appearance: default
+        facing=west:
+          appearance: default
+
+    settings:
+      hardness: 2.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: false
+      map_color: 10
+      instrument: basedrum
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+        fall: minecraft:block.wood.fall
+      correct_tools:
+        - minecraft:wooden_axe
+      tags:
+        - minecraft:mineable/axe
+
+    behavior:
+      type: drawer_block
+      max_stacks: 20                      # 最多容纳的物品组数 (默认 32)
+      has_signal: true                    # 比较器输出信号 (默认 true)
+      allow_input: true                   # 允许漏斗放入 (默认 true)
+      allow_output: true                  # 允许漏斗取出 (默认 true)
+      item_position: 0, 0, -0.52         # 展示物品位置偏移 (默认 0.5,0.5,0.5)
+      text_position: 0, -0.4, -0.52      # 数量文本位置偏移 (默认 0.5,0.5,0.5)
+      item_scale: 0.6, 0.6, 0.6          # 展示物品缩放 (默认 0.5,0.5,0.5)
+      text_scale: 0.5, 0.5, 0.5          # 数量文本缩放 (默认 0.5,0.5,0.5)
+      data_key: "craftengine:drawer"      # 持久化数据 NBT 键 (默认 "craftengine:drawer")
+      compatible_mode: false              # 其他存储插件兼容模式 (默认 false)
+      sounds:
+        put: minecraft:block.decorated_pot.insert        # 放入物品音效
+        take: minecraft:block.decorated_pot.insert_fail  # 取出物品音效
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_drawer
+
+
+  # ===========================================================================
+  # 14. 简单粒子方块 (simple_particle_block) — 定时生成粒子
+  # ===========================================================================
+  #
+  # 说明:
+  #   按固定间隔 (tick_interval) 生成粒子效果.
+  #   每个粒子配置可自定义: 类型、位置偏移、扩散范围、数量、速度.
+  #   支持多种特殊粒子类型 (dust, item, block, vibration 等).
+  #
+  # 属性:
+  #   无必需属性 (单状态方块)
+  #
+  # 方块实体: 是
+  #
+  custom:example_particle_block:
+    state:
+      auto_state: solid
+      model:
+        path: minecraft:block/custom/example_particle_block
+        textures:
+          - minecraft:block/custom/example_particle_block_top
+          - minecraft:block/custom/example_particle_block_side
+
+    settings:
+      hardness: 1.0
+      resistance: 3.0
+      is_suffocating: true
+      is_redstone_conductor: false
+      instrument: didgeridoo
+      map_color: 36
+      luminance: 7                     # 自身发光
+      sounds:
+        break: minecraft:block.deepslate.break
+        step: minecraft:block.deepslate.step
+        place: minecraft:block.deepslate.place
+        hit: minecraft:block.deepslate.hit
+        fall: minecraft:block.deepslate.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    behavior:
+      type: simple_particle_block
+      tick_interval: 10                      # 粒子生成间隔 (刻), 默认 10
+      particles:
+        # --- 粒子 1: 基础烟雾 ---
+        - particle: minecraft:smoke          # 粒子类型, 必填
+          x: 0.5                             # x 相对坐标 (默认 0)
+          y: 1.0                             # y 相对坐标 (默认 0)
+          z: 0.5                             # z 相对坐标 (默认 0)
+          count: 2                           # 每次生成数量 (默认 1)
+          offset_x: 0.1                      # x 方向随机扩散 (默认 0)
+          offset_y: 0.05                     # y 方向随机扩散 (默认 0)
+          offset_z: 0.1                      # z 方向随机扩散 (默认 0)
+          speed: 0.02                        # 粒子速度 (默认 0)
+
+        # --- 粒子 2: 末地烛火花 (仅类型不同, 不使用特殊参数) ---
+        - particle: minecraft:end_rod
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 1
+          offset_x: 0.3
+          offset_y: 0.2
+          offset_z: 0.3
+          speed: 0
+
+        # --- 粒子 3: 彩色粉末 (dust 类型, 需要特殊参数) ---
+        - particle: minecraft:dust
+          x: 0.5
+          y: 0.6
+          z: 0.5
+          count: 3
+          offset_x: 0.4
+          offset_y: 0.3
+          offset_z: 0.4
+          speed: 0
+          color: 255, 200, 50               # RGB 颜色 (dust 专属)
+          scale: 1.5                         # 粒子大小 (dust 专属)
+
+        # --- 粒子 4: 物品粒子 (item 类型, 展示特定物品图标) ---
+        # - particle: minecraft:item
+        #   x: 0.5
+        #   y: 1.2
+        #   z: 0.5
+        #   count: 1
+        #   speed: 0.05
+        #   item: custom:example_item         # 物品 ID (item 类型专属)
+
+        # --- 粒子 5: 方块粒子 (block 类型, 展示方块粉碎效果) ---
+        # - particle: minecraft:block
+        #   x: 0.5
+        #   y: 1.0
+        #   z: 0.5
+        #   count: 5
+        #   offset_x: 0.3
+        #   offset_y: 0.2
+        #   offset_z: 0.3
+        #   speed: 0.1
+        #   block_state: minecraft:stone       # 方块状态 (block/block_marker/falling_dust/dust_pillar/block_crumble 专属)
+
+        # --- 粒子 6: 粉尘颜色过渡 (dust_color_transition 类型) ---
+        # - particle: minecraft:dust_color_transition
+        #   x: 0.5
+        #   y: 0.8
+        #   z: 0.5
+        #   count: 2
+        #   speed: 0
+        #   from: 255, 0, 0                    # 起始颜色
+        #   to: 0, 0, 255                      # 终止颜色
+        #   scale: 3.0                          # 粒子大小
+
+    # --- 事件: 破坏时额外粒子爆发 ---
+    events:
+      - on: break
+        functions:
+          - type: particle
+            particle: minecraft:explosion
+            count: 5
+            speed: 0.1
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_particle_block
+
+
+  # ===========================================================================
+  # 15. 墙上火把粒子方块 (wall_torch_particle_block) — 带朝向粒子
+  # ===========================================================================
+  #
+  # 说明:
+  #   按固定间隔生成粒子效果, 类似原版墙上火把.
+  #   facing 属性用于确定粒子相对于方块的位置, 随方块朝向自动旋转.
+  #   相比 simple_particle_block, 此行为增加了朝向感知:
+  #     粒子坐标自动随 facing 旋转, 无需手动为每个朝向配置粒子位置.
+  #
+  # 属性:
+  #   facing (direction) — 朝向, 必填
+  #
+  # 方块实体: 是
+  #
+  custom:example_wall_torch:
+    states:
+      properties:
+        facing:
+          type: direction
+          default: north
+          values:
+            - north
+            - east
+            - south
+            - west
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: minecraft:block/custom/example_wall_torch
+            generation:
+              parent: minecraft:block/template_torch_wall
+              textures:
+                torch: minecraft:block/custom/example_torch
+
+      variants:
+        facing=north:
+          appearance: default
+        facing=east:
+          appearance: default
+        facing=south:
+          appearance: default
+        facing=west:
+          appearance: default
+
+    settings:
+      hardness: 0
+      resistance: 0
+      is_suffocating: false
+      is_redstone_conductor: false
+      instrument: harp
+      luminance: 14                    # 火把发光
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+        fall: minecraft:block.wood.fall
+
+    behavior:
+      type: wall_torch_particle_block
+      tick_interval: 10                       # 粒子生成间隔 (刻), 默认 10
+      particles:
+        # --- 火焰粒子 (朝向自动旋转) ---
+        - particle: minecraft:flame
+          x: 0.5
+          y: 0.7                              # 火把顶端
+          z: 0.5
+          count: 1
+          offset_x: 0.05
+          offset_y: 0.1
+          offset_z: 0.05
+          speed: 0.01
+
+        # --- 烟雾粒子 ---
+        - particle: minecraft:smoke
+          x: 0.5
+          y: 0.9
+          z: 0.5
+          count: 1
+          offset_x: 0.02
+          offset_y: 0.05
+          offset_z: 0.02
+          speed: 0.01
+
+    loot:
+      type: generic
+      entries:
+        - item: custom:example_wall_torch
+
+
+# =============================================================================
+# 附录 A: 关键概念速查 — 功能方块
+# =============================================================================
+#
+# ┌─ 方块配置结构 ────────────────────────────────────────────────────────┐
+# │                                                                     │
+# │   blocks:                    ← 配置区域根键                         │
+# │     namespace:block_id:      ← 方块唯一标识符                       │
+# │       state: / states:       ← 视觉状态 (单状态用 state)           │
+# │         properties:          ←   属性定义 (多状态必需)              │
+# │         appearances:         ←   外观定义                           │
+# │         variants:            ←   状态→外观映射                      │
+# │       settings:              ← 基础属性 (硬度/音效/标签等)          │
+# │       behavior: / behaviors: ← 行为 (单一行为用 behavior)          │
+# │       loot:                  ← 战利品表                             │
+# │       events:                ← 事件响应                             │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 属性类型速查 ────────────────────────────────────────────────────────┐
+# │                                                                     │
+# │   boolean              → true / false                               │
+# │   int                  → 整数范围, 如 1~7                            │
+# │   direction            → north/east/south/west/up/down (6值)        │
+# │   horizontal_direction → north/east/south/west (4值)                │
+# │   axis                 → x / y / z                                  │
+# │   single_block_half    → top / bottom                               │
+# │   double_block_half    → upper / lower                              │
+# │   hinge                → left / right                               │
+# │   slab_type            → top / bottom / double                      │
+# │   stairs_shape         → straight/inner_left/inner_right/           │
+# │                          outer_left/outer_right                     │
+# │   anchor_type          → floor / wall / ceiling                     │
+# │   sofa_shape           → straight / inner_left / inner_right        │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 硬编码属性名 (放置时自动行为) ───────────────────────────────────────┐
+# │                                                                     │
+# │   axis             → 放置时自动对齐玩家朝向的轴向                    │
+# │   facing           → 放置时自动对齐玩家朝向 (6方向)                  │
+# │   facing_clockwise → 放置时自动对齐玩家朝向 (4方向, 90度旋转)       │
+# │   rotation         → 精确旋转控制 (int 0~7 或 0~15)                 │
+# │   waterlogged      → 决定方块是否含水                                │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 复合行为 (behaviors 列表) ──────────────────────────────────────────┐
+# │                                                                     │
+# │   多个行为可组合:                                                    │
+# │     behaviors:                                                      │
+# │       - type: face_attached_horizontal_directional_block            │
+# │         blacklist: true                                             │
+# │         attached_block_tags:                                        │
+# │           - minecraft:dirt                                          │
+# │       - type: button_block                                          │
+# │         ticks_to_stay_pressed: 30                                   │
+# │                                                                     │
+# │   组合时:                                                            │
+# │     - 必须满足所有行为的属性要求                                      │
+# │     - 部分行为之间可能存在冲突                                       │
+# │     - 属性会合并, 如 button (powered) + 附着 (face, facing)         │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 方块 vs 物品绑定 ───────────────────────────────────────────────────┐
+# │                                                                     │
+# │   方块侧 (settings.item):                                           │
+# │     settings:                                                       │
+# │       item: custom:example_block   ← 方块映射到物品 (中键选取)      │
+# │                                                                     │
+# │   物品侧 (block_item 行为):                                         │
+# │     items:                                                          │
+# │       custom:example_block:                                         │
+# │         behavior:                                                   │
+# │           type: block_item                                          │
+# │           block: custom:example_block  ← 物品放置出方块             │
+# │                                                                     │
+# │   两者都要配置才能通过物品放置方块.                                   │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 方块实体 (Block Entity) ───────────────────────────────────────────┐
+# │                                                                     │
+# │   以下行为会产生方块实体 (存储 NBT 数据):                             │
+# │     - simple_storage_block     容器物品数据                         │
+# │     - drawer_block             抽屉物品数据 + 物品渲染              │
+# │     - simple_particle_block    粒子配置                             │
+# │     - wall_torch_particle_block 朝向 + 粒子配置                     │
+# │                                                                     │
+# │   方块实体方块数量受 config.yml 中 serverside-blocks 限制.          │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 变体配置技巧 ───────────────────────────────────────────────────────┐
+# │                                                                     │
+# │   通配符语义:                                                        │
+# │     variants:                                                       │
+# │       waterlogged=false:   ← 匹配所有 waterlogged=false 的状态      │
+# │         appearance: dry         (不论其他属性为何值)                 │
+# │       waterlogged=true:    ← 匹配所有 waterlogged=true 的状态       │
+# │         appearance: wet                                              │
+# │                                                                     │
+# │   设置覆写 (不改变外观):                                             │
+# │     variants:                                                       │
+# │       powered=true:                                                 │
+# │         settings:                                                   │
+# │           luminance: 7          ← 充能时发光                         │
+# │                                                                     │
+# │   多变体叠加:                                                        │
+# │     - appearance: 取第一个匹配的变体值                               │
+# │     - settings:   所有匹配的 settings 合并叠加                       │
+# │     - 默认回退:   未匹配到 appearance → 使用第一个外观               │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 粒子参数完整说明 ───────────────────────────────────────────────────┐
+# │                                                                     │
+# │   通用参数:                                                          │
+# │     particle:  粒子类型, 必填, 字符串                                │
+# │     x / y / z: 生成相对坐标, 默认 0                                  │
+# │     count:     每次生成数量, 默认 1                                  │
+# │     offset_x / offset_y / offset_z: 随机扩散范围, 默认 0            │
+# │     speed:     粒子速度, 默认 0                                      │
+# │                                                                     │
+# │   特殊粒子类型参数:                                                   │
+# │     dust:               color (R,G,B) + scale                       │
+# │     dust_color_transition: from (R,G,B) + to (R,G,B) + scale        │
+# │     item:               item (物品ID)                                │
+# │     block / block_marker / falling_dust /                            │
+# │       dust_pillar / block_crumble: block_state (方块状态)           │
+# │     sculk_charge:       charge (浮点数)                              │
+# │     shriek:             shriek (整数)                                │
+# │     vibration:          target_x/y/z + arrival_time                 │
+# │     trail:              target_x/y/z + duration                     │
+# └─────────────────────────────────────────────────────────────────────┘
+#
+# ┌─ 常见行为组合示例 ───────────────────────────────────────────────────┐
+# │                                                                     │
+# │   附着的红石组件:                                                    │
+# │     behaviors:                                                      │
+# │       - type: face_attached_horizontal_directional_block            │
+# │         ...                                                         │
+# │       - type: button_block / pressure_plate_block                   │
+# │         ...                                                         │
+# │                                                                     │
+# │   含水功能性方块:                                                    │
+# │     properties:                                                     │
+# │       waterlogged: type: boolean                                    │
+# │     behavior:                                                       │
+# │       type: stairs_block / slab_block / trapdoor_block              │
+# │                                                                     │
+# │   发光方块 + 功能:                                                   │
+# │     - lamp_block:        仅红石控制                                 │
+# │     - toggleable_lamp_block: 红石 + 手控 双模式                     │
+# │     - 通过 variants + powered=true 可给任意方块添加发光状态         │
+# └─────────────────────────────────────────────────────────────────────┘

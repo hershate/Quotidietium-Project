@@ -1,0 +1,1336 @@
+# ============================================================================
+# CraftEngine 物理/机制方块模板
+# ============================================================================
+# 本文件包含 15 个完整的自定义方块配置示例，覆盖物理模拟与特殊机制：
+#    1.  falling_block          —— 受重力影响的可下落方块
+#    2.  concrete_powder_block  —— 遇水凝固的粉末方块
+#    3.  bouncing_block         —— 实体弹跳方块
+#    4.  budding_block          —— 母岩方块（催生相邻晶体）
+#    5.  snowy_block            —— 自动覆雪方块
+#    6.  liquid_flowable_block  —— 可被流体冲毁的方块
+#    7.  near_liquid_block      —— 必须靠近液体才能存活的方块
+#    8.  on_liquid_block        —— 必须放置在液体表面上的方块
+#    9.  decay_block            —— 随时间衰变的方块
+#   10.  leaves_block           —— 树叶方块（距离衰减逻辑）
+#   11.  grass_block            —— 草方块（骨粉生成地物）
+#   12.  stackable_block        —— 可堆叠方块
+#   13.  sturdy_base_block      —— 稳固基底方块（需要支撑面）
+#   14.  multi_high_block       —— 多层竖向结构方块
+#   15.  seat_block             —— 座椅方块
+#   16.  sofa_block             —— 可连接沙发方块
+#
+# 适用 Minecraft 版本: 1.21+
+# 适用 CraftEngine 版本: 26.1+
+#
+# 命名空间 "custom" 可替换为你自己的命名空间 ID。
+# 使用方式：
+#   1. 将需要的配置放入 resources/<你的包>/configuration/ 下的任意 YML 文件
+#   2. 运行 /ce reload 重载配置
+#   3. 使用 /ce block set <x> <y> <z> custom:<方块ID> 放置方块
+#
+# 为使方块能被玩家通过物品放置，需同时创建物品配置并绑定 [🧱 方块物品] 行为。
+# 详见: CraftEngine Wiki/configuration/item/behaviors/block_item.md
+#
+# 文本格式参考：MiniMessage (https://docs.papermc.io/adventure/minimessage/format/)
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # 示例 1: 可下落方块 (falling_block)
+  # ==========================================================================
+  # 方块在失去下方支撑时会变为下落的方块实体，受重力影响下落。
+  # 类似沙子、沙砾、铁砧等原版方块。
+  #
+  # 关键选项:
+  #   hurt_amount - 每次碰撞对实体造成的伤害（0 或 正整数）
+  #   max_hurt    - 单次下落最多伤害的实体数量
+  #                 注意：hurt_amount 和 max_hurt 必须同时 > 0 才启用伤害
+  #   sounds      - 自定义落地和摔毁时的音效（可选）
+  # ==========================================================================
+  custom:volcanic_ash:
+    # ---- 方块状态 ----
+    # auto_state: solid 让插件自动从音符盒/蘑菇方块组中分配一个视觉状态。
+    # 单张纹理自动推断为 cube_all 全立方体贴图模型。
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/custom/volcanic_ash"
+        # 单张纹理：自动推断为 cube_all
+        # path 可省略（自动取纹理路径）
+
+    # ---- 方块设置 ----
+    # 模拟沙子/沙砾的物理属性：较软，用锹加速挖掘。
+    settings:
+      hardness: 0.5                                 # 硬度（沙子=0.5）
+      resistance: 0.5                               # 爆炸抗性
+      is_suffocating: true                          # 生物在其内部会窒息
+      is_redstone_conductor: false                  # 不传导红石信号
+      push_reaction: NORMAL                         # 可被活塞推动/拉动
+      map_color: 12                                 # 地图颜色（棕色系）
+      sounds:
+        break: "minecraft:block.sand.break"
+        step: "minecraft:block.sand.step"
+        place: "minecraft:block.sand.place"
+        hit: "minecraft:block.sand.hit"
+        fall: "minecraft:block.sand.fall"
+      correct_tools:
+        - "minecraft:wooden_shovel"
+        - "minecraft:stone_shovel"
+        - "minecraft:iron_shovel"
+        - "minecraft:golden_shovel"
+        - "minecraft:diamond_shovel"
+        - "minecraft:netherite_shovel"
+      tags:
+        - "minecraft:mineable/shovel"
+
+    # ---- 方块行为 ----
+    behavior:
+      type: falling_block
+      # hurt_amount: -1                  # 禁用碰撞伤害（默认）
+      # max_hurt: -1                     # 禁用伤害上限（默认）
+      # ===== 启用实体伤害的配置（解除注释以启用）=====
+      hurt_amount: 4                     # 每次碰撞造成 2 心伤害
+      max_hurt: 10                       # 单次最多伤害 10 个实体
+      # ===== 自定义落地/摔毁音效（可选）=====
+      sounds:
+        land: "minecraft:block.anvil.land"
+        destroy: "minecraft:block.anvil.destroy"
+
+    # ---- 战利品表 ----
+    # 用镐挖掘时掉落自身，否则不掉落。
+    loot:
+      type: minecraft:block
+      pools:
+        - conditions:
+            - condition: "minecraft:match_tool"
+              predicate:
+                items:
+                  - "minecraft:wooden_pickaxe"
+                  - "minecraft:stone_pickaxe"
+                  - "minecraft:iron_pickaxe"
+                  - "minecraft:golden_pickaxe"
+                  - "minecraft:diamond_pickaxe"
+                  - "minecraft:netherite_pickaxe"
+          entries:
+            - type: "minecraft:item"
+              name: "custom:volcanic_ash"
+
+
+  # ==========================================================================
+  # 示例 2: 混凝土粉末方块 (concrete_powder_block)
+  # ==========================================================================
+  # 遇水后自动凝固为固体方块。类似原版混凝土粉末（如白色混凝土粉末）。
+  # 常与 falling_block 行为组合使用，实现“下落粉末遇水凝固”的效果。
+  #
+  # 关键选项:
+  #   solid_block - 接触水后替换成的固体方块 ID（必需）
+  #
+  # 凝固触发条件:
+  #   - 放置时下方或相邻位置有水
+  #   - 下落后落在水中（需与 falling_block 组合）
+  #   - PP更新时水流到已放置的粉末方块旁
+  # ==========================================================================
+  custom:crimson_powder:
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/custom/crimson_powder"
+
+    settings:
+      hardness: 0.5
+      resistance: 0.5
+      is_suffocating: true
+      sounds:
+        break: "minecraft:block.sand.break"
+        step: "minecraft:block.sand.step"
+        place: "minecraft:block.sand.place"
+        hit: "minecraft:block.sand.hit"
+        fall: "minecraft:block.sand.fall"
+      tags:
+        - "minecraft:mineable/shovel"
+
+    # ---- 复合行为：遇水凝固 + 重力下落 ----
+    # behaviors 列表中的多个行为组合成复合行为。
+    # 注意：组合多个行为时，确保所有行为所需的属性都被满足。
+    behaviors:
+      # 行为 1: 遇水凝固
+      - type: concrete_powder_block
+        solid_block: "custom:solid_crimson"       # 凝固后变成的固体方块（必需）
+      # 行为 2: 重力下落（使粉末像沙子一样下落）
+      - type: falling_block
+        hurt_amount: -1
+        max_hurt: -1
+
+  # ---- 对应的固体方块（粉末凝固后的结果）----
+  custom:solid_crimson:
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/custom/solid_crimson"
+
+    settings:
+      hardness: 1.8                               # 凝固后硬度提升（混凝土=1.8）
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.stone.break"
+        step: "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit: "minecraft:block.stone.hit"
+        fall: "minecraft:block.stone.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+
+  # ==========================================================================
+  # 示例 3: 弹跳方块 (bouncing_block)
+  # ==========================================================================
+  # 实体落在方块上时会被弹回空中，类似黏液块或床。
+  # 潜行状态下的实体不会被弹起，正常落地。
+  #
+  # 关键选项:
+  #   bounce_height           - 反弹速度系数（默认 0.66）
+  #   fall_damage_multiplier  - 摔落伤害系数（0 = 完全无摔落伤害）
+  #   sync_player_position    - 弹跳后强制同步客户端移动向量（默认 true）
+  # ==========================================================================
+  custom:bouncy_mushroom:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/bouncy_mushroom"
+        generation:
+          parent: "minecraft:block/cube_column"
+          textures:
+            end: "minecraft:block/custom/bouncy_mushroom_top"
+            side: "minecraft:block/custom/bouncy_mushroom_side"
+
+    settings:
+      hardness: 0.8
+      resistance: 0.8
+      is_suffocating: false                       # 不窒息
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.slime_block.break"
+        step: "minecraft:block.slime_block.step"
+        place: "minecraft:block.slime_block.place"
+        hit: "minecraft:block.slime_block.hit"
+        fall: "minecraft:block.slime_block.fall"
+      # ---- 不稳定设置：弹性碰撞系数 (26.2+) ----
+      # 决定非玩家实体下落后反弹多高。玩家实体由 bouncing_block 行为控制。
+      bounce_restitution: 1.0                     # 0~1，黏液块=1.0，床=0.75
+      friction: 0.8                               # 阻力系数（黏液块=0.8）
+      jump_factor: 1.0
+      speed_factor: 1.0
+      tags:
+        - "minecraft:mineable/hoe"
+
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.8                          # 反弹速度系数（越高反弹越大）
+      fall_damage_multiplier: 0.0                 # 完全取消防摔落伤害
+      sync_player_position: true                  # 强制同步客户端位置
+
+
+  # ==========================================================================
+  # 示例 4: 母岩方块 (budding_block)
+  # ==========================================================================
+  # 每个随机刻尝试在相邻面催生晶体，类似紫水晶母岩。
+  # 向空气/水方向放置 blocks 列表的第一阶段方块；
+  # 若已有低阶段方块，则将其升级到下一阶段。
+  #
+  # 关键选项:
+  #   growth_chance - 每次随机刻触发生长的概率（默认 0.2）
+  #   blocks        - 分阶段的方块 ID 列表（必需）
+  #                   新方块放置在空气中 → 使用列表[0]
+  #                   已存在低阶段方块 → 升级为列表中的下一个
+  # ==========================================================================
+  custom:infested_stone:
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/custom/infested_stone"
+
+    settings:
+      hardness: 1.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: true
+      sounds:
+        break: "minecraft:block.stone.break"
+        step: "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit: "minecraft:block.stone.hit"
+        fall: "minecraft:block.stone.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+    behavior:
+      type: budding_block
+      growth_chance: 0.3                          # 30% 概率在每次随机刻时生长
+      blocks:                                     # 生长阶段方块列表（必需）
+        - "custom:small_crystal"                  # 阶段 0: 新生小晶体
+        - "custom:medium_crystal"                 # 阶段 1: 中型晶体
+        - "custom:large_crystal"                  # 阶段 2: 完全生长的晶体
+
+  # ---- 晶体各阶段方块 ----
+  custom:small_crystal:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/small_crystal"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/small_crystal"
+    settings:
+      hardness: 1.5
+      resistance: 3.0
+      is_suffocating: false
+      sounds:
+        break: "minecraft:block.amethyst_cluster.break"
+        step: "minecraft:block.amethyst_cluster.step"
+        place: "minecraft:block.amethyst_cluster.place"
+        hit: "minecraft:block.amethyst_cluster.hit"
+        fall: "minecraft:block.amethyst_cluster.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+  custom:medium_crystal:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/medium_crystal"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/medium_crystal"
+    settings:
+      hardness: 1.5
+      resistance: 3.0
+      is_suffocating: false
+      sounds:
+        break: "minecraft:block.amethyst_cluster.break"
+        step: "minecraft:block.amethyst_cluster.step"
+        place: "minecraft:block.amethyst_cluster.place"
+        hit: "minecraft:block.amethyst_cluster.hit"
+        fall: "minecraft:block.amethyst_cluster.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+  custom:large_crystal:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/large_crystal"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/large_crystal"
+    settings:
+      hardness: 1.5
+      resistance: 3.0
+      is_suffocating: false
+      luminance: 7                               # 发光 7 级
+      sounds:
+        break: "minecraft:block.amethyst_cluster.break"
+        step: "minecraft:block.amethyst_cluster.step"
+        place: "minecraft:block.amethyst_cluster.place"
+        hit: "minecraft:block.amethyst_cluster.hit"
+        fall: "minecraft:block.amethyst_cluster.fall"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+
+  # ==========================================================================
+  # 示例 5: 覆雪方块 (snowy_block)
+  # ==========================================================================
+  # 自动检测顶部是否有雪，并设置 snowy 属性。
+  # 与原版草方块切换到覆雪材质的机制一致：
+  # 当带有 minecraft:snow 标签的方块直接放在上方时，snowy 变为 true。
+  #
+  # 所需属性: snowy (boolean)
+  # ==========================================================================
+  custom:frosted_stone:
+    # ---- 多状态方块 ----
+    # 需要 snowy 属性来支持覆雪逻辑。
+    states:
+      properties:
+        snowy:
+          type: boolean
+          default: false
+
+      appearances:
+        # 默认外观：无雪
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/frosted_stone"
+            textures:
+              - "minecraft:block/custom/frosted_stone_bottom"
+              - "minecraft:block/custom/frosted_stone_top"
+              - "minecraft:block/custom/frosted_stone_side"
+        # 覆雪外观
+        snowy:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/frosted_stone_snowy"
+            textures:
+              - "minecraft:block/custom/frosted_stone_bottom"
+              - "minecraft:block/custom/frosted_stone_snowy_top"
+              - "minecraft:block/custom/frosted_stone_snowy_side"
+
+      variants:
+        # snowy=false → 使用 default 外观（由于通配符语义，也可省略此行）
+        snowy=false:
+          appearance: default
+        # snowy=true → 使用 snowy 外观
+        snowy=true:
+          appearance: snowy
+
+    settings:
+      hardness: 1.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: true
+      sounds:
+        break: "minecraft:block.stone.break"
+        step: "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit: "minecraft:block.stone.hit"
+        fall: "minecraft:block.stone.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+        - "minecraft:dirt"                        # 让雪可以放置在上面
+
+    behavior:
+      type: snowy_block
+      # 无需额外配置 —— 自动检测上方是否有雪并设置 snowy 属性
+
+
+  # ==========================================================================
+  # 示例 6: 流体推动方块 (liquid_flowable_block)
+  # ==========================================================================
+  # 可被水或熔岩替换的方块，类似矮草丛或火把。
+  # 水流入时若 drop_item=true 则掉落物品；熔岩流入时直接摧毁。
+  #
+  # 关键选项:
+  #   drop_item - 被水替换时是否掉落物品（默认 true）
+  # ==========================================================================
+  custom:glow_reed:
+    state:
+      auto_state: sugar_cane                      # 使用甘蔗状态组（适合细长植物）
+      model:
+        path: "minecraft:block/custom/glow_reed"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/glow_reed"
+
+    settings:
+      hardness: 0.0                               # 瞬间破坏
+      resistance: 0.0
+      is_suffocating: false
+      is_redstone_conductor: false
+      is_view_blocking: false
+      replaceable: true                           # 可被其他方块替换
+      luminance: 5                                # 发光 5 级
+      sounds:
+        break: "minecraft:block.grass.break"
+        step: "minecraft:block.grass.step"
+        place: "minecraft:block.grass.place"
+        hit: "minecraft:block.grass.hit"
+        fall: "minecraft:block.grass.fall"
+      tags:
+        - "minecraft:mineable/sword"              # 用剑可加速挖掘
+
+    behavior:
+      type: liquid_flowable_block
+      drop_item: true                             # 被水替换时掉落物品
+
+
+  # ==========================================================================
+  # 示例 7: 邻液方块 (near_liquid_block)
+  # ==========================================================================
+  # 必须放置在靠近水或熔岩的位置，否则无法存活。
+  # 检查 blocks 周围通过 positions 配置的相对位置的液体。
+  # 流动液体和冰也有效（冰视作水源）。
+  #
+  # 关键选项:
+  #   liquid_type - 检查的液体类型："water"、"lava" 或 ["water", "lava"]
+  #   stackable    - 是否允许堆叠在同类型方块上存活
+  #   positions    - 检查液体的相对坐标列表（必需）
+  #                  格式：x,y,z，例如 -1,-1,0 表示左下方
+  # ==========================================================================
+  custom:flame_cane:
+    state:
+      auto_state: sugar_cane
+      model:
+        path: "minecraft:block/custom/flame_cane"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/flame_cane"
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      is_suffocating: false
+      is_view_blocking: false
+      replaceable: true
+      luminance: 8                                # 发光 8 级
+      sounds:
+        break: "minecraft:block.bamboo.break"
+        step: "minecraft:block.bamboo.step"
+        place: "minecraft:block.bamboo.place"
+        hit: "minecraft:block.bamboo.hit"
+        fall: "minecraft:block.bamboo.fall"
+
+    behavior:
+      type: near_liquid_block
+      liquid_type: "lava"                         # 必须靠近熔岩（而非水）
+      stackable: true                             # 允许堆叠在同类型方块上
+      positions:                                  # 检查相对位置（必需）
+        - "-1,-1,0"                               # 左下方
+        - "1,-1,0"                                # 右下方
+        - "0,-1,-1"                               # 前下方
+        - "0,-1,1"                                # 后下方
+
+
+  # ==========================================================================
+  # 示例 8: 液面方块 (on_liquid_block)
+  # ==========================================================================
+  # 只能放置在液体源方块的正上方表面上，类似睡莲。
+  # 与 near_liquid_block 的区别：它要求正下方必须是液体源方块（流动液体不算）。
+  # 冰视作水源。
+  #
+  # 关键选项:
+  #   liquid_type - 可坐落的液体类型列表（默认 ["water"]）
+  #   stackable    - 是否允许堆叠在同类型方块上
+  # ==========================================================================
+  custom:lotus_leaf:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/lotus_leaf"
+        textures:
+          - "minecraft:block/custom/lotus_leaf"
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      is_suffocating: false
+      is_redstone_conductor: false
+      is_view_blocking: false
+      replaceable: true
+      sounds:
+        break: "minecraft:block.lily_pad.break"
+        step: "minecraft:block.lily_pad.step"
+        place: "minecraft:block.lily_pad.place"
+        hit: "minecraft:block.lily_pad.hit"
+        fall: "minecraft:block.lily_pad.fall"
+
+    behavior:
+      type: on_liquid_block
+      liquid_type:                                # 可坐落的液体类型
+        - "water"                                 # 可以放在水上
+      stackable: false                            # 不允许堆叠
+
+
+  # ==========================================================================
+  # 示例 9: 衰变方块 (decay_block)
+  # ==========================================================================
+  # 随时间逐步增加 age 属性，达到最大值后转变为另一种方块。
+  # 类似冰融化为水、或树叶枯萎。
+  #
+  # 两种工作模式:
+  #   - 计划刻模式（设置 delay > 0）：由 delay 控制触发间隔，检查光照和 chance
+  #   - 随机刻模式（不设置 delay 或 delay ≤ 0）：由 gamerule randomTickSpeed 控制
+  #
+  # 关键选项:
+  #   decay_into      - 完全衰变后变成的方块（默认 air）
+  #   delay           - 每次增加 age 的间隔（刻），省略则使用随机刻模式
+  #   chance          - 每次间隔增加 age 的概率（默认 1 = 100%）
+  #   required_light  - 衰变所需最低光照等级，0 = 始终衰变
+  #
+  # 所需属性: age (int)
+  # ==========================================================================
+  custom:melting_ice:
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: "0~3"                            # 4 个阶段：0=完整冰，3=即将融化
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/melting_ice_0"
+            textures:
+              - "minecraft:block/custom/melting_ice_0"
+        age1:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/melting_ice_1"
+        age2:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/melting_ice_2"
+        age3:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/melting_ice_3"
+
+      variants:
+        age=0:
+          appearance: default
+        age=1:
+          appearance: age1
+        age=2:
+          appearance: age2
+        age=3:
+          appearance: age3
+
+    settings:
+      hardness: 0.5
+      resistance: 0.5
+      is_suffocating: true
+      is_redstone_conductor: true
+      friction: 0.98                              # 冰的滑度
+      sounds:
+        break: "minecraft:block.glass.break"
+        step: "minecraft:block.glass.step"
+        place: "minecraft:block.glass.place"
+        hit: "minecraft:block.glass.hit"
+        fall: "minecraft:block.glass.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+        - "minecraft:ice"
+
+    behavior:
+      type: decay_block
+      decay_into: "minecraft:water"               # 完全融化后变为水
+      delay: "100~200"                            # 计划刻模式：100~200刻（5~10秒）间隔
+      chance: 0.6                                 # 每次间隔有 60% 概率增加 age
+      required_light: 12                          # 仅当光照 >= 12 时才会融化（模拟阳光下融化）
+
+
+  # ==========================================================================
+  # 示例 10: 树叶方块 (leaves_block)
+  # ==========================================================================
+  # 计算到最近原木的距离并作为 distance 属性的值。
+  # 距离达到最大值（由 range 定义）的树叶在收到随机刻时会枯萎掉落。
+  # persistent=true 的树叶不参与距离计算，永不枯萎。
+  #
+  # 所需属性: distance (int), persistent (boolean)
+  # 可选属性: waterlogged (boolean)
+  #
+  # 提示：对于大型树木，可将 distance 的 range 设大一些。
+  #       原版树叶最大距离为 7。
+  # ==========================================================================
+  custom:autumn_leaves:
+    states:
+      properties:
+        distance:
+          type: int
+          default: 1
+          range: "1~10"                           # 允许距离原木最远 10 格
+        persistent:
+          type: boolean
+          default: false
+        waterlogged:                              # 可选：含水属性
+          type: boolean
+          default: false
+
+      appearances:
+        # 默认外观（不含水）
+        default:
+          auto_state: leaves
+          model:
+            path: "minecraft:block/custom/autumn_leaves"
+            generation:
+              parent: "minecraft:block/leaves"
+              textures:
+                all: "minecraft:block/custom/autumn_leaves"
+        # 含水外观
+        waterlogged_appearance:
+          auto_state: waterlogged_leaves
+          model:
+            path: "minecraft:block/custom/autumn_leaves"
+
+      variants:
+        waterlogged=false:
+          appearance: default
+        waterlogged=true:
+          appearance: waterlogged_appearance
+          settings:
+            fluid_state: "water"
+            resistance: 1200.0                    # 含水时爆炸抗性极高
+
+    settings:
+      hardness: 0.2
+      resistance: 0.2
+      is_suffocating: false                       # 树叶不窒息
+      is_redstone_conductor: false
+      burnable: true                              # 可被熔岩引燃
+      fire_spread_chance: 30                      # 火焰蔓延几率
+      burn_chance: 60                             # 烧毁几率
+      can_occlude: false                          # 不阻挡光线
+      sounds:
+        break: "minecraft:block.azalea_leaves.break"
+        step: "minecraft:block.azalea_leaves.step"
+        place: "minecraft:block.azalea_leaves.place"
+        hit: "minecraft:block.azalea_leaves.hit"
+        fall: "minecraft:block.azalea_leaves.fall"
+      tags:
+        - "minecraft:leaves"
+        - "minecraft:mineable/hoe"
+        - "minecraft:completes_find_tree_tutorial"
+
+    behavior:
+      type: leaves_block
+      # 无需额外配置 —— 自动计算 distance 值
+
+
+  # ==========================================================================
+  # 示例 11: 草方块 (grass_block)
+  # ==========================================================================
+  # 对着方块使用骨粉时，尝试在方块上方生成已配置的地物。
+  # 类似原版草方块使用骨粉生成草和花。
+  #
+  # 关键选项:
+  #   feature - 尝试生成的已配置的地物 ID（必需）
+  #
+  # 注意：方块必须拥有 minecraft:dirt 和 minecraft:supports_vegetation 标签
+  #       否则生成在其上的植物无法存活。
+  # ==========================================================================
+  custom:overgrown_dirt:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/overgrown_dirt"
+        textures:
+          - "minecraft:block/custom/overgrown_dirt_bottom"
+          - "minecraft:block/custom/overgrown_dirt_top"
+          - "minecraft:block/custom/overgrown_dirt_side"
+
+    settings:
+      hardness: 0.6
+      resistance: 0.6
+      is_suffocating: true
+      is_redstone_conductor: true
+      can_occlude: true                           # 遮挡光线（影响下方草方块转化）
+      sounds:
+        break: "minecraft:block.grass.break"
+        step: "minecraft:block.grass.step"
+        place: "minecraft:block.grass.place"
+        hit: "minecraft:block.grass.hit"
+        fall: "minecraft:block.grass.fall"
+      correct_tools:
+        - "minecraft:wooden_shovel"
+        - "minecraft:stone_shovel"
+        - "minecraft:iron_shovel"
+        - "minecraft:golden_shovel"
+        - "minecraft:diamond_shovel"
+        - "minecraft:netherite_shovel"
+      tags:
+        - "minecraft:mineable/shovel"
+        - "minecraft:dirt"                        # 属于泥土类方块（必需）
+        - "minecraft:supports_vegetation"         # 允许植物生长在其上（必需）
+
+    behavior:
+      type: grass_block
+      feature: "minecraft:grass_bonemeal"         # 生成原版草和花（必需）
+      # 可以替换为自定义地物，例如:
+      # feature: "custom:magical_flowers"
+
+
+  # ==========================================================================
+  # 示例 12: 可堆叠方块 (stackable_block)
+  # ==========================================================================
+  # 允许使用指定物品对已有方块进行堆叠，递增 int 属性值。
+  # 类似海泡菜（最多 4 个）或蜡烛（最多 4 根）。
+  # 不同的属性值可切换不同的视觉状态。
+  #
+  # 关键选项:
+  #   property - 记录堆叠数量的 int 属性名（默认 "amount"）
+  #   items    - 可用于增加堆叠的物品列表（必需）
+  #
+  # 所需属性: 自定义 int 属性（如 amount, pebble 等）
+  # ==========================================================================
+  custom:stacking_pebble:
+    states:
+      properties:
+        pebble:                                   # 自定义属性名
+          type: int
+          default: 1
+          range: "1~4"                            # 最多堆叠 4 层
+
+      appearances:
+        # 外观名称任意定义，第一个为默认外观
+        pebble_1:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/stacking_pebble_1"
+            textures:
+              - "minecraft:block/custom/stacking_pebble_1"
+        pebble_2:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/stacking_pebble_2"
+        pebble_3:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/stacking_pebble_3"
+        pebble_4:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/custom/stacking_pebble_4"
+
+      variants:
+        pebble=1:
+          appearance: pebble_1
+        pebble=2:
+          appearance: pebble_2
+        pebble=3:
+          appearance: pebble_3
+        pebble=4:
+          appearance: pebble_4
+
+    settings:
+      hardness: 0.3
+      resistance: 0.3
+      is_suffocating: false
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.stone.break"
+        step: "minecraft:block.stone.step"
+        place: "minecraft:block.stone.place"
+        hit: "minecraft:block.stone.hit"
+        fall: "minecraft:block.stone.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+    behavior:
+      type: stackable_block
+      property: "pebble"                          # 使用 pebble 属性记录堆叠数
+      items:                                      # 可用于堆叠的物品（必需）
+        - "custom:stacking_pebble"                # 对已有方块使用同物品 → 堆叠+1
+
+
+  # ==========================================================================
+  # 示例 13: 稳固基底方块 (sturdy_base_block)
+  # ==========================================================================
+  # 需要在指定方向上有一个坚固的支撑面，支撑面被移除后方块会被破坏。
+  # 类似灯笼或火把——下方有支撑才能存在。
+  #
+  # 关键选项:
+  #   direction     - 检查支撑的方向（默认 down）
+  #   support_types - 所需的支撑类型列表（默认 ["full"]）
+  #                   可选: full, rigid, center
+  #   stackable     - 是否允许堆叠在同类型方块上
+  #   max_height    - 堆叠时的最大高度（需 >1 才启用堆叠限制）
+  #   delay         - 支撑消失后延迟多少刻再破坏（0 = 立即破坏）
+  # ==========================================================================
+  custom:hanging_lantern:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/hanging_lantern"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/hanging_lantern"
+
+    settings:
+      hardness: 2.0
+      resistance: 2.0
+      is_suffocating: false
+      is_redstone_conductor: false
+      is_view_blocking: false
+      luminance: 12                               # 发光 12 级
+      sounds:
+        break: "minecraft:block.lantern.break"
+        step: "minecraft:block.lantern.step"
+        place: "minecraft:block.lantern.place"
+        hit: "minecraft:block.lantern.hit"
+        fall: "minecraft:block.lantern.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+    behavior:
+      type: sturdy_base_block
+      direction: "up"                             # 检查上方是否有支撑（天花板）
+      support_types:                              # 所需的支撑类型
+        - "full"                                  # 完整方块面
+        - "rigid"                                 # 刚性面
+        - "center"                                # 中心支撑
+      stackable: false                            # 不允许堆叠
+      max_height: 0                               # 不限制堆叠高度
+      delay: 0                                    # 支撑消失后立即破坏
+
+
+  # ==========================================================================
+  # 示例 14: 多层方块 (multi_high_block)
+  # ==========================================================================
+  # 根据指定的 int 属性自动生成一个垂直连续的多层结构。
+  # 放置时自动在上方生成其余层级，每层属性值对应其高度。
+  #
+  # 结构每一层必须与相邻层保持连续，若某层缺失或不一致，
+  # 该层及其之上会被 PP 更新移除。
+  #
+  # 玩家破坏非底部部分:
+  #   - 使用正确工具 → 正常掉落
+  #   - 使用错误工具 → 底部一并移除且不掉落
+  #   - 创造模式     → 底部一并移除且不掉落
+  #
+  # 关键选项:
+  #   property - 用于控制高度的 int 属性名（必需）
+  #
+  # 所需属性: 自定义 int 属性
+  # ==========================================================================
+  custom:tall_pillar:
+    states:
+      properties:
+        height:                                   # 自定义属性名
+          type: int
+          default: 0
+          range: "0~2"                            # 0=底部，1=中部，2=顶部（共 3 层）
+
+      appearances:
+        # 外观名称任意，第一个为默认
+        pillar_bottom:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/tall_pillar_bottom"
+            textures:
+              - "minecraft:block/custom/pillar_bottom"
+              - "minecraft:block/custom/pillar_top"
+              - "minecraft:block/custom/pillar_side"
+        pillar_middle:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/tall_pillar_middle"
+            textures:
+              - "minecraft:block/custom/pillar_side"
+              - "minecraft:block/custom/pillar_side"
+              - "minecraft:block/custom/pillar_side"
+        pillar_top:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/tall_pillar_top"
+            textures:
+              - "minecraft:block/custom/pillar_top"
+              - "minecraft:block/custom/pillar_bottom"
+              - "minecraft:block/custom/pillar_side"
+
+      variants:
+        height=0:
+          appearance: pillar_bottom
+        height=1:
+          appearance: pillar_middle
+        height=2:
+          appearance: pillar_top
+
+    settings:
+      hardness: 2.0
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.deepslate.break"
+        step: "minecraft:block.deepslate.step"
+        place: "minecraft:block.deepslate.place"
+        hit: "minecraft:block.deepslate.hit"
+        fall: "minecraft:block.deepslate.fall"
+      correct_tools:
+        - "minecraft:wooden_pickaxe"
+        - "minecraft:stone_pickaxe"
+        - "minecraft:iron_pickaxe"
+        - "minecraft:golden_pickaxe"
+        - "minecraft:diamond_pickaxe"
+        - "minecraft:netherite_pickaxe"
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+    behavior:
+      type: multi_high_block
+      property: "height"                          # 使用 height 属性控制层数（必需）
+
+
+  # ==========================================================================
+  # 示例 15: 座椅方块 (seat_block)
+  # ==========================================================================
+  # 让玩家通过右键方块坐在上面。
+  # seats 列表中每个条目定义一个座位位置和可选的偏航角锁定。
+  #
+  # 若配置了 facing 属性，座椅坐标会自动随方块朝向旋转，
+  # 因此同一套坐标适用于所有方向。
+  #
+  # 关键选项:
+  #   seats - 座位定义列表，每项格式: "x,y,z [偏航角]"
+  #           角度限制玩家身体旋转，省略则可自由旋转
+  #
+  # 可选属性: facing (horizontal_direction)
+  # ==========================================================================
+  custom:wooden_bench:
+    # ---- 多状态方块（带朝向）- 面向玩家放置 ----
+    states:
+      properties:
+        facing:                                   # 硬编码名称：放置时自动对齐玩家朝向
+          type: horizontal_direction
+          default: north
+
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/wooden_bench"
+            textures:
+              - "minecraft:block/custom/planks"
+              - "minecraft:block/custom/planks"
+              - "minecraft:block/custom/planks"
+
+      # 使用通配符语义：未列出的属性匹配所有值。
+      # 仅有一个 default 外观，所有 facing 值都使用它。
+      # 变体部分可省略（均回退到 default 外观）。
+
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      is_suffocating: false
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.wood.break"
+        step: "minecraft:block.wood.step"
+        place: "minecraft:block.wood.place"
+        hit: "minecraft:block.wood.hit"
+        fall: "minecraft:block.wood.fall"
+      correct_tools:
+        - "minecraft:wooden_axe"
+        - "minecraft:stone_axe"
+        - "minecraft:iron_axe"
+        - "minecraft:golden_axe"
+        - "minecraft:diamond_axe"
+        - "minecraft:netherite_axe"
+      tags:
+        - "minecraft:mineable/axe"
+
+    behavior:
+      type: seat_block
+      seats:
+        # 每个座位定义: x,y,z [可选偏航角]
+        # 偏航角: 0=南, 90=西, 180=北, 270=东
+        - "0,0,0 0"                               # 座位 1: 方块中心，朝南
+        - "0,0,0 180"                             # 座位 2: 方块中心，朝北（与座位 1 背靠背）
+
+
+  # ==========================================================================
+  # 示例 16: 沙发方块 (sofa_block)
+  # ==========================================================================
+  # 行为类似可连接的座椅。利用 shape 属性在 PP 更新时
+  # 根据周围沙发的朝向自动计算为 straight（直形）、
+  # inner_left（内角左）或 inner_right（内角右），
+  # 从而形成连续的 L 形或直线形沙发结构。
+  #
+  # 所需属性: shape (sofa_shape), facing (horizontal_direction)
+  # 可选属性: waterlogged (boolean)
+  # ==========================================================================
+  custom:velvet_sofa:
+    states:
+      properties:
+        facing:                                   # 硬编码名称：自动对齐玩家朝向
+          type: horizontal_direction
+          default: north
+        shape:                                    # 沙发形状（必需）
+          type: sofa_shape
+          default: straight
+        waterlogged:                              # 可选：含水属性
+          type: boolean
+          default: false
+
+      appearances:
+        # 第一个外观为默认
+        straight:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_straight"
+            textures:
+              - "minecraft:block/custom/velvet_bottom"
+              - "minecraft:block/custom/velvet_top"
+              - "minecraft:block/custom/velvet_side"
+        inner_left:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_inner_left"
+            textures:
+              - "minecraft:block/custom/velvet_bottom"
+              - "minecraft:block/custom/velvet_top"
+              - "minecraft:block/custom/velvet_side"
+        inner_right:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_inner_right"
+            textures:
+              - "minecraft:block/custom/velvet_bottom"
+              - "minecraft:block/custom/velvet_top"
+              - "minecraft:block/custom/velvet_side"
+        # 含水外观
+        waterlogged_straight:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_straight"
+        waterlogged_inner_left:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_inner_left"
+        waterlogged_inner_right:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/velvet_sofa_inner_right"
+
+      variants:
+        # 不含水 + 直形（其余状态通过通配符和默认回退处理）
+        waterlogged=false,shape=straight:
+          appearance: straight
+        waterlogged=false,shape=inner_left:
+          appearance: inner_left
+        waterlogged=false,shape=inner_right:
+          appearance: inner_right
+        waterlogged=true,shape=straight:
+          appearance: waterlogged_straight
+          settings:
+            fluid_state: "water"
+        waterlogged=true,shape=inner_left:
+          appearance: waterlogged_inner_left
+          settings:
+            fluid_state: "water"
+        waterlogged=true,shape=inner_right:
+          appearance: waterlogged_inner_right
+          settings:
+            fluid_state: "water"
+
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      is_suffocating: false
+      is_redstone_conductor: false
+      sounds:
+        break: "minecraft:block.wool.break"
+        step: "minecraft:block.wool.step"
+        place: "minecraft:block.wool.place"
+        hit: "minecraft:block.wool.hit"
+        fall: "minecraft:block.wool.fall"
+      correct_tools:
+        - "minecraft:wooden_axe"
+        - "minecraft:stone_axe"
+        - "minecraft:iron_axe"
+        - "minecraft:golden_axe"
+        - "minecraft:diamond_axe"
+        - "minecraft:netherite_axe"
+      tags:
+        - "minecraft:mineable/axe"
+
+    behavior:
+      type: sofa_block
+      # 无需额外配置 —— 自动计算 shape 属性
+
+
+# ============================================================================
+# 附录 A: 复合行为组合速查
+# ============================================================================
+# 以下为常用复合行为组合参考。使用 behaviors 列表将多个行为组合。
+#
+# 【下落 + 遇水凝固】（如原版混凝土粉末）
+#   behaviors:
+#     - type: falling_block
+#       hurt_amount: -1
+#       max_hurt: -1
+#     - type: concrete_powder_block
+#       solid_block: custom:solid_variant
+#
+# 【下落 + 伤害实体】（如坠落铁砧/岩石）
+#   behavior:
+#     type: falling_block
+#     hurt_amount: 10
+#     max_hurt: 3
+#     sounds:
+#       land: minecraft:block.anvil.land
+#       destroy: minecraft:block.anvil.destroy
+#
+# 【稳固基底 + 堆叠】（如可叠放的花盆）
+#   behavior:
+#     type: sturdy_base_block
+#     direction: down
+#     support_types:
+#       - full
+#     stackable: true
+#     max_height: 5
+#
+# 【邻液 + 衰变】（如靠近熔岩才会融化的冰块）
+#   behaviors:
+#     - type: near_liquid_block
+#       liquid_type: lava
+#       stackable: false
+#       positions:
+#         - "-1,0,0"
+#         - "1,0,0"
+#         - "0,0,-1"
+#         - "0,0,1"
+#     - type: decay_block
+#       decay_into: minecraft:water
+#       delay: 100
+#       chance: 1.0
+#
+# 【邻液 + 可下落】（如沿熔岩壁下滑的粉末）
+#   behaviors:
+#     - type: near_liquid_block
+#       liquid_type: lava
+#       positions:
+#         - "0,1,0"
+#     - type: falling_block
+#
+# 【座椅 + 弹跳】（如蹦床式座椅）
+#   behaviors:
+#     - type: seat_block
+#       seats:
+#         - "0,0,0"
+#     - type: bouncing_block
+#       bounce_height: 0.5
+# ============================================================================
+
+
+# ============================================================================
+# 附录 B: 属性类型速查
+# ============================================================================
+# boolean              - true / false
+# int                  - 整数范围，如 range: 1~7
+# string               - 枚举值，如 values: [red, green, blue]
+# direction            - north, south, west, east, up, down
+# horizontal_direction - north, south, west, east
+# axis                 - x, y, z
+# single_block_half    - top, bottom
+# double_block_half    - upper, lower
+# hinge                - left, right
+# slab_type            - top, bottom, double
+# stairs_shape         - straight, inner_left, inner_right, outer_left, outer_right
+# sofa_shape           - straight, inner_left, inner_right
+# anchor_type          - floor, wall, ceiling
+#
+# 每个属性值的组合构成一个内部状态。
+# 变体总数 = 各属性可能的值的数量的乘积。
+# 例如: waterlogged(2) × persistent(2) × distance(7) = 28 个内部状态
+# ============================================================================
+
+
+# ============================================================================
+# 附录 C: 常用 auto_state 组速查
+# ============================================================================
+# solid                          - 音符盒 + 蘑菇方块（最通用）
+# note_block                     - 仅音符盒（可用数量最多）
+# mushroom_stem                  - 仅蘑菇柄
+# red_mushroom_block             - 红色蘑菇方块
+# brown_mushroom_block           - 棕色蘑菇方块
+# mushroom                       - 所有蘑菇方块
+# tintable_leaves                - 可着色树叶（不含水）
+# waterlogged_tintable_leaves    - 可着色树叶（含水）
+# non_tintable_leaves            - 不可着色树叶（不含水）
+# waterlogged_non_tintable_leaves - 不可着色树叶（含水）
+# leaves                         - 所有树叶（不含水）
+# waterlogged_leaves             - 所有树叶（含水）
+# lower_tripwire                 - 矮碰撞箱
+# higher_tripwire                - 高碰撞箱
+# tripwire                       - 所有绊线
+# sapling                        - 所有树苗
+# pressure_plate                 - 所有测重压力板
+# cactus                         - 仙人掌
+# sugar_cane                     - 甘蔗
+# weeping_vine                   - 垂泪藤
+# twisting_vine                  - 缠怨藤
+# cave_vine                      - 洞穴藤蔓
+# kelp                           - 海带
+# chorus                         - 紫颂植株
+# ============================================================================
+
+
+# ============================================================================
+# 附录 D: 方块设置关键项速查
+# ============================================================================
+# 稳定设置（完全支持）:
+#   hardness              - 硬度（默认 2.0）
+#   resistance            - 爆炸抗性（默认 2.0）
+#   push_reaction         - 活塞反应: NORMAL / DESTROY / BLOCK / IGNORE / PUSH_ONLY
+#   map_color             - 地图基色编号
+#   burnable              - 熔岩是否可在其上生成火
+#   fire_spread_chance    - 火焰蔓延几率 (0~100)
+#   burn_chance           - 烧毁几率 (0~100)
+#   item                  - 对应的物品 ID（鼠标中键选取）
+#   replaceable           - 是否可被其他方块替换
+#   is_redstone_conductor - 是否传导红石信号
+#   is_suffocating        - 生物在其内部是否窒息
+#   is_view_blocking      - 是否阻挡视野
+#   sounds                - 音效配置（break/step/place/hit/fall）
+#   require_correct_tools - 是否需要合适工具
+#   respect_tool_component - 是否尊重 minecraft:tool 组件
+#   correct_tools         - 合适挖掘工具列表
+#   incorrect_tool_dig_speed - 错误工具挖掘惩罚 (0~1)
+#   tags                  - 方块标签
+#   instrument            - 音符盒乐器类型
+#   fluid_state           - 流体状态: empty / water
+#   support_shape         - 手动指定的支撑形状
+#
+# 不稳定设置（仅非玩家实体生效）:
+#   bounce_restitution    - 弹性碰撞系数（0~1, 26.2+）
+#   friction              - 阻力系数
+#   jump_factor           - 跳跃乘数
+#   speed_factor          - 速度乘数
+#   luminance             - 发光等级（0~15）
+#   can_occlude           - 是否阻挡光线
+#   block_light           - 散射光照等级
+#   propagate_skylight    - 是否传播天空光照
+# ============================================================================

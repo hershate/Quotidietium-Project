@@ -1,0 +1,1202 @@
+# ============================================================================
+# CraftEngine 农作物方块模板
+# ============================================================================
+# 本文件包含 9 个完整的农作物/植物方块配置示例，从基础到高级逐步覆盖：
+#   1. crop_block             —— 农作物方块（小麦/马铃薯风格）
+#   2. stem_block             —— 茎方块（西瓜/南瓜风格）
+#   3. attached_stem_block    —— 附着茎方块（朝向果实的茎）
+#   4. bush_block             —— 灌木方块（浆果丛/花朵风格）
+#   5. sapling_block          —— 树苗方块（树苗生长）
+#   6. vertical_crop_block    —— 垂直作物方块（甘蔗/海带风格）
+#   7. change_over_time_block —— 随时间更改方块（铜氧化/果实成熟风格）
+#   8. spreading_block        —— 扩散方块（蘑菇/菌丝传播风格）
+#   9. surface_spreading_block—— 表面扩散方块（草/藤蔓蔓延风格）
+#
+# 适用 Minecraft 版本: 1.21+
+# 所有行为均为随机刻行为 —— 仅有方块收到随机刻时才会生长/转化/扩散。
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # 示例 1: 农作物方块 (crop_block)
+  # ==========================================================================
+  # 类似小麦或马铃薯的农作物。每次随机刻根据 grow_speed 增加 age 值。
+  # 骨粉可增加 age，但不会超过最大值。
+  #
+  # 生长机制:
+  #   - grow_speed 整数部分: 每次随机刻直接增加的 age 值
+  #   - grow_speed 小数部分: 作为概率额外增加 1
+  #   - 例如 0.25 = 每刻 25% 概率 age+1
+  #   - 例如 1.25 = 每刻必定 age+1，另加 25% 概率再 age+1
+  #
+  # 光照限制:
+  #   - light_requirement: 生长所需最低光照（必须 >= 此值）
+  #   - max_light_requirement: 生长所需最高光照（必须 <= 此值）
+  #   - 只有光照位于 [light_requirement, max_light_requirement] 区间内才会生长
+  #
+  # 区块生成:
+  #   - spawn_light_requirement / max_spawn_light_requirement
+  #   - 仅在区块生成时使用，独立于生长光照阈值
+  #   - 农作物不会在该光照范围之外生成
+  # ==========================================================================
+  custom:tomato_crop:
+    # ---- 多状态配置 ----
+    # 农作物需要 age 属性来追踪生长阶段，因此使用 states 而非 state。
+    states:
+      # -- 属性定义 --
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~7                  # 0=刚种下, 7=完全成熟
+
+      # -- 外观定义 --
+      # 为不同生长阶段配置不同的模型/纹理。
+      appearances:
+        # 默认外观（age=0~2 时使用的幼苗模型）
+        seedling:
+          auto_state: sapling          # 使用树苗的方块状态组（碰撞箱小）
+          model:
+            path: "minecraft:block/custom/tomato_crop_0"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/tomato_crop_0"
+        # 中期外观（age=3~5）
+        growing:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/tomato_crop_1"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/tomato_crop_1"
+        # 成熟外观（age=6~7）
+        mature:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/tomato_crop_2"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/tomato_crop_2"
+
+      # -- 变体映射 --
+      # 将 age 值范围映射到对应外观。
+      variants:
+        "age=0,1,2":
+          appearance: seedling
+        "age=3,4,5":
+          appearance: growing
+        "age=6,7":
+          appearance: mature
+
+    # ---- 方块行为 ----
+    behavior:
+      type: crop_block
+      grow_speed: 0.25                # 每随机刻增加的 age 值（默认 0.125）
+      light_requirement: 9            # 生长所需最低光照
+      max_light_requirement: 15       # 生长所需最高光照（默认 15）
+      spawn_light_requirement: 9      # 区块生成时的最低光照（默认等于 light_requirement）
+      max_spawn_light_requirement: 15 # 区块生成时的最高光照（默认等于 max_light_requirement）
+      is_bone_meal_target: true       # 骨粉是否对此农作物生效（默认 true）
+      bone_meal_age_bonus:            # 骨粉增加的 age 值，支持范围
+        type: uniform
+        min: 1
+        max: 3
+
+    # ---- 方块设置 ----
+    settings:
+      hardness: 0.0                   # 农作物一碰就碎
+      resistance: 0.0                 # 爆炸抗性为 0
+      replaceable: false              # 不可被其他方块替代
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+      tags:
+        - minecraft:crops             # 农作物标签
+      # support_shape: minecraft:farmland  # 下方需要耕地支撑（可选）
+
+    # ---- 战利品表 ----
+    # 完全成熟时掉落更多，未成熟时只掉落种子。
+    loot:
+      pools:
+        # 池1: 种子（始终掉落）
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:tomato_seeds"
+              weight: 1
+        # 池2: 果实（仅成熟时掉落）
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: alternatives
+              children:
+                # age=7（完全成熟）：掉落 2~4 个西红柿
+                - type: item
+                  item: "custom:tomato"
+                  weight: 1
+                  conditions:
+                    - type: block_state_property
+                      block: "custom:tomato_crop"
+                      properties:
+                        age: "7"
+                  functions:
+                    - type: set_count
+                      count:
+                        type: uniform
+                        min: 2
+                        max: 4
+                    - type: explosion_decay
+                # age=6（接近成熟）：掉落 1~2 个西红柿
+                - type: item
+                  item: "custom:tomato"
+                  weight: 1
+                  conditions:
+                    - type: block_state_property
+                      block: "custom:tomato_crop"
+                      properties:
+                        age: "6"
+                  functions:
+                    - type: set_count
+                      count:
+                        type: uniform
+                        min: 1
+                        max: 2
+                    - type: explosion_decay
+
+
+  # ==========================================================================
+  # 示例 2: 茎方块 (stem_block)
+  # ==========================================================================
+  # 类似西瓜或南瓜茎。达到最大 age 后，随机选择一个水平方向生成果实，
+  # 并将自身替换为朝向果实的附着茎方块。
+  #
+  # 果实生成条件:
+  #   - 目标位置必须为空气
+  #   - 目标位置下方方块必须在 fruit_bottom_blocks 或 fruit_bottom_block_tags 白名单中
+  #   - 若两个列表均为空，果实永远不会生成
+  #
+  # 骨粉作用:
+  #   - 可额外生长多个 age 阶段
+  #   - 若已达最大值，则会立即尝试生成果实
+  # ==========================================================================
+  custom:hami_melon_stem:
+    # ---- 多状态配置 ----
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~7
+
+      appearances:
+        # 所有阶段使用同一个基础外观（可在 model 中用 variants 切换纹理）
+        default:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "minecraft:block/custom/hami_melon_stem"
+                upperstem: "minecraft:block/custom/attached_hami_melon_stem"
+
+      # 亦可按 age 范围分多个外观
+      variants:
+        "age=0":
+          appearance: default
+        "age=1":
+          appearance: default
+        "age=2":
+          appearance: default
+        "age=3":
+          appearance: default
+        "age=4":
+          appearance: default
+        "age=5":
+          appearance: default
+        "age=6":
+          appearance: default
+        "age=7":
+          appearance: default
+
+    # ---- 方块行为 ----
+    behavior:
+      type: stem_block
+      fruit: custom:hami_melon              # 茎生成的果实方块（必需）
+      attached_stem: custom:attached_hami_melon_stem  # 变为的附着茎方块（必需）
+      light_requirement: 0                  # 生长所需最低光照等级（默认 0）
+      max_light_requirement: 15             # 生长所需最高光照等级（默认 15）
+      fruit_bottom_blocks:                  # 果实可坐落的方块（白名单）
+        - minecraft:farmland
+        - minecraft:dirt
+        - minecraft:grass_block
+      fruit_bottom_block_tags: []           # 果实可坐落的方块标签（白名单）
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      tags:
+        - minecraft:crops
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:hami_melon_seeds"
+
+
+  # ==========================================================================
+  # 示例 3: 附着茎方块 (attached_stem_block)
+  # ==========================================================================
+  # 与茎方块配套使用。朝向果实方块，并在 PP 更新 中检查果实是否仍存在。
+  # 当果实被移除时，附着茎会自动退化为普通茎方块。
+  #
+  # 必需属性: facing (horizontal_direction)
+  # 退化机制:
+  #   - 果实被破坏 → PP 更新检测到 → 转换为 stem 指定的方块
+  #   - 若 stem 方块有 age 属性 → 设置为最大值
+  #   - 若 stem 方块无 age 属性 → 使用其默认状态
+  # ==========================================================================
+  custom:attached_hami_melon_stem:
+    # ---- 多状态配置 ----
+    # 附着茎需要朝向属性，因此使用多状态。
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+
+      appearances:
+        north:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/attached_hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "minecraft:block/custom/hami_melon_stem"
+                upperstem: "minecraft:block/custom/attached_hami_melon_stem"
+        east:
+          auto_state: sapling
+          model:
+            y: 90                         # 绕 Y 轴旋转 90 度朝东
+            path: "minecraft:block/custom/attached_hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "minecraft:block/custom/hami_melon_stem"
+                upperstem: "minecraft:block/custom/attached_hami_melon_stem"
+        south:
+          auto_state: sapling
+          model:
+            y: 180                        # 绕 Y 轴旋转 180 度朝南
+            path: "minecraft:block/custom/attached_hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "minecraft:block/custom/hami_melon_stem"
+                upperstem: "minecraft:block/custom/attached_hami_melon_stem"
+        west:
+          auto_state: sapling
+          model:
+            y: 270                        # 绕 Y 轴旋转 270 度朝西
+            path: "minecraft:block/custom/attached_hami_melon_stem"
+            generation:
+              parent: "minecraft:block/stem_fruit"
+              textures:
+                stem: "minecraft:block/custom/hami_melon_stem"
+                upperstem: "minecraft:block/custom/attached_hami_melon_stem"
+
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+
+    # ---- 方块行为 ----
+    behavior:
+      type: attached_stem_block
+      fruit: custom:hami_melon            # 此茎所附着的果实方块（必需）
+      stem: custom:hami_melon_stem        # 果实被破坏后退化成的普通茎方块（必需）
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      tags:
+        - minecraft:crops
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    # 附着茎本身不掉落物品；破坏时退化为普通茎，由普通茎处理掉落。
+    # 如果需要自定义掉落，请在此配置 loot。
+
+
+  # ==========================================================================
+  # 示例 4: 灌木方块 (bush_block)
+  # ==========================================================================
+  # 只能生长在特定支撑方块上的植物，类似浆果丛、花或树苗。
+  # 若支撑方块被破坏或无效，方块即会破坏。
+  #
+  # 可选堆叠: stackable=true 时，多个同类型方块可互相堆叠。
+  # 放置后自动检查支撑方块。
+  #
+  # 黑名单 / 白名单模式:
+  #   - blacklist: true  → 可生长在除了列表以外的任何方块上
+  #   - blacklist: false → 只能生长在列表中的方块上
+  #
+  # delay: PP 更新触发的存活检查延迟（刻），用于短暂方块替换过程中存活。
+  # ==========================================================================
+  custom:blueberry_bush:
+    # ---- 多状态配置 ----
+    # 浆果丛有生长阶段。
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~3                  # 0=幼苗, 1=无果, 2=少量果实, 3=大量果实
+
+      appearances:
+        seedling:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/blueberry_bush_0"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/blueberry_bush_0"
+        no_berries:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/blueberry_bush_1"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/blueberry_bush_1"
+        some_berries:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/blueberry_bush_2"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/blueberry_bush_2"
+        full_berries:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/blueberry_bush_3"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/blueberry_bush_3"
+
+      variants:
+        "age=0":
+          appearance: seedling
+        "age=1":
+          appearance: no_berries
+        "age=2":
+          appearance: some_berries
+        "age=3":
+          appearance: full_berries
+
+    # ---- 方块行为（复合）----
+    # 灌木方块 + 农作物方块组合，实现支撑检测 + 阶段性生长。
+    behaviors:
+      # 行为 1: 灌木支撑检测
+      - type: bush_block
+        blacklist: false                # false = 白名单模式（只能长在列表方块上）
+        stackable: false                # 是否允许同类型方块向上堆叠
+        max_height: 0                   # 最大堆叠高度（仅在 stackable=true 时生效，需 > 1）
+        delay: 0                        # 检查延迟（刻），0 = 立即
+        bottom_blocks:                  # 允许生长的支撑方块（白名单）
+          - minecraft:grass_block
+          - minecraft:dirt
+          - minecraft:podzol
+          - minecraft:farmland
+        bottom_block_tags:              # 允许生长的支撑方块标签（白名单）
+          - minecraft:dirt
+      # 行为 2: 农作物生长
+      - type: crop_block
+        grow_speed: 0.125
+        light_requirement: 8
+        max_light_requirement: 15
+        is_bone_meal_target: true
+        bone_meal_age_bonus:
+          type: uniform
+          min: 1
+          max: 2
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      is_suffocating: false
+      sounds:
+        break: minecraft:block.sweet_berry_bush.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.sweet_berry_bush.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: alternatives
+              children:
+                # age=3: 掉落 2~3 个蓝莓
+                - type: item
+                  item: "custom:blueberry"
+                  weight: 1
+                  conditions:
+                    - type: block_state_property
+                      block: "custom:blueberry_bush"
+                      properties:
+                        age: "3"
+                  functions:
+                    - type: set_count
+                      count:
+                        type: uniform
+                        min: 2
+                        max: 3
+                    - type: explosion_decay
+                # age=2: 掉落 1~2 个蓝莓
+                - type: item
+                  item: "custom:blueberry"
+                  weight: 1
+                  conditions:
+                    - type: block_state_property
+                      block: "custom:blueberry_bush"
+                      properties:
+                        age: "2"
+                  functions:
+                    - type: set_count
+                      count:
+                        type: uniform
+                        min: 1
+                        max: 2
+                    - type: explosion_decay
+                # age=0~1: 不掉落蓝莓，但可以掉落植株本身
+                - type: item
+                  item: "custom:blueberry_bush"
+                  weight: 1
+                  conditions:
+                    - type: block_state_property
+                      block: "custom:blueberry_bush"
+                      properties:
+                        age: "[0,1]"
+
+
+  # ==========================================================================
+  # 示例 5: 树苗方块 (sapling_block)
+  # ==========================================================================
+  # 树苗会随时间生长。每次随机刻，若光照条件满足，以 grow_speed 的概率
+  # 使 stage 增加 1。当 stage 达到最大值时，调用配置的 feature 生成完整树木。
+  #
+  # 光照条件: 方块上方位置的光照在 [light_requirement, max_light_requirement] 之间。
+  #
+  # 骨粉:
+  #   - 无视光照和生长概率，立即将 stage 增加 1
+  #   - 若已达最大值，直接尝试生成树木
+  #   - bone_meal_success_chance 仅决定粒子效果（不影响实际生长）
+  #
+  # stage 数量设计建议:
+  #   - stage 上限越高 → 平均成熟时间越长（因为每刻只有 grow_speed 概率增长）
+  #   - 原版橡树: 2 阶段, grow_speed ≈ 0.143 → 平均约 14 次随机刻
+  #   - 需要更久成熟: 增加 stage 最大值 或 降低 grow_speed
+  # ==========================================================================
+  custom:palm_sapling:
+    # ---- 多状态配置 ----
+    states:
+      properties:
+        stage:
+          type: int
+          default: 0
+          range: 0~1                  # 原版树苗通常 0~1（两阶段）
+
+      appearances:
+        stage0:
+          auto_state: sapling          # 树苗使用 sapling 状态组（较小碰撞箱）
+          model:
+            path: "minecraft:block/custom/palm_sapling"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/palm_sapling"
+        stage1:
+          auto_state: sapling
+          model:
+            path: "minecraft:block/custom/palm_sapling_1"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/palm_sapling_1"
+
+      variants:
+        stage=0:
+          appearance: stage0
+        stage=1:
+          appearance: stage1
+
+    # ---- 方块行为 ----
+    behavior:
+      type: sapling_block
+      feature: custom:palm_tree                   # 完全成熟时生成的地物（必需）
+      light_requirement: 9                        # 生长所需最低光照（默认 9）
+      max_light_requirement: 15                   # 生长所需最高光照（默认 15）
+      grow_speed: 0.7                             # 每随机刻增加 stage 的概率（默认约 0.143）
+      bone_meal_success_chance: 0.45              # 骨粉产生成功粒子的概率（默认 0.45）
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      is_suffocating: false
+      replaceable: false
+      tags:
+        - minecraft:saplings
+      sounds:
+        break: minecraft:block.grass.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.grass.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:palm_sapling"
+
+
+  # ==========================================================================
+  # 示例 6: 垂直作物方块 (vertical_crop_block)
+  # ==========================================================================
+  # 在随机刻中向上或向下生长，类似甘蔗或海带。
+  #
+  # 生长机制:
+  #   - 只有最顶端的茎段会增加 age 值
+  #   - 每次随机刻，若生长方向为空且总高度未达上限 → age 增加
+  #   - age 积累至最大值 → 顶端延伸出新茎段 → 原顶端 age 重置为最小值
+  #
+  # grow_speed: 决定茎段成熟速度
+  #   - 整数部分: 每次随机刻直接增加的 age 值
+  #   - 小数部分: 作为概率额外 +1
+  #
+  # direction:
+  #   - up: 向上生长（如甘蔗）
+  #   - down: 向下生长（如垂泪藤）
+  #
+  # 注意: 垂直作物方块通常需要配合 hanging_block 行为使用，
+  #        确保当底部被破坏时上层方块也会掉落。
+  # ==========================================================================
+  custom:bamboo_shoot:
+    # ---- 多状态配置 ----
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~1                  # 0=普通, 1=成熟可延伸
+
+      appearances:
+        normal:
+          auto_state: sugar_cane       # 甘蔗状态组（碰撞箱较小）
+          model:
+            path: "minecraft:block/custom/bamboo_shoot"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/bamboo_shoot"
+        mature:
+          auto_state: sugar_cane
+          model:
+            path: "minecraft:block/custom/bamboo_shoot_mature"
+            generation:
+              parent: "minecraft:block/cross"
+              textures:
+                cross: "minecraft:block/custom/bamboo_shoot_mature"
+
+      variants:
+        age=0:
+          appearance: normal
+        age=1:
+          appearance: mature
+
+    # ---- 复合方块行为 ----
+    behaviors:
+      # 行为 1: 垂直生长
+      - type: vertical_crop_block
+        max_height: 6               # 一株茎秆的最大段数（默认 3）
+        grow_speed: 0.333           # 每随机刻增加的 age 值（默认 1）
+        direction: up               # 生长方向 up 或 down（默认 up）
+      # 行为 2: 悬挂支撑检测
+      # 当底部被破坏时，上方无支撑的方块自动掉落。
+      - type: hanging_block
+        stackable: true             # 允许同类型方块堆叠
+        delay: 1                    # 掉落延迟（刻）
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      is_suffocating: false
+      replaceable: false
+      sounds:
+        break: minecraft:block.bamboo.break
+        step: minecraft:block.bamboo.step
+        place: minecraft:block.bamboo.place
+        hit: minecraft:block.bamboo.hit
+        fall: minecraft:block.bamboo.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:bamboo_shoot"
+
+
+  # ==========================================================================
+  # 示例 7: 随时间更改方块 (change_over_time_block)
+  # ==========================================================================
+  # 每次随机刻有 change_speed 的概率将方块转化为另一种方块，类似铜的氧化。
+  # 也常用于果实成熟（如可可豆从幼果变为成熟果实）。
+  #
+  # 转化规则:
+  #   - 原方块的属性会被携带到目标方块
+  #   - excluded_properties 中列出的属性将保持目标方块的默认值
+  #
+  # 适用场景:
+  #   - 矿石的风化（类似铜氧化）
+  #   - 果实成熟（从不成熟变为成熟）
+  #   - 任何需要"随时间流逝而转化"的方块
+  # ==========================================================================
+  custom:green_mango:
+    # ---- 单状态配置 ----
+    # 如果转化前后的方块外观不同，使用单状态即可。
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/green_mango"
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "minecraft:block/custom/green_mango"
+
+    # ---- 方块行为 ----
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057                       # 每随机刻转化的概率（默认 0.057）
+      next_block: custom:ripe_mango             # 转化成的目标方块（必需）
+      excluded_properties: []                   # 转化时忽略的属性（默认空列表）
+
+    settings:
+      hardness: 0.5
+      resistance: 0.5
+      is_suffocating: false
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:green_mango"
+
+
+  # ---- 目标方块：成熟的芒果 ----
+  # change_over_time_block 转化后的结果方块。
+  custom:ripe_mango:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/ripe_mango"
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "minecraft:block/custom/ripe_mango"
+
+    settings:
+      hardness: 0.5
+      resistance: 0.5
+      is_suffocating: false
+      sounds:
+        break: minecraft:block.crop.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.crop.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:ripe_mango"
+              functions:
+                - type: set_count
+                  count:
+                    type: uniform
+                    min: 1
+                    max: 3
+                - type: explosion_decay
+
+
+  # ==========================================================================
+  # 示例 8: 扩散方块 (spreading_block)
+  # ==========================================================================
+  # 每次随机刻在附近随机选择一个位置。若该位置的方块类型与 target_block 相同，
+  # 则将其替换为自身。
+  #
+  # 扩散范围: X/Z 方向 ±1 格，Y 方向 -3 至 +1 格。
+  #
+  # 适用场景:
+  #   - 蘑菇式扩散（在菌丝/灰化土上蔓延）
+  #   - 腐化方块（将附近特定方块转化为自身）
+  #   - 传染式蔓延
+  #
+  # 注意: target_block 是必需项，作为可被转化方块的白名单。
+  # ==========================================================================
+  custom:corruption_block:
+    state:
+      auto_state: solid
+      model:
+        path: "minecraft:block/custom/corruption_block"
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "minecraft:block/custom/corruption_block"
+
+    behavior:
+      type: spreading_block
+      target_block: minecraft:stone           # 可被转化的目标方块（必需）
+
+    settings:
+      hardness: 3.0
+      resistance: 3.0
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+        fall: minecraft:block.stone.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:golden_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:corruption_block"
+
+
+  # ---- 蘑菇式扩散方块示例 ----
+  # 类似蘑菇在特定方块上缓慢蔓延。
+  custom:glowing_mushroom:
+    state:
+      auto_state: sapling
+      model:
+        path: "minecraft:block/custom/glowing_mushroom"
+        generation:
+          parent: "minecraft:block/cross"
+          textures:
+            cross: "minecraft:block/custom/glowing_mushroom"
+
+    behavior:
+      type: spreading_block
+      target_block: minecraft:mycelium          # 只能在菌丝上扩散
+
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      luminance: 7                              # 自带微弱发光
+      is_suffocating: false
+      sounds:
+        break: minecraft:block.grass.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.grass.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: "custom:glowing_mushroom"
+
+
+  # ==========================================================================
+  # 示例 9: 表面扩散方块 (surface_spreading_block)
+  # ==========================================================================
+  # 类似原版草方块在泥土上蔓延。每次随机刻尝试把附近的 base_block 转化为自身。
+  # 同时，当自身无法存活时（光照被遮挡或上方有水），会退化回 base_block。
+  #
+  # 扩散条件:
+  #   - 目标方块上方光照在 [light_requirement, max_light_requirement] 之间
+  #   - 目标方块上方无水
+  #
+  # 退化条件:
+  #   - 自身上方光照完全被遮挡（can_occlude=true 的方块在上方）
+  #   - 自身上方有水
+  #
+  # 可选属性: snowy (boolean)
+  #   - 用于切换到覆雪状态/材质，类似原版草方块
+  # ==========================================================================
+  custom:enchanted_grass:
+    # ---- 多状态配置 ----
+    # 需要 snowy 属性来切换覆雪外观。
+    states:
+      properties:
+        snowy:
+          type: boolean
+          default: false
+
+      appearances:
+        normal:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/enchanted_grass"
+            generation:
+              parent: "minecraft:block/cube_bottom_top"
+              textures:
+                bottom: "minecraft:block/custom/enchanted_dirt"
+                side: "minecraft:block/custom/enchanted_grass_side"
+                top: "minecraft:block/custom/enchanted_grass_top"
+        snowy:
+          auto_state: solid
+          model:
+            path: "minecraft:block/custom/enchanted_grass_snowy"
+            generation:
+              parent: "minecraft:block/cube_bottom_top"
+              textures:
+                bottom: "minecraft:block/custom/enchanted_dirt"
+                side: "minecraft:block/custom/enchanted_grass_snow"
+                top: "minecraft:block/custom/enchanted_grass_snow"
+
+      variants:
+        snowy=false:
+          appearance: normal
+        snowy=true:
+          appearance: snowy
+
+    behavior:
+      type: surface_spreading_block
+      light_requirement: 9              # 扩散所需的最低光照（默认 0）
+      max_light_requirement: 15         # 扩散所需的最高光照（默认 15）
+      base_block: minecraft:dirt        # 扩散目标 / 退化方块（默认 minecraft:dirt）
+
+    settings:
+      hardness: 0.6
+      resistance: 0.6
+      sounds:
+        break: minecraft:block.grass.break
+        step: minecraft:block.grass.step
+        place: minecraft:block.grass.place
+        hit: minecraft:block.grass.hit
+        fall: minecraft:block.grass.fall
+      correct_tools:
+        - minecraft:wooden_shovel
+        - minecraft:stone_shovel
+        - minecraft:iron_shovel
+        - minecraft:golden_shovel
+        - minecraft:diamond_shovel
+        - minecraft:netherite_shovel
+      tags:
+        - minecraft:mineable/shovel
+      # 可使用附魔精准采集的工具获取自身，否则掉落 base_block
+      require_correct_tools: false
+
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: alternatives
+              children:
+                # 使用精准采集时掉落自身
+                - type: item
+                  item: "custom:enchanted_grass"
+                  conditions:
+                    - type: match_tool
+                      predicate:
+                        enchantments:
+                          - enchantment: "minecraft:silk_touch"
+                            levels:
+                              min: 1
+                # 普通挖掘掉落 base_block 对应的方块
+                - type: item
+                  item: "minecraft:dirt"
+
+
+# ============================================================================
+# 农作物成组设计示例（茎 + 附着茎 + 果实）
+# ============================================================================
+# 以下展示如何将 stem_block、attached_stem_block 和果实方块组合成一个完整系统。
+# 取消注释即可使用。
+
+#   # ---- 茎 ----
+#   custom:pumpkin_stem:
+#     states:
+#       properties:
+#         age:
+#           type: int
+#           default: 0
+#           range: 0~7
+#       appearances:
+#         default:
+#           auto_state: sapling
+#           model:
+#             path: "minecraft:block/custom/pumpkin_stem"
+#             generation:
+#               parent: "minecraft:block/stem_fruit"
+#               textures:
+#                 stem: "minecraft:block/custom/pumpkin_stem"
+#                 upperstem: "minecraft:block/custom/attached_pumpkin_stem"
+#       variants:
+#         "age=0,1,2,3,4,5,6,7":
+#           appearance: default
+#     behavior:
+#       type: stem_block
+#       fruit: custom:custom_pumpkin
+#       attached_stem: custom:attached_pumpkin_stem
+#       fruit_bottom_blocks:
+#         - minecraft:farmland
+#         - minecraft:dirt
+#         - minecraft:grass_block
+#     settings:
+#       hardness: 0.0
+#       resistance: 0.0
+#       tags: [minecraft:crops]
+#     loot:
+#       pools:
+#         - rolls: 1
+#           entries:
+#             - type: item
+#               item: "minecraft:pumpkin_seeds"
+
+#   # ---- 附着茎 ----
+#   custom:attached_pumpkin_stem:
+#     states:
+#       properties:
+#         facing:
+#           type: horizontal_direction
+#           default: north
+#       appearances:
+#         north:
+#           auto_state: sapling
+#           model:
+#             path: "minecraft:block/custom/attached_pumpkin_stem"
+#             generation:
+#               parent: "minecraft:block/stem_fruit"
+#               textures:
+#                 stem: "minecraft:block/custom/pumpkin_stem"
+#                 upperstem: "minecraft:block/custom/attached_pumpkin_stem"
+#         east:
+#           auto_state: sapling
+#           model:
+#             y: 90
+#             path: "minecraft:block/custom/attached_pumpkin_stem"
+#             generation:
+#               parent: "minecraft:block/stem_fruit"
+#               textures:
+#                 stem: "minecraft:block/custom/pumpkin_stem"
+#                 upperstem: "minecraft:block/custom/attached_pumpkin_stem"
+#         south:
+#           auto_state: sapling
+#           model:
+#             y: 180
+#             path: "minecraft:block/custom/attached_pumpkin_stem"
+#             generation:
+#               parent: "minecraft:block/stem_fruit"
+#               textures:
+#                 stem: "minecraft:block/custom/pumpkin_stem"
+#                 upperstem: "minecraft:block/custom/attached_pumpkin_stem"
+#         west:
+#           auto_state: sapling
+#           model:
+#             y: 270
+#             path: "minecraft:block/custom/attached_pumpkin_stem"
+#             generation:
+#               parent: "minecraft:block/stem_fruit"
+#               textures:
+#                 stem: "minecraft:block/custom/pumpkin_stem"
+#                 upperstem: "minecraft:block/custom/attached_pumpkin_stem"
+#       variants:
+#         facing=north: { appearance: north }
+#         facing=east:  { appearance: east }
+#         facing=south: { appearance: south }
+#         facing=west:  { appearance: west }
+#     behavior:
+#       type: attached_stem_block
+#       fruit: custom:custom_pumpkin
+#       stem: custom:pumpkin_stem
+#     settings:
+#       hardness: 0.0
+#       resistance: 0.0
+#       tags: [minecraft:crops]
+
+#   # ---- 果实 ----
+#   custom:custom_pumpkin:
+#     state:
+#       auto_state: solid
+#       model:
+#         path: "minecraft:block/custom/custom_pumpkin"
+#         generation:
+#           parent: "minecraft:block/cube_column"
+#           textures:
+#             end: "minecraft:block/custom/custom_pumpkin_top"
+#             side: "minecraft:block/custom/custom_pumpkin_side"
+#     settings:
+#       hardness: 1.0
+#       resistance: 1.0
+#       tags:
+#         - minecraft:mineable/axe
+#     loot:
+#       pools:
+#         - rolls: 1
+#           entries:
+#             - type: item
+#               item: "custom:custom_pumpkin"
+
+
+# ============================================================================
+# 农作物模板（可选）
+# ============================================================================
+# 你可以定义农作物模板，通过 template + arguments 批量创建变体。
+# 取消下方注释以使用：
+#
+# templates:
+#   # 基础农作物模板
+#   # 接受 grow_speed、max_age 等参数，自动生成多阶段状态的作物方块。
+#   custom:crop_base:
+#     states:
+#       properties:
+#         age:
+#           type: int
+#           default: 0
+#           range: "0~${max_age:-7}"
+#       appearances:
+#         default:
+#           auto_state: sapling
+#           model:
+#             path: "minecraft:block/custom/${__ID__}"
+#             generation:
+#               parent: "minecraft:block/cross"
+#               textures:
+#                 cross: "minecraft:block/custom/${__ID__}"
+#       variants:
+#         "age=${__ALL__}":
+#           appearance: default
+#     behavior:
+#       type: crop_block
+#       grow_speed: "${grow_speed:-0.125}"
+#       light_requirement: "${light_requirement:-9}"
+#       max_light_requirement: "${max_light_requirement:-15}"
+#       is_bone_meal_target: "${bone_meal:-true}"
+#       bone_meal_age_bonus:
+#         type: uniform
+#         min: "${bone_meal_min:-1}"
+#         max: "${bone_meal_max:-3}"
+#     settings:
+#       hardness: 0.0
+#       resistance: 0.0
+#       tags:
+#         - minecraft:crops
+#     loot:
+#       pools:
+#         - rolls: 1
+#           entries:
+#             - type: item
+#               item: "${seed_item:-minecraft:wheat_seeds}"
+#         - rolls: 1
+#           conditions:
+#             - type: survives_explosion
+#           entries:
+#             - type: alternatives
+#               children:
+#                 - type: item
+#                   item: "${crop_item:-minecraft:wheat}"
+#                   conditions:
+#                     - type: block_state_property
+#                       block: "${__NAMESPACE__}:${__ID__}"
+#                       properties:
+#                         age: "${max_age:-7}"
+#                   functions:
+#                     - type: set_count
+#                       count:
+#                         type: uniform
+#                         min: "${crop_min:-1}"
+#                         max: "${crop_max:-3}"
+#                     - type: explosion_decay
+#                 - type: item
+#                   item: "${seed_item:-minecraft:wheat_seeds}"
+#
+# # 使用模板的示例（取消注释以使用）：
+# # blocks:
+# #   custom:corn_crop:
+# #     template: custom:crop_base
+# #     arguments:
+# #       max_age: 4
+# #       grow_speed: 0.2
+# #       light_requirement: 10
+# #       seed_item: "custom:corn_seeds"
+# #       crop_item: "custom:corn"
+# #       crop_min: 1
+# #       crop_max: 2
+# ============================================================================

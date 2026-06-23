@@ -1,0 +1,98 @@
+# =============================================================================
+# CraftEngine 物品配置模板 — 基础材料与宝石
+# =============================================================================
+# 严格遵循 CraftEngine Wiki:
+#   configuration/item.md
+#   configuration/item/data.md
+#   configuration/item/settings.md
+# =============================================================================
+#
+# 物品可用的顶级配置项 (configuration/item.md):
+#   material (必填), client_bound_material, custom_model_data,
+#   item_model, client_bound_model, data, client_bound_data,
+#   behavior(s), settings, model/legacy_model, events, category,
+#   oversized_in_gui, hand_animation_on_swap, swap_animation_scale
+
+items:
+
+  # ===========================================================================
+  # 示例 1: 基础宝石 (最小化配置)
+  # ===========================================================================
+  custom:simple_ruby:
+    material: emerald
+    data:
+      item_name: "<!i><#FF355E>炽热红宝石"
+      lore:
+        - "<!i><gray>一块蕴含着火焰力量的红色宝石"
+
+  # ===========================================================================
+  # 示例 2: 带自定义模型的基础宝石
+  # ===========================================================================
+  custom:frost_diamond:
+    material: diamond
+    custom_model_data: 10001
+    data:
+      item_name: "<!i><#00BFFF>霜寒钻石"
+      lore:
+        - "<!i><gray>一块散发着寒气的蓝色钻石"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/frost_diamond"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:item/custom/frost_diamond"
+
+  # ===========================================================================
+  # 示例 3: 带燃料和标签的材料
+  # ===========================================================================
+  custom:lava_crystal:
+    material: magma_cream
+    data:
+      item_name: "<!i><#FF4500>熔岩结晶"
+      lore:
+        - "<!i><gray>一块滚烫的红色晶体，可作为高效燃料"
+    settings:
+      fuel_time: 3200                        # 单位: 刻
+      tags:
+        - "custom:gems"
+        - "custom:fuel_materials"
+
+  # ===========================================================================
+  # 示例 4: 带附魔和 dyeable 的材料
+  # ===========================================================================
+  custom:magic_crystal:
+    material: amethyst_shard
+    data:
+      custom_name: "<#DDA0DD>魔力水晶"
+      lore:
+        - "<!i><gray>一块散发着神秘光芒的水晶"
+      enchantment:
+        minecraft:fortune: 1
+
+  # ===========================================================================
+  # 示例 5: 完整配置参考
+  # ===========================================================================
+  custom:phoenix_gem:
+    material: fire_charge
+    custom_model_data: 10010
+    data:
+      item_name: "<!i><#FF4500>凤凰之泪"
+      lore:
+        - "<!i><gray>传说中的凤凰在浴火重生时落下的眼泪"
+      enchantment:
+        minecraft:fire_protection: 5
+      hide_tooltip:
+        - enchantments
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/phoenix_gem"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:item/custom/phoenix_gem"
+    settings:
+      fuel_time: 20000
+      tags:
+        - "custom:gems"
+        - "custom:legendary_materials"

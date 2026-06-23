@@ -1,0 +1,148 @@
+# =============================================================================
+# CraftEngine 战利品表参考模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: reference/loot_table.md
+# =============================================================================
+#
+# 战利品表用 "loot:" 作为键，包含 "pools" 列表。
+# 每个池 (pool) 包含: rolls(次数), conditions(条件), entries(物品), functions(函数)
+
+# ===========================================================================
+# 1. 基础战利品表 (单个物品掉落)
+# ===========================================================================
+loot:
+  functions: []
+  pools:
+    - rolls: 1
+      conditions:
+        - type: survives_explosion       # 爆炸时以1/爆炸半径概率掉落
+      entries:
+        - type: item
+          item: "minecraft:apple"
+      functions: []
+
+# ===========================================================================
+# 2. 带权重的多物品掉落
+# ===========================================================================
+loot:
+  pools:
+    - rolls: 1
+      entries:
+        - type: item
+          item: custom:topaz
+          weight: 1                      # 相对概率
+        - type: item
+          item: custom:topaz_sword
+          weight: 1
+
+# ===========================================================================
+# 3. 精准采集 vs 时运 备选方案 (alternatives)
+# ===========================================================================
+loot:
+  pools:
+    - rolls: 1
+      entries:
+        - type: alternatives
+          children:
+            - type: item
+              item: "custom:topaz_ore"    # 精准采集时掉落矿石本身
+              conditions:
+                - type: enchantment
+                  predicate: minecraft:silk_touch>=1
+            - type: item
+              item: "custom:topaz"        # 否则掉落矿物
+              functions:
+                - type: apply_bonus       # 时运加成
+                  enchantment: minecraft:fortune
+                  formula:
+                    type: ore_drops
+                - type: explosion_decay
+                - type: drop_exp
+                  count:
+                    type: uniform
+                    min: 2
+                    max: 5
+
+# ===========================================================================
+# 4. 家具物品掉落 (furniture_item)
+# ===========================================================================
+loot:
+  pools:
+    - rolls: 1
+      entries:
+        - type: furniture_item
+          item: "custom:fallback_item"    # 备用物品 (无家具时)
+
+# ===========================================================================
+# 5. 经验值掉落 (exp)
+# ===========================================================================
+loot:
+  pools:
+    - rolls: 1
+      entries:
+        - type: exp
+          count: 1
+
+# ===========================================================================
+# 6. 带函数的战利品表
+# ===========================================================================
+loot:
+  pools:
+    - rolls: 1
+      entries:
+        - type: item
+          item: "custom:topaz"
+          functions:
+            - type: set_count            # 设置数量
+              count: 10
+              add: true
+            - type: limit_count          # 限制数量范围
+              min: 1
+              max: 5
+          conditions: []
+      functions: []
+
+# ===========================================================================
+# 7. 函数类型一览 (用于 entries 下的 functions)
+# ===========================================================================
+# apply_bonus — 根据魔咒增加数量
+#   type: apply_bonus
+#   enchantment: minecraft:fortune
+#   formula:
+#     type: ore_drops                    # 矿物掉落算法
+#     # 或 binomial_with_bonus_count:
+#     #   extra: 3
+#     #   probability: 0.5
+
+# apply_data — 应用物品数据
+#   type: apply_data
+#   data:
+#     item_name: "自定义物品"
+
+# set_count — 设置数量
+#   type: set_count
+#   count: 10
+#   add: true
+
+# explosion_decay — 爆炸衰减
+#   type: explosion_decay
+
+# drop_exp — 掉落经验 (注意: 方块掉落经验应使用掉落经验方块行为)
+#   type: drop_exp
+#   count: 1
+
+# limit_count — 限制数量范围
+#   type: limit_count
+#   min: 1
+#   max: 5
+
+# ===========================================================================
+# 8. 公式类型一览
+# ===========================================================================
+# ore_drops — 矿物掉落算法 (同原版)
+#   type: ore_drops
+
+# binomial_with_bonus_count — 二项分布
+#   type: binomial_with_bonus_count
+#   extra: 3
+#   probability: 0.5

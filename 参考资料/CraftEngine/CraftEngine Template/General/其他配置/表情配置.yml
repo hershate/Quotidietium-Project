@@ -1,0 +1,57 @@
+# =============================================================================
+# CraftEngine 表情配置模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: configuration/emoji.md
+# =============================================================================
+#
+# 使用 "emoji:" 作为根键。
+# 创建表情需要先有图像配置。
+
+emoji:
+  # ===========================================================================
+  # 1. 基础表情
+  # ===========================================================================
+  custom:time:
+    permission: emoji.time               # 使用权限
+    content: "<white><arg:emoji></white>" # 显示内容, <arg:emoji> 返回图像表示
+    image: "custom:icons:0:0"            # 引用图像命名空间:路径:行:列
+    keywords:                            # 触发关键词
+      - ":time:"
+
+  # ===========================================================================
+  # 2. 带交互反馈的表情 (悬停显示文字)
+  # ===========================================================================
+  custom:location:
+    permission: emoji.location
+    content: "<hover:show_text:'使用<yellow>\"<arg:keyword>\"</yellow>来发送表情\"<arg:emoji>\"'><!shadow><white><arg:emoji></white></!shadow><bold>当前坐标：<papi:player_x>,<papi:player_y>,<papi:player_z></bold></hover>"
+    image: "custom:icons:0:0"
+    keywords:
+      - ":pos:"
+
+  # ===========================================================================
+  # 3. 分场景覆盖内容 (content_overrides)
+  # ===========================================================================
+  custom:greeting:
+    permission: emoji.greeting
+    image: "custom:icons:0:0"
+    keywords:
+      - ":hello:"
+    content: "<!shadow><white><arg:emoji></white></!shadow>"
+    content_overrides:
+      chat: "<hover:show_text:'<l10n:emoji.tip:\"<arg:keyword>\":\"<arg:emoji>\">'><!shadow><white><arg:emoji></white></!shadow></hover>"
+      book: "<hover:show_text:'<arg:keyword>'><!shadow><white><arg:emoji></white></!shadow></hover>"
+      anvil: "<!i><!shadow><white><arg:emoji></white></!shadow></!i>"
+
+  # ===========================================================================
+  # 4. 多行内容格式 (自动合并为单行)
+  # ===========================================================================
+  custom:multiline_emoji:
+    permission: emoji.multiline
+    image: "custom:icons:0:0"
+    keywords:
+      - ":multi:"
+    content:
+      - "<hover:show_text:'使用<yellow>\"<arg:keyword>\"</yellow>来发送表情\"<arg:emoji>\"'>"
+      - "<!shadow><white><arg:emoji></white></!shadow>"
+      - "<bold>当前坐标：<papi:player_x>,<papi:player_y>,<papi:player_z></bold>"
+      - "</hover>"

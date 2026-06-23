@@ -1,0 +1,323 @@
+# =============================================================================
+# CraftEngine 配方模板 — 全部配方类型
+# =============================================================================
+# 基于 CraftEngine 官方文档:
+#   configuration/recipe.md
+# 严格遵循文档中出现的配置项，未出现的不使用。
+# =============================================================================
+#
+# 配方使用 "recipes:" 作为根键。
+# 每个配方以 "命名空间:路径" 作为唯一 ID。
+#
+# 支持的配方类型 (type):
+#   shaped          - 有序合成
+#   shapeless       - 无序合成
+#   smelting        - 熔炉烧炼
+#   blasting        - 高炉烧炼
+#   smoking         - 烟熏炉烧炼
+#   campfire_cooking - 营火烹饪
+#   stonecutting    - 切石机
+#   smithing_transform - 锻造升级
+#   smithing_trim   - 盔甲纹饰锻造
+#   brewing         - 酿造
+#   shaped_transform - 有序合成转化 (保留原料组件)
+#
+# =============================================================================
+
+# =============================================================================
+# 1. 有序合成配方 (shaped)
+# =============================================================================
+recipes:
+  custom:topaz_shovel:
+    type: shaped
+    category: equipment       # 可选: building, redstone, equipment, misc
+    group: topaz_tools        # 可选: 配方书中的分组名
+    pattern:
+      - "A"
+      - "B"
+      - "B"
+    ingredients:
+      A: "custom:topaz"       # 物品命名空间ID
+      B: "minecraft:stick"    # 原版物品ID
+    result:
+      id: custom:topaz_shovel
+      count: 1
+
+  # 多个原料示例
+  custom:chinese_lantern:
+    type: shaped
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "#minecraft:planks"  # 标签格式: #namespace:tag
+      B: "minecraft:stick"
+      C: "minecraft:torch"
+    result:
+      id: custom:chinese_lantern
+      count: 1
+
+  # 使用原料数量(count)的有序合成
+  custom:enchanted_cobblestone:
+    type: shaped
+    pattern:
+      - " A "
+      - "AAA"
+      - " A "
+    ingredients:
+      A:
+        items: "minecraft:cobblestone"
+        count: 32
+    result:
+      id: custom:enchanted_cobblestone
+      count: 1
+
+# =============================================================================
+# 2. 无序合成配方 (shapeless)
+# =============================================================================
+  custom:palm_planks:
+    type: shapeless
+    category: building
+    group: planks
+    ingredients:
+      - "#custom:palm_logs"         # 标签
+    result:
+      id: custom:palm_planks
+      count: 4
+
+  # 嵌套列表和无序合成数量示例
+  custom:enchanted_cobblestone_2:
+    type: shapeless
+    ingredients:
+      - items: "minecraft:cobblestone"
+        count: 32
+      - items: "minecraft:cobblestone"
+        count: 32
+    result:
+      id: custom:enchanted_cobblestone
+      count: 1
+
+# =============================================================================
+# 3. 烧炼配方 (smelting / blasting / smoking / campfire_cooking)
+# =============================================================================
+  custom:topaz_from_smelting:
+    type: smelting              # smelting, blasting, smoking, campfire_cooking
+    experience: 1.0
+    category: misc              # 可选: food, blocks, misc
+    group: topaz
+    time: 200                   # 烧炼时间 (刻)
+    ingredient: "custom:topaz_ore"
+    result:
+      id: custom:topaz
+      count: 1
+
+  custom:topaz_from_blasting:
+    type: blasting
+    experience: 1.0
+    category: misc
+    group: topaz
+    time: 100
+    ingredient: "custom:deepslate_topaz_ore"
+    result:
+      id: custom:topaz
+      count: 1
+
+# =============================================================================
+# 4. 切石机配方 (stonecutting)
+# =============================================================================
+  custom:topaz_from_stonecutting:
+    type: stonecutting
+    group: topaz
+    ingredient: "minecraft:stone"
+    result:
+      id: custom:topaz
+      count: 1
+
+# =============================================================================
+# 5. 锻造升级配方 (smithing_transform)
+# =============================================================================
+  custom:topaz_bow:
+    type: smithing_transform
+    template_type: "custom:topaz"     # 槽位1: 锻造模板 (可选)
+    base: "minecraft:bow"              # 槽位2: 基础物品 (必填)
+    addition: "custom:topaz"           # 槽位3: 升级材料 (可选)
+    merge_components: true             # 是否合并两个物品的组件 (默认: true)
+    result:
+      id: custom:topaz_bow
+      count: 1
+      post_processors: []              # 结果后处理器
+    transform_processors: []           # 转化处理器
+
+# =============================================================================
+# 6. 有序合成转化配方 (shaped_transform) — 保留源物品组件
+# =============================================================================
+  custom:topaz_crossbow:
+    type: shaped_transform
+    pattern:
+      - "BBB"
+      - "B  "
+      - "A  "
+    ingredients:
+      A:
+        item: "minecraft:crossbow"
+        source: true               # 设置为源物品，保留其组件
+      B: "custom:topaz"
+    result:
+      id: custom:topaz_crossbow
+      count: 1
+    transform_processors:
+      - type: keep_components
+        components:
+          - enchantments           # 保留附魔
+      # 其他可用的转化处理器:
+      # - type: apply_data
+      #   data:
+      #     item_name: "新名称"
+      # - type: merge_enchantments
+      # - type: keep_custom_data
+      #   paths:
+      #     - weapon
+      # - type: keep_tags
+      #   tags:
+      #     - display.Name
+
+# =============================================================================
+# 7. 盔甲纹饰配方 (smithing_trim)
+# =============================================================================
+  custom:example_trim:
+    type: smithing_trim
+    template_type: "minecraft:bolt_armor_trim_smithing_template"
+    base: "#minecraft:trimmable_tool"
+    addition: "#minecraft:trim_materials"
+    pattern: "minecraft:bolt"         # 需要 1.21.5+
+
+# =============================================================================
+# 8. 酿造配方 (brewing) — 1.20.2+
+# =============================================================================
+  custom:cup_of_tea:
+    type: brewing
+    ingredient: "custom:tea_leaf"
+    container: "custom:cup"
+    result:
+      id: custom:cup_of_tea
+      count: 1
+
+# =============================================================================
+# 9. 结果后处理器 (result post_processors)
+# =============================================================================
+# 用于在配方输出时自动对结果物品应用修改
+  custom:enchanted_topaz_pickaxe:
+    type: shaped
+    pattern:
+      - "AAA"
+      - " B "
+      - " B "
+    ingredients:
+      A: "custom:topaz"
+      B: "minecraft:stick"
+    result:
+      id: custom:topaz_pickaxe
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantments:
+              minecraft:efficiency: 5
+
+# =============================================================================
+# 10. 视觉结果 (visual_result) — 付费版专属
+# =============================================================================
+# 防止玩家提前预知合成结果 (对随机化物品特别有用)
+  custom:random_topaz_sword:
+    type: shaped
+    pattern:
+      - "A"
+      - "A"
+      - "B"
+    ingredients:
+      A: "custom:topaz"
+      B: "minecraft:stick"
+    result:
+      id: custom:topaz_sword
+      count: 1
+    visual_result:
+      id: custom:topaz_sword
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            remove_components:
+              - attribute_modifiers
+            lore:
+              - "<gray>攻击伤害 1~3"
+              - "<gray>攻击速度 1~2"
+
+# =============================================================================
+# 11. 配方函数 (functions) — 付费版专属
+# =============================================================================
+# 成功合成时执行操作
+  custom:bench:
+    type: shaped
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "custom:palm_planks"
+    result:
+      id: custom:bench
+      count: 1
+    functions:
+      - type: command
+        command: say 1
+
+# =============================================================================
+# 12. 配方条件 (conditions) — 付费版专属
+# =============================================================================
+# 限制只有满足条件的玩家才能使用此配方
+  custom:restricted_sword:
+    type: shaped
+    pattern:
+      - "A"
+      - "A"
+      - "B"
+    ingredients:
+      A: "custom:topaz"
+      B: "minecraft:stick"
+    result:
+      id: custom:topaz_sword
+      count: 1
+    conditions:
+      - type: permission
+        permission: recipe.unlock.topaz_sword
+
+# =============================================================================
+# 13. 自动解锁 (unlock_on_ingredient_obtained)
+# =============================================================================
+  custom:amethyst_torch:
+    type: shaped
+    pattern:
+      - "A"
+      - "B"
+    ingredients:
+      A: "custom:amethyst"
+      B: "minecraft:stick"
+    unlock_on_ingredient_obtained: true     # 获得原料时自动解锁
+    result:
+      id: custom:amethyst_torch
+      count: 4
+
+# =============================================================================
+# 14. 使用外部物品来源作为原料
+# =============================================================================
+# 需要在 config.yml 的 recipe.ingredient-sources 中注册
+  custom:mythic_bench:
+    type: shaped
+    pattern:
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "mythicmobs:kingscrown"           # 外部插件物品
+    result:
+      id: custom:bench
+      count: 1

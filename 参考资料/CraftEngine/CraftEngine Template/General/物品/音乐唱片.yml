@@ -1,0 +1,376 @@
+# ============================================================================
+# CraftEngine 音乐唱片 (Music Disc) 模板
+# ============================================================================
+# 本模板演示如何使用 CraftEngine 创建自定义音乐唱片。
+#
+# 音乐唱片的核心机制分为三个部分:
+#   1. jukebox_songs  — 定义唱片机中播放的曲目（音效、时长、比较器输出等）
+#   2. items           — 定义物品，通过 data.jukebox_playable 组件引用曲目
+#   3. sounds          — (可选) 定义自定义声音事件，用于 jukebox_songs 引用
+#
+# 注意:
+#   - 唱片机曲目注册后不可热重载，修改 jukebox_songs 后需要重新进入服务器。
+#   - jukebox_playable 组件是 1.21+ 才可用的原版组件。
+#   - 音效文件需放置在资源包的 assets/<namespace>/sounds/ 目录下。
+#   - 每个资源包都需要 sounds.json 来注册声音事件。
+# ============================================================================
+
+
+# ============================================================================
+# 第一部分: 唱片机曲目定义 (jukebox_songs)
+# ============================================================================
+# jukebox_songs 是顶层配置键，用于定义可在唱片机中播放的音乐曲目。
+# 每个曲目的键格式为 "<命名空间>:<曲目id>"。
+
+jukebox_songs:
+
+  # --------------------------------------------------------------------------
+  # 示例1: 基础自定义唱片 —— 引用原版音效
+  # --------------------------------------------------------------------------
+  # 这是最简单的唱片配置：直接引用 Minecraft 原版已有的声音事件。
+  # 适合快速创建一个"外观不同但音乐相同"的唱片。
+  custom:example_disc_1:
+    # sound: 声音事件的命名空间ID。
+    #        原版音效参见 https://zh.minecraft.wiki/w/Java版声音事件
+    #        例如 minecraft:music.credits, minecraft:music_disc.13 等。
+    sound: minecraft:music_disc.cat
+
+    # length: 音乐时长，单位为秒（浮点数）。
+    #         这个值会影响唱片机播放时的进度条显示。
+    #         对于原版音乐，可以在 Minecraft Wiki 上查到准确时长。
+    length: 185.0
+
+    # description: 在唱片机界面中显示的曲目名称文本。
+    #              支持 MiniMessage 格式（如 <color>、<!i> 等）。
+    #              如果不需要样式，直接写纯文本即可。
+    description: "Cat - C418"
+
+    # comparator_output: 红石比较器输出的信号强度，范围 1-15。
+    #                    不同唱片设置不同值可用于红石排序/判定电路。
+    comparator_output: 1
+
+    # range: 声音传播范围，单位为方块。默认值通常为 32。
+    #        控制玩家在多远距离外还能听到唱片机播放的音乐。
+    range: 32
+
+
+  # --------------------------------------------------------------------------
+  # 示例2: 自定义唱片 —— 使用自定义声音事件
+  # --------------------------------------------------------------------------
+  # 当你想播放自己提供的音乐文件时，需要:
+  #   1. 在 sounds 部分定义声音事件（见本文件第三部分）
+  #   2. 在此处通过 sound 字段引用该事件
+  # 这个配置展示了所有可用字段的完整示例。
+  custom:example_disc_2:
+    # sound: 引用下方 sounds 部分定义的自定义声音事件。
+    #        格式为 "<命名空间>:<声音事件id>"。
+    sound: custom:music_disc.example_song
+
+    # length: 必须与你提供的 .ogg 音频文件的实际时长一致。
+    #         注意: Minecraft 仅支持 .ogg (Vorbis) 格式的音频。
+    length: 212.5
+
+    description: "<green>示例之歌</green>"
+
+    # comparator_output: 建议为每个唱片设置不同的值。
+    #                    原版唱片使用 1-15，自定义唱片也可以沿用此规则。
+    comparator_output: 8
+
+    range: 48
+
+
+  # --------------------------------------------------------------------------
+  # 示例3: 多唱片批量定义
+  # --------------------------------------------------------------------------
+  # 在同一个配置文件中定义多个曲目，便于管理整套自定义唱片。
+  # 以下展示一个假设的 "传说" 系列唱片集。
+
+  custom:legend_echoes:
+    sound: custom:music_disc.legend_echoes
+    length: 196.0
+    description: "<gold>Legend Echoes</gold>"
+    comparator_output: 3
+    range: 32
+
+  custom:legend_whispers:
+    sound: custom:music_disc.legend_whispers
+    length: 210.0
+    description: "<gold>Legend Whispers</gold>"
+    comparator_output: 4
+    range: 32
+
+  custom:legend_horizon:
+    sound: custom:music_disc.legend_horizon
+    length: 178.0
+    description: "<gold>Legend Horizon</gold>"
+    comparator_output: 5
+    range: 32
+
+
+# ============================================================================
+# 第二部分: 物品定义 (items)
+# ============================================================================
+# 将物品转变为可插入唱片机的音乐唱片，只需要添加 data.jukebox_playable 组件。
+# 除此之外，你还可以像定义其他物品一样添加名称、描述、模型等。
+
+items:
+
+  # --------------------------------------------------------------------------
+  # 示例1: 基础唱片物品 —— 对应 custom:example_disc_1
+  # --------------------------------------------------------------------------
+  # 最简配置：材质 + 曲目引用 + 物品名称。
+  custom:example_disc_1:
+    # material: 基础物品材质。推荐使用:
+    #   - stick            (木棍，最简单)
+    #   - paper            (纸)
+    #   - music_disc_13    (原版唱片，可直接继承唱片外观和机制)
+    #   - music_disc_cat   (同上，可选的任意原版唱片材质)
+    #   使用原版唱片材质的好处是: 客户端已内置唱片纹理，无需额外模型。
+    #   使用 stick/paper 则需要配合 custom_model_data/item_model 来显示纹理。
+    material: music_disc_13
+
+    data:
+      # jukebox_playable: 引用上方 jukebox_songs 中定义的曲目ID。
+      #                   格式为 "<命名空间>:<曲目id>"。
+      #                   设置此组件后，物品即可插入唱片机播放音乐。
+      jukebox_playable: custom:example_disc_1
+
+      # item_name: 物品的显示名称。支持 MiniMessage 格式。
+      #            <!i> 用于去除物品名称默认的斜体样式。
+      item_name: "<!i><aqua>音乐唱片</aqua>"
+
+      # lore: 物品提示框中的描述信息，可定义多行。
+      lore:
+        - "<!i><gray>Cat - C418</gray>"
+
+
+  # --------------------------------------------------------------------------
+  # 示例2: 完整自定义唱片物品 —— 对应 custom:example_disc_2
+  # --------------------------------------------------------------------------
+  # 展示一个完整的自定义唱片物品配置，包含:
+  #   - 自定义纹理（通过 custom_model_data / item_model）
+  #   - 多行描述信息
+  #   - 物品标签（用于配方、战利品表等）
+  custom:example_disc_2:
+    # material: 使用 stick 作为基础材质，配合自定义模型显示唱片纹理。
+    material: stick
+
+    # custom_model_data (1.21.2 之前): 正整数，用于区分同材质物品的模型。
+    #   资源包中需要在对应材质的模型覆写中设置此值。
+    custom_model_data: 1001
+
+    # item_model (1.21.2+): 直接指定物品模型的命名空间ID。
+    #   推荐在新版本使用此方式，比 custom_model_data 更高效。
+    #   模型文件路径: assets/<命名空间>/models/item/<路径>.json
+    item_model: custom:item/example_disc_2
+
+    data:
+      jukebox_playable: custom:example_disc_2
+
+      item_name: "<!i><green>示例之歌</green>"
+
+      lore:
+        - "<!i><gray>一首悠扬的自定义曲目</gray>"
+        - ""
+        - "<!i><dark_gray>创作者: YourName</dark_gray>"
+
+    # model: 可选，用于通过 CraftEngine 的模型生成功能自动生成模型文件。
+    #        如果已有手动制作的模型 JSON，则不需要此配置。
+    # model:
+    #   type: minecraft:model
+    #   path: custom:item/example_disc_2
+    #   generation:
+    #     parent: minecraft:item/music_disc_13
+    #     textures:
+    #       layer0: custom:item/example_disc_2
+
+    # settings: 可选，设置物品的附加属性。
+    settings:
+      # tags: 物品标签列表，格式为 "<命名空间>:<标签路径>"。
+      #       可用于配方、进度、战利品表等。
+      tags:
+        - "minecraft:creeper_drop_music_discs"  # 使其能被苦力怕掉落
+        - "custom:example_discs"
+
+
+  # --------------------------------------------------------------------------
+  # 示例3: 传说系列唱片 —— 批量定义多张唱片
+  # --------------------------------------------------------------------------
+  # 对应上方 jukebox_songs 中的 custom:legend_* 曲目。
+  # 以下展示使用不同原版唱片材质的三张唱片。
+
+  custom:legend_echoes:
+    material: music_disc_11
+    data:
+      jukebox_playable: custom:legend_echoes
+      item_name: "<!i><gold>音乐唱片</gold>"
+      lore:
+        - "<!i><gray>Legend Echoes</gray>"
+
+  custom:legend_whispers:
+    material: music_disc_5
+    data:
+      jukebox_playable: custom:legend_whispers
+      item_name: "<!i><gold>音乐唱片</gold>"
+      lore:
+        - "<!i><gray>Legend Whispers</gray>"
+
+  custom:legend_horizon:
+    material: music_disc_otherside
+    data:
+      jukebox_playable: custom:legend_horizon
+      item_name: "<!i><gold>音乐唱片</gold>"
+      lore:
+        - "<!i><gray>Legend Horizon</gray>"
+
+
+# ============================================================================
+# 第三部分: 自定义声音事件 (sounds)
+# ============================================================================
+# 如果你使用的音频不是 Minecraft 原版自带的，你需要:
+#   1. 将 .ogg 音频文件放入资源包:
+#      路径: assets/<命名空间>/sounds/<分类>/<文件名>.ogg
+#      例如: assets/custom/sounds/music_disc/example_song.ogg
+#   2. 在资源包的 assets/<命名空间>/sounds.json 中注册声音事件。
+#      或者在 CraftEngine 的 sounds 配置中定义（见下方示例）。
+#   3. 在 jukebox_songs 中通过 sound 字段引用该事件。
+#
+# sounds 配置的每个键都是完整的声音事件命名空间ID。
+# 详见: CraftEngine Wiki/configuration/sound.md#音效事件
+# 并可查阅 https://zh.minecraft.wiki/w/Java版声音事件
+
+sounds:
+
+  # --------------------------------------------------------------------------
+  # 自定义唱片声音事件 —— 对应 custom:example_disc_2
+  # --------------------------------------------------------------------------
+  custom:music_disc.example_song:
+    # replace: 是否替换同名的原版/其他插件的声音事件。
+    #          false 表示追加到现有事件中（不覆盖），推荐设为 false。
+    replace: false
+
+    # subtitle: 字幕文本，当声音播放时在屏幕右下角显示。
+    #           使用 Minecraft 的翻译键格式: subtitles.<命名空间>.<事件id>
+    #           需要在语言文件中定义对应的翻译文本。
+    subtitle: subtitles.custom.music_disc.example_song
+
+    # sounds: 音效文件列表。可以包含多个条目以实现随机变体播放。
+    #         每个条目可以是一个简单的路径字符串，也可以是一个包含详细参数的对象。
+    sounds:
+      # 主音效文件路径，相对于 assets/<命名空间>/sounds/ 目录。
+      # 注意: 路径中不需要写 .ogg 扩展名。
+      - name: "music_disc/example_song"
+
+        # volume: 音量，范围 0.0-1.0。1.0 为原始音量。
+        volume: 1.0
+
+        # weight: 权重。当 sounds 列表有多个条目时，权重越高的越容易被选中。
+        #         单条目时无意义，设为 1 即可。
+        weight: 1
+
+        # stream: 是否以流式播放（边读边播）。
+        #         对于音乐唱片，必须设为 true！
+        #         因为唱片机播放的是长时间音频，流式播放可以避免一次性加载整个文件到内存。
+        stream: true
+
+        # attenuation_distance: 声音衰减距离（方块），控制声音随距离减弱的速率。
+        #                        唱片机声音通常不需要太大衰减。
+        attenuation_distance: 16
+
+        # preload: 是否在资源包加载时预加载此音效到内存。
+        #          对于音乐唱片（文件较大），建议设为 false 以节省内存。
+        preload: false
+
+        # type: 音效文件类型。"file" 表示从资源包文件读取（默认）。
+        #       对于自定义音乐，通常使用 "file" 即可。
+        type: "file"
+
+
+  # --------------------------------------------------------------------------
+  # 传说系列唱片的声音事件
+  # --------------------------------------------------------------------------
+  custom:music_disc.legend_echoes:
+    replace: false
+    subtitle: subtitles.custom.music_disc.legend_echoes
+    sounds:
+      - name: "music_disc/legend_echoes"
+        volume: 1.0
+        weight: 1
+        stream: true
+
+  custom:music_disc.legend_whispers:
+    replace: false
+    subtitle: subtitles.custom.music_disc.legend_whispers
+    sounds:
+      - name: "music_disc/legend_whispers"
+        volume: 0.9
+        weight: 1
+        stream: true
+
+  custom:music_disc.legend_horizon:
+    replace: false
+    subtitle: subtitles.custom.music_disc.legend_horizon
+    sounds:
+      - name: "music_disc/legend_horizon"
+        volume: 1.0
+        weight: 1
+        stream: true
+
+
+# ============================================================================
+# 资源包清单
+# ============================================================================
+# 要使自定义音乐唱片正常工作，你需要在资源包中准备以下文件:
+#
+# 1. 音频文件 (.ogg 格式，Vorbis 编码):
+#    assets/custom/sounds/music_disc/example_song.ogg
+#    assets/custom/sounds/music_disc/legend_echoes.ogg
+#    assets/custom/sounds/music_disc/legend_whispers.ogg
+#    assets/custom/sounds/music_disc/legend_horizon.ogg
+#
+# 2. 声音注册文件:
+#    assets/custom/sounds.json
+#    (如果已在 CraftEngine sounds 配置中定义，此文件可由插件自动生成)
+#
+# 3. 自定义纹理/模型 (如果使用 stick/paper 作为材质):
+#    assets/custom/textures/item/example_disc_2.png
+#    assets/custom/models/item/example_disc_2.json
+#
+# 4. 语言文件 (用于字幕翻译):
+#    assets/custom/lang/zh_cn.json (或其他语言)
+#    示例内容:
+#    {
+#      "subtitles.custom.music_disc.example_song": "示例之歌",
+#      "subtitles.custom.music_disc.legend_echoes": "传说回声",
+#      "subtitles.custom.music_disc.legend_whispers": "传说低语",
+#      "subtitles.custom.music_disc.legend_horizon": "传说地平线"
+#    }
+
+
+# ============================================================================
+# 实用技巧
+# ============================================================================
+#
+# 提示1: 快速测试
+#   使用 /ce reload 重载配置，然后 /ce item get custom:example_disc_1 获取唱片。
+#   注意: jukebox_songs 的修改需要重新进入服务器才能生效。
+#
+# 提示2: 材质选择建议
+#   - 快速原型: 使用 stick，无需模型即可测试 jukebox_playable 功能。
+#   - 美观成品: 使用原版唱片材质 (music_disc_13/cat/blocks 等)，
+#     继承原版唱片纹理，通过 item_name/lore 区分。
+#   - 完全自定义: 使用 stick 配合自定义 item_model 和纹理。
+#
+# 提示3: 比较器输出策略
+#   - 为每张唱片分配唯一的 comparator_output (1-15)。
+#   - 可用于红石唱片选择器、秘密门锁、自定义唱片机UI等。
+#   - 原版唱片占用: 13→1, cat→2, blocks→3, 以此类推。
+#   - 建议自定义唱片从 8-15 开始使用，避免与原版冲突。
+#
+# 提示4: 音频文件要求
+#   - 格式: Ogg Vorbis (.ogg)，Minecraft 不支持 .mp3/.wav 等格式。
+#   - 采样率: 推荐 44100 Hz，与原版一致。
+#   - 声道: 单声道 (Mono)，Minecraft 会自动处理空间音效定位。
+#          立体声文件也可以使用，但Minecraft会将其转换为单声道播放。
+#   - 比特率: 推荐 96-160 kbps（平衡音质与资源包大小）。
+#   - 命名: 只使用小写字母、数字、下划线和斜杠。

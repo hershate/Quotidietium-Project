@@ -1,0 +1,707 @@
+# =============================================================================
+# CraftEngine 基础方块配置模板
+# 本文件展示了从最简到最完整的方块配置方式，涵盖所有可配置部分。
+#
+# 方块结构速览:
+#   blocks:                # 配置区域 — 可定义在任意配置文件夹中的任意配置文件中
+#     <命名空间>:<路径>:    # 方块 ID — 可在其他地方通过此 ID 引用
+#       state:             # 方块状态 — 必填，决定外观（模型、判定箱）
+#       settings:          # 方块设置 — 可选，基本属性（硬度、音效、亮度、标签）
+#       behavior:          # 方块行为 — 可选，机制性行为（生长、下落、存储...）
+#       loot:              # 战利品表 — 可选，被破坏时掉落什么
+#       events:            # 事件     — 可选，对玩家交互的反应（放置、破坏...）
+#
+# 参考资料（基于本地文档）:
+#   CraftEngine Wiki/configuration/block.md
+#   CraftEngine Wiki/configuration/block/states.md
+#   CraftEngine Wiki/configuration/block/settings.md
+# =============================================================================
+
+# =============================================================================
+# 全局 blocks 配置区域
+# 所有自定义方块都定义在此键下。可分散在多个配置文件中，插件会自动合并。
+# =============================================================================
+blocks:
+
+  # ===========================================================================
+  # 示例 1: 最简方块
+  # 仅需一个 state 和纹理即可构成完整可用的方块。
+  # 这是创建一个方块所需的最少配置。
+  # ===========================================================================
+  custom:minimal_block:
+    # ---------- 方块状态（必填）----------
+    state:
+      # auto_state: 让插件从预设状态组中自动选择一个空闲的原版方块状态。
+      # 可用组: note_block, solid, mushroom, tripwire, leaves, cactus, sapling,
+      #         pressure_plate, sugar_cane, weeping_vine, twisting_vine, kelp, chorus 等
+      # 详见: CraftEngine Wiki/configuration/block/states.md#auto_state
+      auto_state: note_block
+
+      # model: 决定客户端渲染成什么样子。
+      # texture: 单张纹理，插件自动推断为 cube_all 模型（六个面相同）。
+      # 纹理路径格式: "<命名空间>:block/custom/<纹理名>"
+      model:
+        texture: "custom:block/custom/minimal_block"
+
+  # ===========================================================================
+  # 示例 2: 完整方块设置
+  # 包含所有可用的 settings 选项，用于精细控制方块的物理和视觉属性。
+  # 所有 settings 均为可选（省略时使用默认值）。
+  # ===========================================================================
+  custom:full_settings_block:
+    # ---------- 方块状态 ----------
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/full_settings_block"
+
+    # ---------- 方块设置（全部可选）----------
+    settings:
+      # --- 硬度与抗性 ---
+      # 硬度: 挖掘所需时间倍率，默认 2.0
+      # 石头=1.5，黑曜石=50，泥土=0.5，基岩=-1（不可破坏）
+      hardness: 1.5
+      # 爆炸抗性: 吸收爆炸破坏的能力，默认 2.0
+      # 石头=6.0，黑曜石=1200，泥土=0.5
+      resistance: 6.0
+
+      # --- 活塞行为 ---
+      # NORMAL: 可推可拉 | DESTROY: 被推动时破坏 | BLOCK: 不可推不可拉
+      # IGNORE: 可推，粘附在粘性块上 | PUSH_ONLY: 可推不可拉
+      push_reaction: NORMAL
+
+      # --- 地图颜色 ---
+      # 地图上表示此方块时的基色。数值对应: https://zh.minecraft.wiki/w/地图存储格式#地图基色
+      # 0=透明, 1=草, 2=沙, 11=石头, ... 共约 60+ 种
+      map_color: 11
+
+      # --- 熔岩可燃性 ---
+      # 熔岩是否可以在此方块上生成火，默认 false
+      burnable: false
+      # 火传播到此方块表面的几率 (0-100)，默认 0
+      fire_spread_chance: 0
+      # 火烧毁此方块的几率 (0-100)，默认 0
+      burn_chance: 0
+
+      # --- 物品绑定 ---
+      # 方块对应的物品 ID，用于鼠标中键选取。可选，默认等于方块 ID
+      item: custom:full_settings_block
+
+      # --- 方块交互属性 ---
+      # 是否可被其他方块放置时直接替代（如草、雪），默认 false
+      replaceable: false
+      # 是否为红石导体（影响红石信号传播），默认未定义
+      is_redstone_conductor: true
+      # 生物视平线处于其中时是否窒息，默认未定义
+      is_suffocating: true
+      # 是否阻挡视野（影响非旁观模式玩家的视线渲染），默认未定义
+      is_view_blocking: true
+
+      # --- 音效 ---
+      # 各种情境下的音效，默认 null。五种事件:
+      # break: 破坏方块 | step: 行走 | place: 放置 | hit: 挖掘中 | fall: 坠落
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+        fall: minecraft:block.stone.fall
+        # 精确控制音量和音高:
+        # break:
+        #   id: minecraft:block.stone.break
+        #   pitch: 0.5
+        #   volume: 0.25~0.3  # 支持范围值
+
+      # --- 挖掘工具 ---
+      # 是否需要合适工具才能有效挖掘，默认 false
+      # 注意: 如果设置了 correct_tools，此项默认为 true
+      require_correct_tools: true
+      # 是否尊重 minecraft:tool 组件的 correct_for_drops 选项，默认 false
+      respect_tool_component: false
+      # 有效挖掘工具列表（物品 ID）
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:golden_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      # 使用错误工具时的挖掘速度倍率 (0~1)，默认 0.3
+      incorrect_tool_dig_speed: 0.3
+
+      # --- 标签 ---
+      # 标签赋予方块各种原版数据驱动属性。常用标签:
+      # minecraft:mineable/axe     — 斧加速挖掘
+      # minecraft:mineable/hoe     — 锄加速挖掘
+      # minecraft:mineable/pickaxe — 镐加速挖掘
+      # minecraft:mineable/shovel  — 锹加速挖掘
+      # minecraft:sword_efficient  — 剑加速挖掘
+      # minecraft:climbable        — 可攀爬
+      # minecraft:beacon_base_blocks — 信标基座
+      # minecraft:logs             — 原木标签（影响树叶枯萎判定等）
+      # minecraft:fall_damage_resetting — 重置摔落伤害
+      # minecraft:soul_fire_base_blocks — 上方火为灵魂火
+      tags:
+        - minecraft:mineable/pickaxe
+
+      # --- 音符盒乐器 ---
+      # 音符盒放在下方时使用的乐器，默认 harp
+      # 可选: harp, basedrum, snare, hat, bass, flute, bell, guitar, chime,
+      #       xylophone, iron_xylophone, cow_bell, didgeridoo, bit, banjo, pling, zombie, skeleton, creeper, dragon, wither_skeleton, piglin, custom_head
+      instrument: basedrum
+
+      # --- 流体状态 ---
+      # 方块内含的流体类型，默认 empty。可选: empty, water
+      fluid_state: empty
+
+      # --- 支撑形状 ---
+      # 借用指定原版方块的碰撞支撑形状。
+      # 默认使用对应视觉状态的支撑形状。
+      # support_shape: minecraft:stone
+
+      # --- 亮度（不稳定设置，仅对非玩家实体生效）---
+      # 方块自身发出的光照等级 (0~15)，默认 0
+      luminance: 0
+
+      # --- 光照遮挡 ---
+      # 是否阻挡光线传播（也会影响草方块→泥土的转化），默认未定义
+      can_occlude: true
+      # 光线穿过此方块后降低的光照等级，默认未定义
+      block_light: 0
+      # 天空光照是否能穿过此方块，默认未定义
+      propagate_skylight: false
+
+      # --- 物理系数（不稳定设置，仅对非玩家实体生效）---
+      # 弹性碰撞系数: 0=不反弹, 1=黏液块级别, 0.75=床级别
+      bounce_restitution: 0.0
+      # 阻力系数: 影响生物移动加速度，默认 0.6（冰=0.98，蓝冰=0.989）
+      friction: 0.6
+      # 跳跃高度乘数，默认 1.0
+      jump_factor: 1.0
+      # 移动速度乘数，默认 1.0
+      speed_factor: 1.0
+
+  # ===========================================================================
+  # 示例 3: 带战利品表的方块
+  # 控制方块被破坏时掉落什么物品。
+  # 战利品表结构与原版数据包高度一致。
+  # ===========================================================================
+  custom:loot_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/loot_block"
+
+    # ---------- 战利品表 ----------
+    loot:
+      # 全局 functions: 对所有掉落物执行的后处理（如修改数量、NBT 等）
+      functions: []
+      pools:
+        # 池 1: 主要掉落
+        - rolls: 1                          # 该池的抽取次数
+          conditions:                       # 池的掉落条件
+            - type: survives_explosion      # 以 1/爆炸半径 的概率通过
+          entries:
+            # 条目: item — 掉落指定物品
+            - type: item
+              item: "custom:loot_block"     # 掉落自身（精准采集时可配置 condition）
+              weight: 1                     # 权重，默认 1
+            # 条目: alternatives — 第一个满足条件的子条目掉落
+            - type: alternatives
+              children:
+                # 精准采集时掉落自身
+                - type: item
+                  item: "custom:loot_block"
+                  conditions:
+                    - type: enchantment
+                      predicate: "minecraft:silk_touch>=1"
+                # 无精准采集时掉落其他物品，受时运影响
+                - type: item
+                  item: "minecraft:diamond"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops     # 原版矿物掉落算法
+                    - type: explosion_decay # 爆炸时物品有概率消失
+                    - type: limit_count     # 限制数量范围
+                      min: 1
+                      max: 5
+          functions: []
+        # 池 2: 经验值掉落
+        - rolls: 1
+          entries:
+            - type: exp
+              count: 3                      # 掉落 3 点经验值
+          functions: []
+
+  # ===========================================================================
+  # 示例 4: 带事件的方块
+  # 在方块被放置、破坏、右键点击等时触发自定义动作。
+  # 方块可用的事件触发器: break, place, right_click, left_click, step
+  # ===========================================================================
+  custom:event_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/event_block"
+
+    # ---------- 事件 ----------
+    events:
+      # --- 放置时 ---
+      - on: place
+        functions:
+          # 发送聊天消息
+          - type: message
+            message: "<green>你放置了一个自定义方块!</green>"
+            target: self                     # self = 执行者, all = 所有玩家, 或玩家选择器
+          # 播放音效
+          - type: play_sound
+            sound: minecraft:block.note_block.pling
+            pitch: 2.0
+            volume: 1.0
+            target: self
+
+      # --- 破坏时 ---
+      - on: break
+        functions:
+          - type: message
+            message: "<red>你破坏了一个自定义方块!</red>"
+            target: self
+          # 生成粒子效果
+          - type: particle
+            particle: minecraft:end_rod
+            count: 10
+            offset_x: 0.5
+            offset_y: 0.5
+            offset_z: 0.5
+            speed: 0.1
+
+      # --- 右键点击时 ---
+      # 支持带条件的函数链
+      - on: right_click
+        functions:
+          # run: 按顺序运行一组函数，支持共享条件
+          - type: run
+            functions:
+              - type: command
+                command: "say <arg:player.name> 右键点击了方块"
+                target: self
+              - type: actionbar
+                actionbar: "<gold>点击坐标: <arg:position.x>, <arg:position.y>, <arg:position.z></gold>"
+                target: self
+            conditions:                      # 仅管理员可触发
+              - type: permission
+                permission: "craftengine.admin"
+
+          # 也可使用 if_else 分支结构
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: is_null
+                    argument: "player.main_hand_item"
+                functions:
+                  - type: message
+                    message: "<gray>你空手点击了方块</gray>"
+                    target: self
+              - functions:                  # fallback: 手持物品时
+                  - type: message
+                    message: "<yellow>你手持物品点击了方块</yellow>"
+                    target: self
+
+  # ===========================================================================
+  # 示例 5: 带行为的方块（可剥皮原木）
+  # 使用 behavior 赋予方块独特机制。
+  # 单个行为用 behavior，多个行为用 behaviors（组合成复合行为）。
+  # ===========================================================================
+  custom:strippable_log:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/strippable_log"
+
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe            # 用斧加速
+        - minecraft:logs                    # 原木标签
+
+    # ---------- 方块行为 ----------
+    # type: strippable_block — 可用斧右键剥皮
+    # stripped: 剥皮后转换成的方块 ID
+    behavior:
+      type: strippable_block
+      stripped: custom:stripped_log
+
+  # ===========================================================================
+  # 剥皮后的方块（被示例 5 引用）
+  # ===========================================================================
+  custom:stripped_log:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/stripped_log"
+
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+
+    # 剥皮后的方块不再有 strippable_block 行为
+
+  # ===========================================================================
+  # 示例 6: 多状态方块（原木 — 含朝向属性）
+  # 当方块需要多种内部状态（朝向、含水、生长阶段等）时，
+  # 使用 states 替代 state，由 properties + appearances + variants 三部分组成。
+  #
+  # 何时需要多状态:
+  #   - 方块有朝向（原木、柱子、楼梯...）
+  #   - 方块可以含水（waterlogged 属性）
+  #   - 方块需要多种变体（树叶的 distance / persistent 属性）
+  #   - 方块需要红石交互（powered / open 属性）
+  # ===========================================================================
+  custom:multi_state_log:
+    states:
+      # ======== ① 属性定义 ========
+      # 定义方块所有可能的内部状态。插件自动计算所有属性值的组合，生成全部内部状态。
+      # 例如: axis(3) × waterlogged(2) = 6 个内部状态
+      properties:
+        # axis: 轴向属性 — 特殊名称，放置时自动对齐玩家朝向的轴向
+        axis:
+          type: axis                       # 可能值: x, y, z
+          default: "y"
+        # waterlogged: 含水属性 — 特殊名称，决定方块是否含水
+        waterlogged:
+          type: boolean                    # 可能值: true, false
+          default: false
+
+      # ======== ② 外观定义 ========
+      # 每个外观的配置规则与单状态方块完全相同。
+      # 外观名称可任意定义，但同一方块内不可重复。
+      # 第一个定义的外观为默认外观 — 未匹配到变体的状态自动回退到它。
+      appearances:
+        # 默认外观: axis=y, waterlogged=false
+        default:
+          # 使用展开形式的 auto_state，指定 id 可让多个外观共享同一个原版方块状态
+          auto_state:
+            type: solid                     # 从 solid 组（音符盒+蘑菇方块）中分配
+          model:
+            path: "custom:block/custom/multi_state_log"
+            textures:                       # 2 张纹理 → 自动推断为 cube_column 模型
+              - "custom:block/custom/multi_state_log_top"    # end 纹理
+              - "custom:block/custom/multi_state_log_side"   # side 纹理
+            # x/y/z: 绕轴旋转角度，必须为 90 的倍数
+            # uvlock: 是否锁定纹理方向（旋转时纹理不跟随旋转）
+
+        # 水平 X 轴外观
+        horizontal_x:
+          auto_state:
+            type: solid
+            id: "shared_horizontal"         # 使用共享 ID，让多外观共用同一原版状态
+          model:
+            x: 90                           # 绕 X 轴旋转 90 度变成水平
+            y: 90                           # 绕 Y 轴旋转 90 度调整朝向
+            path: "custom:block/custom/multi_state_log_horizontal"
+            generation:                     # 手动指定父模型（textures 推断不适用水平朝向）
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "custom:block/custom/multi_state_log_top"
+                side: "custom:block/custom/multi_state_log_side"
+
+        # 水平 Z 轴外观（与 X 轴共享原版状态 ID）
+        horizontal_z:
+          auto_state:
+            type: solid
+            id: "shared_horizontal"         # 相同 id → 与 horizontal_x 共用同一原版状态
+          model:
+            x: 90                           # 绕 X 轴旋转 90 度
+            path: "custom:block/custom/multi_state_log_horizontal"
+            # generation 省略：因 path 与 horizontal_x 相同，
+            # 模型文件已被 horizontal_x 生成，此处无需重复定义
+
+        # 含水外观: axis=y, waterlogged=true
+        waterlogged_default:
+          auto_state:
+            type: solid
+            id: "waterlogged_y"
+          model:
+            path: "custom:block/custom/multi_state_log"
+            textures:
+              - "custom:block/custom/multi_state_log_top"
+              - "custom:block/custom/multi_state_log_side"
+
+        # 水平含水外观
+        waterlogged_horizontal:
+          auto_state:
+            type: solid
+            id: "waterlogged_horizontal"
+          model:
+            x: 90
+            y: 90
+            path: "custom:block/custom/multi_state_log_horizontal_waterlogged"
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "custom:block/custom/multi_state_log_top"
+                side: "custom:block/custom/multi_state_log_side"
+
+      # ======== ③ 变体匹配 ========
+      # 将内部状态映射到外观。使用通配符语义：
+      # 变体键中未列出的属性 = 匹配该属性的所有可能值。
+      #
+      # 匹配规则:
+      #   1. 通配符 — 未写的属性匹配所有值
+      #   2. 多变体叠加 — 同一状态匹配多个变体时:
+      #      appearance 取第一个匹配的 | settings 合并叠加
+      #   3. 默认回退 — 未匹配到 appearance 的状态使用第一个外观
+      variants:
+        # 不含水的默认朝向 → 使用 default 外观（第一个匹配的变体）
+        waterlogged=false:
+          appearance: default
+
+        # 不含水的水平朝向 → horizontal_x 和 horizontal_z 外观
+        waterlogged=false,axis=x:
+          appearance: horizontal_x
+        waterlogged=false,axis=z:
+          appearance: horizontal_z
+
+        # 含水的默认朝向
+        waterlogged=true:
+          appearance: waterlogged_default
+          settings:                        # 变体可以覆写/补充方块设置
+            fluid_state: water             # 方块内含水的视觉状态
+            resistance: 1200.0             # 含水后抗爆炸能力提升
+
+        # 含水的水平朝向
+        waterlogged=true,axis=x:
+          appearance: waterlogged_horizontal
+          settings:
+            fluid_state: water
+        waterlogged=true,axis=z:
+          appearance: waterlogged_horizontal
+          settings:
+            fluid_state: water
+            # 注意: 同一状态匹配多个变体时 settings 会合并。
+            # 如果 waterlogged=true 和 waterlogged=true,axis=x 都匹配了某状态，
+            # 后匹配的设置会覆写前面的同名键。
+
+    # ---------- 方块设置（可与 variants 中的 settings 叠加）----------
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+
+  # ===========================================================================
+  # 示例 7: 复合行为方块（混凝土粉末 + 下落）
+  # 使用 behaviors（复数）列表组合多个行为。
+  # 组合行为时需确保所有行为的必需属性都被满足。
+  # 某些行为之间可能存在冲突，组合后可能出现非预期表现。
+  # ===========================================================================
+  custom:gunpowder_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/gunpowder_block"
+
+    settings:
+      hardness: 0.5
+      tags:
+        - minecraft:mineable/shovel
+
+    # ---------- 复合行为 ----------
+    # 遇水凝固 + 像沙子一样受重力下落
+    behaviors:
+      - type: concrete_powder_block
+        solid_block: custom:solid_gunpowder_block   # 遇水后转化的方块
+      - type: falling_block                          # 重力下落
+
+  # 遇水凝固后的方块
+  custom:solid_gunpowder_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/solid_gunpowder_block"
+    settings:
+      hardness: 1.8
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # ===========================================================================
+  # 示例 8: 使用模型列表的方块（多模型加权随机）
+  # 多个模型按权重随机选取，用于同一方块的视觉变体。
+  # ===========================================================================
+  custom:variant_model_block:
+    state:
+      auto_state: note_block
+      # models 列表: 多个模型按权重随机显示
+      models:
+        - path: "custom:block/custom/variant_1"
+          weight: 5                          # 权重 5（选中概率更高）
+        - path: "custom:block/custom/variant_2"
+          weight: 3
+        - path: "custom:block/custom/variant_3"
+          weight: 2                          # 权重 2（选中概率最低）
+
+    settings:
+      hardness: 1.0
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # ===========================================================================
+  # 示例 9: 使用实体渲染器的方块
+  # entity_renderer 在方块位置放置展示实体来渲染物品/文本/3D模型。
+  # 搭配 transparent: true 清空方块自身模型，完全由实体渲染。
+  # 这样做可绕开原版方块状态数量限制，近乎无限地创建自定义方块。
+  # ===========================================================================
+  custom:entity_rendered_block:
+    state:
+      # 使用共享的透明状态，多个方块可共用同一个被清空模型的原版状态
+      auto_state:
+        type: sugar_cane
+        id: transparent                     # 推荐使用 "transparent" 作为共享 ID
+      transparent: true                     # 清空原版方块状态自身的模型
+
+      # 实体渲染器: 可配置单个或多个渲染元素
+      entity_renderer:
+        # 元素 1: 物品展示实体
+        - type: item_display
+          item: custom:my_decoration        # 要渲染的物品 ID
+          translation: 0, 0, 0             # 偏移量 (x, y, z)
+          scale: 1.0                        # 缩放
+          rotation: 0                       # Y 轴旋转角度
+          billboard: fixed                  # fixed | vertical | horizontal | center
+
+        # 元素 2: 文本展示实体
+        - type: text_display
+          text: "<yellow>装饰方块</yellow>"  # 支持 MiniMessage 和文本格式
+          translation: 0, 0.8, 0            # 浮在方块上方 0.8 格
+          scale: 0.8
+          alignment: center                 # center | left | right
+          billboard: center                 # 始终面向玩家
+
+      # 实体剔除设置（性能优化）
+      # entity_culling: false               # 设为 false 禁用剔除，实体始终可见
+      # entity_culling:
+      #   aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5 # 自定义剔除包围盒
+      #   view_distance: 64                 # 最大可视距离，-1 无限
+
+    settings:
+      hardness: 1.0
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # ===========================================================================
+  # 示例 10: 可发光可交互的方块
+  # 综合运用 settings.luminance、events（右键点击切换状态）、复合 behaviors。
+  # ===========================================================================
+  custom:interactive_lamp:
+    state:
+      auto_state: note_block
+      model:
+        texture: "custom:block/custom/interactive_lamp"
+
+    settings:
+      hardness: 0.8
+      luminance: 15                          # 发光等级 15（满）
+      tags:
+        - minecraft:mineable/pickaxe
+      sounds:
+        break: minecraft:block.glass.break
+        step: minecraft:block.glass.step
+        place: minecraft:block.glass.place
+        hit: minecraft:block.glass.hit
+        fall: minecraft:block.glass.fall
+
+    # 使用 lamp_block 行为 — 可通过红石信号开关
+    behavior:
+      type: lamp_block
+
+    events:
+      # 右键点击时反转红石状态
+      - on: right_click
+        functions:
+          - type: play_sound
+            sound: minecraft:block.lever.click
+            pitch: 1.0
+            volume: 1.0
+            target: self
+          - type: message
+            message: "<aqua>灯已切换状态</aqua>"
+            target: self
+
+  # ===========================================================================
+  # 属性类型速查表
+  # ===========================================================================
+  # boolean              → true, false
+  # int(min, max)        → min 到 max 的所有整数
+  # string               → 预定义选项集合中的字符串
+  # axis                 → x, y, z
+  # direction            → east, south, west, north, up, down
+  # horizontal_direction → east, south, west, north
+  # single_block_half    → top, bottom
+  # double_block_half    → upper, lower
+  # hinge                → left, right
+  # slab_type            → top, bottom, double
+  # stairs_shape         → straight, inner_left, inner_right, outer_left, outer_right
+  # sofa_shape           → straight, inner_left, inner_right
+  # anchor_type          → floor, wall, ceiling
+
+  # ===========================================================================
+  # 特殊属性名称（硬编码的自动放置行为）
+  # ===========================================================================
+  # axis              → 放置时自动对齐玩家朝向的轴向
+  # facing            → 放置时自动对齐玩家朝向（六方向）
+  # facing_clockwise  → 放置时自动对齐玩家朝向（四方向，旋转 90 度）
+  # rotation          → 精确控制旋转（int 类型, range: 0~7 或 0~15）
+  # waterlogged       → 决定方块是否含水
+
+  # ===========================================================================
+  # auto_state 可用组速查表
+  # ===========================================================================
+  # solid                          → 音符盒 + 蘑菇方块（最通用的实心方块组）
+  # note_block                     → 音符盒（完整方块，可用数量最多）
+  # mushroom_stem                  → 蘑菇柄
+  # red_mushroom_block             → 红色蘑菇方块
+  # brown_mushroom_block           → 棕色蘑菇方块
+  # mushroom                       → 所有蘑菇方块
+  # tintable_leaves                → 可着色树叶（橡树/深色橡树/丛林/金合欢/红树），不含水
+  # waterlogged_tintable_leaves    → 可着色树叶，含水
+  # non_tintable_leaves            → 不可着色树叶，不含水
+  # waterlogged_non_tintable_leaves → 不可着色树叶，含水
+  # leaves                         → 所有树叶（不含水）
+  # waterlogged_leaves             → 所有树叶（含水）
+  # lower_tripwire                 → 绊线（碰撞箱更矮）
+  # higher_tripwire                → 绊线（碰撞箱更高）
+  # tripwire                       → 所有绊线
+  # sapling                        → 所有树苗
+  # pressure_plate                 → 所有测重压力板
+  # cactus                         → 仙人掌
+  # sugar_cane                     → 甘蔗
+  # weeping_vine                   → 垂泪藤
+  # twisting_vine                  → 缠怨藤
+  # cave_vine                      → 洞穴藤蔓
+  # kelp                           → 海带
+  # chorus                         → 紫颂植株
+
+  # ===========================================================================
+  # 纹理数量自动推断规则
+  # ===========================================================================
+  # 1 张纹理  → cube_all（path 可省略）
+  # 2 张纹理  → cube_column（path 必填）— 顺序: end, side
+  # 3 张纹理  → cube_bottom_top（path 必填）— 顺序: bottom, side, top
+  # 4 张纹理  → orientable（path 必填）— 顺序: bottom, front, side, top
+  # 5+ 张纹理 → block/cube（path 必填）— 顺序: down, up, north, south, west, east
+  #
+  # 纹理前加 ^ 前缀: 将该纹理也用作粒子纹理
+  #   例如: "^custom:block/custom/top" — 顶面纹理同时作为破坏粒子效果
+
+  # ===========================================================================
+  # 模型配置方式对比
+  # ===========================================================================
+  # ① 仅 texture（单张纹理，最简）→ 见示例 1
+  # ② path + textures 列表（自动推断模型结构）→ 见示例 6
+  # ③ path + generation（手动指定父模型）→ 见示例 6
+  # ④ models 列表（加权随机）→ 见示例 8
+  # ⑤ transparent + entity_renderer（实体渲染）→ 见示例 9

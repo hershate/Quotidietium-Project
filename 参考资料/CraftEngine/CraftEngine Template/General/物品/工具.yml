@@ -1,0 +1,217 @@
+# =============================================================================
+# CraftEngine 工具模板
+# =============================================================================
+# 严格遵循 CraftEngine Wiki:
+#   configuration/item.md
+#   configuration/item/data.md
+#   configuration/item/settings.md
+#   configuration/item/behaviors.md
+#   reference/block_tags.md
+# =============================================================================
+
+items:
+
+  # ===========================================================================
+  # 1. 自定义镐
+  # ===========================================================================
+  custom:example_pickaxe:
+    material: diamond_pickaxe
+    custom_model_data: 2001
+    data:
+      item_name: "<!i><#4488FF>蓝晶镐"
+      lore:
+        - "<!i><gray>一把能挖掘深蓝晶石的神奇镐子"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 6.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.2
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:efficiency: 5
+        minecraft:unbreaking: 3
+      max_damage: 3000
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/example_pickaxe"
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "minecraft:item/custom/example_pickaxe"
+    settings:
+      tags:
+        - "custom:tools"
+        - "minecraft:mineable/pickaxe"
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target: "custom:blue_crystal"
+          amount: 100
+    events:
+      - on: break
+        functions:
+          - type: play_sound
+            sound: "minecraft:block.stone.break"
+            target: "self"
+
+  # ===========================================================================
+  # 2. 自定义斧
+  # ===========================================================================
+  custom:example_axe:
+    material: diamond_axe
+    custom_model_data: 2002
+    data:
+      item_name: "<!i><#FF8C00>烈焰斧"
+      lore:
+        - "<!i><gray>一把带有火焰之力的战斧"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 0.6
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:fire_aspect: 2
+        minecraft:unbreaking: 3
+      max_damage: 2500
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/example_axe"
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "minecraft:item/custom/example_axe"
+    settings:
+      tags:
+        - "custom:tools"
+        - "minecraft:mineable/axe"
+      repairable:
+        anvil_repair: true
+      anvil_repair_item:
+        - target: "custom:fire_essence"
+          amount: 150
+
+  # ===========================================================================
+  # 3. 自定义锹
+  # ===========================================================================
+  custom:example_shovel:
+    material: diamond_shovel
+    custom_model_data: 2003
+    data:
+      item_name: "<!i><#90EE90>自然之锹"
+      lore:
+        - "<!i><gray>与大地共鸣的绿色之锹"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 5.5
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.0
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:efficiency: 4
+        minecraft:unbreaking: 3
+      max_damage: 2000
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/example_shovel"
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "minecraft:item/custom/example_shovel"
+    settings:
+      tags:
+        - "custom:tools"
+        - "minecraft:mineable/shovel"
+
+  # ===========================================================================
+  # 4. 自定义锄
+  # ===========================================================================
+  custom:example_hoe:
+    material: diamond_hoe
+    custom_model_data: 2004
+    data:
+      item_name: "<!i><#FFD700>丰收之锄"
+      lore:
+        - "<!i><gray>象征丰收的金色之锄"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 1.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 4.0
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:fortune: 3
+        minecraft:unbreaking: 3
+      max_damage: 1500
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/example_hoe"
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "minecraft:item/custom/example_hoe"
+    settings:
+      tags:
+        - "custom:tools"
+        - "minecraft:mineable/hoe"
+
+  # ===========================================================================
+  # 5. 范围挖掘工具 (range_mining_item behavior)
+  # ===========================================================================
+  custom:example_hammer:
+    material: diamond_pickaxe
+    custom_model_data: 2005
+    data:
+      item_name: "<!i><#888888>巨锤"
+      lore:
+        - "<!i><gray>一次可挖掘大范围方块的巨锤"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 12.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 0.4
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:efficiency: 3
+        minecraft:unbreaking: 4
+      max_damage: 5000
+    model:
+      type: "minecraft:model"
+      path: "minecraft:item/custom/example_hammer"
+      generation:
+        parent: "minecraft:item/handheld"
+        textures:
+          layer0: "minecraft:item/custom/example_hammer"
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+    settings:
+      tags:
+        - "custom:tools"
+        - "minecraft:mineable/pickaxe"

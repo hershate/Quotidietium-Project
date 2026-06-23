@@ -1,0 +1,78 @@
+# =============================================================================
+# CraftEngine 分类配置模板
+# =============================================================================
+# 基于 CraftEngine 官方文档: configuration/category.md
+# =============================================================================
+#
+# 使用 "categories:" 作为根键。
+# 分类用于在物品浏览器 (/ce) 中管理物品的排列顺序。
+
+categories:
+  # ===========================================================================
+  # 1. 主分类 (显示在物品浏览器一级菜单)
+  # ===========================================================================
+  custom:default:
+    priority: 1                          # 数值越小显示优先级越高
+    name: "<!i><white>默认分类</white>"  # 分类名称 (MiniMessage 格式)
+    lore:                                # 分类描述
+      - "<!i><gray>默认分类的描述</gray>"
+    icon: custom:topaz                   # 分类图标 (物品ID)
+    hidden: false                        # 是否在主菜单隐藏
+    conditions:                          # 显示条件 (可选)
+      - type: permission
+        permission: category.default
+    list:                                # 物品或子分类列表
+      - "#custom:weapons"                # "#"前缀表示引用子分类
+      - "#custom:tools"
+      - "#custom:materials"
+      - "custom:topaz"                  # 直接引用物品
+
+  # ===========================================================================
+  # 2. 子分类 (hidden: true 不会显示在主菜单)
+  # ===========================================================================
+  custom:weapons:
+    name: "<!i><#FF8C00>武器</#FF8C00>"
+    hidden: true                         # 子分类必须隐藏
+    icon: custom:topaz_sword
+    list:
+      - custom:topaz_sword
+      - custom:topaz_axe
+      - custom:topaz_bow
+      - custom:topaz_crossbow
+
+  custom:tools:
+    name: "<!i><#4488FF>工具</#4488FF>"
+    hidden: true
+    icon: custom:topaz_pickaxe
+    list:
+      - custom:topaz_pickaxe
+      - custom:topaz_shovel
+      - custom:topaz_hoe
+
+  custom:materials:
+    name: "<!i><#3CB371>材料</#3CB371>"
+    hidden: true
+    icon: custom:topaz
+    list:
+      - custom:topaz
+      - custom:topaz_ore
+      - custom:deepslate_topaz_ore
+    all_items: false                     # 是否显示所有未列出的物品
+
+# ===========================================================================
+# 在物品配置中指定分类
+# ===========================================================================
+items:
+  custom:topaz_sword:
+    material: golden_sword
+    data:
+      item_name: "<#FF8C00>黄玉剑"
+    category: custom:weapons             # 指定单个分类
+
+  custom:special_item:
+    material: diamond
+    data:
+      item_name: "<#FFD700>特殊物品"
+    category:                            # 多个分类
+      - custom:weapons
+      - custom:materials
