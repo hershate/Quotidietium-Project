@@ -208,6 +208,6 @@ CraftEngine Template/
 
 ---
 
-> **文件位置:** `F:/Github/repo/Quotidietium-Project/参考资料/CraftEngine/CraftEngine Template/General/`
-> **Wiki 位置:** `F:/Github/repo/Quotidietium-Project/参考资料/CraftEngine/CraftEngine Wiki/`
+> **文件位置:** `./General/`
+> **Wiki 位置:** `../CraftEngine Wiki/`
 > **最后更新:** 2026-06-23
