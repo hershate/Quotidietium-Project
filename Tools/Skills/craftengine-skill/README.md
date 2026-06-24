@@ -127,7 +127,7 @@ Skill **始终优先使用内置的本地文档**。官方在线文档（[https:
 
 ## 版权与许可
 
-本 Skill 所有内容（包括 SKILL.md、README.md 及 references/ 目录下的所有文件）统一采用 **Apache License 2.0** 协议开源。
+本 Skill 所有内容（包括 SKILL.md、README.md 除 references/ 目录下的所有文件，因为使用了官方文档）统一采用 **Apache License 2.0** 协议开源。
 
 ### 署名要求（强制）
 
