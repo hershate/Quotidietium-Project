@@ -1,0 +1,28 @@
+# 🍄 附着茎方块
+
+**附着茎方块**将茎与其果实相连，就像原版附着的南瓜茎或西瓜茎。它朝向果实方块，并在[PP更新](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97%E6%9B%B4%E6%96%B0#PP%E6%9B%B4%E6%96%B0)中检查朝向一侧是否仍为指定的果实方块。当果实被移除时，附着茎会自动退化为普通茎方块。
+
+| 属性名称   | 属性类型                 | 是否必需 |
+|--------|----------------------|------|
+| facing | horizontal_direction | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:attached_hami_melon_stem:
+    behavior:
+      type: attached_stem_block
+      fruit: default:hami_melon          # 此茎所附着的果实方块
+      stem: default:hami_melon_stem      # 果实被破坏后退化成的普通茎方块
+```
+
+:::info
+
+`fruit` 和 `stem` 均为**必需**。
+
+当附着状态失效时，方块会转换为 `stem` 指定的普通茎方块。若该方块具有 `age` 属性，则其值会被设置为最大值，否则将使用其默认状态。
+
+:::
+
+![](/img/attached_stem_block.png)

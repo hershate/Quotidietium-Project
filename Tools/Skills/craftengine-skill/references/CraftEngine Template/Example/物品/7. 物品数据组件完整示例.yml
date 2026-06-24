@@ -1,0 +1,192 @@
+# ============================================================================
+# CraftEngine 物品数据组件完整示例
+# 参考文档: 配置/物品/data.md (本仓库 Wiki)
+# 命名空间: 请将 'mynamespace' 替换为你自己的命名空间
+# 说明: 以下展示了一个物品可使用的所有数据组件。部分组件存在材质依赖
+#       (如 block_state 需要方块材质, trim 需要盔甲材质),
+#       请根据实际需求调整 material。
+# ============================================================================
+
+items:
+  mynamespace:example_artifact:
+    # << CHANGE THIS: 物品基础材质 (block_state 需使用方块材质, trim 需使用盔甲材质)
+    material: minecraft:diamond
+
+    data:
+      # ==================================================================
+      # item_name - 物品默认名称
+      # 优先级最低, 会被 custom_name 等其他名称覆盖。
+      # 不会在物品展示框中显示名称, 带有此组件的旗帜充当地图标记时不显示名称。
+      # ==================================================================
+      item_name: "<!i><gradient:#FF6B6B:#4ECDC4>古老神器"
+
+      # ==================================================================
+      # custom_name - 自定义名称 (类似铁砧中设置的名称)
+      # ==================================================================
+      custom_name: "<!i><#FFD700>古老神器"
+
+      # ==================================================================
+      # lore - 物品提示框中的描述信息 (高级格式)
+      # 支持 content / priority / split_lines / conditions
+      # priority 决定文本段显示顺序, 数值越低越靠近顶部。
+      # ==================================================================
+      lore:
+        # 第一段: 多行内容, 优先级 1 (最顶部)
+        - content:
+            - "<#FF6B6B>传说中蕴含无尽力量的神器"
+            - "<#4ECDC4>拥有多种不可思议的能力"
+          priority: 1
+
+        # 第二段: 单行内容, 优先级 2
+        - content: "<#FFD700>⚔ 攻击伤害 +15"
+          priority: 2
+
+        # 第三段: 带条件显示 + split_lines 自动按 \n 分割
+        - content: "<#98FB98>🍎 食用后可获得\n饱和效果 III"
+          priority: 3
+          split_lines: true
+          conditions:
+            - type: permission
+              permission: myartifact.consume            # << CHANGE THIS
+
+        # 第四段: 分隔装饰线, 优先级 4
+        - content: "<dark_gray>━━━━━━━━━━━━━━━━━━━━"
+          priority: 4
+
+        # 第五段: 基础说明, 优先级 5 (继承上一行的 priority 值)
+        - content: "<gray>右击以释放特殊能力"
+          priority: 5
+
+      # ==================================================================
+      # enchantment - 魔咒 (带 merge 模式)
+      # merge: true 表示与物品已有魔咒合并 (对配方后处理器很有用),
+      #         false 则会覆盖已有魔咒。
+      # 当物品类型为附魔书时, 魔咒自动转换为"无活性"魔咒。
+      # ==================================================================
+      enchantment:
+        merge: true
+        enchantments:
+          minecraft:sharpness: 5
+          minecraft:unbreaking: 3
+          minecraft:mending: 1
+          minecraft:fire_aspect: 2
+
+      # ==================================================================
+      # hide_tooltip - 隐藏指定组件的提示框信息 (原名 HideFlags)
+      # 插件处理跨版本兼容。
+      # ==================================================================
+      hide_tooltip:
+        - dyed_color
+        - enchantments
+        - attribute_modifiers
+
+      # ==================================================================
+      # attribute_modifiers - 属性修饰符
+      # 支持 1.21.5+ 的 display 字段自定义提示框显示文本。
+      # 旧版本可安全使用最新属性名称, 插件自动转换。
+      # ==================================================================
+      attribute_modifiers:
+        # 攻击伤害
+        - type: attack_damage
+          amount: 15.0
+          operation: add_value                        # add_value | add_multiplied_base | add_multiplied_total
+          id: myartifact:attack_damage                # << CHANGE THIS: 唯一标识符 (可选)
+          slot: mainhand                              # any | hand | armor | mainhand | offhand | head | chest | legs | feet | body | saddle
+          display:
+            type: override                            # override | tooltip
+            value: "<green>攻击伤害 +15"
+
+        # 攻击速度
+        - type: attack_speed
+          amount: 2.0
+          operation: add_value
+          id: myartifact:attack_speed                 # << CHANGE THIS
+          slot: mainhand
+          display:
+            type: override
+            value: "<green>攻击速度 +2.0"
+
+        # 移动速度
+        - type: movement_speed
+          amount: 0.15
+          operation: add_multiplied_base
+          id: myartifact:movement_speed               # << CHANGE THIS
+          slot: any
+          display:
+            type: override
+            value: "<green>移动速度 +15%"
+
+      # ==================================================================
+      # food - 食物组件 (1.20.5+)
+      # 旧版 Minecraft 请使用 settings 中的 food 属性。
+      # ==================================================================
+      food:
+        nutrition: 8             # << CHANGE THIS: 饱食度
+        saturation: 12.0         # << CHANGE THIS: 饱和度
+        can_always_eat: true     # << CHANGE THIS: 是否可随时食用
+
+      # ==================================================================
+      # max_damage - 最大耐久度 (1.20.5+)
+      # 和 damage 组件一起控制物品能否被损坏。此组件不存在时,
+      # 若物品被损坏, 游戏将最大耐久度视为 0。
+      # ==================================================================
+      max_damage: 500            # << CHANGE THIS
+
+      # ==================================================================
+      # unbreakable - 无法破坏
+      # ==================================================================
+      unbreakable: true
+
+      # ==================================================================
+      # dyed_color - 所染颜色 (RGB)
+      # ==================================================================
+      dyed_color: 255,100,50     # << CHANGE THIS: RGB 颜色值, 格式为 R,G,B
+
+      # ==================================================================
+      # custom_model_data - 自定义模型数据
+      # 注意: 在 data 层级下仅表示使用此组件本身。
+      # 如需生成对应的资源包文件, 请将 custom_model_data 置于 items 层级。
+      # 为确保向后兼容, 此处仅支持整数值; 新版本功能请使用 components。
+      # ==================================================================
+      custom_model_data: 1001    # << CHANGE THIS
+
+      # ==================================================================
+      # block_state - 方块状态 (仅当 material 为方块类型时生效)
+      # 控制方块物品被放置时将应用于方块的方块状态。
+      # 未指定的属性使用默认值, 无效属性值不起作用。
+      # ==================================================================
+      block_state:
+        note: "12"               # << CHANGE THIS: 音符盒音调 (0-24)
+        powered: "false"         # << CHANGE THIS: 是否激活
+        instrument: "harp"       # << CHANGE THIS: 乐器类型
+
+      # ==================================================================
+      # jukebox_playable - 唱片机可播放曲目 (1.21+)
+      # 控制物品是否能插进唱片机播放及播放的音乐信息。
+      # ==================================================================
+      jukebox_playable: mynamespace:epic_music   # << CHANGE THIS
+
+      # ==================================================================
+      # components - 自定义组件 (1.20.5+)
+      # 严格遵循 Minecraft Wiki 数据组件规范。
+      # 当组件只需存在而无需赋值时, 使用 {} 空对象即可。
+      # ==================================================================
+      components:
+        # consumable - 可食用属性 (1.20.5+)
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+
+        # damage - 已受损伤值 (从 0 开始计数)
+        minecraft:damage: 0
+
+      # ==================================================================
+      # trim - 盔甲纹饰 (仅当 material 为盔甲类型时生效)
+      # pattern: 纹饰图案, 取自 trim_pattern 注册表 (去 .json 后缀, 忽略 _ 开头的文件)
+      # material: 纹饰材料, 取自 trim_material 注册表
+      # ==================================================================
+      trim:
+        pattern: eye              # << CHANGE THIS: 纹饰图案
+        material: netherite       # << CHANGE THIS: 纹饰材料

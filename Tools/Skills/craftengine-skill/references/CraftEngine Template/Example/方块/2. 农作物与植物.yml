@@ -1,0 +1,116 @@
+# =============================================================================
+# CraftEngine 农作物与植物方块配置示例
+# 参考: 本地 CraftEngine Wiki -> configuration/block/behaviors/
+#   - crop_block.md | stem_block.md | attached_stem_block.md
+#   - bush_block.md | sapling_block.md | vertical_crop_block.md
+#   - spreading_block.md | surface_spreading_block.md
+# 命名空间: wonderland
+# 所有键名均来自上述 Wiki 文档。
+# =============================================================================
+
+blocks:
+  # ===========================================================================
+  # 1. crop_block —— 农作物方块（类似小麦/马铃薯）
+  #    随机刻生长, 光照区间控制, 支持骨粉催熟。
+  # ===========================================================================
+  wonderland:moon_berry_crop:
+    behavior:
+      type: crop_block
+      grow_speed: 0.25                # 每随机刻增加的 age 值（整数部分直接增加, 小数部分为概率）
+                                      # 默认 0.125
+      light_requirement: 9            # 生长所需最低光照  << CHANGE THIS
+      max_light_requirement: 15       # 生长所需最高光照（默认 15） << CHANGE THIS
+      spawn_light_requirement: 9      # 区块生成时的最低光照（默认等于 light_requirement）
+      max_spawn_light_requirement: 15 # 区块生成时的最高光照（默认等于 max_light_requirement）
+      is_bone_meal_target: true       # 骨粉是否生效（默认 true）
+      bone_meal_age_bonus:            # 骨粉增加的 age 值范围
+        type: uniform
+        min: 1                        # << CHANGE THIS
+        max: 3                        # << CHANGE THIS
+
+  # ===========================================================================
+  # 2. stem_block —— 茎方块（类似西瓜/南瓜茎）
+  #    随机刻增加 age, 满龄后朝水平方向生成果实, 自身变为 attached_stem_block。
+  # ===========================================================================
+  wonderland:glow_melon_stem:
+    behavior:
+      type: stem_block
+      fruit: wonderland:glow_melon              # 茎生成的果实方块（必需）<< CHANGE THIS
+      attached_stem: wonderland:attached_glow_melon_stem  # 果实长出后变为的附着茎方块（必需）<< CHANGE THIS
+      light_requirement: 0                      # 生长所需最低光照（默认 0）
+      max_light_requirement: 15                 # 生长所需最高光照（默认 15）
+      fruit_bottom_blocks:                      # 果实可坐落方块的白名单
+        - minecraft:farmland
+        - minecraft:dirt                         # << CHANGE THIS
+      fruit_bottom_block_tags:                  # 果实可坐落方块的标签白名单
+        - minecraft:dirt                         # << CHANGE THIS
+
+  # ===========================================================================
+  # 3. attached_stem_block —— 附着茎方块（连接茎与果实）
+  #    朝向果实方向, PP 更新时检查果实是否存在, 消失则退化回普通茎。
+  # ===========================================================================
+  wonderland:attached_glow_melon_stem:
+    behavior:
+      type: attached_stem_block
+      fruit: wonderland:glow_melon              # 所附着的果实方块（必需）<< CHANGE THIS
+      stem: wonderland:glow_melon_stem           # 果实被破坏后退化成的普通茎方块（必需）<< CHANGE THIS
+
+  # ===========================================================================
+  # 4. bush_block —— 灌木方块（类似花/树苗, 依赖支撑方块）
+  #    黑/白名单模式, 可选堆叠, 可选延迟检查。
+  # ===========================================================================
+  wonderland:star_light_bush:
+    behavior:
+      type: bush_block
+      blacklist: false                # false = 白名单模式, true = 黑名单模式
+      stackable: false                # 是否允许同类型方块向上堆叠 << CHANGE THIS
+      max_height: 0                   # 最大堆叠高度, stackable=true 时生效（需 > 1）
+      delay: 0                        # 支撑检查延迟（刻）, 0 = 立即破坏
+      bottom_blocks:                  # 支撑方块白名单（blacklist=false 时使用）
+        - minecraft:grass_block
+        - minecraft:dirt               # << CHANGE THIS
+      bottom_block_tags:              # 支撑方块标签白名单
+        - minecraft:dirt               # << CHANGE THIS
+
+  # ===========================================================================
+  # 5. sapling_block —— 树苗方块（骨粉/随机刻生长, 成熟后调用 feature 生成树木）
+  # ===========================================================================
+  wonderland:crystal_sapling:
+    behavior:
+      type: sapling_block
+      feature: wonderland:crystal_tree          # 完全成熟时生成的地物（必需）<< CHANGE THIS
+      light_requirement: 9                      # 生长所需最低光照（默认 9）<< CHANGE THIS
+      max_light_requirement: 15                 # 生长所需最高光照（默认 15）
+      grow_speed: 0.7                           # 每随机刻增加 stage 的概率（默认约 0.143）<< CHANGE THIS
+      bone_meal_success_chance: 0.45            # 骨粉产生成功粒子的概率（默认 0.45）
+
+  # ===========================================================================
+  # 6. vertical_crop_block —— 垂直作物方块（类似甘蔗/海带, 向上或向下生长）
+  #    只有最顶端的茎段增加 age, 满龄时在顶端延长出新茎段。
+  # ===========================================================================
+  wonderland:flame_cane:
+    behaviors:
+      - type: vertical_crop_block
+        max_height: 4                # 一株作物的最大段数（默认 3）<< CHANGE THIS
+        grow_speed: 0.333            # 每随机刻增加的 age 值（小数部分为 +1 概率, 默认 1）
+        direction: up                # 生长方向: up 或 down（默认 up）<< CHANGE THIS
+
+  # ===========================================================================
+  # 7. spreading_block —— 扩散方块（随机刻将附近 target_block 替换为自身）
+  #    扩散范围: X/Z ±1, Y -3 ~ +1。
+  # ===========================================================================
+  wonderland:void_corruption:
+    behavior:
+      type: spreading_block
+      target_block: wonderland:crystal_stone     # 可被转化的目标方块（必需）<< CHANGE THIS
+
+  # ===========================================================================
+  # 8. surface_spreading_block —— 表面扩散方块（类似草方块在泥土上蔓延）
+  #    向附近 base_block 扩散, 自身条件不符时退化回 base_block。
+  # ===========================================================================
+  wonderland:enchanted_grass:
+    behavior:
+      type: surface_spreading_block
+      light_requirement: 9          # 扩散所需最低光照（默认 0）<< CHANGE THIS
+      max_light_requirement: 15     # 扩散所需最高光照（默认 15）
+      base_block: wonderland:enchanted_dirt  # 扩散目标/退化回退方块（默认 minecraft:dirt）<< CHANGE THIS

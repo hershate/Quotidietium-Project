@@ -1,0 +1,20 @@
+# 📷 物品展示家具
+
+`display_item_furniture` 允许您将物品放置在家具中进行展示。您可以单独配置展示物品的碰撞框，以优化交互逻辑，这对同时拥有多个展示槽位的家具尤为有用。
+
+```yaml
+furniture:
+  default:showcase:
+    behavior:
+      type: display_item_furniture
+      data_key: craftengine:display_item
+      sounds:
+        put: minecraft:block.decorated_pot.insert
+        take: minecraft:block.decorated_pot.insert_fail
+      variants:
+        ground:
+          item_position: 0,0.07,0
+          hitboxes: [] # 见[📍 家具变体]的[判定箱]部分
+```
+
+![](/img/display_item_furniture.png)

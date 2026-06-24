@@ -1,0 +1,21 @@
+# 🌿 草方块
+
+对着**草方块**使用骨粉后，**草方块**会尝试生成一个[已配置的地物](https://zh.minecraft.wiki/w/%E5%B7%B2%E9%85%8D%E7%BD%AE%E7%9A%84%E5%9C%B0%E7%89%A9)，其决定了所生成基本内容，例如 `minecraft:grass_bonemeal` 会尝试在方块上方生成草和花。
+
+## 示例
+
+```yaml
+blocks:
+  default:grass_block:
+    behavior:
+      type: grass_block
+      feature: minecraft:grass_bonemeal   # 尝试生成的已配置的地物（必需）
+```
+
+:::warning
+
+- 方块**必须**拥有 `minecraft:dirt` 和 `minecraft:supports_vegetation`(26.1+) 标签，否则其上生成的草和花无法存活。
+
+:::
+
+![](/img/grass_block.png)

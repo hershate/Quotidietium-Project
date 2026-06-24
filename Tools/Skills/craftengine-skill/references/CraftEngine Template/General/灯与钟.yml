@@ -1,0 +1,88 @@
+# =============================================================================
+# CraftEngine 灯与钟方块配置模板
+# 文档来源:
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/lamp_block.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/toggleable_lamp_block.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/chime_block.md
+#
+# 使用方法: 将下方的 namespace 和 ID 替换为你自己的值即可使用。
+# =============================================================================
+
+# =============================================================================
+# 一、灯方块 (lamp_block)
+# 行为: 收到红石信号立即点亮, 失去信号后 4 刻熄灭。
+#       放置时自动检测附近红石信号并设置初始状态。
+# 属性: lit (boolean, 必需)
+# =============================================================================
+blocks:
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:your_lamp:
+    behavior:
+      type: lamp_block
+
+  # --- 示例: 带自定义属性的灯方块 ---
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:custom_lamp:
+    behavior:
+      type: lamp_block
+      # lamp_block 无额外配置项, 所有逻辑通过 lit 属性自动管理
+
+# =============================================================================
+# 二、可切换灯方块 (toggleable_lamp_block)
+# 行为:
+#   - 红石: 方块从未充能变为充能时, lit 状态翻转一次。
+#            powered 属性记录当前是否受到红石信号。
+#   - 手动交互: can_open_with_hand 启用后, 玩家可右键切换 lit 状态。
+# 属性:
+#   - lit     (boolean, 必需)
+#   - powered (boolean, can_open_with_hand=false 时必需; true 时可选)
+# =============================================================================
+
+  # --- 2a. 仅红石控制 (不可手动交互) ---
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:toggle_lamp_redstone_only:
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: false       # 禁止右键切换 (默认 false)
+
+  # --- 2b. 红石 + 手动交互 ---
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:toggle_lamp_hybrid:
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true        # 允许右键切换 (默认 false)
+      # powered 属性在 can_open_with_hand=true 时可选, 通常无需显式声明
+
+  # --- 2c. 红石 + 手动交互 + 浸水支持 ---
+  # (toggleable_lamp_block 不直接声明 waterlogged,
+  #  但可与 water_logged 行为组合实现浸水可切换灯)
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:toggle_lamp_waterlogged:
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true        # 允许右键切换
+    # 如需浸水, 可额外添加 water_logged 行为组件 (需查阅 water_logged 文档)
+    # water_logged:
+    #   type: water_logged
+
+# =============================================================================
+# 三、震响方块 (chime_block)
+# 行为: 被弹射物 (箭、三叉戟等) 击中时播放音效, 类似紫水晶块。
+# 配置:
+#   - sounds.chime: 被弹射物击中时播放的音效 (可选)
+# =============================================================================
+
+  # --- 3a. 使用自定义音效 ---
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:chime_custom:
+    behavior:
+      type: chime_block
+      sounds:
+        chime: "minecraft:block.amethyst_block.chime"  # << CHANGE THIS: 替换为你的音效 ID
+
+  # --- 3b. 无自定义音效 (使用默认音效) ---
+  # << CHANGE THIS: 替换 namespace 和 block ID
+  your_namespace:chime_default:
+    behavior:
+      type: chime_block
+      # sounds 块可省略, 使用引擎默认音效

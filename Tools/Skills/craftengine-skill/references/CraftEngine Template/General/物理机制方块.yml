@@ -1,0 +1,131 @@
+# =============================================================================
+# CraftEngine 物理机制方块模板
+# =============================================================================
+# 参考 Wiki (本地路径):
+#   configuration/block/behaviors/falling_block.md
+#   configuration/block/behaviors/concrete_powder_block.md
+#   configuration/block/behaviors/bouncing_block.md
+#
+# 用法: 替换所有 # << CHANGE THIS 标记处的值, 将命名空间 "custom" 改为你的
+#       命名空间 (如 "myplugin").
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 组 A: 可下落方块 (Falling Block)
+  # ===========================================================================
+  # 失去支撑时变为下落中的方块实体, 类似原版沙子/沙砾.
+  # 放置 2 刻后检查下方支撑, 若为空且未低于世界最小高度则开始下落.
+  # 可配置落地/摔毁音效, 以及对碰撞实体造成伤害.
+  #
+  # 注意: hurt_amount 与 max_hurt 需同时 > 0 才会启用伤害.
+  #       任意一项 <= 0 时不会造成伤害.
+  # ===========================================================================
+
+  custom:my_falling_block:
+    behavior:
+      type: falling_block
+
+      # 每次碰撞造成的伤害值 (整数). -1 = 禁用.
+      # << CHANGE THIS
+      hurt_amount: -1
+
+      # 单次下落最多伤害的实体数量 (整数). -1 = 禁用.
+      # << CHANGE THIS
+      max_hurt: -1
+
+      # 音效配置 (均为可选, 可删除整个 sounds 块)
+      sounds:
+        # 落地时播放的音效. 填写完整的命名空间 ID.
+        # << CHANGE THIS
+        land: minecraft:block.anvil.land
+
+        # 摔毁时播放的音效. 填写完整的命名空间 ID.
+        # << CHANGE THIS
+        destroy: minecraft:block.anvil.destroy
+
+  # -------------------------------------------------------------------------
+  # 简洁版 - 只下落不造成伤害, 不使用音效
+  # -------------------------------------------------------------------------
+  custom:my_simple_sand:
+    behavior:
+      type: falling_block
+      # hurt_amount 和 max_hurt 默认均为 -1, 无需显式写出
+
+  # ===========================================================================
+  # 组 B: 混凝土粉末 (Concrete Powder Block)
+  # ===========================================================================
+  # 遇水 (放置时 / 下落中 / PP 更新) 即硬化为指定的固体方块.
+  # 触发 BlockFormEvent, 将自身替换为 solid_block.
+  #
+  # 注意: solid_block 为必需, 接受有效方块 ID 或完整方块状态字符串
+  #       (如 "minecraft:stone[axis=y]"), 省略会导致配置加载失败.
+  # ===========================================================================
+
+  custom:my_concrete_powder:
+    behavior:
+      type: concrete_powder_block
+
+      # 硬化后转化成的方块 (必需). 支持方块状态语法.
+      # << CHANGE THIS
+      solid_block: custom:my_solid_block
+
+  # -------------------------------------------------------------------------
+  # 示例: 配合 falling_block 行为的混凝土粉末 (下落 + 遇水硬化)
+  # -------------------------------------------------------------------------
+  custom:my_falling_concrete_powder:
+    behavior:
+      type: concrete_powder_block
+      # << CHANGE THIS
+      solid_block: custom:my_solid_concrete
+
+  # (可选) 同时赋予下落行为 — 但一个 behavior 只能有一个 type.
+  # 若需下落 + 硬化, 需通过 CraftEngine 的 composite/chain 机制另行组合.
+  # 此处仅展示混凝土粉末本身的配置.
+
+  # ===========================================================================
+  # 组 C: 弹跳方块 (Bouncing Block)
+  # ===========================================================================
+  # 实体落在其上时反转下落速度, 将实体弹回空中.
+  # 潜行实体不会被反弹, 而是正常落地.
+  # 摔落伤害按 fall_damage_multiplier 缩放, 设为 0 可完全禁用.
+  # ===========================================================================
+
+  custom:my_bouncing_block:
+    behavior:
+      type: bouncing_block
+
+      # 反弹速度系数 (浮点数, 0 = 不反弹).
+      # 默认 0.66 (仅在 26.1.2 及更低版本生效, 26.2+ 通过方块设置定义).
+      # << CHANGE THIS
+      bounce_height: 0.66
+
+      # 摔落伤害系数 (浮点数). 0 = 无伤害.
+      # << CHANGE THIS
+      fall_damage_multiplier: 0.5
+
+      # 弹跳后强制同步客户端与服务端的移动向量.
+      # 设为 false 可缓解与视觉状态 bounciness 值一致时的网络抖动.
+      # << CHANGE THIS
+      sync_player_position: true
+
+  # -------------------------------------------------------------------------
+  # 示例: 零伤害弹跳方块 (床/沙发等安全着陆)
+  # -------------------------------------------------------------------------
+  custom:my_safe_bouncy_block:
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.66                    # << CHANGE THIS
+      fall_damage_multiplier: 0              # 完全禁用摔落伤害
+      sync_player_position: true             # << CHANGE THIS
+
+  # -------------------------------------------------------------------------
+  # 示例: 低弹力方块 (减速着陆)
+  # -------------------------------------------------------------------------
+  custom:my_low_bounce_pad:
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.3                     # << CHANGE THIS
+      fall_damage_multiplier: 0.8            # 部分减免
+      sync_player_position: false            # << CHANGE THIS

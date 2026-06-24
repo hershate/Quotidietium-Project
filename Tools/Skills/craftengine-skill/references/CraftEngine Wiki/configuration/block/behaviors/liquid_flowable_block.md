@@ -1,0 +1,16 @@
+# 🪣 流体推动方块
+
+**流体推动方块**可被水或熔岩替换，就像矮草丛或火把。当流体流入时，方块会被破坏并替换为对应流体。
+
+- **水：** 若 `drop_item` 为 `true`，方块会掉落对应物品。
+- **熔岩：** 方块不会掉落物品，而是直接摧毁方块。
+
+## 示例
+
+```yaml
+blocks:
+  default:amethyst_torch:
+    behavior:
+      type: liquid_flowable_block
+      drop_item: true        # 被水替换时是否掉落物品（默认 true）
+```

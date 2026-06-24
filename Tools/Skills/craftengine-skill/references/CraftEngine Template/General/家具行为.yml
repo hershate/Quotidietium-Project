@@ -1,0 +1,106 @@
+# =============================================================================
+#  CraftEngine 家具行为配置模板
+#  文档来源: 参考资料/CraftEngine/CraftEngine Wiki/configuration/furniture/behaviors/
+#    - display_item_furniture.md  (物品展示)
+#    - glowing_furniture.md       (发光)
+#    - simple_storage_furniture.md (简单存储)
+# =============================================================================
+#  使用方式: 将此模板内容复制到您的家具定义中, 搜索 "<< CHANGE THIS" 并替换为实际值。
+#  注意: 本文档仅展示各 behavior 独立的配置结构，并未假设多 behavior 组合场景。
+#        若 CraftEngine 允许在同一家具上组合多个 behavior，请自行测试兼容性。
+# =============================================================================
+
+# =============================================================================
+# [1] 物品展示家具 - display_item_furniture
+# 允许玩家将物品放置在家具中进行展示。
+# 可为不同变体(variant)单独配置物品位置与判定箱，适合多展示槽位家具。
+# =============================================================================
+furniture:
+  # << CHANGE THIS: 替换为你的命名空间与家具ID
+  your_namespace:display_case:
+    behavior:
+      type: display_item_furniture
+      # << CHANGE THIS: 自定义数据键，用于存储展示物品
+      data_key: your_namespace:display_item
+      sounds:
+        # << CHANGE THIS: 放入物品音效 (可省略)
+        put: minecraft:block.decorated_pot.insert
+        # << CHANGE THIS: 取出物品音效 (可省略)
+        take: minecraft:block.decorated_pot.insert_fail
+      variants:
+        # << CHANGE THIS: 变体名称与数量根据实际模型调整
+        ground:
+          # 物品相对位置 (x, y, z)，单位: 格
+          # << CHANGE THIS
+          item_position: 0,0.07,0
+          # 判定箱列表 (格式见 CraftEngine Wiki 家具变体 > 判定箱部分)
+          # 若为空数组则表示无自定义碰撞箱 (使用模型默认)
+          # << CHANGE THIS
+          hitboxes: []
+        wall:
+          # << CHANGE THIS
+          item_position: 0,0.5,0.3
+          # << CHANGE THIS (示例: 定义两个碰撞箱)
+          hitboxes:
+            - 0.2,0.1,0.4,0.8,0.3,0.6
+            - -0.1,0.3,0.4,0.3,0.5,0.6
+
+# =============================================================================
+# [2] 发光家具 - glowing_furniture (统一配置)
+# 所有变体共用一组光源位置与亮度。
+# =============================================================================
+furniture:
+  # << CHANGE THIS: 替换为你的命名空间与家具ID
+  your_namespace:candelabrum:
+    behaviors:
+      type: glowing_furniture
+      lights:
+        # 每个光源: position = (x, y, z)，level = 亮度 0~15
+        # << CHANGE THIS: 按实际模型调整光源位置与数量
+        - position: 0,0,0
+          level: 15
+        - position: 0.5,0.2,0
+          level: 10
+
+# =============================================================================
+# [3] 发光家具 - glowing_furniture (按变体单独配置)
+# 每个变体独立定义光源列表，实现差异化发光效果。
+# =============================================================================
+furniture:
+  # << CHANGE THIS: 替换为你的命名空间与家具ID
+  your_namespace:candelabrum_variant:
+    behaviors:
+      type: glowing_furniture
+      variants:
+        # << CHANGE THIS: 变体名称与数量根据实际模型调整
+        ground_lit:
+          - position: 0,0,0
+            level: 15
+        wall_lit:
+          - position: 0,0,0.3
+            level: 15
+        ceiling_lit:
+          - position: 0,-1,0
+            level: 12
+
+# =============================================================================
+# [4] 简单存储家具 - simple_storage_furniture
+# 提供基础容器功能，支持自定义标题与行数。
+# =============================================================================
+furniture:
+  # << CHANGE THIS: 替换为你的命名空间与家具ID
+  your_namespace:storage_core:
+    behavior:
+      type: simple_storage_furniture
+      # << CHANGE THIS: 自定义数据键，用于持久化存储内容
+      data_key: your_namespace:simple_storage_contents
+      # << CHANGE THIS: 容器界面标题
+      title: 存储核心
+      # 容器行数，取值范围: 1 ~ 6 (每行9格，共 9*rows 格)
+      # << CHANGE THIS
+      rows: 3
+      sounds:
+        # << CHANGE THIS: 打开容器音效 (可省略)
+        open: minecraft:block.iron_trapdoor.open
+        # << CHANGE THIS: 关闭容器音效 (可省略)
+        close: minecraft:block.iron_trapdoor.close

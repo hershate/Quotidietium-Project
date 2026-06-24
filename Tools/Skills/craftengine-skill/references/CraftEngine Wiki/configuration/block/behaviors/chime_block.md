@@ -1,0 +1,14 @@
+# 🔔 震响方块
+
+**震响方块**被弹射物（箭、三叉戟等）击中时发出的音效，类似于紫水晶块。
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_button:
+    behavior:
+      type: chime_block
+      sounds:
+        chime: minecraft:block.amethyst_block.chime   # 被弹射物击中时播放的音效（可选）
+```

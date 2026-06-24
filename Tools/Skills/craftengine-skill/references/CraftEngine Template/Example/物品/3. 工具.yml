@@ -1,0 +1,387 @@
+# =============================================================================
+# CraftEngine 工具物品 — 完整配置示例
+# =============================================================================
+# 本地参考文档:
+#   CraftEngine Wiki/configuration/item/settings.md
+#     - tags / repairable / anvil_repair_item
+#     - projectile (弹射物完全配置)
+#     - renameable / invulnerable / enchantable / keep_on_death_chance
+#     - allowed_projectiles
+#   CraftEngine Wiki/configuration/item/behaviors/range_mining_item.md
+#     - range_mining_item 行为 (range 偏移元组)
+#
+# 涵盖内容:
+#   1. 镐            — tags + repairable (精细控制)
+#   2. 斧            — anvil_repair_item (两种修复目标格式)
+#   3. 锹            — 3×3 水平平面挖掘 + 基础耐用设置
+#   4. 锄            — 十字形范围 + 简单 repairable 开关
+#   5. 锤            — 3×3 完整方块面范围挖掘
+#   6. 弓/弩         — projectile + allowed_projectiles 弹射物体系
+#
+# 使用方法:
+#   1. 全局替换 "myquest" 为你的命名空间
+#   2. 修改各 item 的 material 及 << CHANGE THIS 标记的值
+#   3. 按需调整 range 偏移元组 (宽度,高度,深度)
+# =============================================================================
+
+items:
+  # ===========================================================================
+  # 1. 镐 — tags + 分场景 repairable 控制
+  # ===========================================================================
+  # 演示:
+  #   - tags 多条目 (工具标签 + 原版标签)
+  #   - repairable 对象格式 (分别控制工作台 / 铁砧 / 合并)
+  #   - anvil_repair_item 的两种 target 格式 (标签引用 / 具体物品列表)
+  #   - renameable / enchantable / keep_on_death_chance / glow_color
+  # ===========================================================================
+  myquest:mythic_pickaxe:                                       # << CHANGE THIS
+    material: netherite_pickaxe                                  # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+    settings:
+      # === 标签体系 ===
+      tags:
+        - "myquest:mythic_tools"                                 # << CHANGE THIS
+        - "minecraft:mineable/pickaxe"
+        - "minecraft:tools"
+
+      # === 分场景可修复控制 ===
+      repairable:
+        crafting_table: true       # 工作台允许修复
+        anvil_repair: true         # 铁砧允许材料修复
+        anvil_combine: true        # 铁砧允许合并修复
+
+      # === 铁砧材料修复定义 ===
+      anvil_repair_item:
+        - target: "#myquest:mythic_materials"                    # << CHANGE THIS
+          amount: 25                                             # 每次修复固定恢复 25 点耐久
+        - target:
+            - "minecraft:netherite_ingot"                        # << CHANGE THIS
+            - "minecraft:netherite_scrap"
+          percent: 0.30                                          # 恢复 30% 总耐久
+
+      # === 其他实用设置 ===
+      renameable: true                                           # 允许铁砧重命名
+      enchantable: true                                          # 允许附魔台附魔
+      keep_on_death_chance: 0.8                                  # 80% 概率死亡保留
+      glow_color: gold                                           # 物品发光 (金色)
+
+  # ===========================================================================
+  # 2. 斧 — anvil_repair_item (精细修复配置)
+  # ===========================================================================
+  # 演示:
+  #   - anvil_repair_item 多种 target 写法
+  #   - anvil_combine 关闭 (仅允许材料修复, 不允许两把斧合成)
+  #   - 水平 3×1 范围挖掘 (适合砍树)
+  #   - invulnerable / destroy_on_death_chance
+  # ===========================================================================
+  myquest:woodsmans_axe:                                        # << CHANGE THIS
+    material: diamond_axe                                        # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 1,0,0
+          - -1,0,0
+          - 0,0,0
+    settings:
+      tags:
+        - "myquest:axes"                                         # << CHANGE THIS
+        - "minecraft:mineable/axe"
+        - "minecraft:tools"
+
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: false                                     # 不允许两把斧在铁砧合并
+
+      # === 多种修复目标演示 ===
+      anvil_repair_item:
+        # 方式一: 使用标签匹配
+        - target: "#myquest:axe_repair_materials"                # << CHANGE THIS
+          amount: 30
+        # 方式二: 使用具体物品列表 (多个材料)
+        - target:
+            - "minecraft:diamond"                                # << CHANGE THIS
+            - "minecraft:diamond_block"
+          percent: 0.25
+        # 方式三: 混合 — 单一物品 + 固定数值
+        - target: "minecraft:netherite_upgrade_smithing_template"
+          amount: 50
+
+      # === 抗摧毁与死亡 ===
+      invulnerable:
+        - lava
+        - fire
+        - fire_tick
+        - contact
+      destroy_on_death_chance: 0.1                               # 10% 概率死亡损毁
+      enchantable: true
+      renameable: true
+
+  # ===========================================================================
+  # 3. 锹 — 3×3 水平平面挖掘 + 基础耐用设置
+  # ===========================================================================
+  # 演示:
+  #   - 水平平面挖掘 (适合修整地形 / 铺设道路)
+  #   - repairable 简单布尔开关
+  #   - anvil_repair_item 含 percent 和 amount 混合
+  # ===========================================================================
+  myquest:excavator_shovel:                                      # << CHANGE THIS
+    material: diamond_shovel                                      # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,0,1
+          - 0,0,-1
+          - 1,0,1
+          - 1,0,-1
+          - -1,0,1
+          - -1,0,-1
+          - 0,0,0
+    settings:
+      tags:
+        - "myquest:shovels"                                      # << CHANGE THIS
+        - "minecraft:mineable/shovel"
+        - "minecraft:tools"
+
+      repairable: true                                           # 简单布尔总开关
+
+      anvil_repair_item:
+        - target: "#myquest:shovel_repair_items"                 # << CHANGE THIS
+          amount: 20
+        - target:
+            - "minecraft:diamond"                                # << CHANGE THIS
+          percent: 0.25
+
+      renameable: true
+      enchantable: true
+      keep_on_death_chance: 0.5                                  # 50% 死亡保留
+
+  # ===========================================================================
+  # 4. 锄 — 十字形范围 + 简单 repairable + 附魔控制
+  # ===========================================================================
+  # 演示:
+  #   - 十字形挖掘范围 (上/下/左/右, 适合精准采集)
+  #   - repairable: false (完全禁止修复)
+  #   - enchantable: false + glow_color (不可附魔但发光设计)
+  #   - fuel_time (作为燃料时的热值)
+  # ===========================================================================
+  myquest:magic_hoe:                                            # << CHANGE THIS
+    material: netherite_hoe                                      # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 0,-1,0
+          - 1,0,0
+          - -1,0,0
+    settings:
+      tags:
+        - "myquest:hoes"                                         # << CHANGE THIS
+        - "minecraft:mineable/hoe"
+
+      repairable: false                                          # 完全不可修复
+      anvil_repair_item: []                                      # 空列表 = 无铁砧修复材料
+      renameable: false                                          # 禁止重命名
+      enchantable: false                                         # 禁止附魔
+      glow_color: light_purple                                   # 紫色发光 (魔法感)
+      destroy_on_death_chance: 0.3                               # 30% 死亡损毁
+
+  # ===========================================================================
+  # 5. 锤 — 3×3 完整方块面范围挖掘
+  # ===========================================================================
+  # 演示:
+  #   - 完整的 3×3×1 方块面范围 (9 个偏移)
+  #   - repairable 仅允许铁砧 (关闭工作台修复)
+  #   - anvil_repair_item 按百分比修复
+  #   - 重型工具专属 durability 防护: keep_on_death + invulnerable
+  # ===========================================================================
+  myquest:warp_hammer:                                          # << CHANGE THIS
+    material: mace                                                # << CHANGE THIS
+    conditions: []
+    behavior:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 1,1,0
+          - -1,1,0
+          - 0,0,0
+          - 1,0,0
+          - -1,0,0
+          - 0,-1,0
+          - 1,-1,0
+          - -1,-1,0
+    settings:
+      tags:
+        - "myquest:heavy_weapons"                                # << CHANGE THIS
+        - "myquest:tools"
+
+      # 仅允许铁砧修复 (工作台修复关闭)
+      repairable:
+        crafting_table: false
+        anvil_repair: true
+        anvil_combine: true
+
+      anvil_repair_item:
+        - target: "#myquest:hammer_repair_materials"             # << CHANGE THIS
+          percent: 0.50                                          # 恢复 50% 总耐久
+        - target:
+            - "minecraft:netherite_block"                        # << CHANGE THIS
+          amount: 100                                            # 固定恢复 100 耐久
+
+      # 重型工具抗性
+      invulnerable:
+        - lava
+        - fire
+        - fire_tick
+        - block_explosion
+        - entity_explosion
+        - lightning
+      keep_on_death_chance: 1.0                                  # 100% 死亡保留
+      renameable: true
+      enchantable: true
+
+  # ===========================================================================
+  # 6. 弹射武器 — projectile + allowed_projectiles 完全配置
+  # ===========================================================================
+  # 演示:
+  #   - projectile 弹射物配置 (显示 / 音效 / 物理参数)
+  #   - 高级音效格式 (带 pitch 范围, 带方块类型覆盖)
+  #   - allowed_projectiles 限制可装载的弹药
+  #   - 弩/弓专用设置
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # 6a. 自定义弩 — 使用 projectile 配置弹射物
+  # ---------------------------------------------------------------------------
+  myquest:magic_crossbow:                                        # << CHANGE THIS
+    material: crossbow                                            # << CHANGE THIS
+    conditions: []
+    settings:
+      tags:
+        - "myquest:ranged_weapons"                               # << CHANGE THIS
+        - "minecraft:crossbows"
+
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+
+      anvil_repair_item:
+        - target: "#myquest:ranged_repair_materials"             # << CHANGE THIS
+          amount: 25
+        - target:
+            - "minecraft:diamond"                                # << CHANGE THIS
+          percent: 0.20
+
+      # === 限制可装载的弹射物 ===
+      allowed_projectiles:
+        - myquest:magic_arrow                                    # << CHANGE THIS
+        - myquest:energy_bolt                                    # << CHANGE THIS
+
+      # === 自定义弹射物定义 ===
+      projectile:
+        display:
+          item: myquest:magic_arrow_proj                          # << CHANGE THIS
+          translation: 0.0,0.2,0.0
+          rotation: 0.0,0.0,0.0,1.0
+          display_transform: NONE
+          scale: 0.8
+        sounds:
+          # 简易音效格式
+          throw: minecraft:entity.arrow.shoot
+          # 高级音效格式 (带 pitch/volume 范围)
+          hit_entity:
+            id: minecraft:entity.arrow.hit
+            pitch: 0.8~1.2
+            volume: 1.5
+          # 方块类型覆盖音效
+          hit_block:
+            default: minecraft:entity.arrow.hit
+            overrides:
+              minecraft:stone: minecraft:block.stone.break
+              minecraft:wood: minecraft:block.wood.break
+              myquest:magic_block: minecraft:entity.firework_rocket.twinkle  # << CHANGE THIS
+        # === 弹射物物理参数 ===
+        ignore_infinity_enchantment: true                         # 无视无限附魔 (保持弹药消耗)
+        pickupable: false                                         # 不可捡起 (魔法箭矢)
+        remove_on_hit: true                                       # 命中后移除
+        gravity: false                                            # 无重力 (直线弹道)
+        velocity: 3.0                                             # 初速度
+        damage: 8                                                 # 基础伤害
+        pierce_level: 2                                           # 穿透 2 个实体
+
+  # ---------------------------------------------------------------------------
+  # 6b. 自定义三叉戟 — 弹射物+近战两用工具
+  # ---------------------------------------------------------------------------
+  myquest:thunder_trident:                                       # << CHANGE THIS
+    material: trident                                             # << CHANGE THIS
+    conditions: []
+    settings:
+      tags:
+        - "myquest:ranged_weapons"                               # << CHANGE THIS
+        - "myquest:melee_weapons"
+        - "minecraft:tridents"
+
+      repairable:
+        crafting_table: false
+        anvil_repair: true
+        anvil_combine: true
+
+      anvil_repair_item:
+        - target:
+            - "minecraft:prismarine_shard"                       # << CHANGE THIS
+            - "minecraft:prismarine_crystals"
+          percent: 0.15
+        - target: "minecraft:heart_of_the_sea"                   # << CHANGE THIS
+          amount: 75
+
+      # 三叉戟 projectile 配置
+      projectile:
+        display:
+          item: myquest:thunder_trident_proj                      # << CHANGE THIS
+          translation: 0,0,0
+          rotation: 1,1,1,1
+          display_transform: NONE
+          scale: 0.6
+        sounds:
+          throw:
+            id: minecraft:item.trident.throw
+            pitch: 0.9~1.1
+            volume: 1.0
+          hit_entity: minecraft:item.trident.hit
+          hit_block:
+            default: minecraft:item.trident.hit_ground
+            overrides:
+              minecraft:water: minecraft:item.trident.hit_water
+              minecraft:ice: minecraft:block.glass.break
+        ignore_infinity_enchantment: false                        # 受无限附魔影响
+        pickupable: true                                          # 可捡起
+        remove_on_hit: false                                      # 不自动移除 (可回收)
+        gravity: true                                             # 受重力影响 (抛物线)
+        velocity: 2.5
+        damage: 10
+        pierce_level: 3                                           # 穿透 3 个实体
+
+      # === 额外设置 ===
+      invulnerable:
+        - lava
+        - fire_tick
+        - lightning
+      keep_on_death_chance: 0.9
+      renameable: true
+      enchantable: true

@@ -1,0 +1,131 @@
+# =============================================================================
+# CraftEngine 图像配置模板
+# Wiki 参考:
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/image.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/reference/text_format.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/compatibility/placeholderapi.md
+#
+# 用法:
+#   1. 将下方 'namespace' 替换为你的命名空间（不允许中文）
+#   2. 将字体文件放入 assets/<命名空间>/font/<字体名称>.json
+#   3. 修改对应占位值（标记为 # << CHANGE THIS）
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 全局图像配置 (config.yml)
+# ---------------------------------------------------------------------------
+# 控制 <image:...> 和 <shift:...> 标签在数据包层面的拦截生效范围
+image: # << CHANGE THIS: 放入你的 config.yml 中
+  intercept-packets: # << CHANGE THIS
+    system-chat: true  # << CHANGE THIS
+    tab-list: true     # << CHANGE THIS
+    actionbar: true    # << CHANGE THIS
+    # 更多可选: bossbar, titles, subtitles, etc.
+
+# =============================================================================
+# images 配置块 — 放入你的 字体名称.json
+# 路径格式: assets/<命名空间>/font/<字体名称>.json
+# =============================================================================
+images:
+
+  # =========================================================================
+  # [示例组 1] 单字符位图
+  # 每个条目映射一个 Unicode 字符 → 一张图片
+  # =========================================================================
+
+  # --- 单字符: 用 file + char（直接字符）---
+  # << CHANGE THIS: 条目名格式 "命名空间:路径"
+  namespace:item_browser: # << CHANGE THIS
+    height: 140    # << CHANGE THIS: 必须 >= ascent
+    ascent: 18     # << CHANGE THIS
+    font: minecraft:internal # << CHANGE THIS: 字体引用
+    file: minecraft:font/gui/custom/item_browser.png # << CHANGE THIS
+    char: '뀀'     # << CHANGE THIS: 直接写字符；省略则插件自动分配
+
+  # --- 单字符: 用 file + char（数字 ID）---
+  namespace:another_icon: # << CHANGE THIS
+    height: 64     # << CHANGE THIS: 必须 >= ascent
+    ascent: 32     # << CHANGE THIS
+    font: minecraft:custom # << CHANGE THIS
+    file: minecraft:font/gui/custom/another_icon.png # << CHANGE THIS
+    char: 1000     # << CHANGE THIS: 使用 UTF-8 数字 ID 代替直接字符
+
+  # =========================================================================
+  # [示例组 2] 多字符位图
+  # 一张精灵图 (sprite sheet) 按网格切割，每个格子对应一个字符
+  # =========================================================================
+
+  # --- 多字符: 手动指定 chars 列表 ---
+  namespace:icons: # << CHANGE THIS
+    height: 10     # << CHANGE THIS: 必须 >= ascent
+    ascent: 9      # << CHANGE THIS
+    font: minecraft:icons # << CHANGE THIS
+    file: minecraft:font/image/icons.png # << CHANGE THIS
+    chars: # << CHANGE THIS: 显式列出每一行的字符序列
+      - '뀀뀁뀂'    # 第 0 行
+      - '뀃뀄뀅'    # 第 1 行
+
+  # --- 多字符: 用 grid_size 自动分配 ---
+  # 插件按 grid_size 自动生成对应数量的字符，无需手动写 chars
+  namespace:auto_grid_icons: # << CHANGE THIS
+    height: 10     # << CHANGE THIS: 必须 >= ascent
+    ascent: 9      # << CHANGE THIS
+    font: minecraft:icons # << CHANGE THIS
+    file: minecraft:font/image/icons.png # << CHANGE THIS
+    grid_size: 2,3 # << CHANGE THIS: 格式 "行数,列数"
+
+  # =========================================================================
+  # [示例组 3] 引用 (ref)
+  # 为多字符精灵图中的某个格子起别名，两种写法等价
+  # =========================================================================
+
+  # --- 引用: 内联行/列索引 ---
+  namespace:angry: # << CHANGE THIS
+    ref: namespace:emojis:0:1 # << CHANGE THIS: "命名空间:路径:行:列"
+
+  # --- 引用: 显式 row + column ---
+  namespace:happy: # << CHANGE THIS
+    ref: namespace:emojis # << CHANGE THIS
+    row: 0          # << CHANGE THIS
+    column: 1       # << CHANGE THIS
+
+  # =========================================================================
+  # [示例组 4] 默认字体 (minecraft:default)
+  # 用于替换原版容器标题等场景，此时必须使用 minecraft:default 字体
+  # =========================================================================
+
+  namespace:custom_ui: # << CHANGE THIS
+    height: 140    # << CHANGE THIS: 必须 >= ascent
+    ascent: 18     # << CHANGE THIS
+    font: minecraft:default # << CHANGE THIS: 替换原版 UI 时使用 default 字体
+    file: minecraft:font/gui/custom/gui.png # << CHANGE THIS
+
+# =============================================================================
+# 在富文本组件中使用自定义字体
+# =============================================================================
+#
+# MiniMessage:
+#   <font:namespace:font_name>文本</font>
+#
+# MineDown:
+#   [文本](font=namespace:font_name)
+#
+# 通用 image/shift 标签 (数据包拦截):
+#   <image:命名空间:路径>
+#   <image:命名空间:路径:行:列>
+#   <shift:-20>
+#
+# PlaceholderAPI + MiniMessage/MineDown:
+#   详见: 参考资料/CraftEngine/CraftEngine Wiki/compatibility/placeholderapi.md
+#
+# 预览命令:
+#   /ce debug image [id]
+#
+# =============================================================================
+# 注意事项
+# =============================================================================
+# 1. height 必须始终 >= ascent，这是 Minecraft 强制要求。
+# 2. 命名空间和字体名称不允许使用中文。
+# 3. 不建议修改 minecraft:default 字体，除非需要替换原版容器标题。
+# 4. 若未指定 char，插件会自动分配字符；若未指定 chars 但指定了 grid_size，
+#    插件会按网格尺寸自动分配。

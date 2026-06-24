@@ -1,0 +1,47 @@
+# 🔘 按钮方块
+
+**按钮方块**是一种红石电源。被按下时激活并输出信号，片刻后自动弹起关闭。
+
+可由以下方式触发：
+- 玩家对着按钮使用
+- 射出去的箭和投掷出的三叉戟落在按钮上
+- 风弹命中产生风暴
+
+按钮激活时会[强充能](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF/%E5%85%85%E8%83%BD%E4%B8%8E%E6%BF%80%E6%B4%BB#%E5%85%85%E8%83%BD%EF%BC%88Charging%EF%BC%89)自身附着的红石导体至充能等级15。
+
+## 属性
+
+按钮本身只需要一个开或关的状态。**[强充能](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF/%E5%85%85%E8%83%BD%E4%B8%8E%E6%BF%80%E6%B4%BB#%E5%85%85%E8%83%BD%EF%BC%88Charging%EF%BC%89)自身附着的红石导体依赖于[➡️ 水平面定向附着方块](face_attached_horizontal_directional_block.md)行为**——按钮会调用它来获知自身朝向。若方块上没有该行为，按钮仍能切换状态，但不会[强充能](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF/%E5%85%85%E8%83%BD%E4%B8%8E%E6%BF%80%E6%B4%BB#%E5%85%85%E8%83%BD%EF%BC%88Charging%EF%BC%89)自身附着的红石导体。
+
+| 属性名称    | 属性类型                 | 是否必需 | 来源行为                                                        |
+|---------|----------------------|------|-------------------------------------------------------------|
+| powered | boolean              | 是    | 按钮方块                                                        |
+| face    | anchor_type          | 是*   | [水平面定向附着方块](face_attached_horizontal_directional_block.md) |
+| facing  | horizontal_direction | 是*   | [水平面定向附着方块](face_attached_horizontal_directional_block.md) |
+
+\* 仅在需要[强充能](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF/%E5%85%85%E8%83%BD%E4%B8%8E%E6%BF%80%E6%B4%BB#%E5%85%85%E8%83%BD%EF%BC%88Charging%EF%BC%89)自身附着的红石导体时必需。
+
+:::note
+
+`face` 与 `facing` 并非由按钮方块行为声明，而是来自与[➡️ 水平面定向附着方块](face_attached_horizontal_directional_block.md)行为的组合。这是一种典型的复合行为依赖。
+
+:::
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_button:
+    behaviors:
+      - type: face_attached_horizontal_directional_block
+        attached_block_tags:
+          - minecraft:dirt
+      - type: button_block
+        ticks_to_stay_pressed: 30        # 按钮保持激活的时长，单位：刻（默认 30）
+        can_be_activated_by_arrows: true # 落在按钮上的箭或三叉戟是否让它保持激活（默认 true）
+        sounds:
+          on: minecraft:block.wooden_button.click_on   # 按钮激活的音效（可选）
+          off: minecraft:block.wooden_button.click_off  # 按钮取消激活的音效（可选）
+```
+
+![](/img/button_block.png)

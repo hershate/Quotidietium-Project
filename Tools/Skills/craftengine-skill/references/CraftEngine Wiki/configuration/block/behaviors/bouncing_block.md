@@ -1,0 +1,27 @@
+# ⏏️ 弹跳方块
+
+**弹跳方块**能将落在其上的实体弹回空中。当实体落到这个方块上时，其下落速度会被反转——`bounce_height` 控制反弹时保留多少速度。处于潜行状态下的实体不会被反弹，而是正常落地。
+
+摔落伤害仍会生效，但会按 `fall_damage_multiplier` 等比缩放。设为 `0` 可完全禁用摔落伤害。
+
+## 示例
+
+```yaml
+blocks:
+  default:sofa:
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.66              # 反弹速度系数，0 为不反弹（默认 0.66，仅在 26.1.2 及更低版本生效，26.2+ 通过方块设置 bounce_restitution 定义）
+      fall_damage_multiplier: 0.5      # 摔落伤害系数，0 为无伤害（默认 0.5）
+      sync_player_position: true       # 弹跳后强制同步客户端与服务端的移动向量（默认 true）
+```
+
+:::info
+
+**sync_player_position：** 当设为 `true` 时，服务器会在弹跳 1 刻后标记需要向客户端修正移动向量。
+这可以缓解与原版可弹跳方块行为不一致的问题，但则并不完美。
+如果自定义方块使用的视觉方块状态的 `bounce_height` 的数值（例如床在 26.1.2 以之前是 0.66）和弹跳方块行为的数值相同，可以将此选项设为 `false`。
+
+:::
+
+![](/img/bouncing_block.png)

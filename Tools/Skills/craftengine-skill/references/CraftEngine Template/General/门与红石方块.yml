@@ -1,0 +1,101 @@
+# =============================================================================
+# CraftEngine 方块配置模板 —— 门 / 活板门 / 栅栏 / 栅栏门 / 按钮 / 压力板
+# =============================================================================
+# Wiki 参考路径（本地）:
+#   - behaviors/door_block.md
+#   - behaviors/trapdoor_block.md
+#   - behaviors/fence_block.md
+#   - behaviors/fence_gate_block.md
+#   - behaviors/button_block.md
+#   - behaviors/pressure_plate_block.md
+#
+# 用法: 将 "mycustom" 替换为你的命名空间, 将 "example_*" 替换为实际方块 ID,
+#       并按需修改 # << CHANGE THIS 标记的值。
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 门 (door_block)
+  # ===========================================================================
+  # 必需属性: open | powered | half(double_block_half) | facing(horizontal_direction) | hinge
+  mycustom:example_door:                                          # << CHANGE THIS
+    behavior:
+      type: door_block
+      can_open_with_hand: true                                    # << CHANGE THIS (默认 true)
+      can_open_by_wind_charge: true                               # << CHANGE THIS (默认 true)
+      sounds:                                                     # << 可选, 不想要可移除整个 sounds 块
+        open: block.wooden_door.open                              # << CHANGE THIS
+        close: block.wooden_door.close                            # << CHANGE THIS
+
+  # ===========================================================================
+  # 活板门 (trapdoor_block)
+  # ===========================================================================
+  # 必需属性: open | powered | half(single_block_half) | facing(horizontal_direction)
+  # 可选属性: waterlogged
+  mycustom:example_trapdoor:                                      # << CHANGE THIS
+    behavior:
+      type: trapdoor_block
+      can_open_with_hand: true                                    # << CHANGE THIS (默认 true)
+      can_open_by_wind_charge: true                               # << CHANGE THIS (默认 true)
+      sounds:                                                     # << 可选
+        open: block.wooden_trapdoor.open                          # << CHANGE THIS
+        close: block.wooden_trapdoor.close                        # << CHANGE THIS
+
+  # ===========================================================================
+  # 栅栏 (fence_block)
+  # ===========================================================================
+  # 必需属性: north | east | south | west (均为 boolean)
+  mycustom:example_fence:                                         # << CHANGE THIS
+    behavior:
+      type: fence_block
+      connectable_block_tag: minecraft:wooden_fences              # << CHANGE THIS (默认 minecraft:wooden_fences)
+      can_leash: true                                             # << CHANGE THIS
+
+  # ===========================================================================
+  # 栅栏门 (fence_gate_block)
+  # ===========================================================================
+  # 必需属性: open | powered | in_wall | facing(horizontal_direction)
+  mycustom:example_fence_gate:                                    # << CHANGE THIS
+    behavior:
+      type: fence_gate_block
+      can_open_with_hand: true                                    # << CHANGE THIS (默认 true)
+      can_open_by_wind_charge: true                               # << CHANGE THIS (默认 true)
+      sounds:                                                     # << 可选
+        open: block.fence_gate.open                               # << CHANGE THIS
+        close: block.fence_gate.close                             # << CHANGE THIS
+
+  # ===========================================================================
+  # 按钮 (button_block)
+  # ===========================================================================
+  # 注意: 按钮使用 behaviors 列表（不是单数 behavior），因为它依赖
+  # face_attached_horizontal_directional_block 行为来提供 face / facing 属性。
+  #
+  # button_block 声明的必需属性: powered
+  # face_attached_horizontal_directional_block 提供的必需属性:
+  #   face(anchor_type), facing(horizontal_direction)
+  #   （仅在需要强充能自身附着的红石导体时必需）
+  mycustom:example_button:                                        # << CHANGE THIS
+    behaviors:
+      - type: face_attached_horizontal_directional_block
+        attached_block_tags:
+          - minecraft:dirt                                        # << CHANGE THIS
+      - type: button_block
+        ticks_to_stay_pressed: 30                                 # << CHANGE THIS (默认 30, 单位: 刻)
+        can_be_activated_by_arrows: true                          # << CHANGE THIS (默认 true)
+        sounds:                                                   # << 可选
+          on: minecraft:block.wooden_button.click_on              # << CHANGE THIS
+          off: minecraft:block.wooden_button.click_off            # << CHANGE THIS
+
+  # ===========================================================================
+  # 压力板 (pressure_plate_block)
+  # ===========================================================================
+  # 必需属性: powered
+  mycustom:example_pressure_plate:                                # << CHANGE THIS
+    behavior:
+      type: pressure_plate_block
+      sensitivity: all                                            # << CHANGE THIS ("all" 或 "mob", 默认 "all")
+      pressed_time: 20                                            # << CHANGE THIS (默认 20, 单位: 刻)
+      sounds:                                                     # << 可选
+        on: minecraft:block.wooden_pressure_plate.click_on        # << CHANGE THIS
+        off: minecraft:block.wooden_pressure_plate.click_off      # << CHANGE THIS

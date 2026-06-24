@@ -1,0 +1,201 @@
+# =============================================================================
+# CraftEngine 食物/消耗品物品配置模板
+# =============================================================================
+# 参考 Wiki (本地路径, 相对此包的 resources 目录):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
+#     - food 节:    nutrition / saturation / can_always_eat
+#     - components 节: minecraft:consumable 等原生组件的使用格式
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration.md
+#     - minecraft:consumable 组件示例 (consume_seconds / animation)
+#
+# 自定义组件的完整字段结构遵循 Minecraft Wiki 规范。
+# 所有标记 << CHANGE THIS 的值按需修改。
+# 将命名空间 "my" 替换为你的包命名空间。
+# =============================================================================
+
+items:
+
+  # ============================================================================
+  # [组 1] 基础食物 -- 仅使用 food 硬编码数据 (data.md food 节)
+  # ============================================================================
+
+  # --------------------------------------------------------------------------
+  # 示例 1: 基础食物, 不可随时食用
+  # --------------------------------------------------------------------------
+  my:magic_apple:
+    material: apple
+    data:
+      food:
+        nutrition: 5           # << CHANGE THIS 饱食度 (0-20 整数)
+        saturation: 3.5         # << CHANGE THIS 饱和度 (0-10 单精度浮点数)
+        can_always_eat: false   # << CHANGE THIS 是否可满饱时食用
+
+  # --------------------------------------------------------------------------
+  # 示例 2: 基础食物, 可随时食用
+  # --------------------------------------------------------------------------
+  my:golden_berries:
+    material: sweet_berries
+    data:
+      food:
+        nutrition: 2
+        saturation: 1.2
+        can_always_eat: true
+
+  # ============================================================================
+  # [组 2] 食物 + minecraft:consumable 组件 (configuration.md / components 节)
+  # ============================================================================
+
+  # --------------------------------------------------------------------------
+  # 示例 3: 食物 + 消耗组件 (含音效 / 粒子 / 自定义耗时 / 动画)
+  # --------------------------------------------------------------------------
+  my:hearty_stew:
+    material: mushroom_stew
+    data:
+      food:
+        nutrition: 8
+        saturation: 6.0
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.6            # << CHANGE THIS 食用耗时 (秒, 浮点数)
+          animation: eat                   # << CHANGE THIS 食用动画
+                                           #   可选: eat / drink / block / bow
+                                           #         crossbow / spear / spyglass
+                                           #         toot_horn / brush 等
+          sound: minecraft:entity.generic.eat
+                                           # << CHANGE THIS 食用音效 (命名空间ID)
+          has_consume_particles: true      # << CHANGE THIS 是否显示消耗粒子
+
+  # --------------------------------------------------------------------------
+  # 示例 4: 食物 + 消耗组件 + on_consume_effects (apply_effects)
+  # --------------------------------------------------------------------------
+  my:warrior_ration:
+    material: cooked_beef
+    data:
+      food:
+        nutrition: 12
+        saturation: 8.0
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+          on_consume_effects:
+            - type: apply_effects
+              effects:
+                - effect: minecraft:speed           # << CHANGE THIS 状态效果 ID
+                  duration: 600                      # << CHANGE THIS 持续刻数 (20刻=1秒)
+                  amplifier: 1                       # << CHANGE THIS 等级 (0=I级)
+                  ambient: false                     # 是否使用环境效果渲染 (减少粒子)
+                  show_particles: true               # 是否显示效果粒子
+                  show_icon: true                    # 是否显示效果图标
+                - effect: minecraft:regeneration
+                  duration: 200
+                  amplifier: 2
+                  ambient: false
+                  show_particles: true
+                  show_icon: true
+
+  # ============================================================================
+  # [组 3] 完整功能食物 -- 综合所有特性
+  # ============================================================================
+
+  # --------------------------------------------------------------------------
+  # 示例 5: 完整食物 -- food + consumable 全字段 + 效果
+  # --------------------------------------------------------------------------
+  my:ancient_biscuit:
+    material: cookie
+    data:
+      food:
+        nutrition: 4
+        saturation: 2.0
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 0.8
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: false
+          on_consume_effects:
+            - type: apply_effects
+              effects:
+                - effect: minecraft:absorption
+                  duration: 1200
+                  amplifier: 3
+                  ambient: true
+                  show_particles: false
+                  show_icon: true
+                - effect: minecraft:saturation
+                  duration: 1
+                  amplifier: 0
+                  ambient: false
+                  show_particles: false
+                  show_icon: true
+
+  # ============================================================================
+  # [组 4] 基于版本的消耗组件 (configuration.md 区块合并示例)
+  #    使用 $$>=1.21.2 条件, 使 consumable 组件仅在高版本生效
+  # ============================================================================
+
+  # --------------------------------------------------------------------------
+  # 示例 6: 版本条件 food -- 低版本用 settings.food 回退, 高版本用组件
+  # --------------------------------------------------------------------------
+  my:timeless_potion:
+    material: honey_bottle
+    settings:
+      food:
+        nutrition: 6
+        saturation: 4.0
+    data:
+      item_name: "<!i><#AA00FF>时光药水"
+      components:
+        minecraft:max_damage: 1
+    # 仅 1.21.2+ 加载此区块 (configuration.md 区块合并示例)
+    $$>=1.21.2:
+      data:
+        components:
+          minecraft:consumable:
+            consume_seconds: 3.0
+            animation: drink
+            sound: minecraft:entity.generic.drink
+            has_consume_particles: true
+            on_consume_effects:
+              - type: apply_effects
+                effects:
+                  - effect: minecraft:slow_falling
+                    duration: 1200
+                    amplifier: 0
+                    ambient: false
+                    show_particles: true
+                    show_icon: true
+
+  # --------------------------------------------------------------------------
+  # 示例 7: 消耗替代品 (settings.md consume_replacement 节)
+  # --------------------------------------------------------------------------
+  my:special_tea:
+    material: potion
+    settings:
+      food:
+        nutrition: 1
+        saturation: 0.5
+      # << CHANGE THIS 消耗后返还的物品 (例如水瓶喝完返回玻璃瓶)
+      consume_replacement: minecraft:glass_bottle
+    data:
+      item_name: "<!i><#55FF55>特制凉茶"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.2
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: false
+          on_consume_effects:
+            - type: apply_effects
+              effects:
+                - effect: minecraft:luck
+                  duration: 3600
+                  amplifier: 1
+                  ambient: false
+                  show_particles: true
+                  show_icon: true

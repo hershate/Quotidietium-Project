@@ -1,0 +1,117 @@
+# ============================================================================
+# CraftEngine 语言与本地化配置模板
+# ============================================================================
+# 本地 Wiki 参考:
+#   ../../CraftEngine Wiki/configuration/lang.md
+#   ../../CraftEngine Wiki/configuration/i18n.md
+#
+# 用法: 复制此文件, 将 'custom' 替换为你的命名空间, 修改各翻译键与文本,
+#       并移除 # << CHANGE THIS 标记后使用.
+# ============================================================================
+
+# ============================================================================
+# 一、lang 系统 (客户端资源包驱动)
+# ============================================================================
+# 依赖于客户端资源包, 根据玩家客户端语言动态调整文本.
+# 任何内容更改后必须强制重新加载资源包.
+# 缺少语言文件时 Minecraft 默认使用 en_us.
+# ============================================================================
+
+lang:
+
+  # --------------------------------------------------------------------------
+  # 按语言代码配置翻译 (标准 locale 格式: en_us, zh_cn, ja_jp 等)
+  # --------------------------------------------------------------------------
+  en_us:
+    item.custom.palm_leaves: "Palm Leaves"             # << CHANGE THIS
+    item.custom.palm_log: "Palm Log"                   # << CHANGE THIS
+    block_name:custom:chinese_lantern: "Chinese Lantern" # << CHANGE THIS
+    block_name:custom:netherite_anvil: "Netherite Anvil" # << CHANGE THIS
+    block_name:custom:topaz_ore: "Topaz Ore"             # << CHANGE THIS
+
+  zh_cn:
+    item.custom.palm_leaves: "棕榈树叶"                  # << CHANGE THIS
+    item.custom.palm_log: "棕榈原木"                     # << CHANGE THIS
+    block_name:custom:chinese_lantern: "灯笼"             # << CHANGE THIS
+    block_name:custom:netherite_anvil: "下界合金砧"       # << CHANGE THIS
+    block_name:custom:topaz_ore: "黄玉矿石"               # << CHANGE THIS
+
+  # --------------------------------------------------------------------------
+  # 覆盖所有语言 (键为 "all")
+  # 用于强制覆盖 Minecraft 内置翻译键, 使其在所有语言下均显示为空或同一文本.
+  # --------------------------------------------------------------------------
+  all:
+    container.inventory: ""                              # << CHANGE THIS
+
+  # --------------------------------------------------------------------------
+  # block_name: 前缀 — 方块翻译快捷翻译
+  # CraftEngine 自动将 block_name:<命名空间>:<路径> 转换为真实的方块命名空间 ID.
+  # 例如 block_name:default:chinese_lantern -> block.craftengine.custom_13
+  # 兼容: CraftEngine 模组(客户端), 服务端方块翻译插件.
+  # 使用方式: 在 lang.xx 下以 "block_name:<命名空间>:<路径>" 为键.
+  # 如上方 en_us / zh_cn 中的 block_name:custom:* 条目所示.
+  # --------------------------------------------------------------------------
+
+# ============================================================================
+# 二、translations 系统 (i18n / l10n)
+# ============================================================================
+# translations 是独立的服务端/客户端本地化系统, 与上方的 lang 不同.
+# i18n: 服务端替换, 使用服务端语言设置, 与玩家客户端语言无关.
+# l10n: 客户端替换, 根据玩家客户端选择的语言选取翻译文本.
+# 语言代码可省略地区 (如 "en_us" 可简写为 "en").
+# 查找优先级: 特定 locale -> 通用语言 -> en (英语回退).
+# ============================================================================
+
+translations:
+
+  en:
+    item.custom.chinese_lantern: "Chinese Lantern"      # << CHANGE THIS
+    item.custom.fairy_flower: "Fairy Flower"             # << CHANGE THIS
+    item.custom.bench: "Bench"                           # << CHANGE THIS
+    item.custom.table_lamp: "Table Lamp"                 # << CHANGE THIS
+    item.custom.wooden_chair: "Wooden Chair"             # << CHANGE THIS
+
+  zh_cn:
+    item.custom.chinese_lantern: "灯笼"                   # << CHANGE THIS
+    item.custom.fairy_flower: "仙灵花"                     # << CHANGE THIS
+    item.custom.bench: "长椅"                             # << CHANGE THIS
+    item.custom.table_lamp: "台灯"                        # << CHANGE THIS
+    item.custom.wooden_chair: "木椅"                      # << CHANGE THIS
+
+  # --------------------------------------------------------------------------
+  # 可添加更多语言 (省略地区, 仅使用通用语言键):
+  # ja:
+  #   item.custom.chinese_lantern: "中国提灯"
+  # fr:
+  #   item.custom.chinese_lantern: "Lanterne chinoise"
+  # --------------------------------------------------------------------------
+
+# ============================================================================
+# 三、标签使用参考 (item_name 中引用翻译键)
+# ============================================================================
+# 以下不是配置键, 而是上述翻译键在物品/方块定义中的使用方式.
+#
+# 1. <lang:键名>        — lang 系统渲染 (MiniMessage translatable 组件)
+#    items:
+#      custom:translate:
+#        material: paper
+#        data:
+#          item_name: "<lang:item.custom.palm_log>"
+#
+# 2. <i18n:键名>        — translations 服务端替换, 文本在服务端写入数据组件
+#    items:
+#      custom:chinese_lantern:
+#        material: paper
+#        data:
+#          item_name: "<i18n:item.custom.chinese_lantern>"
+#
+# 3. <l10n:键名>        — translations 客户端替换, 原始文本存储在数据组件,
+#                         客户端收到数据包时自动选择语言替换
+#    items:
+#      custom:chinese_lantern:
+#        material: paper
+#        data:
+#          item_name: "<l10n:item.custom.chinese_lantern>"
+#
+# 注: <l10n:...> 标签也可在其他插件中使用, 实现实时本地化.
+# ============================================================================

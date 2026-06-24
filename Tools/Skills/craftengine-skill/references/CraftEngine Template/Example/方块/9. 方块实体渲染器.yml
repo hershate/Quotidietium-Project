@@ -1,0 +1,255 @@
+# 方块实体渲染器
+# 参考 wiki 文档（当前仓库）：
+#   states/entity_renderer.md    — 方块实体渲染器（类型、通用参数、专用参数）
+#   states.md                    — 方块状态体系（transparent、auto_state 用法）
+# 命名空间：exdecor（自定义示例）
+#
+# 原理：通过 transparent: true 移除原版方块模型，将其完全透明化，
+# 然后在方块中心放置展示实体（item_display / text_display / item / armor_stand）
+# 来实现几乎不受方块变体数量限制的自定义渲染。
+# 所有外观应共享同一个 auto_state id（推荐名称 "transparent"），
+# 以节省原版方块状态资源。
+#
+blocks:
+  # ============================================================
+  # 1. 展柜方块 — item_display
+  #    使用物品展示实体渲染自定义物品模型，带旋转与发光边框
+  # ============================================================
+  exdecor:display_case:
+    settings:
+      hardness: 0.5               # << CHANGE THIS：硬度
+      map_color: 36               # << CHANGE THIS：地图颜色
+      sounds:
+        break: minecraft:block.glass.break
+        step: minecraft:block.glass.step
+        place: minecraft:block.glass.place
+        hit: minecraft:block.glass.hit
+        fall: minecraft:block.glass.fall
+    state:
+      auto_state:                 # << CHANGE THIS：共享透明视觉状态
+        type: sugar_cane
+        id: transparent
+      transparent: true           # << CHANGE THIS：移除方块自身模型
+      entity_renderer:
+        type: item_display        # 物品展示实体
+        item: exdecor:crystal_orb  # << CHANGE THIS：物品命名空间 ID（必需）
+        translation: 0,0.4,0      # << CHANGE THIS：偏移量 (x,y,z)，微调显示位置
+        scale: 1.2                # << CHANGE THIS：等比缩放，也支持 scale: 1.2,1.2,1.2
+        rotation: 0,45,0          # << CHANGE THIS：欧拉角旋转 (yaw,pitch,roll)
+        billboard: fixed          # << CHANGE THIS：fixed / vertical / horizontal / center
+        glow_color: 255,200,100   # << CHANGE THIS：发光边框颜色 (R,G,B)
+        brightness:               # << CHANGE THIS：渲染亮度
+          block_light: 15
+          sky_light: 15
+        view_range: 1.0           # << CHANGE THIS：可视距离系数
+        shadow_radius: 0.3        # << CHANGE THIS：阴影半径
+        shadow_strength: 0.8      # << CHANGE THIS：阴影不透明度
+        display_transform: none   # << CHANGE THIS：物品变换模式，保持 none 即原物品模型
+      entity_culling:             # << CHANGE THIS：实体剔除配置（可选）
+        aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5  # << CHANGE THIS：剔除包围盒
+        view_distance: 32         # << CHANGE THIS：最大可视距离
+        aabb_expansion: 0.5       # << CHANGE THIS：包围盒扩展量
+        ray_tracing: true         # << CHANGE THIS：是否光线追踪剔除
+
+  # ============================================================
+  # 2. 悬浮标牌方块 — text_display
+  #    使用文本展示实体渲染浮动文字，带发光、阴影与背景，始终面向玩家
+  # ============================================================
+  exdecor:floating_sign:
+    settings:
+      hardness: 0.3
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - type: text_display              # 文本展示实体
+          text: <yellow>欢迎光临</yellow>   # << CHANGE THIS：文本内容，支持 MiniMessage 格式
+          translation: 0,1.5,0            # << CHANGE THIS：偏移量，使文字悬浮在方块上方
+          scale: 1.5                      # << CHANGE THIS：等比缩放
+          billboard: center               # << CHANGE THIS：center — 始终面向玩家旋转
+          alignment: center               # << CHANGE THIS：center / left / right
+          line_width: 200                 # << CHANGE THIS：单行最大宽度
+          background_color: 0,0,0,0       # << CHANGE THIS：背景颜色 (A,R,G,B)，全透明
+          text_opacity: -1                # << CHANGE THIS：文本不透明度 (0-255)，-1 为默认
+          has_shadow: true                # << CHANGE THIS：是否显示文字阴影
+          is_see_through: false           # << CHANGE THIS：是否穿墙可见
+          use_default_background_color: false  # << CHANGE THIS：是否使用默认背景
+          glow_color: 0,200,255           # << CHANGE THIS：发光边框颜色
+          brightness:
+            block_light: 15
+            sky_light: 15
+          view_range: 0.8                 # << CHANGE THIS：可视距离
+        - type: text_display              # 第二行文字，叠加渲染
+          text: <gradient:#FFD700:#FFA500>点击交互</gradient>
+          translation: 0,0.2,0
+          scale: 1.0
+          billboard: center
+          alignment: center
+          background_color: 64,0,0,0
+          has_shadow: false
+      entity_culling: false               # << CHANGE THIS：禁用剔除，标牌始终可见
+
+  # ============================================================
+  # 3. 浮空收藏品方块 — item（物品实体）
+  #    渲染一个带有自动旋转动画的物品实体，适合展示掉落物风格的收藏品
+  # ============================================================
+  exdecor:floating_collectible:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item                        # 物品实体（自动带有旋转动画）
+        item: exdecor:ancient_coin        # << CHANGE THIS：物品命名空间 ID（必需）
+        position: 0.5,0.6,0.5             # << CHANGE THIS：相对位置 (x,y,z)，默认方块中心
+      entity_culling:
+        view_distance: 24
+        ray_tracing: false
+
+  # ============================================================
+  # 4. 迷你模特方块 — armor_stand
+  #    使用盔甲架在头盔槽渲染物品，适合展示头盔、头饰或小型道具
+  # ============================================================
+  exdecor:mini_mannequin:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: armor_stand                 # 盔甲架渲染
+        item: exdecor:crown               # << CHANGE THIS：物品命名空间 ID（必需，渲染于头盔槽）
+        position: 0,0.2,0                 # << CHANGE THIS：位置 (x,y,z)
+        yaw: 0                            # << CHANGE THIS：绕 Y 轴旋转
+        pitch: 0                          # << CHANGE THIS：绕 X 轴旋转
+        scale: 0.8                        # << CHANGE THIS：缩放，默认 1
+        small: false                      # << CHANGE THIS：是否使用小盔甲架，默认 false
+        glow_color: gold                  # << CHANGE THIS：发光颜色（支持 black / dark_blue / dark_green / dark_aqua / dark_red / dark_purple / gold / gray / dark_gray / blue / green / aqua / red / light_purple / yellow / white）
+
+  # ============================================================
+  # 5. 多外观朝向方块 — item_display + 朝向旋转
+  #    使用 appearances + variants 实现根据放置方向旋转实体渲染器
+  # ============================================================
+  exdecor:directional_shelf:
+    settings:
+      hardness: 0.5
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: exdecor:vase
+            translation: 0,0.5,0
+            scale: 1.0
+            rotation: 0                     # << CHANGE THIS：朝北
+            billboard: fixed
+        east:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: exdecor:vase
+            translation: 0,0.5,0
+            scale: 1.0
+            rotation: 90                    # << CHANGE THIS：朝东
+            billboard: fixed
+        south:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: exdecor:vase
+            translation: 0,0.5,0
+            scale: 1.0
+            rotation: 180                   # << CHANGE THIS：朝南
+            billboard: fixed
+        west:
+          auto_state:
+            type: sugar_cane
+            id: transparent
+          transparent: true
+          entity_renderer:
+            type: item_display
+            item: exdecor:vase
+            translation: 0,0.5,0
+            scale: 1.0
+            rotation: 270                   # << CHANGE THIS：朝西
+            billboard: fixed
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+          settings:
+            luminance: 7                    # << CHANGE THIS：朝南时额外发光
+        facing=west:
+          appearance: west
+
+  # ============================================================
+  # 6. 条件渲染方块 — item_display + conditions
+  #    仅对拥有特定权限且在指定世界的玩家显示实体
+  # ============================================================
+  exdecor:secret_altar:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - type: item_display
+          item: exdecor:forbidden_artifact
+          translation: 0,0.3,0
+          scale: 1.5
+          rotation: 0,0,0.707,0.707         # << CHANGE THIS：四元数旋转
+          conditions:                       # << CHANGE THIS：渲染条件（与逻辑——全部满足才可见）
+            - type: permission
+              permission: "vip.secret"      # << CHANGE THIS：所需权限节点
+            - type: world
+              world: "world_nether"         # << CHANGE THIS：所在世界
+      entity_culling:
+        aabb: -1.0,-0.5,-1.0,1.0,2.0,1.0
+        view_distance: 64
+        ray_tracing: true
+
+  # ============================================================
+  # 7. 类型自动推导 — 省略 type，让插件自动推断
+  #    按 wiki 所述：包含 item → item_display，包含 text → text_display
+  # ============================================================
+  exdecor:auto_typed_block:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        - item: exdecor:simple_orb          # 自动推断为 item_display
+          translation: 0,0.3,0
+          scale: 0.8
+        - text: 自动推导示例                  # 自动推断为 text_display
+          translation: 0,0.8,0
+          scale: 0.6
+          billboard: center
+          alignment: center
+          background_color: 0,0,0,0

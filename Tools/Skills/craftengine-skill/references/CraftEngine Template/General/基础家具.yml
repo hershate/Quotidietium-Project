@@ -1,0 +1,305 @@
+# =============================================================================
+# CraftEngine 家具配置完整模板
+# =============================================================================
+# 本地参考文档:
+#   CraftEngine Wiki/configuration/furniture.md
+#   CraftEngine Wiki/configuration/furniture/settings.md
+#   CraftEngine Wiki/configuration/furniture/variants.md
+#   CraftEngine Wiki/reference/loot_table.md
+#   CraftEngine Wiki/reference/events.md
+#   CraftEngine Wiki/item/behaviors/furniture_item.md
+#   CraftEngine Wiki/item/behaviors/liquid_collision_furniture_item.md
+#
+# 使用方法:
+#   1. 全局替换 namespace (默认 custom) 为你的命名空间
+#   2. 替换所有 # << CHANGE THIS 标记的值
+#   3. 按需增删 variant、element、hitbox
+# =============================================================================
+
+# =============================================================================
+# 示例 1: 基础椅子 (bench) — 地面型, 单元素, 单个判定箱, 基础战利品
+# =============================================================================
+furniture:
+  custom:simple_chair:
+    settings:
+      # << CHANGE THIS: 家具对应的物品 ID (用于创造模式中键获取)
+      item: custom:simple_chair
+      hit_times: 3  # << CHANGE THIS: 击打次数
+      sounds:
+        break: minecraft:block.bamboo_wood.break
+        place: minecraft:block.bamboo_wood.place
+        hit: minecraft:block.bamboo_wood.hit
+      adventure_mode_breaking: false  # << CHANGE THIS: 冒险模式是否可破坏
+      correct_tools:  # << CHANGE THIS: 合适挖掘工具 (标签或物品 ID)
+        - "#minecraft:axes"
+        - "minecraft:diamond_pickaxe"
+    variants:
+      ground:
+        # 掉落物偏移, 使其不在方块内部生成
+        loot_spawn_offset: 0.5,0.5,0
+        # 展示元素
+        elements:
+          # ---------- 物品展示实体 (item_display) ----------
+          - type: item_display
+            item: custom:simple_chair  # << CHANGE THIS
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            pitch: 0.0
+            yaw: 0.0
+            scale: 1
+            shadow_radius: 1
+            shadow_strength: 0.2
+            apply_dyed_color: true
+            glow_color: 255,255,255  # << CHANGE THIS: RGB 发光颜色, 注释掉以禁用
+            brightness:
+              block_light: 0   # << CHANGE THIS: 方块光照等级 (0-15)
+              sky_light: 0     # << CHANGE THIS: 天空光照等级 (0-15)
+            view_range: 1.0    # << CHANGE THIS: 可视范围
+            # rotation 支持 3 种格式:
+            #   rotation: 45           # Y 轴旋转 (度)
+            #   rotation: 45,45,0      # 欧拉角
+            #   rotation: 0,0,0.7071,0.7071  # 四元数
+            # tint_source:            # 染色源 (注释掉以禁用)
+            #   - dyed_color
+            #   - map_color
+            #   - firework_explosion
+            #   - potion_contents
+        # 判定箱
+        hitboxes:
+          # ---------- 潜影贝判定箱 (硬碰撞) ----------
+          - type: shulker
+            can_use_item_on: true
+            can_be_hit_by_projectile: true
+            blocks_building: true
+            position: 0,0,0
+            scale: 1
+            peek: 0            # 0~100, 开口程度
+            direction: east    # up/down/north/west/east/south
+            interaction_entity: true  # 生成额外交互实体
+            interactive: true
+            invisible: false
+            seats:
+              # 格式: "x,y,z yaw"  (yaw 可选, 省略则玩家可自由旋转)
+              - 0,0,-0.1 0
+              - 1,0,-0.1 0
+    # 战利品
+    loot:
+      template: custom:loot_table/furniture  # << CHANGE THIS
+      arguments:
+        item: custom:simple_chair  # << CHANGE THIS
+
+# =============================================================================
+# 示例 2: 带标牌的桌子 — 地面型, 双元素, 交互判定箱, 完整实体剔除, 精确音效
+# =============================================================================
+  custom:table_with_sign:
+    settings:
+      item: custom:table_with_sign  # << CHANGE THIS
+      hit_times: 4
+      sounds:
+        # 音效支持简单字符串或精确音量/音调对象
+        break:
+          id: minecraft:block.deepslate.break
+          pitch: 0.5
+          volume: 0.25
+        place: minecraft:block.deepslate.step
+        hit: minecraft:block.deepslate.hit
+      adventure_mode_breaking: true
+      correct_tools:
+        - "#minecraft:pickaxes"
+    variants:
+      ground:
+        loot_spawn_offset: 0,0,0
+        # ---------- 实体剔除 (完整配置) ----------
+        entity_culling:
+          aabb: -0.5,0,-0.5,0.5,2,0.5  # x1,y1,z1,x2,y2,z2 (插件可自动计算)
+          view_distance: 64             # 可视距离剔除, -1 不限制
+          ray_tracing: false            # 是否启用光线追踪剔除
+        elements:
+          # 元素 1: 桌面 (物品展示)
+          - type: item_display
+            item: custom:table_top  # << CHANGE THIS
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0.5,0.5
+            translation: 0,0,0
+            scale: 1
+            # rotation: 0,0,0  # 可选旋转
+          # 元素 2: 标牌 (文本展示)
+          - type: text_display
+            text: "<papi:player_name> 的桌子"  # << CHANGE THIS: 支持 PlaceholderAPI
+            billboard: center    # fixed / vertical / horizontal / center
+            position: 0.5,1.2,0.5
+            translation: 0,0,0
+            scale: 0.8
+            glow_color: 255,255,0  # 黄色发光
+            brightness:
+              block_light: 15
+              sky_light: 15
+            view_range: 5.0
+            line_width: 200      # 行宽
+            background_color: 64,0,0,0  # ARGB (半透明黑)
+            text_opacity: -1     # -1 表示使用默认
+            has_shadow: false
+            is_see_through: false
+            use_default_background_color: false
+            alignment: center    # center / left / right
+            # rotation: 0,0,0   # 可选旋转
+        hitboxes:
+          # ---------- 交互判定箱 (无碰撞) ----------
+          - type: interaction
+            can_use_item_on: false
+            can_be_hit_by_projectile: false
+            blocks_building: false
+            position: 0.5,0.5,0.5
+            width: 2
+            height: 1
+            # scale: 2,1        # 可替代 width/height
+            interactive: true
+            invisible: false
+            seats:
+              - 0.5,0,-0.3
+    loot:
+      template: custom:loot_table/furniture
+      arguments:
+        item: custom:table_with_sign
+
+# =============================================================================
+# 示例 3: 吊灯与墙壁开关 — 多变体(ceiling+wall), 盔甲架+物品展示, 混合判定箱
+# =============================================================================
+  custom:hanging_lamp:
+    settings:
+      item: custom:hanging_lamp  # << CHANGE THIS
+      hit_times: 2
+      sounds:
+        break: minecraft:block.glass.break
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+      correct_tools:
+        - "#minecraft:pickaxes"
+    variants:
+      # ---------- 天花板变体 ----------
+      ceiling:
+        loot_spawn_offset: 0,0,0
+        entity_culling: true   # 简单布尔值启用
+        elements:
+          # 元素 1: 灯具主体 (盔甲架)
+          - type: armor_stand
+            item: custom:lamp_body  # << CHANGE THIS
+            position: 0.5,0,0.5
+            pitch: 0.0
+            yaw: 0.0
+            scale: 1
+            small: false
+            glow_color: white  # black / dark_blue / dark_green / dark_aqua / dark_red
+                               # dark_purple / gold / gray / dark_gray / blue / green
+                               # aqua / red / light_purple / yellow / white
+            tint_source:
+              - dyed_color
+          # 元素 2: 发光灯泡 (物品展示, 自发光)
+          - type: item_display
+            item: custom:lamp_bulb  # << CHANGE THIS
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0.2,0.5
+            translation: 0,0,0
+            scale: 0.5
+            glow_color: 255,200,100  # 暖色发光
+            brightness:
+              block_light: 15
+              sky_light: 0
+            view_range: 10.0
+        hitboxes:
+          # ---------- 快乐恶魂判定箱 (硬碰撞) ----------
+          - type: happy_ghast
+            can_use_item_on: true
+            can_be_hit_by_projectile: true
+            blocks_building: true
+            hard_collision: true
+            position: 0.5,0.5,0.5
+            scale: 0.25
+            seats:
+              - 0.5,0,-0.2 0
+      # ---------- 墙壁变体 (开关) ----------
+      wall:
+        loot_spawn_offset: 0,0,0
+        entity_culling:
+          # 注意: wall/ceiling 变体必须通过 position 设置微小偏移, 否则家具可能显示为黑色
+          # 设置 position 偏移后, 可用反向 translation 恢复视觉位置
+          aabb: -0.5,0,-0.5,0.5,1,0.5
+          view_distance: 32
+          ray_tracing: true
+        elements:
+          # 元素: 墙壁开关面板 (物品展示)
+          - type: item_display
+            item: custom:wall_switch  # << CHANGE THIS
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0.5,0.95   # 微小 Z 偏移以防显示黑色
+            translation: 0,0,-0.95   # 反向平移恢复视觉位置
+            scale: 0.4
+            glow_color: 0,255,0  # 绿色指示灯
+            brightness:
+              block_light: 8
+              sky_light: 0
+            view_range: 3.0
+          # 额外: 开关旁边的掉落物标签 (使用 item 类型)
+          - type: item
+            item: custom:switch_label  # << CHANGE THIS
+            position: 0.5,1.0,0.95
+            tint_source:
+              - map_color
+        hitboxes:
+          # ---------- 自定义判定箱 (软碰撞, 任意实体) ----------
+          - type: custom
+            position: 0.5,0.3,0.95
+            scale: 0.5
+            entity_type: slime  # << CHANGE THIS: 默认 slime, 可用任意实体
+            seats:
+              # 不带旋转角度的座位 (玩家可自由旋转)
+              - 0.5,0,0.8
+    loot:
+      template: custom:loot_table/furniture
+      arguments:
+        item: custom:hanging_lamp
+
+# =============================================================================
+# 外部模型蓝图引用 (BetterModel / ModelEngine / API 注册模型)
+# =============================================================================
+# furniture:
+#   custom:fancy_model_furniture:
+#     settings:
+#       item: custom:fancy_model_furniture
+#       sounds:
+#         break: minecraft:block.stone.break
+#         place: minecraft:block.stone.place
+#     variants:
+#       ground:
+#         blueprint: model_id  # << CHANGE THIS: 使用 BetterModel / ModelEngine 模型
+#         # 即使使用了 blueprint, 仍然可以覆盖 elements 和 hitboxes
+#         elements:
+#           # BetterModel 元素
+#           - type: better_model
+#             model: custom_model  # << CHANGE THIS: 模型 ID
+#             position: 0,0,0
+#             yaw: 0
+#             pitch: 0
+#             sight_trace: true    # BetterModel 专属参数
+#           # ModelEngine 元素
+#           - type: model_engine
+#             model: custom_model  # << CHANGE THIS: 模型 ID
+#             position: 0,0,0
+#             yaw: 0
+#             pitch: 0
+#         hitboxes:
+#           - type: interaction
+#             position: 0,0,0
+#             scale: 1,2
+#             interactive: true
+#             seats:
+#               - 0,0,-0.1 0
+#     loot:
+#       template: custom:loot_table/furniture
+#       arguments:
+#         item: custom:fancy_model_furniture

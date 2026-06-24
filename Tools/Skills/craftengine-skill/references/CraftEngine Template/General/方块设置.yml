@@ -1,0 +1,271 @@
+# =============================================================================
+# CraftEngine 方块 settings 配置模板 (YAML)
+# =============================================================================
+# Wiki 参考路径 (本地):
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/settings.md
+#
+# 使用说明:
+#   1. 将下方所有 "custom:" 命名空间替换为你的实际命名空间
+#   2. 搜索 "<< CHANGE THIS" 标记并替换为实际值
+#   3. 删除不需要的配置块
+#   4. 所有设置项均为可选，省略时使用默认值
+#   5. 不稳定设置（标注 ★）仅对非玩家实体生效，可能出现服务端/客户端不同步
+#   6. 付费版专属配置已标注 (client_bound_*)
+# =============================================================================
+
+blocks:
+  # ============================================================================
+  # 示例 1: 基础矿物方块 (基本属性 + 挖掘配置 + 标签)
+  # 用途: 需要特定工具挖掘、具有硬度和爆炸抗性的矿石类方块
+  # ============================================================================
+  custom:example_ore:
+    settings:
+      # << CHANGE THIS: 方块硬度 (默认: 2.0)
+      hardness: 3.0
+      # << CHANGE THIS: 爆炸抗性 (默认: 2.0)
+      resistance: 6.0
+      # << CHANGE THIS: 活塞推动行为 (NORMAL / DESTROY / BLOCK / IGNORE / PUSH_ONLY)
+      push_reaction: NORMAL
+
+      # << CHANGE THIS: 方块对应的物品ID (默认: null)
+      item: custom:example_ore_item
+
+      # --- 挖掘配置 ---
+      # << CHANGE THIS: 是否只能使用合适工具才能掉落/有效挖掘 (默认: false)
+      require_correct_tools: true
+      # << CHANGE THIS: 不使用合适工具时的挖掘速度倍率 0~1 (默认: 0.3)
+      incorrect_tool_dig_speed: 0.3
+      # << CHANGE THIS: 合适挖掘工具列表 (设置此项后 require_correct_tools 默认 true)
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      # << CHANGE THIS: 是否尊重 minecraft:tool 组件的 correct_for_drops (默认: false)
+      respect_tool_component: false
+
+      # --- 标签 ---
+      # << CHANGE THIS: 方块标签 (影响挖掘速度、合成配方等)
+      tags:
+        - minecraft:mineable/pickaxe
+        - minecraft:needs_iron_tool
+
+      # << CHANGE THIS: (付费版) 客户端侧标签，仅适用于原版方块
+      client_bound_tags:
+        - minecraft:beacon_base_blocks
+
+  # ============================================================================
+  # 示例 2: 木质方块 (音效 + 可燃性 + 乐器 + 地图颜色)
+  # 用途: 具有燃烧特性、特定音效和音符盒乐器的装饰/建筑材料
+  # ============================================================================
+  custom:example_wood:
+    settings:
+      # << CHANGE THIS: 方块硬度 (默认: 2.0)
+      hardness: 2.0
+      # << CHANGE THIS: 爆炸抗性 (默认: 2.0)
+      resistance: 3.0
+
+      # --- 地图颜色 ---
+      # << CHANGE THIS: 地图基色ID (参考 zh.minecraft.wiki/w/地图存储格式#地图基色)
+      map_color: 36
+
+      # --- 熔岩可燃性 ---
+      # << CHANGE THIS: 熔岩是否可在该方块上生成火 (默认: false)
+      burnable: true
+      # << CHANGE THIS: 烧毁几率 0~100 (默认: 0)
+      fire_spread_chance: 100
+      # << CHANGE THIS: 引燃几率 0~100 (默认: 0)
+      burn_chance: 30
+
+      # --- 乐器 (音符盒) ---
+      # << CHANGE THIS: 音符盒乐器类型 (参考 zh.minecraft.wiki/w/音符盒#方块状态)
+      instrument: bass
+
+      # --- 音效 (五种交互事件) ---
+      sounds:
+        # << CHANGE THIS: 破坏音效
+        break: minecraft:block.wood.break
+        # << CHANGE THIS: 行走音效
+        step: minecraft:block.wood.step
+        # << CHANGE THIS: 放置音效
+        place: minecraft:block.wood.place
+        # << CHANGE THIS: 挖掘中音效
+        hit: minecraft:block.wood.hit
+        # << CHANGE THIS: 坠落音效
+        fall: minecraft:block.wood.fall
+
+      # --- 工具配置 ---
+      # << CHANGE THIS: 合适挖掘工具 (斧)
+      correct_tools:
+        - minecraft:wooden_axe
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs_that_burn
+        - minecraft:logs
+
+  # ============================================================================
+  # 示例 3: 发光石块 (光照系统 + 红石相关)
+  # 用途: 自定义光源方块，控制红石传导、窒息、遮挡属性
+  # ============================================================================
+  custom:example_glowing_stone:
+    settings:
+      # << CHANGE THIS: 方块硬度 (默认: 2.0)
+      hardness: 1.5
+      # << CHANGE THIS: 爆炸抗性 (默认: 2.0)
+      resistance: 6.0
+
+      # --- 光照系统 (不稳定设置 ★) ---
+      # << CHANGE THIS: 方块自身亮度等级 (默认: 0)
+      luminance: 15
+      # << CHANGE THIS: 是否阻挡光线 / 决定草方块是否变为泥土等 (默认: 未定义)
+      can_occlude: true
+      # << CHANGE THIS: 光线穿过此方块后降低的光照等级 (默认: 未定义)
+      block_light: 0
+      # << CHANGE THIS: 天空光照能否穿过此方块
+      propagate_skylight: true
+
+      # --- 红石 & 实体交互 ---
+      # << CHANGE THIS: 是否为红石导体 (影响红石信号传播) (默认: 未定义)
+      is_redstone_conductor: true
+      # << CHANGE THIS: 生物处于其中时是否窒息 (默认: 未定义)
+      is_suffocating: true
+      # << CHANGE THIS: 是否阻挡玩家视野 (影响非旁观模式渲染) (默认: 未定义)
+      is_view_blocking: true
+
+      # --- 活塞行为 ---
+      push_reaction: BLOCK
+
+  # ============================================================================
+  # 示例 4: 流体相关方块 (fluid_state + 可替代性)
+  # 用途: 具有含水状态或可被替换的特殊方块
+  # ============================================================================
+  custom:example_fluid_block:
+    settings:
+      # << CHANGE THIS: 方块硬度 (默认: 2.0)
+      hardness: 0.5
+      # << CHANGE THIS: 爆炸抗性 (默认: 2.0)
+      resistance: 0.5
+
+      # << CHANGE THIS: 流体状态 (empty / water, 默认: empty)
+      fluid_state: water
+
+      # << CHANGE THIS: 是否可被其他方块通过放置直接替代 (默认: false)
+      replaceable: false
+
+      # << CHANGE THIS: 支撑形状 (手动指定原版方块的支撑形状)
+      support_shape: minecraft:stone
+
+  # ============================================================================
+  # 示例 5: 黏液/冰面类方块 (物理系数 - 不稳定设置 ★)
+  # 用途: 改变实体移动、跳跃、反弹、摩擦力等物理行为的方块
+  # ============================================================================
+  custom:example_slime_block:
+    settings:
+      hardness: 0.0
+      resistance: 0.0
+      push_reaction: DESTROY
+
+      # --- 物理系数 (不稳定设置 ★，仅对非玩家实体生效) ---
+      # 若需强制为玩家实体同步，请配合 behaviors/bouncing_block 使用
+
+      # << CHANGE THIS: 弹性碰撞系数 (黏液块: 1.0, 床: 0.75, 默认: 0.0)
+      bounce_restitution: 1.0
+      # << CHANGE THIS: 阻力系数 / 摩擦力 (黏液块: 0.8, 冰: 0.98, 蓝冰: 0.989, 默认: 0.6)
+      friction: 0.8
+      # << CHANGE THIS: 跳跃高度乘数 (默认: 1.0)
+      jump_factor: 1.0
+      # << CHANGE THIS: 移动速度乘数 (默认: 1.0)
+      speed_factor: 1.0
+
+  # ============================================================================
+  # 示例 6: 音效进阶配置 (精确控制音量与音高)
+  # 用途: 需要自定义音效音量/音高或范围值的高级音效配置
+  # ============================================================================
+  custom:example_advanced_sound:
+    settings:
+      hardness: 1.0
+      resistance: 1.0
+
+      # --- 进阶音效配置 ---
+      # 支持为每种音效精确设置音高和音量，volume 支持范围值 (如 0.25~0.3)
+      sounds:
+        break:
+          # << CHANGE THIS: 音效命名空间ID
+          id: minecraft:block.deepslate.break
+          # << CHANGE THIS: 音高 (可选)
+          pitch: 0.5
+          # << CHANGE THIS: 音量 / 范围值也支持 (可选)
+          volume: 0.25~0.3
+        step: minecraft:block.deepslate.step
+        place:
+          id: minecraft:block.deepslate.place
+          volume: 1.0
+        hit: minecraft:block.deepslate.hit
+        fall: minecraft:block.deepslate.fall
+
+  # ============================================================================
+  # 示例 7: 完整配置 (ALL 设置项一览)
+  # 用途: 展示所有可用设置项及其默认参考值，方便复制整块使用
+  # ============================================================================
+  custom:all_settings_block:
+    settings:
+      # --- 基础属性 ---
+      hardness: 2.0            # << CHANGE THIS: 硬度 (默认: 2.0)
+      resistance: 2.0          # << CHANGE THIS: 爆炸抗性 (默认: 2.0)
+      replaceable: false       # << CHANGE THIS: 可被放置替代 (默认: false)
+      item: custom:all_settings_item  # << CHANGE THIS: 对应物品ID (默认: null)
+
+      # --- 活塞 & 物理 ---
+      push_reaction: NORMAL    # << CHANGE THIS: NORMAL / DESTROY / BLOCK / IGNORE / PUSH_ONLY
+      support_shape: minecraft:stone  # << CHANGE THIS: 支撑形状 (可选)
+
+      # --- 红石 & 实体属性 ---
+      is_redstone_conductor: true   # << CHANGE THIS: 红石导体 (默认: 未定义)
+      is_suffocating: true          # << CHANGE THIS: 窒息生物 (默认: 未定义)
+      is_view_blocking: true        # << CHANGE THIS: 视野阻挡 (默认: 未定义)
+
+      # --- 地图 & 颜色 ---
+      map_color: 36             # << CHANGE THIS: 地图基色ID (默认: 0)
+
+      # --- 光照 (不稳定设置 ★) ---
+      luminance: 15             # << CHANGE THIS: 亮度 (默认: 0)
+      can_occlude: false        # << CHANGE THIS: 阻挡光线 (默认: 未定义)
+      block_light: 0            # << CHANGE THIS: 散射光照 (默认: 未定义)
+      propagate_skylight: false # << CHANGE THIS: 传播天空光照
+
+      # --- 音效 ---
+      sounds:
+        break: minecraft:block.deepslate.break   # << CHANGE THIS
+        step: minecraft:block.deepslate.step     # << CHANGE THIS
+        place: minecraft:block.deepslate.place   # << CHANGE THIS
+        hit: minecraft:block.deepslate.hit       # << CHANGE THIS
+        fall: minecraft:block.deepslate.fall     # << CHANGE THIS
+
+      # --- 乐器 ---
+      instrument: basedrum      # << CHANGE THIS: 音符盒乐器 (默认: harp)
+
+      # --- 挖掘配置 ---
+      require_correct_tools: true    # << CHANGE THIS: 需要合适工具 (默认: false)
+      respect_tool_component: false  # << CHANGE THIS: 尊重 tool 组件 (默认: false)
+      correct_tools:
+        - minecraft:wooden_pickaxe   # << CHANGE THIS: 合适工具列表
+      incorrect_tool_dig_speed: 0.3  # << CHANGE THIS: 挖掘惩罚 0~1 (默认: 0.3)
+
+      # --- 标签 ---
+      tags:
+        - minecraft:mineable/pickaxe # << CHANGE THIS: 方块标签
+      client_bound_tags:             # << CHANGE THIS: (付费版) 客户端标签
+        - minecraft:beacon_base_blocks
+
+      # --- 流体 & 燃烧 ---
+      fluid_state: water         # << CHANGE THIS: empty / water (默认: empty)
+      burnable: false            # << CHANGE THIS: 熔岩可燃性 (默认: false)
+      fire_spread_chance: 0      # << CHANGE THIS: 烧毁几率 0~100 (默认: 0)
+      burn_chance: 0             # << CHANGE THIS: 引燃几率 0~100 (默认: 0)
+
+      # --- 物理系数 (不稳定设置 ★，仅对非玩家实体生效) ---
+      friction: 0.6              # << CHANGE THIS: 阻力系数 (默认: 0.6)
+      jump_factor: 1.0           # << CHANGE THIS: 跳跃乘数 (默认: 1.0)
+      speed_factor: 1.0          # << CHANGE THIS: 速度乘数 (默认: 1.0)
+      bounce_restitution: 0.0    # << CHANGE THIS: 弹性碰撞系数 (默认: 0.0)

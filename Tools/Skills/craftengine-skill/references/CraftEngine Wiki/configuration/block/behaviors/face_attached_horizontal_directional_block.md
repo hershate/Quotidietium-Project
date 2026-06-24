@@ -1,0 +1,36 @@
+# ➡️ 水平面定向附着方块
+
+**水平面定向附着方块**可以附着在另一个方块的侧面上，类似按钮或拉杆。若附着的方块变动（移动、破坏、替代等）而不再允许附着时，方块会被破坏。
+
+放置时会尝试附着到这块空间内最近的有效附着表面。
+同时是否能附着在附着的方块上是由 `blacklist` 选项和方块（标签）列表决定：
+
+- **黑名单模式**（`blacklist: true`，默认）：可附着到**除了**列表中的方块。
+- **白名单模式**（`blacklist: false`）：**只能**附着到列表中的方块。
+
+在满足以上条件的同时，还需要附着的方块上方表面中心完整或附着的侧面完整。
+
+## 属性
+
+| 属性名称   | 属性类型                 | 是否必需 |
+|--------|----------------------|------|
+| face   | anchor_type          | 是    |
+| facing | horizontal_direction | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_button:
+    behavior:
+      type: face_attached_horizontal_directional_block
+      blacklist: true                   # true = 黑名单，false = 白名单（默认 true）
+      attached_blocks:                  # 要检查的方块列表（可选）
+        - custom:xxx
+        - minecraft:stone
+      attached_block_tags:              # 要检查的方块标签列表（可选）
+        - minecraft:dirt
+        - minecraft:farmland
+```
+
+![](/img/face_attached_horizontal_directional_block.png)

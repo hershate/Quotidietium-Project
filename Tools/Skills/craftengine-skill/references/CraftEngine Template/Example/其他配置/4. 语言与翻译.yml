@@ -1,0 +1,202 @@
+# =============================================================================
+# CraftEngine 语言与翻译配置示例
+# 参考: configuration/lang.md, configuration/i18n.md (CraftEngine Wiki)
+# =============================================================================
+# 本文件演示两大本地化系统:
+#   1) lang      - 基于客户端资源包, 依赖玩家客户端语言
+#   2) translations (i18n/l10n) - 纯服务端处理, 与服务端/客户端语言解耦
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 一、lang 系统 — 客户端资源包翻译
+# ---------------------------------------------------------------------------
+# Minecraft 默认回退至 en_us. 创建新翻译键时务必配置 en_us.
+# 使用 "all" 可覆盖所有语言.
+# 在 item_name 等字段中用 <lang:key> 标签渲染.
+# ---------------------------------------------------------------------------
+lang:
+
+  # --- 基础物品翻译 ---
+  en_us:
+    item.custom.palm_leaves: "Palm Leaves"
+    item.custom.palm_log: "Palm Log"
+    item.custom.palm_sapling: "Palm Sapling"          # << CHANGE THIS
+    item.custom.coconut: "Coconut"
+    item.custom.coconut_milk: "Coconut Milk"
+    item.crate.wooden: "Wooden Supply Crate"          # << CHANGE THIS
+    item.crate.iron: "Iron Supply Crate"
+    item.crate.golden: "Golden Supply Crate"
+
+  zh_cn:
+    item.custom.palm_leaves: "棕榈树叶"
+    item.custom.palm_log: "棕榈原木"
+    item.custom.palm_sapling: "棕榈树苗"              # << CHANGE THIS
+    item.custom.coconut: "椰子"
+    item.custom.coconut_milk: "椰奶"
+    item.crate.wooden: "木质补给箱"                    # << CHANGE THIS
+    item.crate.iron: "铁质补给箱"
+    item.crate.golden: "金质补给箱"
+
+  # --- 支持的语言扩展 (仅新增即可, 无需全部重写) ---
+  ja_jp:
+    item.custom.palm_leaves: "パームの葉"
+    item.custom.palm_log: "パームの原木"
+    item.custom.coconut: "ココナッツ"
+
+  ko_kr:
+    item.custom.palm_leaves: "야자나무 잎"
+    item.custom.palm_log: "야자나무 통나무"
+
+  fr_fr:
+    item.custom.palm_leaves: "Feuilles de palmier"
+    item.custom.palm_log: "Bûche de palmier"
+
+  # --- 覆写所有语言的键 (通常用于屏蔽原版文本) ---
+  all:
+    container.inventory: ""                            # 隐藏 "物品栏" 标题
+    container.chest: ""                                # << CHANGE THIS
+    container.hopper: ""
+
+  # --- 方块名称翻译 (block_name:namespace:id 格式) ---
+  # CraftEngine 自动将 block_name:default:xxx 转换为真实方块 ID.
+  en_us:
+    block_name:default:chinese_lantern: "Chinese Lantern"
+    block_name:default:netherite_anvil: "Netherite Anvil"
+    block_name:default:topaz_ore: "Topaz Ore"
+    block_name:default:palm_planks: "Palm Planks"     # << CHANGE THIS
+    block_name:default:palm_stairs: "Palm Stairs"
+    block_name:default:palm_slab: "Palm Slab"
+    block_name:default:coconut_crate: "Coconut Crate" # << CHANGE THIS
+
+  zh_cn:
+    block_name:default:chinese_lantern: "灯笼"
+    block_name:default:netherite_anvil: "下界合金砧"
+    block_name:default:topaz_ore: "黄玉矿石"
+    block_name:default:palm_planks: "棕榈木板"         # << CHANGE THIS
+    block_name:default:palm_stairs: "棕榈木楼梯"
+    block_name:default:palm_slab: "棕榈木台阶"
+    block_name:default:coconut_crate: "椰子板条箱"     # << CHANGE THIS
+
+
+# ---------------------------------------------------------------------------
+# 二、translations 系统 — 纯服务端本地化
+# ---------------------------------------------------------------------------
+# i18n: 服务端语言决定翻译, <i18n:key> 在服务端替换为最终文本.
+# l10n: 客户端语言决定翻译, <l10n:key> 以原始标签形式发送, 客户端实时渲染.
+# 国家/地区代码可省略, 插件按 (zh_cn -> zh -> en) 优先级回退.
+# ---------------------------------------------------------------------------
+translations:
+
+  # --- 基础 i18n 键 ---
+  en:
+    item.chinese_lantern: "Chinese Lantern"
+    item.fairy_flower: "Fairy Flower"
+    item.bench: "Bench"
+    item.table_lamp: "Table Lamp"
+    item.wooden_chair: "Wooden Chair"
+    item.palm_door: "Palm Door"                       # << CHANGE THIS
+    item.palm_trapdoor: "Palm Trapdoor"
+
+    # 消息/UI 文本
+    message.welcome: "Welcome to the server!"         # << CHANGE THIS
+    message.welcome_back: "Welcome back, {player}!"   # 占位符示例
+    message.insufficient_funds: "You need {amount} more coins."
+    gui.shop_title: "Item Shop"                       # << CHANGE THIS
+    gui.quest_title: "Quest Log"
+
+  zh_cn:
+    item.chinese_lantern: "灯笼"
+    item.fairy_flower: "仙灵花"
+    item.bench: "长椅"
+    item.table_lamp: "台灯"
+    item.wooden_chair: "木椅"
+    item.palm_door: "棕榈木门"                         # << CHANGE THIS
+    item.palm_trapdoor: "棕榈木活板门"
+
+    message.welcome: "欢迎来到服务器！"                  # << CHANGE THIS
+    message.welcome_back: "欢迎回来, {player}！"
+    message.insufficient_funds: "还需要 {amount} 金币。"
+    gui.shop_title: "物品商店"
+    gui.quest_title: "任务日志"
+
+  # --- 仅使用语言代码 (无地区) 的简写形式 ---
+  ja:
+    item.chinese_lantern: "チャイニーズランタン"
+    item.fairy_flower: "フェアリーフラワー"
+    message.welcome: "サーバーへようこそ！"
+
+  # --- 更精细的地区语言 (优先级高于简写 ja) ---
+  ja_jp:
+    item.chinese_lantern: "中国ランタン"
+    message.welcome: "サーバーへようこそ！"
+
+  # --- 法语 (将回退至 en 中未定义键的翻译) ---
+  fr_fr:
+    item.chinese_lantern: "Lanterne chinoise"
+    item.bench: "Banc"
+    message.welcome: "Bienvenue sur le serveur !"
+
+
+# ---------------------------------------------------------------------------
+# 三、在物品中应用翻译标签
+# ---------------------------------------------------------------------------
+# 本部分展示 items 配置中如何使用 <lang:>, <i18n:>, <l10n> 标签.
+# ---------------------------------------------------------------------------
+items:
+
+  # --- 使用 <lang:key>  (客户端资源包翻译, 需客户端安装资源包) ---
+  custom:palm_log:
+    material: paper
+    data:
+      item_name: "<lang:item.custom.palm_log>"          # "Palm Log" / "棕榈原木"
+
+  custom:palm_leaves:
+    material: paper
+    data:
+      item_name: "<lang:item.custom.palm_leaves>"        # "Palm Leaves" / "棕榈树叶"
+
+  custom:coconut:
+    material: paper
+    data:
+      item_name: "<lang:item.custom.coconut>"
+
+  # --- 使用 <i18n:key>  (服务端翻译, 文本在服务端被替换) ---
+  custom:chinese_lantern:
+    material: paper
+    data:
+      item_name: "<i18n:item.chinese_lantern>"           # 服务端替换为 "灯笼" 再发给客户端
+
+  custom:fairy_flower:
+    material: paper
+    data:
+      item_name: "<i18n:item.fairy_flower>"
+
+  custom:bench:
+    material: paper
+    data:
+      item_name: "<i18n:item.bench>"                     # "长椅"
+
+  # --- 使用 <l10n:key>  (客户端本地化, 标签以原始形式发送) ---
+  custom:table_lamp:
+    material: paper
+    data:
+      item_name: "<l10n:item.table_lamp>"                # 客户端收到 <l10n:...> 后实时渲染
+
+  custom:wooden_chair:
+    material: paper
+    data:
+      item_name: "<l10n:item.wooden_chair>"
+
+  # --- 同时使用 lang + l10n 的混合案例 ---
+  custom:palm_sapling:
+    material: paper
+    data:
+      item_name: "<lang:item.custom.palm_sapling>"
+    lore:
+      - "<l10n:message.welcome>"
+
+  # --- 方块物品 (使用 block_name 翻译) ---
+  block:chinese_lantern:
+    material: paper
+    data:
+      item_name: "<lang:block_name:default:chinese_lantern>"

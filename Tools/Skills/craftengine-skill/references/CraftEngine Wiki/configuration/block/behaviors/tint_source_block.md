@@ -1,0 +1,18 @@
+# 🎨 颜色提供器方块
+
+**方块实体**
+
+**颜色提供器方块**可以将物品作为颜色提供器存入方块实体，使[方块实体渲染器元素](../states/entity_renderer.md#渲染元素类型)可根据存储的物品[动态着色](../states/entity_renderer.md#颜色提供器)。
+
+若启用 `drop_item`，方块被破坏时存储的物品会掉落。
+
+## 示例
+
+```yaml
+blocks:
+  default:copper_coil:
+    behavior:
+      type: tint_source_block
+      drop_item: true                     # 方块破坏后是否掉落存储的物品（默认 true）
+      data_key: "craftengine:tint_source" # 持久化数据的 NBT 键（默认 "craftengine:tint_source"）
+```

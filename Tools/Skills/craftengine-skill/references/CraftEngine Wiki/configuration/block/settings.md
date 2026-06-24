@@ -1,0 +1,392 @@
+# 🔧 方块设置
+
+## 概览
+
+`settings` 配置部分定义了方块的基础属性，例如硬度、音效、熔岩可燃性、亮度、合适挖掘工具等，其次这与[🕹️ 方块行为](behaviors.md)不在同一个配置部分。此外所有设置项均为**可选**（省略时使用默认值），并能通过[变体](states.md#变体匹配规则)按状态覆盖。以下是包含所有可用设置类型的示例：
+
+<details>
+  <summary>示例</summary>
+
+```yaml
+blocks:
+  custom:all_settings_block:
+    settings:
+      hardness: 0.5
+      resistance: 0.5
+      push_reaction: NORMAL
+      map_color: 36
+      burnable: false
+      fire_spread_chance: 0
+      burn_chance: 0
+      item: custom:all_settings_item
+      replaceable: false
+      is_redstone_conductor: true
+      is_suffocating: true
+      is_view_blocking: true
+      sounds:
+        break: minecraft:block.deepslate.break
+        step: minecraft:block.deepslate.step
+        place: minecraft:block.deepslate.place
+        hit: minecraft:block.deepslate.hit
+        fall: minecraft:block.deepslate.fall
+      require_correct_tools: true
+      respect_tool_component: false
+      correct_tools:
+        - minecraft:wooden_pickaxe
+      incorrect_tool_dig_speed: 0.3
+      tags:
+        - minecraft:mineable/pickaxe
+      instrument: basedrum
+      fluid_state: water
+      support_shape: minecraft:stone
+      luminance: 15
+      can_occlude: false
+      block_light: 0
+      propagate_skylight: false
+      jump_factor: 1.0
+      speed_factor: 1.0
+      friction: 0.7
+      bounce_restitution: 0.0
+```
+</details>
+
+本页分两部分：[**稳定设置**](#稳定设置)（完全支持）与[**不稳定设置**](#不稳定设置)（尽可能支持，可能出现服务端与客户端不同步的问题）。
+
+## 稳定设置
+
+### 硬度
+
+决定了挖掘这个方块需要的挖掘时间。（默认值：2.0）
+
+```yaml
+hardness: 0.5
+```
+
+### 爆炸抗性
+
+决定了方块在爆炸中吸收和阻止爆炸破坏方块传播的强度。（默认值：2.0）
+
+```yaml
+resistance: 0.5
+```
+
+### 活塞推动行为
+
+决定方块在受到活塞推动时的反应。请注意，由于客户端视觉同步问题，某些反应可能与某些方块类型不兼容。这个问题将在未来版本中得到修复。（默认值：NORMAL）
+
+* NORMAL     可推动，可拉动
+* DESTROY    被推动破坏，不可拉动
+* BLOCK      不可推动，不可拉动
+* IGNORE     似乎像 PUSH_ONLY 一样工作，但可以粘附在粘性方块上
+* PUSH\_ONLY 可推动，不可拉动
+
+```yaml
+push_reaction: NORMAL
+```
+
+### 地图颜色
+
+决定了地图在表示此方块时会使用的颜色的基色。可用颜色可以在 [https://zh.minecraft.wiki/w/地图存储格式#地图基色](https://zh.minecraft.wiki/w/地图存储格式#地图基色) 查找。（默认值：0）
+
+```yaml
+map_color: 36
+```
+![](/img/block_settings_1.png)
+
+### 熔岩可燃性
+
+决定了熔岩是否可以在该方块上生成火。（默认值：false）
+
+```yaml
+burnable: true
+```
+
+![](/img/i18n/zh-Hans/block_settings_2.png)
+
+### 烧毁几率
+
+影响火与其相邻时破坏该方块的几率和速率。方块烧毁几率为正数时，其所有表面均可燃烧，否则只有其完整的上表面可以燃烧。（默认值：0）
+
+```yaml
+fire_spread_chance: 100  # 0-100
+```
+
+### 引燃几率
+
+影响火在其附近时传播到该方块表面上的几率和速率。引燃几率为正数的方块被称为可燃方块。（默认值：0）
+
+```yaml
+burn_chance: 30  # 0-100
+```
+
+### 物品
+
+决定方块对应的物品是什么。通常在创造模式使用鼠标中键点击来获取方块。（默认值：null）
+
+```yaml
+item: default:xxx_block_item
+```
+
+### 可替代
+
+决定了方块是否可以被其他方块通过放置被直接替代掉，影响方块物品放置出方块的方式。（默认值：false）
+
+```yaml
+replaceable: false
+```
+
+### 红石导体
+
+决定了方块在红石信号传播中的影响。具有红石导体属性的方块被称为红石导体。（默认值：未定义）
+
+```yaml
+is_redstone_conductor: true
+```
+
+![](/img/block_settings_3.png)
+
+### 窒息生物
+
+决定了生物视平线处于其中时会发生窒息的方块。（默认值：未定义）
+
+```yaml
+is_suffocating: true
+```
+
+### 视野阻挡
+
+会使视平线处于其中的非旁观模式玩家渲染阻挡视线的效果。绝大多数窒息方块都是视野阻挡方块。但是，此选项对玩家毫无用处，但是它将影响服务器上的某些实体机制。（默认值：未定义）
+
+```yaml
+is_view_blocking: true
+```
+
+### 音效
+
+决定方块在各种情况下的音效。（默认值：null）
+
+* fall 当玩家带有坠落伤害时坠落在方块上时
+* hit 当玩家挖掘方块时
+* break 当玩家破坏方块时
+* step 当玩家在方块上行走时
+* place 当玩家放置方块时
+
+```yaml
+sounds:
+  break: minecraft:block.deepslate.break
+  step: minecraft:block.deepslate.step
+  place: minecraft:block.deepslate.place
+  hit: minecraft:block.deepslate.hit
+  fall: minecraft:block.deepslate.fall
+```
+
+:::info
+您可以像这样配置以精确控制音量和音高
+
+```yaml
+sounds:
+  break:
+    id: minecraft:block.deepslate.break
+    pitch: 0.5
+    volume: 0.25~0.3 # 范围值也支持
+  step: minecraft:block.deepslate.step
+```
+:::
+
+### 需要合适挖掘工具
+
+决定了是否需要合适挖掘工具才能有效的挖掘这个方块（默认值：false）
+
+```yaml
+require_correct_tools: false
+```
+
+### 尊重 tool 组件
+
+决定 `minecraft:tool` 组件的 `correct_for_drops` 选项是否应像下面的 `correct_tools` 一样工作。（默认值：false）
+
+```yaml
+respect_tool_component: false
+```
+
+### 合适挖掘工具
+
+决定了什么物品可以有效地挖掘这个方块。（默认值：null）
+
+```yaml
+correct_tools:
+  - minecraft:wooden_pickaxe
+  - minecraft:stone_pickaxe
+  - minecraft:iron_pickaxe
+  - minecraft:golden_pickaxe
+  - minecraft:diamond_pickaxe
+  - minecraft:netherite_pickaxe
+```
+
+:::tip
+如果设置了 `correct_tools`，那么 `require_correct_tools` 默认为 `true`。
+:::
+
+### 挖掘惩罚
+
+决定了如果不使用合适挖掘工具的挖掘速度是正常的多少倍（默认值：0.3）
+
+```yaml
+incorrect_tool_dig_speed: 0.3 # 0~1
+```
+
+### 标签
+
+标签决定了许多方块的属性。例如，使用 `minecraft:mineable/axe` 会让你的方块用斧挖掘时更快。（默认值：null）[🏷️ 方块标签](../../reference/block_tags.md)
+
+```yaml
+tags:
+  - minecraft:mineable/axe
+  - minecraft:logs_that_burn
+  - minecraft:logs
+  - minecraft:completes_find_tree_tutorial
+```
+
+### 客户端侧标签
+
+这只适用于原版方块
+
+```yaml
+client_bound_tags:
+  - minecraft:beacon_base_blocks
+```
+
+![](/img/block_settings_4.png)
+
+### 乐器
+
+决定了方块被放在音符盒下时，音符盒使用的乐器类型。（默认值：harp）
+
+译者注：全部的乐器名称可以在[这里](https://zh.minecraft.wiki/w/音符盒#方块状态)查到
+
+```yaml
+instrument: basedrum
+```
+
+![](/img/block_settings_5.png)
+
+### 流体状态
+
+决定了方块状态的包含的流体状态。（默认值：empty）
+
+```yaml
+fluid_state: water # empty/water
+```
+
+![](/img/block_settings_6.png)
+
+### 支撑形状
+
+决定了方块提供的**支撑形状**。默认情况下，自定义方块会使用其对应视觉状态的**支撑形状**。但是，你可以在这里手动指定一个原版方块的**支撑形状**来代替。
+
+```yaml
+support_shape: minecraft:stone
+```
+
+![](/img/block_settings_7.png)
+
+## 不稳定设置
+
+:::caution
+接下来的方块设置只对非玩家实体生效
+:::
+
+### 弹性碰撞系数（26.2+）
+
+决定了生物下落到方块上后可以反弹多高。绝大多数方块的弹性碰撞系数为0，黏液块的弹性碰撞系数为1，床的弹性碰撞系数为0.75。如果是非生物实体下落导致的碰撞，则计算使用的弹性碰撞系数会额外乘上0.8。
+
+```yaml
+bounce_restitution: 0.0
+```
+
+:::tip
+
+可通过[⏏️ 弹跳方块](behaviors/bouncing_block.md)强制为玩家实体同步
+
+:::
+
+### 阻力系数
+
+决定了方块与站在其上方的生物的"摩擦力"，影响生物的加速度并决定稳定移动速度。绝大多数方块的阻力系数为0.6，黏液块的阻力系数为0.8，冰、浮冰、霜冰的阻力系数为0.98，蓝冰的阻力系数为0.989。
+
+```yaml
+friction: 0.6
+```
+
+### 跳跃乘数
+
+```yaml
+jump_factor: 1.0
+```
+
+### 速度乘数
+
+```yaml
+speed_factor: 1.0
+```
+
+:::caution
+剩余的方块设置都与**光照系统**有关。CraftEngine 已尽可能在不影响服务器性能的情况下实现了部分光照效果。客户端光照系统的视觉问题属于正常现象，在大多数情况下我也无法修复。
+
+方块对**天空光照**的遮挡完全由**客户端决定**，**无法通过服务器发送数据包来修复**。因此，`block_light` 和 `can_occlude` 设置**仅影响方块自身发出的光**，不影响天空光照。
+:::
+
+### 亮度
+
+决定方块的光照等级。（默认值：0）
+
+```yaml
+luminance: 15
+```
+
+![](/img/block_settings_8.png)
+
+### 阻挡光线
+
+决定方块是否能阻挡光线。这也会决定该方块是否能将下方的方块转换为另一种类型（例如，草方块变为泥土）。（默认值：未定义）
+
+```yaml
+can_occlude: false
+```
+
+![can_occlude: true](/img/block_settings_9.png)
+*can_occlude: true*
+
+![can_occlude: false](/img/block_settings_10.png)
+*can_occlude: false*
+
+![can_occlude: false](/img/block_settings_11.png)
+*can_occlude: false*
+
+![can_occlude: true](/img/block_settings_12.png)
+*can_occlude: true*
+
+### 散射光照
+
+决定光线穿过此方块后降低的光照等级。（默认值：未定义）
+
+```yaml
+block_light: 0
+```
+
+![block_light: 15](/img/block_settings_13.png)
+*block_light: 15*
+
+![block_light: 7](/img/block_settings_14.png)
+*block_light: 7*
+
+![block_light: 0](/img/block_settings_15.png)
+*block_light: 0*
+
+### 传播天空光照
+
+决定天空光照能否穿过该方块。
+
+```yaml
+propagate_skylight: true
+```

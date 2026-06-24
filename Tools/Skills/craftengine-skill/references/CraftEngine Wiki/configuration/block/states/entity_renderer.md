@@ -1,0 +1,382 @@
+# 🫑 方块实体渲染器
+
+## 它是如何工作的？
+
+众所周知，单个方块的变体数量是有限的。以绊线为例，其最多只有 128 种变体。这意味着在不破坏绊线原本功能的前提下，最多只能释放 127 种自定义方块状态。然而，通过移除其中一种状态的纹理使其完全透明，并在方块中心放置展示实体，便能实现近乎无限的自定义方块。
+
+:::warning
+
+需要注意的是，某些原版方块使用了硬编码的渲染器。当方块使用的模型尺寸与完整方块不匹配时，可能会出现透视方块效果，如下图所示。
+
+![ ](/img/block_entities_1.png)
+
+:::
+
+要配置展示实体，在 `state` 或 `appearances` 的配置部分中添加 `entity_renderer` 选项即可。
+
+## 基本用法
+
+`entity_renderer` 需要一个配置部分或列表作为参数。每个配置部分代表一个渲染元素，多个元素可叠加组合。
+
+```yaml
+# 单个渲染元素（配置部分格式）
+entity_renderer:
+  type: item_display
+  item: default:sofa
+
+# 多个渲染元素（列表格式）
+entity_renderer:
+  - type: item_display
+    item: default:sofa
+  - type: text_display
+    text: 沙发
+```
+
+:::info
+类型自动检测
+
+如果未指定 `type`，插件会根据其他字段按以下顺序尝试推导类型：
+- 包含 `text` → `text_display`
+- 包含 `item` → `item_display`
+
+因此最简单的形式可以省略 `type`：
+
+```yaml
+entity_renderer:
+  item: default:sofa     # 自动推导为 item_display
+```
+:::
+
+## 展示实体通用参数
+
+以下参数适用于 `item_display` 和 `text_display` 两种渲染元素类型。
+
+<details>
+<summary>展开参数列表</summary>
+
+```yaml
+# 平移、位置与缩放
+translation: 0,0.5,0       # 偏移量 (x,y,z)，推荐使用此方式调整位置
+position: 0.5,0.5,0.5      # 相对位置 (x,y,z)，默认方块中心
+scale: 1,1,1               # 缩放 (x,y,z)，也支持单个数字如 scale: 1.5
+
+# 旋转（推荐使用 rotation）
+yaw: 0                     # 绕 Y 轴旋转
+pitch: 0                   # 绕 X 轴旋转
+# 译者注：我推荐这个旋转工具 https://iwatake2222.github.io/rotation_master/rotation_master.html 操作起来更方便
+rotation: 45               # 基于 Y 轴旋转
+rotation: 45,45,0          # 欧拉角
+rotation: 0,0,0.707,0.707  # 四元数
+
+# 展示
+billboard: fixed           #      fixed      /  vertical   /  horizontal /         center
+                           # 固定垂直和水平轴 /  固定垂直轴  /  固定水平轴  / 按照中心旋转跟随玩家视角
+glow_color: 255,255,255    # 发光边框颜色 (R,G,B)
+brightness:                # 渲染亮度值，译者注：若需配置该选项则其子选项 `block_light` 和 `sky_light` 必填否则无效
+  block_light: 15
+  sky_light: 15
+view_range: 1.0            # 可视距离系数
+
+# 阴影
+shadow_radius: 0           # 阴影半径
+shadow_strength: 1         # 阴影的不透明度
+```
+
+</details>
+
+:::tip
+建议使用 `translation` 代替 `position`，使用 `rotation` 代替 `yaw`/`pitch`。这样插件可以在不发送位置同步包的情况下更新渲染，保证最佳视觉效果。
+:::
+
+## 渲染元素类型
+
+### 物品展示实体
+
+基于原版物品展示实体渲染自定义物品模型。**当未指定 `type` 且包含 `item` 时，自动推导为此类型。**
+
+**必填：**
+
+```yaml
+type: item_display
+item: default:sofa          # 物品命名空间ID
+```
+
+**可选：**
+
+```yaml
+display_transform: none     # 物品展示实体的模式，用于再次变换物品模型：
+                            # none  / third_person_left_hand / third_person_right_hand
+                            # 不变换 /   第三人称视角左手变换  /   第三人称视角右手变换
+                            # first_person_left_hand / first_person_right_hand
+                            #   第一人称视角左手变换   /   第一人称视角右手变换
+                            #         head         /        gui        /     ground
+                            # 放置在头部物品栏的变换 / 在图形界面中的变换 / 平铺在地面的变换
+                            #  fixed  /    on_shelf
+                            # 默认变换 / 在展示架中的变换
+```
+
+`display_transform`（也可写作 `display_context`）决定物品模型的变换方式。大多数情况下保持默认 `none` 即可，如需使用手持、掉落在地面等变换的物品模型，可指定对应模式。
+
+更多参数参见[展示实体通用参数](#展示实体通用参数)
+
+<details>
+<summary>完整示例</summary>
+
+```yaml
+entity_renderer:
+  type: item_display
+  item: default:sofa
+  translation: 0,0.5,0
+  scale: 1,1,1
+  rotation: 0,45,0
+  billboard: fixed
+  glow_color: 255,200,100
+  brightness:
+    block_light: 15
+    sky_light: 15
+  view_range: 1.0
+  shadow_radius: 0
+  shadow_strength: 1
+  display_transform: none
+  tint_source:              # 颜色提供器（详见下方）
+    type: default
+    components:
+      - minecraft:dyed_color
+```
+
+</details>
+
+### 文本展示实体
+
+基于原版文本展示实体渲染文本。**当未指定 `type` 且包含 `text` 时，自动推导为此类型。**
+
+**必填：**
+
+```yaml
+type: text_display
+text: 你好 <papi:player_name>       # 文本内容，支持 MiniMessage 和 [✏️ 文本格式]
+```
+
+**可选：**
+
+```yaml
+line_width: 200                     # 一行文本的最大宽度
+background_color: 64,0,0,0          # 背景颜色 (A,R,G,B)，默认 0x40000000（半透明黑）
+text_opacity: -1                    # 文本的不透明度 (0-255)，默认 -1
+has_shadow: false                   # 文本是否显示阴影
+is_see_through: false               # 是否能穿过方块渲染
+use_default_background_color: false # 是否使用默认的文本背景
+alignment: center                   # 文本对齐方向：
+                                    # center / left  / right
+                                    #  居中  / 左对齐 / 右对齐
+```
+
+更多参数参见[展示实体通用参数](#展示实体通用参数)
+
+<details>
+<summary>完整示例</summary>
+
+```yaml
+entity_renderer:
+  type: text_display
+  text: <yellow>点击交互</yellow>
+  translation: 0,1.2,0
+  scale: 1.5
+  billboard: center
+  alignment: center
+  line_width: 200
+  background_color: 0,0,0,0        # ARGB，全透明背景
+  text_opacity: 200
+  has_shadow: true
+  is_see_through: false
+  view_range: 0.8
+```
+
+</details>
+
+### 物品实体
+
+渲染一个物品实体。
+
+```yaml
+type: item
+item: default:sleeper_sofa         # 必填：物品命名空间ID
+position: 0.5,0.5,0.5              # 可选：位置 (x,y,z)，默认方块中心
+```
+
+物品实体会自动带有旋转动画，适合简单的物品展示场景。
+
+<details>
+<summary>带有颜色提供器的示例</summary>
+
+```yaml
+entity_renderer:
+  type: item
+  item: default:colored_block
+  position: 0.5
+  tint_source:
+    type: default
+    components:
+      - minecraft:dyed_color
+```
+
+</details>
+
+### 盔甲架
+
+基于盔甲架渲染物品模型。盔甲架支持在头盔装备槽位渲染物品模型。
+
+```yaml
+type: armor_stand
+item: default:bench                 # 必填：物品命名空间ID
+position: 0,0.2,0                   # 可选：位置 (x,y,z)，默认方块中心
+yaw: 0                              # 可选：绕 Y 轴旋转
+pitch: 0                            # 可选：绕 X 轴旋转
+scale: 1                            # 可选：缩放，默认 1
+small: false                        # 可选：是否小盔甲架，默认 false
+glow_color: white                   # 可选：发光颜色（仅支持旧版颜色）
+```
+
+:::tip
+`glow_color` 支持的颜色名称：`black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, `white`
+:::
+
+### BetterModel
+
+:::info
+需要安装 [BetterModel](https://github.com/toxicity188/BetterModel/releases/latest) 插件
+:::
+
+渲染 BetterModel 插件中的自定义模型。
+
+```yaml
+type: better_model
+model: custom_model                 # 必填：模型名称
+position: 0.5,0.5,0.5               # 可选：位置 (x,y,z)，默认方块中心
+yaw: 0                              # 可选：绕 Y 轴旋转
+pitch: 0                            # 可选：绕 X 轴旋转
+sight_trace: true                   # 可选：是否对可见性进行视线追踪，默认 true
+```
+
+### ModelEngine
+
+:::info
+需要安装 [ModelEngine](https://mythiccraft.io/resources/1213) 插件
+:::
+
+渲染 ModelEngine 插件中的自定义模型。
+
+```yaml
+type: model_engine
+model: custom_model                 # 必填：模型名称
+position: 0.5,0.5,0.5               # 可选：位置 (x,y,z)，默认方块中心
+yaw: 0                              # 可选：绕 Y 轴旋转
+pitch: 0                            # 可选：绕 X 轴旋转
+```
+
+## 颜色提供器
+
+颜色提供器用于为方块实体渲染元素的物品**动态着色**。它从方块行为（如 `tint_source_block` 或 `display_item_block`）中读取颜色数据，并应用到渲染的物品上。
+
+### 简单用法
+
+大多数情况下只需一行：
+
+```yaml
+entity_renderer:
+  type: item_display
+  item: default:sofa
+  tint_source: minecraft:dyed_color       # 字符串简写
+```
+
+相当于：
+
+```yaml
+entity_renderer:
+  type: item_display
+  item: default:sofa
+  tint_source:
+    type: default
+    components:
+      - minecraft:dyed_color
+    index: 0                              # 着色索引，默认 0
+```
+
+### 多元素着色
+
+当一个方块有多个渲染元素时，每个元素可以指定不同的着色索引。索引对应方块行为中的颜色提供器行为顺序（而**不是**任意行为的顺序）：
+
+```yaml
+entity_renderer:
+  - item: example:element_1
+    tint_source:
+      type: default
+      components:
+        - minecraft:dyed_color
+      index: 0                            # 对应第 1 个颜色提供器
+  - item: example:element_2
+    tint_source:
+      type: default
+      components:
+        - minecraft:dyed_color
+      index: 1                            # 对应第 2 个颜色提供器
+  - item: example:element_3
+    tint_source:
+      type: default
+      components:
+        - minecraft:dyed_color
+      index: 2                            # 对应第 3 个颜色提供器
+```
+
+`components` 列表指定需要应用颜色的物品组件，常见的有 `minecraft:dyed_color`（所染颜色）、`minecraft:custom_model_data` 等。一个 `tint_source` 可同时应用于多个组件。
+
+![](/img/block_tint_source.png)
+
+## 实体剔除
+
+实体剔除通过控制方块实体在客户端侧的可见性，以优化性能。
+
+**禁用剔除**（实体始终可见）：
+
+```yaml
+entity_renderer: ...
+entity_culling: false
+```
+
+**启用剔除**（默认行为，可自定义参数）：
+
+```yaml
+entity_renderer: ...
+entity_culling:
+  aabb: -0.5,-0.5,-0.5,0.5,1.5,0.5       # 剔除包围盒 (minX,minY,minZ,maxX,maxY,maxZ)
+                                         # 默认覆盖整个方块
+  view_distance: 64                      # 最大可视距离，-1 表示无限距离
+  aabb_expansion: 0.5                    # 包围盒扩展量，默认 0.5
+  ray_tracing: true                      # 是否启用光线追踪剔除
+```
+
+参数说明：
+
+| 参数               | 类型    | 默认值             | 说明                                       |
+|:-----------------|:------|:----------------|:-----------------------------------------|
+| `aabb`           | 6 个数字 | 方块边界            | 自定义剔除包围盒，大型模型可适当调整                       |
+| `view_distance`  | 整数    | 由 config.yml 决定 | 超出此距离的实体不再渲染。不建议设为 -1 同时开启 `ray_tracing` |
+| `aabb_expansion` | 数字    | 0.5             | 包围盒扩展量，影响光线追踪的判定范围                       |
+| `ray_tracing`    | 布尔    | true            | 是否通过光线追踪判断实体是否被遮挡                        |
+
+## 渲染条件
+
+每个渲染元素可以配置 `conditions`，使该元素仅对满足条件的玩家可见。
+
+```yaml
+entity_renderer:
+  - type: item_display
+    item: default:secret_block
+    conditions:
+      - type: permission
+        permission: "vip.secret"
+      - type: world
+        world: "world_nether"
+```
+
+渲染条件使用**与**逻辑，即需要满足全部条件才会进行渲染。支持的条件类型参见[⚖️ 条件](../../../reference/conditions.md)页面。

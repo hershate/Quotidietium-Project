@@ -1,0 +1,273 @@
+# =============================================================================
+# CraftEngine 文件冲突配置模板
+# =============================================================================
+#  Wiki 来源:
+#    参考资料/CraftEngine/CraftEngine Wiki/reference/file_conflict.md
+#
+#  说明:
+#    此配置段位于 config.yml 的 resource-pack.duplicated-files-handler 下。
+#    当合并多个资源包遇到同名文件冲突时，插件按顺序查找第一个匹配的规则
+#    并执行对应的解决方案。若无一匹配，则向控制台发出警告。
+#
+#    每条规则包含:
+#      - term:       匹配规则（决定文件如何被识别为冲突）
+#      - resolution: 解决方案（决定如何处理冲突文件）
+#
+#  注意:
+#    本插件不支持着色器的合并。
+# =============================================================================
+
+# =============================================================================
+# 1. 通用匹配规则 (term)
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 1.1 逻辑组合匹配
+# ---------------------------------------------------------------------------
+
+# << 与 (all_of): 所有子条件都必须满足
+# << 适用于需要同时满足多个路径条件的场景
+#
+# - type: all_of
+#   terms:
+#     - type: parent_path_suffix
+#       suffix: "minecraft/models/item"
+#     - type: contains
+#       path: "your_namespace"  # << CHANGE THIS: 替换为你的命名空间
+
+# << 或 (any_of): 满足任意一个子条件即可
+# << 适用于匹配多个可能路径的同一类文件
+#
+# - type: any_of
+#   terms:
+#     - type: parent_path_suffix
+#       suffix: "minecraft/items"              # << CHANGE THIS: 1.21.4+ 路径
+#     - type: parent_path_suffix
+#       suffix: "minecraft/models/item"        # << CHANGE THIS: 1.20-1.21.3 路径
+
+# << 非 (inverted): 对子条件的结果取反
+# << 适用于排除特定路径的全局规则
+#
+# - type: inverted
+#   term:
+#     type: exact
+#     path: "assets/minecraft/lang/zh_cn.json"  # << CHANGE THIS: 要排除的路径
+
+# ---------------------------------------------------------------------------
+# 1.2 基础路径匹配
+# ---------------------------------------------------------------------------
+
+# << 文件名匹配 (filename): 仅匹配文件名，不关心所在目录
+#
+# - type: filename
+#   name: "sounds.json"  # << CHANGE THIS: 文件名
+
+# << 绝对路径匹配 (exact): 以 assets 文件夹同级目录为根目录的完整路径
+#
+# - type: exact
+#   path: "assets/minecraft/lang/zh_cn.json"  # << CHANGE THIS: 完整路径
+#
+# - type: exact
+#   path: "pack.mcmeta"                       # << CHANGE THIS: 根目录文件
+
+# << 父目录路径前缀匹配 (parent_path_prefix): 路径以指定前缀开头
+#
+# - type: parent_path_prefix
+#   path: "assets/minecraft"                   # << CHANGE THIS: 此前缀
+
+# << 父目录路径后缀匹配 (parent_path_suffix): 路径以指定后缀结尾
+#
+# - type: parent_path_suffix
+#   path: "minecraft/models/item"              # << CHANGE THIS: 此后缀
+
+# << 包含匹配 (contains): 路径包含指定字符串
+#
+# - type: contains
+#   path: "custom/furniture"                   # << CHANGE THIS: 包含的子串
+
+# << 正则匹配 (pattern): 使用正则表达式匹配完整路径
+#
+# - type: pattern
+#   pattern: "assets/minecraft/models/block/.*\\.json"  # << CHANGE THIS: 正则表达式
+
+
+# =============================================================================
+# 2. 冲突解决方案 (resolution)
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 2.1 JSON 合并 (merge_json)
+# ---------------------------------------------------------------------------
+# 将两个冲突的 JSON 文件深度或浅层合并为一个
+
+# << 深层合并 (deeply: true) —— 递归合并嵌套对象
+# << 适用于 model / blockstate / item_definition 等复杂 JSON
+#
+# - term:
+#     type: any_of
+#     terms:
+#       - type: parent_path_suffix
+#         suffix: "minecraft/items"                  # << CHANGE THIS
+#       - type: parent_path_suffix
+#         suffix: "minecraft/models/item"            # << CHANGE THIS
+#   resolution:
+#     type: merge_json
+#     deeply: true
+
+# << 浅层合并 (deeply: false) —— 仅合并顶层键
+# << 适用于 sounds.json 等扁平结构的 JSON 文件
+#
+# - term:
+#     type: filename
+#     name: "sounds.json"                            # << CHANGE THIS
+#   resolution:
+#     type: merge_json
+#     deeply: false
+
+# ---------------------------------------------------------------------------
+# 2.2 保留匹配 (retain_matching)
+# ---------------------------------------------------------------------------
+# 当两个文件冲突时，保留满足指定条件的那一个，丢弃另一个
+
+# << 示例: 优先保留来自特定资源包路径的 pack.png
+#
+# - term:
+#     type: exact
+#     path: "pack.png"                               # << CHANGE THIS
+#   resolution:
+#     type: retain_matching
+#     term:
+#       type: contains
+#       path: "resources/default/resourcepack"       # << CHANGE THIS
+
+# << 示例: 保留来自指定命名空间的模型文件
+#
+# - term:
+#     type: pattern
+#     pattern: "assets/.*/models/item/.*\\.json"     # << CHANGE THIS
+#   resolution:
+#     type: retain_matching
+#     term:
+#       type: parent_path_prefix
+#       path: "assets/your_namespace"                # << CHANGE THIS: 替换为你的命名空间
+
+# ---------------------------------------------------------------------------
+# 2.3 条件解析 (conditional)
+# ---------------------------------------------------------------------------
+# 对冲突文件执行二次条件判断，根据子条件选择不同的子解决方案
+
+# << 示例: 根据命名空间分支使用不同的合并策略
+#
+# - term:
+#     type: parent_path_suffix
+#     suffix: "minecraft/models/item"                # << CHANGE THIS
+#   resolution:
+#     type: conditional
+#     term:
+#       type: contains
+#       path: "your_namespace"                       # << CHANGE THIS
+#     resolution:
+#       type: merge_json
+#       deeply: true
+
+# ---------------------------------------------------------------------------
+# 2.4 合并资源包元文件 (merge_pack_mcmeta)
+# ---------------------------------------------------------------------------
+# 专为 pack.mcmeta 定制的合并方案，可自定义资源包描述
+
+# << 示例: 合并 pack.mcmeta 并设置描述文本
+# << description 支持 Minecraft 颜色代码 (<gray>, <gold>, <white> 等)
+#
+# - term:
+#     type: exact
+#     path: "pack.mcmeta"                            # << CHANGE THIS
+#   resolution:
+#     type: merge_pack_mcmeta
+#     description: "<gray>CraftEngine 资源包"        # << CHANGE THIS: 资源包描述
+
+# ---------------------------------------------------------------------------
+# 2.5 合并纹理图集 (merge_atlas)
+# ---------------------------------------------------------------------------
+# 专为 atlases/*.json 定制的合并方案
+
+# << 示例: 合并纹理图集文件
+#
+# - term:
+#     type: pattern
+#     pattern: "assets/minecraft/atlases/.*\\.json"  # << CHANGE THIS
+#   resolution:
+#     type: merge_atlas
+
+# ---------------------------------------------------------------------------
+# 2.6 合并字体文件 (merge_font)
+# ---------------------------------------------------------------------------
+# 专为 font/*.json 定制的合并方案
+
+# << 示例: 合并字体定义文件
+#
+# - term:
+#     type: pattern
+#     pattern: "assets/minecraft/font/.*\\.json"     # << CHANGE THIS
+#   resolution:
+#     type: merge_font
+
+
+# =============================================================================
+# 3. 完整配置示例 (可直接复制使用)
+# =============================================================================
+#
+# 将以下内容放入 config.yml 的 resource-pack.duplicated-files-handler 节:
+#
+# resource-pack:
+#   duplicated-files-handler:
+#     # 物品模型冲突 —— 按版本兼容路径匹配，进行深层 JSON 合并
+#     - term:
+#         type: any_of
+#         terms:
+#           - type: parent_path_suffix
+#             suffix: "minecraft/items"
+#           - type: parent_path_suffix
+#             suffix: "minecraft/models/item"
+#       resolution:
+#         type: merge_json
+#         deeply: true
+#
+#     # 资源包元文件冲突 —— 合并并设置描述
+#     - term:
+#         type: exact
+#         path: "pack.mcmeta"
+#       resolution:
+#         type: merge_pack_mcmeta
+#         description: "<gray>CraftEngine 资源包"
+#
+#     # 资源包图标冲突 —— 优先保留来自默认资源包的图标
+#     - term:
+#         type: exact
+#         path: "pack.png"
+#       resolution:
+#         type: retain_matching
+#         term:
+#           type: contains
+#           path: "resources/default/resourcepack"
+#
+#     # 音效定义冲突 —— 浅层 JSON 合并
+#     - term:
+#         type: filename
+#         name: "sounds.json"
+#       resolution:
+#         type: merge_json
+#         deeply: false
+#
+#     # 纹理图集冲突 —— 使用专用合并器
+#     - term:
+#         type: pattern
+#         pattern: "assets/.*/atlases/.*\\.json"
+#       resolution:
+#         type: merge_atlas
+#
+#     # 字体定义冲突 —— 使用专用合并器
+#     - term:
+#         type: pattern
+#         pattern: "assets/.*/font/.*\\.json"
+#       resolution:
+#         type: merge_font

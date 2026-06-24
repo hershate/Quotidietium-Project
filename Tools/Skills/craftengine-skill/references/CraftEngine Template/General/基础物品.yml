@@ -1,0 +1,429 @@
+# =============================================================================
+# CraftEngine 物品基础配置模板 (YAML)
+# =============================================================================
+# Wiki 参考路径 (本地):
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/item.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/settings.md
+#
+# 使用说明:
+#   1. 将下方所有 "my:" 命名空间替换为你的实际命名空间
+#   2. 搜索 "<< CHANGE THIS" 标记并替换为实际值
+#   3. 删除不需要的配置块
+#   4. 付费版专属配置已标注 (client_bound_*)
+# =============================================================================
+
+items:
+  # ============================================================================
+  # 示例 1/5: 基础装饰物品 (最简配置)
+  # 用途: 仅需自定义材质/模型的纯装饰物品
+  # ============================================================================
+  my:example_gem:
+    # << CHANGE THIS: 基础物品材质 (必填)
+    material: paper
+    # << CHANGE THIS: 正整数，相同材质的物品应使用不同值
+    custom_model_data: 1001
+    # << CHANGE THIS: 1.21.2+ 物品模型命名空间ID (可选)
+    item_model: "my:example_gem"
+    data:
+      # << CHANGE THIS: 物品默认名称 (无法通过铁砧修改)
+      item_name: "<!i><#FF8C00>示例宝石"
+      # << CHANGE THIS: 物品提示框描述
+      lore:
+        - "一颗闪闪发光的宝石"
+        - "<gray>用途: 合成材料"
+
+  # ============================================================================
+  # 示例 2/5: 基础工具 (添加组件级数据)
+  # 用途: 展示常用数据组件: item_name, custom_name, lore, unbreakable,
+  #        enchantment, hide_tooltip, max_damage
+  # ============================================================================
+  my:example_sword:
+    # << CHANGE THIS: 基础材质
+    material: wooden_sword
+    custom_model_data: 1002
+    item_model: "my:example_sword"
+    data:
+      # << CHANGE THIS: 物品默认名称
+      item_name: "<!i><#55FF55>示例之剑"
+      # << CHANGE THIS: 自定义名称 (类似铁砧重命名)
+      custom_name: "<!i><#FFAA00>传说之刃"
+      # << CHANGE THIS: 物品描述
+      lore:
+        - "<#AAAAAA>一把由纯粹力量铸就的利刃"
+        - ""
+        - "<green>攻击伤害 +7"
+      # 无法破坏
+      unbreakable: true
+      # << CHANGE THIS: 魔咒列表 (key=魔咒ID, value=等级)
+      enchantment:
+        minecraft:sharpness: 3
+        minecraft:unbreaking: 2
+      # << CHANGE THIS: 使用 merge 选项合并物品已有魔咒
+      # enchantment:
+      #   merge: true
+      #   enchantments:
+      #     minecraft:sharpness: 1
+      #     minecraft:unbreaking: 1
+      # << CHANGE THIS: 隐藏物品提示框组件
+      hide_tooltip:
+        - enchantments
+        - attribute_modifiers
+      # << CHANGE THIS: 1.20.5+ 最大耐久度
+      max_damage: 250
+
+  # ============================================================================
+  # 示例 3/5: 燃料/堆肥/染色物品 (主要展示 settings)
+  # 用途: 展示所有 settings 功能: fuel_time, tags, dye_color, firework_color,
+  #       compost_probability, dyeable, food, repairable, renameable, enchantable
+  # ============================================================================
+  my:example_material:
+    material: paper
+    custom_model_data: 1003
+    item_model: "my:example_material"
+    data:
+      item_name: "<!i><#FF8C00>炎晶粉末"
+      lore:
+        - "蕴含着火焰能量的粉末"
+        - "<gray>可用作燃料和染料"
+    settings:
+      # << CHANGE THIS: 燃烧时间 (单位: 刻, 20刻=1秒)
+      fuel_time: 200
+      # << CHANGE THIS: 物品标签 (用于配方/命令测试)
+      tags:
+        - "my:fuel_materials"
+        - "my:dye_materials"
+        - "minecraft:coals"
+      # << CHANGE THIS: 染色颜色 (RGB 逗号分隔)
+      dye_color: "255,140,0"
+      # << CHANGE THIS: 烟火之星配方中的颜色 (RGB 逗号分隔)
+      firework_color: "255,69,0"
+      # << CHANGE THIS: 堆肥成功率 (0.0 ~ 1.0, 默认 0.5)
+      compost_probability: 0.65
+      # 是否可在工作台染色 (默认: 未定义/false)
+      dyeable: true
+      # << CHANGE THIS: 基于插件的食物实现 (建议 1.20.5+ 改用 data.food>
+      food:
+        nutrition: 3
+        saturation: 2.5
+      # << CHANGE THIS: 可修复性控制
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      # 是否可在铁砧重命名 (默认: true)
+      renameable: true
+      # 是否可在附魔台附魔 (默认: true)
+      enchantable: true
+      # << CHANGE THIS: 消耗后返还的物品
+      consume_replacement: minecraft:glass_bottle
+      # << CHANGE THIS: 合成剩余物品 (配方后返还)
+      # 固定物品返还
+      # craft_remainder: bucket
+      # 消耗耐久
+      # craft_remainder:
+      #   type: hurt_and_break
+      #   damage: 1
+      # 根据配方选择
+      # craft_remainder:
+      #   type: recipe_based
+      #   terms:
+      #     - recipes:
+      #         - "my:recipe_one"
+      #       craft_remainder:
+      #         type: hurt_and_break
+      #     - recipes:
+      #         - "my:recipe_two"
+      #       craft_remainder: "minecraft:stone"
+      # << CHANGE THIS: 燃料剩余物品 (仅堆叠数量为1时有效)
+      fuel_remainder: "minecraft:paper"
+      # << CHANGE THIS: 免疫的伤害类型
+      invulnerable:
+        - lava
+        - fire
+        - fire_tick
+        - block_explosion
+        - entity_explosion
+      # << CHANGE THIS: 原料替代物 (合成配方中可替代的材料)
+      ingredient_substitute:
+        - "minecraft:blaze_powder"
+        - "minecraft:coal"
+
+  # ============================================================================
+  # 示例 4/5: 方块物品 + 高级数据
+  # 用途: 展示 block_state, attribute_modifiers, food组件, trim, pdc,
+  #       profile, painting_variant, tooltip_style, jukebox_playable,
+  #       use_remainder, oversized_in_gui, hand_animation_on_swap
+  # ============================================================================
+  my:example_block_item:
+    material: note_block
+    custom_model_data: 1004
+    item_model: "my:example_block_item"
+    # (1.21.6+, 默认 true)
+    oversized_in_gui: true
+    # (默认 true)
+    hand_animation_on_swap: true
+    # (1.21.11+, 默认 1.0)
+    swap_animation_scale: 1.0
+    data:
+      item_name: "<!i>棕榈木板"
+      lore:
+        - "<gray>一种坚固的木板材料"
+      # << CHANGE THIS: 物品放置时应用的方块状态
+      block_state:
+        note: "12"
+        powered: "false"
+        instrument: "harp"
+      # 或使用自定义方块状态简写:
+      # block_state: "my:example_block[stage=0]"
+      # << CHANGE THIS: 属性修饰符
+      attribute_modifiers:
+        - type: attack_speed
+          amount: 1.2
+          operation: add_value
+          id: "my:custom_attack_speed"
+          slot: mainhand
+          # 1.21.5+ 显示覆盖
+          display:
+            type: override
+            value: "<yellow>攻击速度 +1.2"
+        - type: luck
+          amount: 1.0
+          operation: add_value
+          slot: any
+      # << CHANGE THIS: 1.20.5+ 食物组件
+      food:
+        nutrition: 5
+        saturation: 3.5
+        can_always_eat: false
+      # << CHANGE THIS: 盔甲纹饰
+      trim:
+        pattern: eye
+        material: iron
+      # << CHANGE THIS: 1.21.2+ 提示框样式
+      tooltip_style: "minecraft:topaz"
+      # << CHANGE THIS: 1.21+ 唱片机音乐
+      jukebox_playable: "my:custom_music"
+      # << CHANGE THIS: 1.21.2+ 使用后返还物品
+      use_remainder: "my:example_gem"
+      # << CHANGE THIS: 持久化数据容器 (PDC)
+      pdc:
+        custom_string: "example_value"
+        custom_number: 42
+        custom_list:
+          - 1
+          - 2
+          - 3
+        custom_map:
+          key: "value"
+      # << CHANGE THIS: 玩家头像 (玩家名 / 纹理URL / Base64)
+      # profile: "XiaoMoMi"
+      # profile: "http://textures.example.com/texture/..."
+      # << CHANGE THIS: 画变种
+      # painting_variant: "my:painting_custom"
+      # (1.20-1.20.4 遗留 NBT)
+      # nbt:
+      #   CustomModelData: 1004
+      # (1.20.5+ 自定义组件)
+      # components:
+      #   minecraft:max_damage: 128
+      #   minecraft:food:
+      #     nutrition: 4
+      #     saturation: 2.0
+      #     can_always_eat: false
+      #   minecraft:block_state:
+      #     distance: '1'
+      #     persistent: 'false'
+      #     waterlogged: 'false'
+      #   minecraft:unbreakable: {}
+      # (1.20.5+ 移除组件)
+      # remove_components:
+      #   - "minecraft:equippable"
+    settings:
+      # << CHANGE THIS: 标签 (包含自定义 + 原版)
+      tags:
+        - "my:planks"
+        - "minecraft:planks"
+        - "minecraft:wooden_tool_materials"
+      # 用于方块物品的燃烧时间
+      fuel_time: 300
+      # << CHANGE THIS: 可修复性 (简单开关)
+      repairable: true
+      # << CHANGE THIS: 铁砧材料修复 (指定修复物品)
+      anvil_repair_item:
+        - target: "#my:planks"
+          amount: 10
+        - target:
+            - "minecraft:iron_ingot"
+          percent: 0.25
+      # << CHANGE THIS: 可装载的弹射物 (弩/弓)
+      # allowed_projectiles:
+      #   - "my:custom_arrow"
+      #   - "minecraft:ender_pearl"
+      # << CHANGE THIS: 死亡保留概率 (0~1)
+      keep_on_death_chance: 0.8
+      # << CHANGE THIS: 死亡损毁概率 (0~1)
+      destroy_on_death_chance: 0.1
+      # << CHANGE THIS: 掉落物显示名称
+      drop_display: "<arg:count>x <name>"
+      # << CHANGE THIS: 发光颜色
+      glow_color: gold
+      # << CHANGE THIS: 帽子高度 (需 CustomNameplates 插件)
+      # hat_height: 1.5
+      # << CHANGE THIS: 尊重 repairable 组件 (默认 false)
+      respect_repairable_component: false
+      # << CHANGE THIS: 可染色 (工作台染色)
+      dyeable: true
+
+  # ============================================================================
+  # 示例 5/5: 完整复杂物品 (付费版专属功能 + 弹射物 + 装备)
+  # 用途: 展示 client_bound_data, client_bound_material, projectile,
+  #       equipment, equippable, conditional, insert_lore, remove_lore,
+  #       overwritable_lore, overwritable_item_name, allowed_projectiles
+  # ============================================================================
+  my:example_complex_item:
+    # << CHANGE THIS: 基础材质
+    material: diamond_sword
+    # << CHANGE THIS: 付费版: 客户端独立基础材质
+    client_bound_material: golden_sword
+    custom_model_data: 1005
+    item_model: "my:example_complex_item"
+    # << CHANGE THIS: 付费版: 客户端模型模式 (默认: config.yml)
+    client_bound_model: false
+    oversized_in_gui: true
+    hand_animation_on_swap: true
+    swap_animation_scale: 0.8
+    # << CHANGE THIS: 游戏内数据 (服务端侧)
+    data:
+      item_name: "<!i><#FF5555>烈焰神矛"
+      lore:
+        - "<#FFAA00>远古烈焰锻造的神器"
+        - ""
+        - "<gray>右击投掷 · 穿透一切"
+      unbreakable: true
+      enchantment:
+        minecraft:sharpness: 5
+        minecraft:fire_aspect: 2
+        minecraft:mending: 1
+      hide_tooltip:
+        - enchantments
+      max_damage: 500
+      # << CHANGE THIS: 属性修饰符
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.6
+          operation: add_value
+          slot: mainhand
+      # << CHANGE THIS: 可穿戴装备数据
+      equippable:
+        slot: head
+        asset_id: "my:flame_helmet"
+        dispensable: true
+        damage_on_hurt: true
+        swappable: true
+        # 1.21.5+
+        equip_on_interact: true
+        # << CHANGE THIS: 第一人称视角纹理遮罩
+        camera_overlay: "my:textures/overlay/flame"
+    # << CHANGE THIS: 付费版: 客户端侧数据 (仅客户端存在)
+    client_bound_data:
+      item_name: "<!i><#FF5555>烈焰神矛 (客户端)"
+      lore:
+        - "<#FFAA00>仅客户端显示的描述"
+      # 可覆写描述 (仅在描述为空时生效)
+      overwritable_lore:
+        - "商店插件显示的描述 (不会被覆盖)"
+      # 可覆写物品名称 (仅在名称为空时生效)
+      overwritable_item_name: "<#FF8C00>可覆写名称"
+      # << CHANGE THIS: 付费版: 条件数据 (根据条件显示不同数据)
+      conditional#1:
+        conditions:
+          - type: permission
+            permission: "my.item.unlock"
+        data:
+          item_name: "<!i><#FF5555>烈焰神矛 · 觉醒"
+          lore:
+            - "力量完全解放!"
+      conditional#2:
+        conditions:
+          - type: "!permission"
+            permission: "my.item.unlock"
+        data:
+          item_name: "<!i><#888888>???? 神矛"
+          lore:
+            - "?????????????????"
+    settings:
+      # << CHANGE THIS: 装备设置 (与 equippable 不同, 用于物品穿戴)
+      equipment:
+        asset_id: "my:flame_armor"
+        client_bound_model: true
+        slot: head
+        dispensable: true
+        damage_on_hurt: true
+        swappable: true
+        equip_on_interact: true
+        camera_overlay: "my:textures/overlay/flame"
+      tags:
+        - "my:legendary_items"
+        - "my:topaz_tools"
+      # << CHANGE THIS: 自定义弹射物配置
+      projectile:
+        display:
+          item: "my:example_complex_item"
+          translation: "0,0,0"
+          rotation: "1,1,1,1"
+          display_transform: "NONE"
+          scale: 0.5
+        sounds:
+          throw:
+            id: "minecraft:item.trident.throw"
+            pitch: 0.9
+            volume: 1.0
+          hit_entity:
+            default: "minecraft:item.trident.hit"
+            overrides:
+              minecraft:stone: "minecraft:item.trident.hit_ground"
+          hit_block: "minecraft:item.trident.hit_ground"
+        ignore_infinity_enchantment: false
+        pickupable: true
+        remove_on_hit: false
+        gravity: true
+        velocity: 2.5
+        damage: 15
+        pierce_level: 5
+      # << CHANGE THIS: 可装载的弹射物
+      allowed_projectiles:
+        - "my:flame_arrow"
+        - "minecraft:ender_pearl"
+      # << CHANGE THIS: 高级描述信息 (动态插入/移除)
+      # 注: 以下 insert_lore / remove_lore 通常在 data 块内,
+      # 此处仅为展示完整配置, 实际使用时请移至 data 或 client_bound_data.
+    # 插叙/移除描述: 放在 data 或 client_bound_data 内
+    # data:
+    #   insert_lore:
+    #     position: AFTER
+    #     pattern: "穿透一切"
+    #     lore:
+    #       - content: "<green>已激活"
+    #         priority: 1
+    #     fallback:
+    #       position: TAIL
+    #       lore:
+    #         - content: "<red>回退到尾部"
+    #   remove_lore: "旧版本描述"
+    #   # 高级描述格式
+    #   lore:
+    #     - content:
+    #         - "第一行"
+    #         - "第二行"
+    #     - content: "带优先级的行"
+    #       priority: 2
+    #     - content: "条件行"
+    #       split_lines: true
+    #       conditions:
+    #         - type: permission
+    #           permission: "craftengine.admin"

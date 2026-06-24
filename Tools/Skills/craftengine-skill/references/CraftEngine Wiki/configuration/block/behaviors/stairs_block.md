@@ -1,0 +1,27 @@
+# 🎢 楼梯方块
+
+**楼梯方块**行为与原版楼梯一致。放置时根据点击位置自动设置 `facing` 与 `half`。`shape` 属性会根据周围楼梯自动计算为直梯、内角或外角，从而形成连续的楼梯结构。
+
+| 属性名称        | 属性类型                 | 是否必需 |
+|-------------|----------------------|------|
+| shape       | stairs_shape         | 是    |
+| half        | single_block_half    | 是    |
+| facing      | horizontal_direction | 是    |
+| waterlogged | boolean              | 否    |
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_stairs:
+    behavior:
+      type: stairs_block
+```
+
+:::warning
+
+由于 Minecraft 的楼梯连接逻辑属于硬编码行为，自定义楼梯无法与原版楼梯形成内角、外角等连接形状。
+
+:::
+
+![](/img/stairs_block.png)

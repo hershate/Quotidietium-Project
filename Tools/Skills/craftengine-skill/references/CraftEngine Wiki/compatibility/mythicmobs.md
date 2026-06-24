@@ -1,0 +1,27 @@
+# 🦕 MythicMobs
+
+## 掉落物
+
+- 示例
+```yaml
+Drops:
+  - craftengine:default:topaz 1to3 0.5
+  - craftengine default:topaz_sword 1 0.1
+```
+
+## 装备
+
+- 示例
+```yaml
+Equipment:
+  - craftengine:default:topaz_helmet HEAD
+  - craftengine:default:topaz_chestplate CHEST
+  - craftengine:default:topaz_leggings LEGS
+  - craftengine:default:topaz_boots FEET
+  - craftengine:default:topaz_sword HAND
+```
+
+## 技能
+
+- [cast_mythic_skill](../reference/events.md#mythicmobs-技能)
+- [spawn_mythic_mob](../reference/events.md#mythicmobs-生物生成)

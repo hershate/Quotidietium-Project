@@ -1,0 +1,26 @@
+# 🌊 液面方块
+
+**液面方块**只能放置在液体源表面上，类似睡莲。与 `near_liquid_block` 不同，它要求正下方必须是液体**源**方块——流动液体不算。冰视为水源。
+
+启用 `stackable` 后，方块也可堆叠在同类型方块上存活。
+
+| 模式                            | 说明                         |
+|-------------------------------|----------------------------|
+| **堆叠模式**（`stackable: true`）   | 即使下方无有指定液体源只要堆叠在同类型方块上即可存活 |
+| **非堆叠模式**（`stackable: false`） | 需要正下方有指定的液体源               |
+
+## 示例
+
+```yaml
+blocks:
+  default:reed:
+    behavior:
+      type: on_liquid_block
+      liquid_type:                 # 可坐落的液体类型（默认 ["water"]）
+        - water
+      stackable: false             # 是否允许堆叠在同类型方块上
+```
+
+![](/img/on_liquid_block_1.png)
+
+![](/img/on_liquid_block_2.png)

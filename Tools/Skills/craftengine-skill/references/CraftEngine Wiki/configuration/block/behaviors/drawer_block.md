@@ -1,0 +1,48 @@
+# 🗄️ 抽屉方块
+
+**方块实体**
+
+**抽屉方块**是一种存储容器，只能存放一种物品，但能大量存储该物品。它会记住首次存入的物品类型，此后只接受相同物品。
+
+- **右键点击**：放入手中物品
+- **右键双击**（0.5 秒内）：将物品栏中的所有相同物品全部放入
+- **左键点击**：取出一个物品
+- **潜行 + 左键点击**：取出一组物品
+
+## 属性
+
+若配置了 `facing` 属性可让抽屉朝向特定方向，以便展示的物品模型能够随朝向旋转。
+
+| 属性名称   | 属性类型      | 是否必需 |
+|--------|-----------|------|
+| facing | direction | 否    |
+
+## 示例
+
+```yaml
+blocks:
+  default:drawer_block:
+    behavior:
+      type: drawer_block
+      max_stacks: 20                    # 抽屉最多可容纳的物品组数（默认 32）
+      has_signal: true                  # 是否允许比较器根据容器填充比例输出对应信号（默认 true）
+      allow_input: true                 # 是否允许漏斗放入物品（默认 true）
+      allow_output: true                # 是否允许漏斗取出物品（默认 true）
+      item_position: 0,0,-0.52          # 展示物品的位置偏移（默认 0.5,0.5,0.5）
+      text_position: 0,-0.4,-0.52       # 数量文本的位置偏移（默认 0.5,0.5,0.5）
+      item_scale: 0.6,0.6,0.6           # 展示物品的缩放（默认 0.5,0.5,0.5）
+      text_scale: 0.5,0.5,0.5           # 数量文本的缩放（默认 0.5,0.5,0.5）
+      data_key: "craftengine:drawer"    # 持久化抽屉数据的 NBT 键（默认 "craftengine:drawer"）
+      compatible_mode: false            # 与其他存储插件的兼容模式（默认 false）
+      sounds:
+        put: minecraft:block.decorated_pot.insert       # 放入物品的音效（可选）
+        take: minecraft:block.decorated_pot.insert_fail  # 取出物品的音效（可选）
+```
+
+:::info
+
+比较器信号范围为 **0 到 15**，与抽屉填充比例成正比——空为 0，满为 15。设置为 `has_signal: false` 即可关闭。
+
+:::
+
+![](/img/drawer_block.png)

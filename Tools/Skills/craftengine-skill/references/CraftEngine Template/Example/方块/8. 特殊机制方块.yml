@@ -1,0 +1,57 @@
+# 特殊机制方块
+# 参考 wiki 文档（当前仓库）：
+#   behaviors/strippable_block.md    — 可剥离方块
+#   behaviors/sturdy_base_block.md   — 稳固基底方块
+#   behaviors/budding_block.md       — 母岩方块
+#   behaviors/drop_experience_block.md — 掉落经验方块
+# 命名空间：withering（自定义示例）
+
+blocks:
+  # ============================================================
+  # 1. 可剥离方块 (strippable_block)
+  # 斧右键剥离，变为去皮变种，保留同名属性
+  # ============================================================
+  withering:twisted_log:
+    behavior:
+      type: strippable_block
+      stripped: withering:stripped_twisted_log  # << CHANGE THIS：剥离后转化成的方块（必需）
+      excluded_properties: []                    # << CHANGE THIS：转化时不继承的属性（默认空列表）
+
+  # ============================================================
+  # 2. 稳固基底方块 (sturdy_base_block)
+  # 需要下方有完整固体支撑，否则被破坏。支持同类型堆叠。
+  # ============================================================
+  withering:fragile_geode:
+    behavior:
+      type: sturdy_base_block
+      direction: down                 # << CHANGE THIS：检查支撑的方向（默认 down）
+      support_types:                  # << CHANGE THIS：所需的支撑类型（默认 ["full"]）
+        - full
+      stackable: true                 # << CHANGE THIS：是否允许堆叠在同类型方块上
+      max_height: 3                   # << CHANGE THIS：堆叠时的最大高度（需 >1）
+      delay: 1                        # << CHANGE THIS：检查延迟（刻），0 = 立即破坏
+
+  # ============================================================
+  # 3. 母岩方块 (budding_block)
+  # 随机刻催生相邻方块，分阶段生长，类似紫水晶母岩
+  # ============================================================
+  withering:crystal_core:
+    behavior:
+      type: budding_block
+      growth_chance: 0.15             # << CHANGE THIS：每次随机刻触发生长的概率（默认 0.2）
+      blocks:                         # << CHANGE THIS：分阶段方块 ID 列表（必需）
+        - withering:small_crystal     #     空气/水位置 → 放置此方块
+        - withering:medium_crystal    #     已有 small  → 升级为 medium
+        - withering:large_crystal     #     已有 medium → 升级为 large（最终阶段）
+
+  # ============================================================
+  # 4. 掉落经验方块 (drop_exp_block)
+  # 破坏时掉落经验球，可配置条件限制
+  # ============================================================
+  withering:ancient_ore:
+    behavior:
+      type: drop_exp_block
+      amount: 5~12                    # << CHANGE THIS：掉落的经验点数（支持数字格式）
+      conditions:                     # << CHANGE THIS：可选项，未定义时始终掉落
+        type: enchantment             #     条件：仅当未使用精准采集时掉落经验
+        predicate: minecraft:silk_touch<=0

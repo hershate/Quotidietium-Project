@@ -1,0 +1,145 @@
+# =============================================================================
+# CraftEngine 家具行为完整示例 (Furniture Behaviors Complete Example)
+# =============================================================================
+# Wiki 参考 (本地):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/furniture/behaviors/
+#     - display_item_furniture.md  (物品展示)
+#     - glowing_furniture.md       (发光)
+#     - simple_storage_furniture.md (简单存储)
+#
+# 本文件覆盖 CraftEngine 文档中全部 3 种家具行为。
+# 每种行为一个家具条目，含完整可工作配置。
+# 将 "# << CHANGE THIS" 标记的值替换为你的实际值。
+# 命名空间使用 "qtiet" (替换为你的自定义命名空间)。
+# =============================================================================
+
+furniture:
+
+  # ===========================================================================
+  # 1. display_item_furniture — 物品展示家具
+  # ===========================================================================
+  # 允许玩家将物品放置在家具中进行展示。
+  # 可为不同变体单独配置物品位置与互动判定箱，
+  # 对拥有多个展示槽位的家具尤为有用。
+  # Wiki: display_item_furniture.md
+  qtiet:museum_showcase:
+    behavior:
+      type: display_item_furniture
+      data_key: qtiet:display_item               # << CHANGE THIS: 自定义数据键
+      sounds:
+        put: minecraft:block.decorated_pot.insert         # << CHANGE THIS: 放入音效
+        take: minecraft:block.decorated_pot.insert_fail   # << CHANGE THIS: 取出音效
+      variants:
+        ground:
+          item_position: 0,0.07,0               # << CHANGE THIS: 物品相对位置 (x,y,z)
+          hitboxes: []                          # << CHANGE THIS: 判定箱列表
+        wall:
+          item_position: 0,0.5,0.3              # << CHANGE THIS: 墙面变体的物品位置
+          hitboxes:                             # << CHANGE THIS: 墙面变体判定箱
+            - 0.2,0.1,0.4,0.8,0.5,0.6
+        ceiling:
+          item_position: 0,0.95,0              # << CHANGE THIS: 天花板变体的物品位置
+          hitboxes:                             # << CHANGE THIS: 天花板变体判定箱
+            - -0.3,-0.1,-0.3,0.3,0.1,0.3
+
+  # ===========================================================================
+  # 2. glowing_furniture — 发光家具 (统一配置 + 变体级配置)
+  # ===========================================================================
+  # 为家具添加动态光源，支持所有变体统一配置与按变体单独配置两种模式。
+  # 注意: 此行为使用 behaviors (复数) 键名。
+  # Wiki: glowing_furniture.md
+  qtiet:antique_chandelier:
+    behaviors:
+      type: glowing_furniture
+      # -- 变体通用光源 (所有变体共享) --
+      lights:                                   # << CHANGE THIS: 统一光源列表
+        - position: 0,0,0                       # << CHANGE THIS: 光源位置 (x,y,z)
+          level: 15                             # << CHANGE THIS: 光源亮度 (0~15)
+        - position: 0.4,0.15,0.4               # << CHANGE THIS: 额外光源
+          level: 11
+      # -- 按变体单独配置 (会覆盖统一配置中同位置的光源) --
+      variants:
+        extinguished:                           # << CHANGE THIS: 熄灭变体 — 无光源
+        low_fuel:                               # << CHANGE THIS: 低燃料变体 — 低亮度
+          - position: 0,0,0
+            level: 4
+
+  # ===========================================================================
+  # 3. simple_storage_furniture — 简单存储家具
+  # ===========================================================================
+  # 提供基础容器功能，支持自定义 GUI 标题与行数。
+  # 行数取值范围 1~6，每行 9 格，共 9*rows 格。
+  # Wiki: simple_storage_furniture.md
+  qtiet:oak_wardrobe:
+    behavior:
+      type: simple_storage_furniture
+      data_key: qtiet:simple_storage_contents   # << CHANGE THIS: 自定义数据键
+      title: 橡木衣柜                            # << CHANGE THIS: 容器界面标题
+      rows: 4                                   # << CHANGE THIS: 行数 (1~6)
+      sounds:
+        open: minecraft:block.iron_trapdoor.open   # << CHANGE THIS: 打开音效
+        close: minecraft:block.iron_trapdoor.close  # << CHANGE THIS: 关闭音效
+
+# =============================================================================
+# 参考: 被引用的家具完整定义骨架 (示例)
+# =============================================================================
+# 上方 furniture 条目仅展示 behavior 部分。
+# 实际使用时需补充 settings、variants、loot、events 等配置。
+# 取消注释并填写你的值:
+#
+# furniture:
+#   qtiet:museum_showcase:
+#     behavior:
+#       type: display_item_furniture
+#       data_key: qtiet:display_item
+#       sounds:
+#         put: minecraft:block.decorated_pot.insert
+#         take: minecraft:block.decorated_pot.insert_fail
+#       variants:
+#         ground:
+#           item_position: 0,0.07,0
+#           hitboxes: []
+#         wall:
+#           item_position: 0,0.5,0.3
+#           hitboxes:
+#             - 0.2,0.1,0.4,0.8,0.5,0.6
+#         ceiling:
+#           item_position: 0,0.95,0
+#           hitboxes:
+#             - -0.3,-0.1,-0.3,0.3,0.1,0.3
+#     # settings: ...       # << CHANGE THIS
+#     # variants: ...       # << CHANGE THIS: 变体视觉/模型定义
+#     # loot: ...           # << CHANGE THIS
+#     # events: ...         # << CHANGE THIS
+#
+#   qtiet:antique_chandelier:
+#     behaviors:
+#       type: glowing_furniture
+#       lights:
+#         - position: 0,0,0
+#           level: 15
+#         - position: 0.4,0.15,0.4
+#           level: 11
+#       variants:
+#         extinguished: []
+#         low_fuel:
+#           - position: 0,0,0
+#             level: 4
+#     # settings: ...
+#     # variants: ...
+#     # loot: ...
+#     # events: ...
+#
+#   qtiet:oak_wardrobe:
+#     behavior:
+#       type: simple_storage_furniture
+#       data_key: qtiet:simple_storage_contents
+#       title: 橡木衣柜
+#       rows: 4
+#       sounds:
+#         open: minecraft:block.iron_trapdoor.open
+#         close: minecraft:block.iron_trapdoor.close
+#     # settings: ...
+#     # variants: ...
+#     # loot: ...
+#     # events: ...

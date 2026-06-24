@@ -1,0 +1,20 @@
+# 🛋️ 沙发方块
+
+**沙发方块**的行为类似可连接的座椅。`shape` 属性会在[PP更新](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97%E6%9B%B4%E6%96%B0#PP%E6%9B%B4%E6%96%B0)时根据周围沙发的朝向自动计算为直形或内角，从而形成连续的沙发结构。
+
+| 属性名称        | 属性类型                 | 是否必需 |
+|-------------|----------------------|------|
+| shape       | sofa_shape           | 是    |
+| facing      | horizontal_direction | 是    |
+| waterlogged | boolean              | 否    |
+
+## 示例
+
+```yaml
+blocks:
+  default:sofa:
+    behavior:
+      type: sofa_block
+```
+
+![](/img/sofa_block.png)

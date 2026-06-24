@@ -1,0 +1,207 @@
+# ============================================================================
+# 物理与机械方块 — CraftEngine 行为示例
+# 参考 wiki: configuration/block/behaviors/{falling_block,concrete_powder_block,
+#            bouncing_block,lamp_block,toggleable_lamp_block,chime_block}.md
+# 命名空间: project (自定义)
+# ============================================================================
+# 本文件包含 6 种不同的物理/机械行为方块，每种行为对应一个完整示例。
+# 每个方块均包含: settings（基础属性）、state（视觉外观）、behavior（核心行为）。
+# 可自定义的值标记了 "<< CHANGE THIS" 注释。
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # 1. 可下落方块 (falling_block)
+  #    行为类似原版沙子/沙砾 — 失去下方支撑后变为下落的方块实体。
+  #    可配置落地砸伤实体以及落地/摔毁音效。
+  # ==========================================================================
+  project:suspicious_sand:
+
+    settings:
+      hardness: 0.5                          # << CHANGE THIS
+      resistance: 0.5
+      sounds:
+        break: minecraft:block.sand.break
+        step: minecraft:block.sand.step
+        place: minecraft:block.sand.place
+        hit: minecraft:block.sand.hit
+        fall: minecraft:block.sand.fall
+
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/sand"       # << CHANGE THIS
+
+    behavior:
+      type: falling_block
+      hurt_amount: 4                          # 每次碰撞伤害值，-1 = 禁用（默认 -1）  << CHANGE THIS
+      max_hurt: 2                             # 单次下落最多伤害实体数，-1 = 禁用   << CHANGE THIS
+      sounds:
+        land: minecraft:block.anvil.land      # 落地音效（可选）                  << CHANGE THIS
+        destroy: minecraft:block.anvil.destroy # 摔毁音效（可选）                 << CHANGE THIS
+
+  # ==========================================================================
+  # 2. 混凝土粉末方块 (concrete_powder_block)
+  #    遇水（放置时 / 下落后 / PP更新时）硬化为 solid_block 指定的方块。
+  #    常与 falling_block 组合使用实现下落粉末效果。
+  #    solid_block 为 必需 字段。
+  # ==========================================================================
+  project:magic_powder:
+
+    settings:
+      hardness: 0.5
+      sounds:
+        break: minecraft:block.sand.break
+        step: minecraft:block.sand.step
+        place: minecraft:block.sand.place
+
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/gravel"     # << CHANGE THIS
+
+    behavior:
+      type: concrete_powder_block
+      solid_block: "project:magic_block"      # 硬化后转化的方块（必需）         << CHANGE THIS
+      # solid_block 也支持完整方块状态，例如:
+      # solid_block: "minecraft:stone[axis=y]"
+
+  # ==========================================================================
+  # 3. 弹跳方块 (bouncing_block)
+  #    实体落在其上会被弹回空中，潜行实体不受影响。
+  #    bounce_height 控制反弹保留速度比例（26.1.2 及更低版本有效）。
+  #    fall_damage_multiplier 缩放摔落伤害，0 为完全禁用。
+  #    sync_player_position 强制同步客户端/服务端移动向量以缓解视觉不一致。
+  # ==========================================================================
+  project:slime_platform:
+
+    settings:
+      bounce_restitution: 0.8                 # 26.2+ 弹性碰撞系数，与非玩家实体相关
+      sounds:
+        break: minecraft:block.slime_block.break
+        step: minecraft:block.slime_block.step
+        place: minecraft:block.slime_block.place
+        hit: minecraft:block.slime_block.hit
+        fall: minecraft:block.slime_block.fall
+
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/slime_block" # << CHANGE THIS
+
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.8                      # 反弹速度系数，0 为不反弹（默认 0.66） << CHANGE THIS
+      fall_damage_multiplier: 0.0             # 摔落伤害系数，0 为无伤害（默认 0.5） << CHANGE THIS
+      sync_player_position: true              # 弹跳后强制同步移动向量（默认 true）
+
+  # ==========================================================================
+  # 4. 灯方块 (lamp_block)
+  #    类似原版红石灯：收到红石信号 → lit=true 点亮；
+  #    失去信号 4 刻后 → lit=false 熄灭。
+  #    需定义 boolean 属性 lit（必需），由行为自动管理。
+  # ==========================================================================
+  project:crystal_lamp:
+
+    settings:
+      hardness: 0.3
+      sounds:
+        break: minecraft:block.glass.break
+        step: minecraft:block.glass.step
+        place: minecraft:block.glass.place
+
+    states:
+      properties:
+        lit:
+          type: boolean                        # 点亮状态（必需，由 lamp_block 行为驱动）
+          default: false
+      appearances:
+        default:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/sea_lantern" # << CHANGE THIS
+      variants:
+        lit=false:
+          appearance: default
+          settings:
+            luminance: 0
+        lit=true:
+          appearance: default
+          settings:
+            luminance: 15                       # 点亮后发光
+
+    behavior:
+      type: lamp_block
+
+  # ==========================================================================
+  # 5. 可切换灯方块 (toggleable_lamp_block)
+  #    与 lamp_block 不同：每次红石信号由无→有时翻转 lit 状态。
+  #    可配合 can_open_with_hand: true 允许玩家右键手动切换。
+  #    需定义 boolean 属性 lit（必需）及 powered（can_open_with_hand=false 时必需）。
+  # ==========================================================================
+  project:ceiling_lamp:
+
+    settings:
+      hardness: 0.3
+      sounds:
+        break: minecraft:block.glass.break
+        step: minecraft:block.glass.step
+        place: minecraft:block.glass.place
+
+    states:
+      properties:
+        lit:
+          type: boolean                        # 亮灭状态（必需）
+          default: false
+        powered:
+          type: boolean                        # 红石充能记录（can_open_with_hand=false 时必需）
+          default: false
+      appearances:
+        off:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/white_wool" # << CHANGE THIS
+        on:
+          auto_state: solid
+          model:
+            texture: "minecraft:block/shroomlight" # << CHANGE THIS
+      variants:
+        lit=false:
+          appearance: off
+          settings:
+            luminance: 0
+        lit=true:
+          appearance: on
+          settings:
+            luminance: 15                       # 点亮后发光
+
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true                 # 允许右键切换（默认 false）      << CHANGE THIS
+
+  # ==========================================================================
+  # 6. 震响方块 (chime_block)
+  #    被弹射物（箭、三叉戟等）击中时发出清脆音效，类似紫水晶块。
+  #    可自定义 chime 音效。
+  # ==========================================================================
+  project:resonant_crystal:
+
+    settings:
+      hardness: 1.5
+      sounds:
+        break: minecraft:block.amethyst_block.break
+        step: minecraft:block.amethyst_block.step
+        place: minecraft:block.amethyst_block.place
+        hit: minecraft:block.amethyst_block.hit
+        fall: minecraft:block.amethyst_block.fall
+
+    state:
+      auto_state: solid
+      model:
+        texture: "minecraft:block/amethyst_block" # << CHANGE THIS
+
+    behavior:
+      type: chime_block
+      sounds:
+        chime: "minecraft:block.amethyst_block.chime" # 被弹射物击中音效（可选） << CHANGE THIS

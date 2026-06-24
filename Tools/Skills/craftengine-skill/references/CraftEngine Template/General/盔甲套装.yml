@@ -1,0 +1,448 @@
+# =============================================================================
+# CraftEngine 盔甲套装配置模板 (YAML)
+# =============================================================================
+# Wiki 参考路径 (本地):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/equipment.md
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/settings.md
+#
+# 使用说明:
+#   1. 将下方所有 "my:" 命名空间替换为你的实际命名空间
+#   2. 搜索 "# << CHANGE THIS" 标记并替换为实际值
+#   3. 删除不需要的配置块 (component / trim 按版本选择一种)
+#   4. 在 items 的 settings.equipment.asset_id 中引用装备 ID
+#   5. 纹理路径格式: <命名空间>:<路径> (即 assets/<命名空间>/textures/<路径>.png)
+# =============================================================================
+#
+# 概览:
+#   equipments 部分定义盔甲的纹理映射 (组件模型 / 纹饰模型)
+#   items 部分通过 settings.equipment 将盔甲物品绑定到装备定义
+#
+# 两种类型:
+#   - component (1.21.2+ 推荐): 支持 humanoid / humanoid_leggings / wings /
+#     wolf_body / horse_body / llama_body / pig_saddle / strider_saddle /
+#     camel_saddle / horse_saddle / donkey_saddle / mule_saddle /
+#     skeleton_horse_saddle / zombie_horse_saddle / happy_ghast_body /
+#     camel_husk_saddle / nautilus_body
+#   - trim (1.20+):          仅支持 humanoid / humanoid_leggings
+# =============================================================================
+
+# =============================================================================
+# 装备配置
+# =============================================================================
+equipments:
+
+  # ===========================================================================
+  # 1. 组件型盔甲 — type: component (1.21.2+)
+  #     简单字符串形式 (仅指定纹理路径)
+  # ===========================================================================
+  # << CHANGE THIS: 装备资源命名空间ID
+  my:ruby_armor:
+    type: component
+    # << CHANGE THIS: 纹理路径 (assets/<命名空间>/textures/<路径>.png)
+    humanoid: "minecraft:entity/equipment/humanoid/ruby"
+    humanoid_leggings: "minecraft:entity/equipment/humanoid_leggings/ruby"
+    # << OPTIONAL: 更多预设模型类型 (按需启用)
+    #wings: "minecraft:entity/equipment/wings/ruby"
+    #wolf_body: "minecraft:entity/equipment/wolf_body/ruby"
+    #horse_body: "minecraft:entity/equipment/horse_body/ruby"
+
+
+  # ===========================================================================
+  # 2. 组件型盔甲 — 块配置形式 (含 dyeable / use_player_texture)
+  #     当需要染色或鞘翅玩家纹理时使用此形式
+  # ===========================================================================
+  # << CHANGE THIS
+  my:sapphire_armor:
+    type: component
+    humanoid:
+      # << CHANGE THIS: 基础纹理路径
+      texture: "minecraft:entity/equipment/humanoid/sapphire"
+      # << OPTIONAL: 皮革染色配置 (颜色为整数, 例如 -6265536 = #A06540)
+      dyeable:
+        # << CHANGE THIS: 未染色时的默认颜色 (十进制整数, 或用 &0x 十六进制)
+        color_when_undyed: -6265536
+    humanoid_leggings:
+      texture: "minecraft:entity/equipment/humanoid_leggings/sapphire"
+      dyeable:
+        color_when_undyed: -6265536
+    # << OPTIONAL: 鞘翅 — 使用玩家自身纹理
+    #wings:
+    #  texture: "minecraft:entity/equipment/wings/elytra"
+    #  # << CHANGE THIS: 使用玩家皮肤纹理而非固定纹理
+    #  use_player_texture: false
+    # << OPTIONAL: 狼铠
+    #wolf_body:
+    #  texture: "minecraft:entity/equipment/wolf_body/sapphire"
+    # << OPTIONAL: 马铠
+    #horse_body:
+    #  texture: "minecraft:entity/equipment/horse_body/sapphire"
+
+
+  # ===========================================================================
+  # 3. 组件型盔甲 — 多纹理列表 (可染色部分 + 不可染色部分)
+  #     通过列表组合多个纹理层, 用于部分可染色的盔甲
+  # ===========================================================================
+  # << CHANGE THIS
+  my:partialy_dyeable_armor:
+    type: component
+    humanoid:
+      # 第一层: 可染色部分
+      # << CHANGE THIS
+      - texture: "minecraft:entity/equipment/humanoid/dyeable_part"
+        dyeable:
+          color_when_undyed: -6265536
+      # 第二层: 不可染色部分 (固定纹理)
+      # << CHANGE THIS
+      - texture: "minecraft:entity/equipment/humanoid/undyeable_part"
+    humanoid_leggings:
+      - texture: "minecraft:entity/equipment/humanoid_leggings/dyeable_part"
+        dyeable:
+          color_when_undyed: -6265536
+      - texture: "minecraft:entity/equipment/humanoid_leggings/undyeable_part"
+
+
+  # ===========================================================================
+  # 4. 组件型盔甲 — 花环多纹理 (共享基底 + 不同花色)
+  #     展示如何用列表组合共享纹理层 + 独立纹理层
+  # ===========================================================================
+  # << CHANGE THIS
+  my:flower_wreath_base:
+    type: component
+    humanoid:
+      # 共享基底纹理
+      - texture: "minecraft:entity/equipment/humanoid/wreath"
+      # << CHANGE THIS: 花朵纹理, 每个花环变体替换此层
+      - texture: "minecraft:entity/equipment/humanoid/red_flower"
+
+  # << CHANGE THIS: 另一个花色变体
+  #my:flower_wreath_yellow:
+  #  type: component
+  #  humanoid:
+  #    - texture: "minecraft:entity/equipment/humanoid/wreath"
+  #    - texture: "minecraft:entity/equipment/humanoid/yellow_flower"
+
+  #my:flower_wreath_white:
+  #  type: component
+  #  humanoid:
+  #    - texture: "minecraft:entity/equipment/humanoid/wreath"
+  #    - texture: "minecraft:entity/equipment/humanoid/white_flower"
+
+
+  # ===========================================================================
+  # 5. 组件型盔甲 — 全预设模型类型完整示例
+  #     展示所有支持的 preset 模型类型
+  # ===========================================================================
+  # << PAID / OPTIONAL: 付费版专属, 调试后可删除不用的条目
+  #my:complete_beast_armor:
+  #  type: component
+  #  humanoid: "minecraft:entity/equipment/humanoid/beast"
+  #  humanoid_leggings: "minecraft:entity/equipment/humanoid_leggings/beast"
+  #  # ----- 鞘翅 / 宠物 / 坐骑 -----
+  #  wings: "minecraft:entity/equipment/wings/beast"
+  #  wolf_body: "minecraft:entity/equipment/wolf_body/beast"
+  #  horse_body: "minecraft:entity/equipment/horse_body/beast"
+  #  llama_body: "minecraft:entity/equipment/llama_body/beast"
+  #  # ----- 鞍 -----
+  #  pig_saddle: "minecraft:entity/equipment/pig_saddle/beast"
+  #  strider_saddle: "minecraft:entity/equipment/strider_saddle/beast"
+  #  horse_saddle: "minecraft:entity/equipment/horse_saddle/beast"
+  #  donkey_saddle: "minecraft:entity/equipment/donkey_saddle/beast"
+  #  mule_saddle: "minecraft:entity/equipment/mule_saddle/beast"
+  #  skeleton_horse_saddle: "minecraft:entity/equipment/skeleton_horse_saddle/beast"
+  #  zombie_horse_saddle: "minecraft:entity/equipment/zombie_horse_saddle/beast"
+  #  camel_saddle: "minecraft:entity/equipment/camel_saddle/beast"
+  #  camel_husk_saddle: "minecraft:entity/equipment/camel_husk_saddle/beast"
+  #  # ----- 其它 -----
+  #  happy_ghast_body: "minecraft:entity/equipment/happy_ghast_body/beast"
+  #  nautilus_body: "minecraft:entity/equipment/nautilus_body/beast"
+
+
+  # ===========================================================================
+  # 6. 纹饰型盔甲 — type: trim (1.20+)
+  #     注意: 仅支持 humanoid / humanoid_leggings 两种模型类型
+  #     应用纹饰后该盔甲无法再接受额外纹饰
+  # ===========================================================================
+  # << CHANGE THIS
+  my:topaz_trim_armor:
+    type: trim
+    # << CHANGE THIS: 纹理路径
+    humanoid: "minecraft:entity/equipment/humanoid/topaz"
+    humanoid_leggings: "minecraft:entity/equipment/humanoid_leggings/topaz"
+    # 以下类型纹饰型不支持 (会被忽略或导致问题):
+    # wings / wolf_body / horse_body / pig_saddle / 等
+
+
+# =============================================================================
+# 物品绑定 — 将上方装备应用到具体的盔甲物品
+# =============================================================================
+items:
+
+  # ===========================================================================
+  # 7. 头盔 — 绑定到 equipments 中的装备 ID
+  #     通过 settings.equipment.asset_id 引用装备定义
+  # ===========================================================================
+  # << CHANGE THIS
+  my:ruby_helmet:
+    # << CHANGE THIS: 基础材质 (原版盔甲种类)
+    material: diamond_helmet
+    # << CHANGE THIS: 自定义模型数据值 (正整数, 同材质内唯一)
+    custom_model_data: 101
+    # << CHANGE THIS: 1.21.2+ 物品模型命名空间ID
+    item_model: "my:ruby_helmet"
+    data:
+      # << CHANGE THIS: 物品默认名称
+      item_name: "<!i><#FF4444>红宝石头盔"
+      lore:
+        - "<gray>由炽热红宝石铸就的头盔"
+      # << CHANGE THIS: 属性修饰符
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          id: "my:ruby_helmet_armor"
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          id: "my:ruby_helmet_toughness"
+          slot: head
+      # << OPTIONAL: 魔咒
+      enchantment:
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+      # << OPTIONAL: 无法破坏
+      unbreakable: false
+      # << OPTIONAL: 最大耐久度
+      max_damage: 400
+    settings:
+      # << CHANGE THIS: 绑定装备 ID (指向 equipments 中定义的装备)
+      equipment:
+        asset_id: "my:ruby_armor"
+
+
+  # ===========================================================================
+  # 8. 胸甲 — 绑定到相同装备 ID
+  # ===========================================================================
+  # << CHANGE THIS
+  my:ruby_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 102
+    item_model: "my:ruby_chestplate"
+    data:
+      item_name: "<!i><#FF4444>红宝石胸甲"
+      lore:
+        - "<gray>由炽热红宝石铸就的胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 8.0
+          operation: add_value
+          id: "my:ruby_chestplate_armor"
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          id: "my:ruby_chestplate_toughness"
+          slot: chest
+      enchantment:
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "my:ruby_armor"
+
+
+  # ===========================================================================
+  # 9. 护腿 — 绑定到相同装备 ID
+  # ===========================================================================
+  # << CHANGE THIS
+  my:ruby_leggings:
+    material: diamond_leggings
+    custom_model_data: 103
+    item_model: "my:ruby_leggings"
+    data:
+      item_name: "<!i><#FF4444>红宝石护腿"
+      lore:
+        - "<gray>由炽热红宝石铸就的护腿"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          id: "my:ruby_leggings_armor"
+          slot: legs
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          id: "my:ruby_leggings_toughness"
+          slot: legs
+      enchantment:
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "my:ruby_armor"
+
+
+  # ===========================================================================
+  # 10. 靴子 — 绑定到相同装备 ID
+  # ===========================================================================
+  # << CHANGE THIS
+  my:ruby_boots:
+    material: diamond_boots
+    custom_model_data: 104
+    item_model: "my:ruby_boots"
+    data:
+      item_name: "<!i><#FF4444>红宝石靴子"
+      lore:
+        - "<gray>由炽热红宝石铸就的靴子"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          id: "my:ruby_boots_armor"
+          slot: feet
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          id: "my:ruby_boots_toughness"
+          slot: feet
+      enchantment:
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "my:ruby_armor"
+
+
+  # ===========================================================================
+  # 11. 可染色的盔甲 — 使用 settings.equipment 的 client_bound_model
+  #      展示 equipment 设置的完整选项
+  # ===========================================================================
+  # << CHANGE THIS
+  my:sapphire_helmet:
+    material: leather_helmet
+    custom_model_data: 201
+    item_model: "my:sapphire_helmet"
+    # << OPTIONAL: 付费版 — 客户端独立材质
+    #client_bound_material: leather_helmet
+    data:
+      item_name: "<!i><#4488FF>蓝宝石头盔"
+      lore:
+        - "<gray>散发幽蓝光芒的头盔"
+      # << OPTIONAL: 染色颜色 (RGB)
+      #dyed_color: "68,136,255"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: head
+    settings:
+      equipment:
+        # << CHANGE THIS: 绑定到装备 ID
+        asset_id: "my:sapphire_armor"
+        # << PAID / OPTIONAL: 付费版 — 客户端装备模型模式 (覆盖 config.yml)
+        #client_bound_model: true
+        # << OPTIONAL: 强制穿戴槽位 (若物品类型与槽位不匹配)
+        #slot: head
+        # << OPTIONAL: 是否可被发射器穿戴
+        #dispensable: true
+        # << OPTIONAL: 受伤时消耗耐久度
+        #damage_on_hurt: true
+        # << OPTIONAL: 是否可快速切换 (玩家间交换)
+        #swappable: true
+        # << OPTIONAL: 1.21.5+ 是否可通过交互穿戴
+        #equip_on_interact: true
+        # << OPTIONAL: 第一人称视角纹理遮罩
+        #camera_overlay: "my:textures/overlay/sapphire"
+
+
+  # ===========================================================================
+  # 12. 3D 头盔 — 禁用盔甲渲染器 (1.21.2+)
+  #      重写 equippable 组件并移除 asset_id, 使头盔使用物品模型渲染
+  # ===========================================================================
+  # << CHANGE THIS
+  #my:custom_3d_helmet:
+  #  material: diamond_helmet
+  #  custom_model_data: 301
+  #  item_model: "my:custom_3d_helmet"
+  #  data:
+  #    item_name: "<!i>3D 头盔"
+  #    # 重写 equippable 组件: 移除 asset_id 以禁用盔甲渲染器
+  #    equippable:
+  #      slot: head
+  #  model:
+  #    type: minecraft:model
+  #    path: "minecraft:item/custom/my/3d_helmet"
+  #    generation:
+  #      parent: minecraft:item/generated
+  #      textures:
+  #        layer0: "minecraft:item/custom/my/3d_helmet"
+
+
+  # ===========================================================================
+  # 13. 3D 头盔 — 使用 client_bound_material (1.20+)
+  #      通过修改客户端基础材质来改变头盔渲染
+  # ===========================================================================
+  # << PAID / OPTIONAL: 付费版专属
+  #my:custom_3d_helmet_legacy:
+  #  material: diamond_helmet
+  #  # << CHANGE THIS: 客户端使用 paper 材质 (禁用盔甲渲染)
+  #  client_bound_material: paper
+  #  custom_model_data: 302
+  #  item_model: "my:custom_3d_helmet_legacy"
+  #  data:
+  #    item_name: "<!i>3D 头盔 (旧版兼容)"
+
+
+# =============================================================================
+# 14. 快速参考 — 所有支持的预设模型类型
+# =============================================================================
+# 以下是 equipments 中 type: component 支持的所有预设模型类型:
+#
+#   humanoid              — 头盔/胸甲/靴子 (玩家身体主模型)
+#   humanoid_leggings     — 护腿 (腿部模型)
+#   wings                 — 鞘翅
+#   wolf_body             — 狼铠
+#   horse_body            — 马铠
+#   llama_body            — 羊驼地毯
+#   pig_saddle            — 猪鞍
+#   strider_saddle        — 炽足兽鞍
+#   camel_saddle          — 骆驼鞍
+#   horse_saddle          — 马鞍
+#   donkey_saddle         — 驴鞍
+#   mule_saddle           — 骡鞍
+#   skeleton_horse_saddle — 骷髅马鞍
+#   zombie_horse_saddle   — 僵尸马鞍
+#   happy_ghast_body      — 喜鬼恶魂身体 (1.21.5+)
+#   camel_husk_saddle     — 骆驼干草鞍 (1.21.5+)
+#   nautilus_body         — 鹦鹉螺身体
+#
+# type: trim 仅支持: humanoid, humanoid_leggings
+#
+# 纹理路径格式说明:
+#   "minecraft:entity/equipment/humanoid/topaz"
+#   对应文件: assets/minecraft/textures/entity/equipment/humanoid/topaz.png
+#
+# dyeable.color_when_undyed 为十进制整数颜色值:
+#   常用值参考:
+#     -6265536  → #A06540 (皮革默认棕)
+#     -12091419 → #474F25 (军队绿)
+#     -7187156  → #927DAC (紫罗兰)
+#     16711680  → #FF0000 (红色)
+#     65280     → #00FF00 (绿色)
+#     255       → #0000FF (蓝色)
+#     16776960  → #FFFF00 (黄色)
+#   Java 中也可用 &0x 前缀十六进制: &0xFF0000
+#
+# 注意事项:
+#   1. 同一装备 ID 可被多件盔甲同时引用 (全套共用纹理路径)
+#   2. type: trim 的盔甲无法再通过原版方式添加纹饰
+#   3. 3D 头盔 ≠ 装备配置, 需通过 equippable 移除 asset_id 实现
+#   4. 纹理文件使用 PNG 格式, 路径最后一段不含 .png 后缀
+# =============================================================================

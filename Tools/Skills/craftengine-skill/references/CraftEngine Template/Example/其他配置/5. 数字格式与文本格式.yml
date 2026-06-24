@@ -1,0 +1,562 @@
+# ============================================================================
+# 数字格式与文本格式 — 完整示例
+# 参考 Wiki: reference/number_format.md, reference/text_format.md
+# ============================================================================
+# 命名空间: questdietium (自定义)
+# 本文件演示所有数字格式类型及所有文本格式标签的完整用法。
+# 所有 key 均来源于上述两份 Wiki 文档。
+# ============================================================================
+
+# ============================================================================
+# 第一部分：数字格式
+# ============================================================================
+# 数字格式在大多数地方适用 （除早期物品数据部分外）。
+# 包含 11 种类型：constant, uniform, expression, binomial, gaussian,
+#   skew_normal, log_normal, triangle, beta, weighted, exponential
+# ============================================================================
+
+# -----------------------------------------------------------
+# 1. constant (常量) — 提供固定数值
+# -----------------------------------------------------------
+example_constant:
+  # 完整写法
+  count:
+    type: constant
+    value: 1
+  # 简写形式 (推荐)
+  amount: 5  # <== 自动视为 constant，value = 5
+
+  # 真实用例：固定给予 3 个苹果
+  reward:
+    material: apple
+    amount: 3
+
+# -----------------------------------------------------------
+# 2. uniform (均匀随机) — 在 [min, max] 范围内均匀随机
+# -----------------------------------------------------------
+example_uniform:
+  # 完整写法
+  drops:
+    type: uniform
+    min: 1
+    max: 64  # <== CHANGE THIS
+
+  # 简写形式 (推荐)
+  count: 2~5  # <== 自动视为 uniform, min: 2, max: 5
+
+  # 嵌套：min/max 本身也可使用数字格式标签
+  nested:
+    type: uniform
+    min:
+      type: uniform
+      min: 2
+      max: 7
+    max: "<papi:questdietium_luck> * 3"  # <== CHANGE THIS
+
+  # 真实用例：击杀怪物随机掉落 1-3 个经验球
+  exp_drop:
+    type: uniform
+    min: 1
+    max: "<papi:questdietium_level> * 2"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 3. expression (表达式) — 使用 EvalEx 数学表达式
+# -----------------------------------------------------------
+# 表达式引擎: https://ezylang.github.io/EvalEx/references/references.html
+# -----------------------------------------------------------
+example_expression:
+  # 完整写法
+  damage:
+    type: expression
+    expression: "20 + 70 / 2"
+
+  # 简写形式 (推荐)
+  cost: "<papi:questdietium_level> / 5 + 3"  # <== CHANGE THIS
+
+  # 混合 PlaceholderAPI 占位符
+  scaled_reward:
+    type: expression
+    expression: "<papi:questdietium_score> * 1.5 + 10"  # <== CHANGE THIS
+
+  # 真实用例：基于等级的伤害公式
+  skill_damage:
+    type: expression
+    expression: "10 + <papi:questdietium_skill_level> * 2.5 + (<papi:questdietium_strength> / 10)"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 4. binomial (二项分布) — n 次独立伯努利试验的成功次数
+# -----------------------------------------------------------
+example_binomial:
+  # trials = 10, 每次成功概率 20%
+  proc_chance:
+    type: binomial
+    extra: 10    # 试验次数 (必需)
+    probability: 0.2  # 单次成功概率 (必需)
+
+  # 真实用例：10 次采集尝试，每次 30% 获得额外产物
+  harvest_bonus:
+    type: binomial
+    extra: 10
+    probability: 0.3
+
+# -----------------------------------------------------------
+# 5. gaussian (高斯/正态分布) — 钟形曲线
+# -----------------------------------------------------------
+example_gaussian:
+  ore_vein_size:
+    type: gaussian
+    min: 10           # 最小值限制 (必需)
+    max: 20           # 最大值限制 (必需)
+    mean: 15          # 均值 (可选，默认 min+max/2=15)
+    std_dev: 1        # 标准差 (可选，默认 max-min/6≈1.67)
+    max_attempts: 128 # 最大重试次数 (可选，默认 128)
+
+  # 真实用例：矿物矿脉生成大小，集中在 15 块左右
+  mineral_vein:
+    type: gaussian
+    min: 5
+    max: 30
+    mean: 18          # <== CHANGE THIS
+    std_dev: 3        # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 6. skew_normal (偏态分布) — 不对称分布
+# -----------------------------------------------------------
+example_skew_normal:
+  # 正偏态：多数值集中在左侧 (小值居多，偶尔出大值)
+  loot_quality:
+    type: skew_normal
+    min: 0
+    max: 100
+    mean: 30           # <== CHANGE THIS (期望偏小)
+    std_dev: 10
+    skewness: 0.8      # 正值 = 右偏，大多数奖励偏向低值
+    max_attempts: 128
+
+  # 负偏态：多数值集中在右侧 (大值居多，偶尔出小值)
+  boss_bonus:
+    type: skew_normal
+    min: 0
+    max: 50
+    mean: 40           # <== CHANGE THIS (期望偏大)
+    std_dev: 8
+    skewness: -0.6     # 负值 = 左偏，大多数奖励偏向高值
+    max_attempts: 128
+
+# -----------------------------------------------------------
+# 7. log_normal (对数正态分布) — 始终为正，右偏
+# -----------------------------------------------------------
+example_log_normal:
+  # 适用于货币贬值、耐久消耗等场景
+  durability_cost:
+    type: log_normal
+    min: 1
+    max: 1000
+    mean: 50           # 真实平均值 (方案一)
+    std_dev: 20        # 真实标准差 (方案一)
+
+  # 方案二：使用对数参数 (高级)
+  drop_amount:
+    type: log_normal
+    min: 1
+    max: 100
+    location: 3.5      # μ：自然对数平均值 (与 mean/std_dev 互斥)
+    scale: 0.5         # σ：自然对数标准差
+    max_attempts: 128
+
+  # 真实用例：珍稀掉落物数量 — 大部分时掉 1 个，偶尔掉多个
+  rare_drop:
+    type: log_normal
+    min: 1
+    max: 5
+    mean: 1.2          # <== CHANGE THIS
+    std_dev: 0.5       # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 8. triangle (三角分布) — 计算高效的对称/非对称分布
+# -----------------------------------------------------------
+example_triangle:
+  # 等腰三角形 (mode 不指定，默认 min+max/2)
+  symmetrical:
+    type: triangle
+    min: 10
+    max: 100
+
+  # 非等腰三角形，顶点偏向低值
+  biased_low:
+    type: triangle
+    min: 10
+    max: 100
+    mode: 30           # <== CHANGE THIS (众数/顶点)
+
+  # 真实用例：任务奖励区间，大多集中在中等偏上
+  quest_reward:
+    type: triangle
+    min: 5
+    max: 50
+    mode: 35           # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 9. beta (贝塔分布) — 极大灵活性，可模拟多种分布
+# -----------------------------------------------------------
+example_beta:
+  # Alpha 大 → 向右集中；Beta 大 → 向左集中
+  balanced:
+    type: beta
+    min: 0
+    max: 10
+    alpha: 2.0         # (可选，默认 2.0)
+    beta: 2.0          # (可选，默认 2.0)
+
+  # 偏向高值 (alpha > beta)
+  high_skew:
+    type: beta
+    min: 0
+    max: 100
+    alpha: 5.0
+    beta: 1.5
+
+  # 偏向低值 (alpha < beta)
+  low_skew:
+    type: beta
+    min: 0
+    max: 100
+    alpha: 1.5
+    beta: 5.0
+
+  # 真实用例：钓鱼品质分布 — 大多为普通，少量稀有
+  fishing_quality:
+    type: beta
+    min: 0
+    max: 100
+    alpha: 1.2
+    beta: 3.5          # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 10. weighted (加权列表) — 按权重从列表中随机选值
+# -----------------------------------------------------------
+example_weighted:
+  loot_table:
+    type: weighted
+    # 数值: 权重  (权重总和无需归一化)
+    weights:
+      "10": 70         # 70 / (70+25+5) ≈ 70% 概率
+      "50": 25         # 25% 概率
+      "200": 5         # 5% 概率
+
+  # 真实用例：宝箱品质权重
+  chest_quality:
+    type: weighted
+    weights:
+      "1": 50          # 普通 50%
+      "2": 30          # 罕见 30%
+      "3": 15          # 稀有 15%
+      "4": 5           # 史诗 5%
+
+# -----------------------------------------------------------
+# 11. exponential (指数分布) — 事件间隔模拟
+# -----------------------------------------------------------
+example_exponential:
+  # 使用 mean (平均间隔) 参数
+  respawn_time:
+    type: exponential
+    min: 0
+    max: 60
+    mean: 10           # <== CHANGE THIS (平均 10 秒)
+
+  # 使用 lambda (速率参数) 参数
+  spawn_rate:
+    type: exponential
+    min: 0
+    max: 120
+    lambda: 0.1        # <== CHANGE THIS (每秒 0.1 次事件)
+
+  # 真实用例：随机事件触发间隔
+  random_event_interval:
+    type: exponential
+    min: 5
+    max: 300
+    mean: 45           # <== CHANGE THIS
+
+
+# ============================================================================
+# 第二部分：文本格式 (MiniMessage + 附加标签)
+# ============================================================================
+# 使用 MiniMessage 格式（https://docs.papermc.io/adventure/minimessage/format/）
+# 及插件提供的附加标签。
+# 共 11 类标签：shift, papi, viewer_papi, rel_papi, image, i18n, l10n,
+#   expr, arg, viewer_arg, global, bubble, nameplate, background
+# ============================================================================
+
+# -----------------------------------------------------------
+# 1. <shift:_像素值_> — 像素偏移
+# -----------------------------------------------------------
+tag_shift:
+  # 直接使用偏移字符微调文本位置
+  display:
+    - type: questdietium:custom_item  # <== CHANGE THIS
+      item_name: "<!i><shift:-100><#FF8C00>炎黄之刃"  # 左移 100 像素
+      lore:
+        - "<!i><shift:50><gray>传说级武器"  # 右移 50 像素
+        - "<!i><shift:0><gray>攻击力: +15"
+
+# -----------------------------------------------------------
+# 2. <papi:_占位符_:[_默认值_]> — PlaceholderAPI 占位符
+# -----------------------------------------------------------
+tag_papi:
+  common:
+    item_name: "<!i><#FF8C00><papi:player_name>的神圣之剑"  # <== CHANGE THIS
+    lore:
+      - "<gray>等级: <papi:questdietium_level:1>"           # <== CHANGE THIS
+      - "<gray>经验: <papi:questdietium_exp:0>/100"         # <== CHANGE THIS
+
+  # 带默认值的安全使用
+  safe_usage:
+    functions:
+      - type: questdietium:drop_exp                         # <== CHANGE THIS
+        count:
+          type: uniform
+          min: "<papi:questdietium_multiplier:1> * 3"       # <== CHANGE THIS
+          max: "<papi:questdietium_multiplier:1> * 5"       # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 3. <viewer_papi:_占位符_:[_默认值_]> — 观察者的 PAPI
+# -----------------------------------------------------------
+tag_viewer_papi:
+  # 广播消息时，不同玩家看到的是自己的数据
+  broadcast_message:
+    message: |-
+      <viewer_papi:player_name> 先生/女士，你好！
+      <arg:player_name> 刚刚完成了 [每日试炼]。
+
+  message_list:
+    - "<gold><viewer_papi:player_name> 欢迎加入服务器！"  # <== CHANGE THIS
+    - "<gray>你的等级: <viewer_papi:questdietium_level:0>"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 4. <rel_papi:_占位符_:[_默认值_]> — 关系型占位符
+# -----------------------------------------------------------
+tag_rel_papi:
+  # 用于两个玩家之间的关系数据 (如是否组队、友好度等)
+  party_check:
+    message: "<rel_papi:questdietium_party_status:陌生人>"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 5. <image:_命名空间_:_路径_:[_行_]:[_列_]:[_格式_]> — 图片
+# -----------------------------------------------------------
+tag_image:
+  # 简单图片 (不指定行列)
+  basic_icon:
+    item_name: "<!i><white><image:questdietium:icons><#FF8C00>任务之书"  # <== CHANGE THIS
+
+  # 指定行列 (精灵图)
+  sprite_icon:
+    item_name: "<!i><white><image:questdietium:icons:0:1><#FF8C00>金币"  # <== CHANGE THIS
+
+  # 图片使用格式参数
+  styled_icon:
+    item_name: "<!i><red><image:questdietium:icons:'<!shadow><white>'> 荣誉勋章"  # <== CHANGE THIS
+
+  # 图片 + 行列 + 格式
+  detailed_icon:
+    item_name: "<!i><red><image:questdietium:icons:0:1:'<!shadow><white>'> 传奇宝箱"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 6. <i18n:_标识符_> — 服务端语言翻译
+# -----------------------------------------------------------
+tag_i18n:
+  # 根据服务端语言自动选择翻译文本
+  items:
+    custom:questdietium_lantern:                               # <== CHANGE THIS
+      material: paper
+      data:
+        item_name: "<i18n:item.questdietium_lantern>"          # <== CHANGE THIS
+        lore:
+          - "<i18n:item.questdietium_lantern.desc>"            # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 7. <l10n:_标识符_> — 客户端语言翻译
+# -----------------------------------------------------------
+tag_l10n:
+  # 根据客户端语言自动选择翻译文本
+  items:
+    custom:questdietium_scroll:                                # <== CHANGE THIS
+      material: paper
+      data:
+        item_name: "<l10n:item.questdietium_scroll>"           # <== CHANGE THIS
+        lore:
+          - "<l10n:item.questdietium_scroll.desc>"             # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 8. <expr:_格式_:_表达式_> — 内联数学运算
+# -----------------------------------------------------------
+tag_expr:
+  # DecimalFormat 格式: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/DecimalFormat.html
+  # EvalEx 表达式: https://ezylang.github.io/EvalEx/references/references.html
+  # ---------------------------------------------------------
+
+  # 纯数学
+  static_math:
+    item_name: "<!i><#FF8C00>伤害: <expr:0.##:'70 / 8'>"       # 输出 "8.75"
+
+  # 带 PAPI 占位符
+  dynamic_math:
+    item_name: "<!i><#FF8C00>经验: <expr:0.##:'<papi:questdietium_exp:0> * 1.5'>"  # <== CHANGE THIS
+
+  # 复杂表达式 (嵌套)
+  complex_calc:
+    item_name: "<!i><#FF8C00>总分: <expr:#.##:'(<papi:questdietium_score:0> + <papi:questdietium_bonus:0>) * <papi:questdietium_multiplier:1>'>"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 9. <arg:_索引_> / <arg:_标识符_> — 上下文参数
+# -----------------------------------------------------------
+tag_arg:
+  # 索引参数 (仅 translations 目录)
+  translation_example:
+    internal.cooking_info.0: "烹饪时间：<arg:cooking_time>刻"   # <== CHANGE THIS
+    internal.cooking_info.1: "获得经验：<arg:cooking_experience>"  # <== CHANGE THIS
+
+  # 命名参数 — 上下文主体参数
+  context_params:
+    - type: questdietium:particle                              # <== CHANGE THIS
+      # 方块位置生成粒子
+      x: '<arg:block.x> + 0.5'
+      y: '<arg:block.y> + 0.5'
+      z: '<arg:block.z> + 0.5'
+      particle: flame
+
+    - type: questdietium:particle                              # <== CHANGE THIS
+      # 玩家位置生成粒子
+      x: '<arg:player.x>'
+      y: '<arg:player.y>'
+      z: '<arg:player.z>'
+      particle: heart
+
+  # 通用参数
+  universal_args:
+    - '<arg:random>'        # 0-1 随机数
+    - '<arg:last_random>'   # 上一次随机数
+
+# -----------------------------------------------------------
+# 10. <viewer_arg:_标识符_> — 观察者参数 (多主体)
+# -----------------------------------------------------------
+tag_viewer_arg:
+  # 当多个上下文主体存在时使用
+  multi_actor_message:
+    type: questdietium:broadcast                              # <== CHANGE THIS
+    target: all
+    message:
+      - "嗨，<viewer_arg:player.name>！<arg:player.name> 刚刚与一个自定义方块进行了交互。"  # <== CHANGE THIS
+      - "<arg:player.name> 正在与 <arg:block.owner> 的方块互动。"                         # <== CHANGE THIS
+      - "观察者 <viewer_arg:player.name> 的等级: <viewer_papi:questdietium_level:0>"       # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 11. <global:_标识符_:[参数...]> — 全局变量
+# -----------------------------------------------------------
+tag_global:
+  # 在配置中预定义全局变量后在物品中使用
+  rarity_tag:
+    item_name: "<global:rare_tag> 远古遗物"                    # <== CHANGE THIS
+    lore:
+      - "<global:epic_lore_line1>"                            # <== CHANGE THIS
+      - "<global:epic_lore_line2>"                            # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 12. <bubble:_id_:_left_:_right_> — 气泡文字 (需 CustomNameplates)
+# -----------------------------------------------------------
+tag_bubble:
+  # 需要安装 CustomNameplates 插件
+  bubble_item:
+    item_name: "<bubble:chat_1:1:1:'<black><!shadow>发生了什么'>"  # <== CHANGE THIS
+
+  # 真实用例：传说武器带对话气泡
+  legendary_sword:
+    item_name: "<bubble:legendary:1:1:'<dark_red><bold>Excalibur'>"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 13. <nameplate:_id_:_left_:_right_> — 铭牌文字 (需 CustomNameplates)
+# -----------------------------------------------------------
+tag_nameplate:
+  # 需要安装 CustomNameplates 插件
+  nameplate_item:
+    item_name: "<nameplate:xmas:1:1:'<gold>圣诞特供'"  # <== CHANGE THIS
+
+  # 真实用例：节日限定道具
+  festive_crown:
+    item_name: "<nameplate:festive:1:1:'<aqua>新年王冠'"  # <== CHANGE THIS
+
+# -----------------------------------------------------------
+# 14. <background:_id_:_left_:_right_> — 背景文字 (需 CustomNameplates)
+# -----------------------------------------------------------
+tag_background:
+  # 需要安装 CustomNameplates 插件
+  background_item:
+    item_name: "<background:bedrock_1:1:1:'<dark_gray>远古石碑'"  # <== CHANGE THIS
+
+  # 真实用例：史诗级道具带背景框
+  epic_totem:
+    item_name: "<background:epic_frame:1:1:'<#AA00FF>不朽图腾'"  # <== CHANGE THIS
+
+
+# ============================================================================
+# 第三部分：综合实战示例 — 完整的自定义物品配置
+# ============================================================================
+
+items:
+  custom:questdietium_infernal_blade:                        # <== CHANGE THIS
+    material: diamond_sword
+    data:
+      item_name: "<!i><shift:-50><#FF4500><bold><global:rare_tag> 炼狱之刃"  # <== CHANGE THIS
+      lore:
+        - "<!i><gray>绑定玩家: <papi:player_name>"
+        - "<!i><yellow>攻击力: <expr:0:#:'15 + <papi:questdietium_level:0> * 2'>"  # <== CHANGE THIS
+        - "<!i><dark_red>火焰附加 II"
+        - "<!i><image:questdietium:icons:0:1> 传说品质"     # <== CHANGE THIS
+        - "<!i><gray>————————————"
+        - "<!i><bubble:flame:1:1:'<gold>燃尽一切！'>"       # <== CHANGE THIS
+    functions:
+      - type: questdietium:damage                            # <== CHANGE THIS
+        amount:
+          type: expression
+          expression: "10 + <papi:questdietium_strength:5> * 1.5"  # <== CHANGE THIS
+      - type: questdietium:drop_exp                          # <== CHANGE THIS
+        expression: "5 + <papi:questdietium_luck:1> * 2"    # <== CHANGE THIS
+
+  custom:questdietium_lucky_pouch:                           # <== CHANGE THIS
+    material: player_head
+    data:
+      item_name: "<!i><#FFD700><bold>幸运福袋"
+      lore:
+        - "<!i><gray>右键打开获得随机奖励"
+        - "<!i><gray>————————————"
+        - "<!i><green>可能获得:"
+        - "<!i><white>  ◆ 金币 <expr:0:#:'10 + <papi:questdietium_luck:1> * 5'>~<expr:0:#:'50 + <papi:questdietium_luck:1> * 10'>"  # <== CHANGE THIS
+        - "<!i><white>  ◆ 经验 <expr:0:#:'<papi:questdietium_level:1> * 20'>"  # <== CHANGE THIS
+    functions:
+      - type: questdietium:reward                            # <== CHANGE THIS
+        rewards:
+          - type: questdietium:item                          # <== CHANGE THIS
+            material: diamond
+            amount:
+              type: weighted
+              weights:
+                "1": 60
+                "3": 30
+                "5": 10
+          - type: questdietium:exp                           # <== CHANGE THIS
+            amount:
+              type: gaussian
+              min: 10
+              max: 100
+              mean: 45
+              std_dev: 15
+
+
+# ============================================================================
+# 第四部分：全局变量定义
+# ============================================================================
+
+global_variables:
+  rare_tag: "<gradient:#FFD700:#FF4500><bold>✦ 稀有 ✦</bold></gradient>"  # <== CHANGE THIS
+  epic_lore_line1: "<gradient:#AA00FF:#FF00AA>传说中的远古遗物</gradient>"  # <== CHANGE THIS
+  epic_lore_line2: "<gradient:#AA00FF:#FF00AA>拥有毁天灭地的力量</gradient>"  # <== CHANGE THIS

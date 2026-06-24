@@ -1,0 +1,25 @@
+# 🚧 栅栏方块
+
+**栅栏方块**在四个水平方向自动与相邻方块连接。行为与原版栅栏相同。
+
+若启用 `can_leash`，右键可用拴绳系在方块上。
+
+| 属性名称  | 属性类型    | 是否必需 |
+|-------|---------|------|
+| north | boolean | 是    |
+| east  | boolean | 是    |
+| south | boolean | 是    |
+| west  | boolean | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_fence:
+    behavior:
+      type: fence_block
+      connectable_block_tag: minecraft:wooden_fences   # 连接其他栅栏的标签（默认 minecraft:wooden_fences）
+      can_leash: true                                  # 是否允许拴绳拴上
+```
+
+![](/img/fence_block.png)

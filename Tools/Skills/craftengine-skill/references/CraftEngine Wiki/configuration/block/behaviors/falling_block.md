@@ -1,0 +1,27 @@
+# 🟨 可下落方块
+
+**可下落方块**会在失去支撑时变为[下落的方块](https://zh.minecraft.wiki/w/%E4%B8%8B%E8%90%BD%E7%9A%84%E6%96%B9%E5%9D%97)，就像原版沙子或沙砾。方块放置后会在 2 刻后检查下方是否存在支撑方块，若下方为空且未低于世界最小高度，则转换为使用当前方块状态的[下落的方块](https://zh.minecraft.wiki/w/%E4%B8%8B%E8%90%BD%E7%9A%84%E6%96%B9%E5%9D%97)。
+
+可通过配置 `hurt_amount` 和 `max_hurt` 选项让[下落的方块](https://zh.minecraft.wiki/w/%E4%B8%8B%E8%90%BD%E7%9A%84%E6%96%B9%E5%9D%97)对碰撞到的实体造成伤害，并可自定义落地与摔毁时播放的音效。
+
+## 示例
+
+```yaml
+blocks:
+  default:falling_block_example:
+    behavior:
+      type: falling_block
+      hurt_amount: -1             # 每次碰撞造成的伤害值，-1 = 禁用（默认 -1）
+      max_hurt: -1                # 单次下落最多伤害的实体数量，-1 = 禁用（默认 -1）
+      sounds:
+        land: minecraft:block.anvil.land        # 落地时播放的音效（可选）
+        destroy: minecraft:block.anvil.destroy  # 摔毁时播放的音效（可选）
+```
+
+:::info
+
+`hurt_amount` 与 `max_hurt` 需同时大于 `0` 才会启用实体伤害。任意一项小于或等于 `0` 时，[下落的方块](https://zh.minecraft.wiki/w/%E4%B8%8B%E8%90%BD%E7%9A%84%E6%96%B9%E5%9D%97)不会对实体造成伤害。
+
+:::
+
+![](/img/falling_block.png)

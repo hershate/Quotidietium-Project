@@ -1,0 +1,153 @@
+# ============================================================================
+# 物品更新器 (Item Updater) 配置模板
+# 本地 Wiki 参考:
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/updater.md
+#   - 参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
+# ============================================================================
+# 用途: 更新服务器上存量物品的数据，修正配置变更后未同步的旧物品。
+# 版本机制: 物品默认版本号为 0，插件按版本号逐个执行更新，直到最新版本。
+# 性能: 在 config.yml 中启用需要的触发器 (默认全部关闭)。
+# ============================================================================
+
+# ---- [config.yml - 物品更新器触发器] ----
+# 以下配置项放置在 config.yml 的 item 部分。
+# 按需启用，未列出的触发器同默认行为 (false)。
+# ============================================================================
+item:
+  update-triggers:
+    # 在背包界面点击物品时触发 (对创造模式物品栏无效)
+    click-in-inventory: false  # << CHANGE THIS
+    # 丢弃物品时触发
+    drop: false                # << CHANGE THIS
+    # 拾取物品时触发
+    pick-up: false             # << CHANGE THIS
+
+# ---- [items 内联更新器配置] ----
+# 在自定义物品定义内嵌入 updater 段。
+# 版本号 (1, 2, 3...) 表示更新步骤，从 0 → 1 → 2 → ... 依次执行。
+# ============================================================================
+items:
+  # -------------------------------------------------------------------------
+  # 示例 1: 单步更新 (版本 0 → 1)
+  #   - 仅使用 apply_data 更新物品名称和描述
+  # -------------------------------------------------------------------------
+  your_namespace:your_item_id:  # << CHANGE THIS (namespace 和物品 ID)
+    material: diamond_sword     # << CHANGE THIS
+    updater:
+      1:
+        type: apply_data
+        data:
+          item_name: <white>更新后的名称          # << CHANGE THIS
+          lore:
+            - <gray>此物品已更新至 v1
+            - <yellow>新属性已应用
+
+  # -------------------------------------------------------------------------
+  # 示例 2: 多步更新 (版本 0 → 1 → 2)
+  #   - 版本 1 为 apply_data
+  #   - 版本 2 为 transmute + apply_data (列表格式，同时执行)
+  #   - 若物品版本为 0: 依次执行 1 和 2
+  #   - 若物品版本为 1: 仅执行 2
+  # -------------------------------------------------------------------------
+  your_namespace:your_item_id:  # << CHANGE THIS
+    material: iron_sword        # << CHANGE THIS
+    updater:
+      # 版本 1: 首次更新，修改显示名称和描述
+      1:
+        type: apply_data
+        data:
+          item_name: <gold>传奇之刃
+          lore:
+            - <gray>已升级至第一代
+            - <green>+5 攻击力
+            - <dark_gray>--- 旧版遗留 ---
+          enchantment_glint_override: true  # << CHANGE THIS (可选)
+
+      # 版本 2: 同时应用材质置换和数据更新 (列表格式)
+      2:
+        - type: transmute
+          material: netherite_sword  # << CHANGE THIS (目标材质)
+        - type: apply_data
+          data:
+            lore:
+              - "<gradient:#FF6B6B:#FFE66D>净狱之刃"
+              - "<gray>已升级至第二代"
+            attribute_modifiers:
+              - attribute: minecraft:attack_damage
+                operation: ADD_VALUE
+                value: 2.5
+                name: generic.attack_damage
+
+  # -------------------------------------------------------------------------
+  # 示例 3: reset 更新器 (将物品重置为最新定义，保留指定组件/NBT)
+  #   - 适用于 1.20.5+ (keep_components) 和旧版本 (keep_tags)
+  # -------------------------------------------------------------------------
+  your_namespace:your_item_id:  # << CHANGE THIS
+    material: diamond_chestplate  # << CHANGE THIS
+    updater:
+      1:
+        type: reset
+        # 1.20.5+ 保留的组件 (使用 minecraft: 命名空间)
+        keep_components:            # << CHANGE THIS (按需调整列表)
+          - minecraft:enchantments
+          - minecraft:unbreakable
+          - minecraft:trim
+        # 旧版本保留的 NBT 标签
+        keep_tags:                  # << CHANGE THIS (按需调整列表)
+          - Enchantments
+          - Unbreakable
+
+  # -------------------------------------------------------------------------
+  # 示例 4: 综合多步更新 (从基础材质升级到高级材质，含多次数据变更)
+  # -------------------------------------------------------------------------
+  your_namespace:your_item_id:  # << CHANGE THIS
+    material: wooden_sword        # << CHANGE THIS
+    updater:
+      # 步骤 1: 从木质→石质，改名称
+      1:
+        type: transmute
+        material: stone_sword  # << CHANGE THIS
+        # transmute 可包含额外 data 吗? 文档仅列出 material 字段，
+        # 此处只使用文档声明的键。
+
+      # 步骤 2: 重新应用完整数据 (名称、描述、附魔)
+      2:
+        type: apply_data
+        data:
+          item_name: <light_purple>远古遗刃
+          lore:
+            - <gray>历经沧桑，锋芒不减
+          enchantments:
+            - enchantment: minecraft:sharpness
+              level: 3
+
+      # 步骤 3: 重置物品至最新定义，同时保留附魔
+      3:
+        type: reset
+        keep_components:
+          - minecraft:enchantments
+        keep_tags:
+          - Enchantments
+
+# ============================================================================
+# 更新器类型速查
+# ============================================================================
+# type: apply_data
+#   应用任何 CraftEngine 支持的物品数据。
+#   参考: data.md (参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md)
+#
+# type: transmute
+#   替换物品的基础材质，保留所有组件和 NBT 数据。
+#   参数: material (目标材质 ID)
+#
+# type: reset
+#   将物品重置为最新配置定义，选择性保留指定组件或 NBT。
+#   参数:
+#     - keep_components (1.20.5+)  - 保留的组件列表
+#     - keep_tags (旧版本)          - 保留的 NBT 标签名列表
+# ============================================================================
+# 格式说明:
+#   - 单个版本号对应一个更新器: 使用对象格式 (key: value)
+#   - 单个版本号对应多个同时执行的更新器: 使用列表格式 (前导 -)
+#   - 版本号从 1 开始递增，不要跳跃或重复
+# ============================================================================

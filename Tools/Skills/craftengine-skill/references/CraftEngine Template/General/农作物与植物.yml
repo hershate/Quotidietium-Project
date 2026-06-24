@@ -1,0 +1,202 @@
+# =============================================================================
+# CraftEngine 农作物与植物方块行为模板
+# 参考文档 (本地 Wiki):
+#   - configuration/block/behaviors/crop_block.md
+#   - configuration/block/behaviors/stem_block.md
+#   - configuration/block/behaviors/attached_stem_block.md
+#   - configuration/block/behaviors/bush_block.md
+#   - configuration/block/behaviors/sapling_block.md
+#   - configuration/block/behaviors/vertical_crop_block.md
+#
+# 使用方法: 将 my_mod 替换为你的命名空间，修改 ID 和参数值即可使用。
+#   # << CHANGE THIS  标记的值需要根据实际需求修改。
+# =============================================================================
+
+# 自定义命名空间声明
+namespace: my_mod  # << CHANGE THIS
+
+blocks:
+
+  # ===========================================================================
+  # 1. 农作物方块 (crop_block)
+  #    类似小麦、马铃薯，通过随机刻在 age 阶段中生长。
+  #    需要方块属性: age (int)
+  # ===========================================================================
+  my_wheat:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 7  # << CHANGE THIS (最大生长阶段)
+    behavior:
+      type: crop_block
+      grow_speed: 0.25                 # << CHANGE THIS 每随机刻增加的 age 值 (默认 0.125)
+      light_requirement: 9             # << CHANGE THIS 生长所需最低光照 (默认 9)
+      max_light_requirement: 15        # << CHANGE THIS 生长所需最高光照 (默认 15)
+      spawn_light_requirement: 9       # << CHANGE THIS 区块生成时最低光照 (默认等于 light_requirement)
+      max_spawn_light_requirement: 15  # << CHANGE THIS 区块生成时最高光照 (默认等于 max_light_requirement)
+      is_bone_meal_target: true        # << CHANGE THIS 骨粉是否生效 (默认 true)
+      bone_meal_age_bonus:
+        type: uniform
+        min: 1                         # << CHANGE THIS 骨粉增加 age 的最小值
+        max: 3                         # << CHANGE THIS 骨粉增加 age 的最大值
+
+  # 备选：更慢速生长、不支持骨粉的作物
+  my_slow_crop:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 3
+    behavior:
+      type: crop_block
+      grow_speed: 0.125
+      light_requirement: 8
+      max_light_requirement: 15
+      is_bone_meal_target: false       # 禁用骨粉加速
+
+  # ===========================================================================
+  # 2. 茎方块 (stem_block)
+  #    类似原版西瓜/南瓜茎，随机刻推进 age，达到最大值后生成果实。
+  #    需要方块属性: age (int)
+  # ===========================================================================
+  my_melon_stem:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 7  # << CHANGE THIS (最大生长阶段，达到后生成果实)
+    behavior:
+      type: stem_block
+      fruit: my_mod:my_melon                      # << CHANGE THIS 茎生成的果实方块 (必需)
+      attached_stem: my_mod:attached_my_melon_stem # << CHANGE THIS 变为的附着茎方块 (必需)
+      light_requirement: 0                         # << CHANGE THIS 生长所需最低光照 (默认 0)
+      max_light_requirement: 15                    # << CHANGE THIS 生长所需最高光照 (默认 15)
+      fruit_bottom_blocks:                         # << CHANGE THIS 果实可坐落的方块 (白名单，可选)
+        - my_mod:farmland
+        - my_mod:dirt
+      fruit_bottom_block_tags:                     # << CHANGE THIS 果实可坐落的方块标签 (白名单，可选)
+        - my_mod:farmland
+        - my_mod:dirt
+
+  # ===========================================================================
+  # 3. 附着茎方块 (attached_stem_block)
+  #    将茎与果实相连，朝向果实方块。果实被破坏后自动退化为普通茎。
+  #    需要方块属性: facing (horizontal_direction)
+  # ===========================================================================
+  attached_my_melon_stem:  # << CHANGE THIS
+    properties:
+      facing:
+        type: horizontal_direction
+        default: north
+    behavior:
+      type: attached_stem_block
+      fruit: my_mod:my_melon          # << CHANGE THIS 此茎所附着的果实方块 (必需)
+      stem: my_mod:my_melon_stem      # << CHANGE THIS 果实被破坏后退化成的茎方块 (必需)
+
+  # ===========================================================================
+  # 4. 灌木方块 (bush_block)
+  #    只能生长在特定支撑方块上，支撑被破坏则方块破坏。
+  #    可选向上堆叠。可使用黑名单/白名单模式。
+  # ===========================================================================
+  # --- 4a. 白名单模式：仅可在特定方块上生长 ---
+  my_bush_flower:  # << CHANGE THIS
+    behavior:
+      type: bush_block
+      blacklist: false                 # << CHANGE THIS false = 白名单模式
+      stackable: false                 # << CHANGE THIS 是否允许向上堆叠
+      max_height: 0                    # << CHANGE THIS 最大堆叠高度 (stackable=true 时需 > 1)
+      delay: 0                         # << CHANGE THIS 检查延迟刻数 (0 = 立即破坏)
+      bottom_blocks:                   # << CHANGE THIS 允许生长的特定方块 (可选)
+        - my_mod:special_soil
+        - minecraft:stone
+      bottom_block_tags:               # << CHANGE THIS 允许生长的方块标签 (可选)
+        - minecraft:dirt
+        - minecraft:farmland
+
+  # --- 4b. 黑名单模式：除列表外均可生长 ---
+  my_weed:  # << CHANGE THIS
+    behavior:
+      type: bush_block
+      blacklist: true                  # true = 黑名单模式
+      stackable: true                  # 可向上堆叠
+      max_height: 3                    # << CHANGE THIS 最大堆叠高度
+      delay: 1                         # PP 更新时延迟 1 刻检查存活
+      bottom_blocks:                   # << CHANGE THIS 禁止生长的方块
+        - minecraft:bedrock
+      bottom_block_tags:
+        - minecraft:wart_blocks        # << CHANGE THIS 禁止生长的方块标签
+
+  # ===========================================================================
+  # 5. 树苗方块 (sapling_block)
+  #    随机刻推进 stage，达到最大值时调用 feature 生成树木。
+  #    需要方块属性: stage (int)
+  # ===========================================================================
+  my_palm_sapling:  # << CHANGE THIS
+    properties:
+      stage:
+        type: int
+        default: 0
+        min: 0
+        max: 2  # << CHANGE THIS (最大阶段数，达到后生成树木)
+    behavior:
+      type: sapling_block
+      feature: my_mod:palm_tree                # << CHANGE THIS 完全成熟时生成的地物 (必需)
+      light_requirement: 9                     # << CHANGE THIS 生长所需最低光照 (默认 9)
+      max_light_requirement: 15                # << CHANGE THIS 生长所需最高光照 (默认 15)
+      grow_speed: 0.7                          # << CHANGE THIS 每随机刻增加 stage 的概率 (默认 ~0.143)
+      bone_meal_success_chance: 0.45           # << CHANGE THIS 骨粉产生成功粒子的概率 (默认 0.45)
+
+  # ===========================================================================
+  # 6. 垂直作物方块 (vertical_crop_block)
+  #    类似甘蔗或海带，在随机刻中向上或向下生长延伸茎段。
+  #    需要方块属性: age (int)
+  #    可与其他行为类型 (如 hanging_block) 组合使用。
+  # ===========================================================================
+  # --- 6a. 向上生长的垂直作物 ---
+  my_flame_cane:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 1  # << CHANGE THIS (达到最大值时向上延伸一个新茎段)
+    behaviors:  # 注意使用复数 behaviors 以支持多行为组合
+      - type: vertical_crop_block
+        max_height: 3              # << CHANGE THIS 一株茎秆的最大段数 (默认 3)
+        grow_speed: 0.333          # << CHANGE THIS 每随机刻增加的 age 值 (默认 1)
+        direction: up              # << CHANGE THIS 生长方向 up 或 down (默认 up)
+
+  # --- 6b. 向下生长的垂直作物 + 悬挂行为组合 ---
+  my_hanging_vine:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 1
+    behaviors:
+      - type: vertical_crop_block
+        max_height: 4              # << CHANGE THIS
+        grow_speed: 0.5            # << CHANGE THIS
+        direction: down            # << CHANGE THIS 向下生长
+      - type: hanging_block
+        stackable: true
+        delay: 1
+
+  # --- 6c. 快速生长的垂直作物 (单行为，无需复数) ---
+  my_tall_bamboo:  # << CHANGE THIS
+    properties:
+      age:
+        type: int
+        default: 0
+        min: 0
+        max: 1
+    behavior:  # 只有一种行为时使用单数 behavior
+      type: vertical_crop_block
+      max_height: 6                # << CHANGE THIS
+      grow_speed: 1.0              # << CHANGE THIS 每随机刻必定 +1
+      direction: up

@@ -1,0 +1,706 @@
+# ============================================================================
+# CraftEngine 事件函数完整示例
+# 参考: CraftEngine Wiki -> reference/events.md
+# 命名空间: craftengine_tutorial
+# 说明: 此文件演示 events 部分下所有可用函数，涵盖物品、方块、家具三大类。
+#       标记 `# << CHANGE THIS` 的行为可自定义的值，请根据实际需求调整。
+# ============================================================================
+
+# ============================================================
+# 物品定义 — 演示物品相关事件与函数
+# ============================================================
+items:
+  # ----- 综合功能演示物品: "教程之杖" -----
+  craftengine_tutorial:tutorial_wand:
+    material: blaze_rod
+    data:
+      item_name: "<gold>教程之杖"
+      lore:
+        - "<gray>右键查看完整事件函数演示"
+    events:
+      # 触发器: 右键点击
+      - on: right_click
+        functions:
+          # --- 1. run — 按顺序运行一系列函数，可共享条件与延迟 ---
+          - type: run
+            delay: 0                                        # << CHANGE THIS 延迟刻数
+            conditions: []
+            functions:
+              - type: command
+                command: "say <arg:player.name> 使用了教程之杖"
+                target: "self"
+              - type: message
+                message: "<green>教程之杖事件已触发！"
+                target: "self"
+
+          # --- 2. cancel_event — 取消原始事件 ---
+          - type: cancel_event
+            conditions:
+              - type: permission
+                permission: "craftengine_tutorial.admin"     # << CHANGE THIS 权限节点
+
+          # --- 3. message — 发送聊天消息 ---
+          - type: message
+            message:
+              - "<gold>===== 教程之杖 ====="
+              - "<green>欢迎使用 CraftEngine 事件系统！"
+              - "<gray>当前玩家: <papi:player_name>"
+            target: "self"                                   # << CHANGE THIS 目标: self / all / @p
+            overlay: false                                   # << CHANGE THIS false=聊天框 true=动作栏
+
+          # --- 4. actionbar — 发送动作栏消息 ---
+          - type: actionbar
+            actionbar: "<yellow>⚡ 动作栏提示: 右键完成!"
+            target: "self"
+
+          # --- 5. title — 发送屏幕标题 ---
+          - type: title
+            title: "<red>事件触发"
+            subtitle: "<yellow>CraftEngine 教程"
+            fade_in: 10                                      # << CHANGE THIS 淡入刻数
+            stay: 40                                         # << CHANGE THIS 停留刻数
+            fade_out: 10                                     # << CHANGE THIS 淡出刻数
+
+          # --- 6. swing_hand — 挥动手臂 ---
+          - type: swing_hand
+            hand: main_hand                                  # << CHANGE THIS main_hand / off_hand
+
+          # --- 7. set_count — 设置物品数量 ---
+          - type: set_count
+            count: -1                                        # << CHANGE THIS 数量变化
+            add: true                                        # << CHANGE THIS true=增加 false=设定
+            target: "self"
+
+          # --- 8. set_food — 设置饥饿值 ---
+          - type: set_food
+            food: 6                                          # << CHANGE THIS 饥饿值 (0~20)
+            add: true                                        # << CHANGE THIS true=增加 false=设定
+            target: "self"
+
+          # --- 9. set_saturation — 设置饱和度 ---
+          - type: set_saturation
+            saturation: 3.0                                  # << CHANGE THIS 饱和度 (0~10)
+            add: false                                       # << CHANGE THIS true=增加 false=设定
+            target: "self"
+
+          # --- 10. heal — 治疗玩家 ---
+          - type: heal
+            amount: 4.0                                      # << CHANGE THIS 治疗量
+            target: "self"
+
+          # --- 11. damage — 伤害玩家（自伤示例） ---
+          - type: damage
+            amount: 1.0                                      # << CHANGE THIS 伤害量
+            damage_type: magic                               # << CHANGE THIS 伤害类型
+            target: "self"
+
+          # --- 12. damage_item — 消耗物品耐久度 ---
+          - type: damage_item
+            amount: 2                                        # << CHANGE THIS 消耗耐久值
+            slot: mainhand                                   # << CHANGE THIS 装备槽位
+
+          # --- 13. set_exp — 设置经验值 ---
+          - type: set_exp
+            count: 50                                        # << CHANGE THIS 经验值数量
+            add: true                                        # << CHANGE THIS true=增加 false=设定
+            target: "self"
+
+          # --- 14. set_level — 设置经验等级 ---
+          - type: set_level
+            count: 1                                         # << CHANGE THIS 等级数量
+            add: true                                        # << CHANGE THIS true=增加 false=设定
+            target: "self"
+
+          # --- 15. set_cooldown — 设置冷却时间 ---
+          - type: set_cooldown
+            time: "30s"                                      # << CHANGE THIS 冷却时间 (例如 1m30s)
+            id: "craftengine_tutorial:wand_cooldown"          # << CHANGE THIS 冷却ID
+            add: false                                       # << CHANGE THIS true=累加 false=覆盖
+
+          # --- 16. play_sound — 播放音效 ---
+          - type: play_sound
+            sound: "minecraft:entity.player.levelup"         # << CHANGE THIS 音效ID
+            target: "self"
+            pitch: 1.2                                       # << CHANGE THIS 音调 (0.5~2.0)
+            volume: 1.0                                      # << CHANGE THIS 音量
+            source: master                                   # << CHANGE THIS 音源
+
+          # --- 17. particle — 生成粒子效果 ---
+          - type: particle
+            particle: "minecraft:end_rod"                    # << CHANGE THIS 粒子类型
+            x: "<arg:position.x>"
+            y: "<arg:position.y> + 1"
+            z: "<arg:position.z>"
+            count: 20                                        # << CHANGE THIS 粒子数量
+            offset_x: 0.5                                    # << CHANGE THIS 扩散范围X
+            offset_y: 0.5                                    # << CHANGE THIS 扩散范围Y
+            offset_z: 0.5                                    # << CHANGE THIS 扩散范围Z
+            speed: 0.1                                       # << CHANGE THIS 速度
+
+          # --- 18. potion_effect — 添加状态效果 ---
+          - type: potion_effect
+            potion_effect: "minecraft:speed"                 # << CHANGE THIS 效果ID
+            duration: 200                                    # << CHANGE THIS 持续刻数 (10秒)
+            amplifier: 1                                     # << CHANGE THIS 等级 (0=I级)
+            ambient: false                                   # << CHANGE THIS 是否来自信标
+            particles: true                                  # << CHANGE THIS 是否显示粒子
+
+          # --- 19. remove_potion_effect — 移除状态效果 ---
+          - type: remove_potion_effect
+            potion_effect: "minecraft:slowness"              # << CHANGE THIS 效果ID
+            all: false                                       # << CHANGE THIS true=移除所有
+
+          # --- 20. play_totem_animation — 播放图腾动画 ---
+          - type: play_totem_animation
+            item: "minecraft:totem_of_undying"               # << CHANGE THIS 物品ID
+            sound: "minecraft:entity.player.levelup"         # << CHANGE THIS 音效
+            pitch: 1.0                                       # << CHANGE THIS 音调
+            volume: 1.0                                      # << CHANGE THIS 音量
+            silent: false                                    # << CHANGE THIS 是否静默
+            target: "self"
+
+          # --- 21. toast — 发送弹窗提示 ---
+          - type: toast
+            toast: "教程完成！"                                # << CHANGE THIS 弹窗文本
+            advancement_type: goal                           # << CHANGE THIS goal/task/challenge
+            icon: "minecraft:blaze_rod"                      # << CHANGE THIS 图标物品
+
+          # --- 22. set_variable — 设置变量 ---
+          - type: set_variable
+            name: "tutorial_triggered"                       # << CHANGE THIS 变量名
+            text: "true"                                     # << CHANGE THIS 文本值
+            number: 1.0                                      # << CHANGE THIS 数值
+            as_int: true                                     # << CHANGE THIS true=存为整数
+
+          # --- 23. teleport — 传送玩家（向上传送5格） ---
+          - type: teleport
+            x: "<arg:position.x>"                            # << CHANGE THIS X坐标
+            y: "<arg:position.y> + 5"                        # << CHANGE THIS Y坐标
+            z: "<arg:position.z>"                            # << CHANGE THIS Z坐标
+            pitch: "<arg:player.pitch>"
+            yaw: "<arg:player.yaw>"
+            world: "world"                                   # << CHANGE THIS 世界名
+
+          # --- 24. close_inventory — 关闭容器 ---
+          - type: close_inventory
+            target: "self"
+
+          # --- 25. clear_item — 清理背包物品 ---
+          - type: clear_item
+            id: "minecraft:dirt"                             # << CHANGE THIS 物品ID
+            count: 1                                         # << CHANGE THIS 清理数量
+
+          # --- 26. leveler_exp — 技能/职业经验（集成插件） ---
+          - type: leveler_exp
+            plugin: "AuraSkills"                             # << CHANGE THIS 插件名
+            leveler: "farming"                               # << CHANGE THIS 技能/职业ID
+            count: 10                                        # << CHANGE THIS 经验量
+
+          # --- 27. command — 执行命令 ---
+          - type: command
+            command:
+              - "say <arg:player.name> 完成了教程物品事件！"
+              - "give <arg:player.name> minecraft:diamond 1"
+            target: "self"                                   # << CHANGE THIS self/all/选择器
+            as_player: true                                  # << CHANGE THIS 以玩家身份执行
+            as_op: false                                     # << CHANGE THIS 以OP身份执行
+            as_event: false                                  # << CHANGE THIS 事件驱动兼容
+
+          # --- 28. if_else — 条件判断 ---
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: permission
+                    permission: "craftengine_tutorial.admin" # << CHANGE THIS 权限
+                functions:
+                  - type: command
+                    command: "say <arg:player.name> 是管理员！"
+              - conditions:
+                  - type: permission
+                    permission: "craftengine_tutorial.vip"   # << CHANGE THIS 权限
+                functions:
+                  - type: command
+                    command: "say <arg:player.name> 是VIP！"
+              - functions:
+                  - type: command
+                    command: "say <arg:player.name> 是普通玩家"
+
+          # --- 29. when — 条件匹配 (switch-case) ---
+          - type: when
+            source: "<papi:player_world>"                    # << CHANGE THIS 源值
+            cases:
+              - when: "world"
+                functions:
+                  - type: message
+                    message: "<green>您在主世界使用教程之杖"
+              - when:
+                  - "world_nether"
+                  - "world_the_end"
+                functions:
+                  - type: message
+                    message: "<red>在危险维度使用教程之杖！"
+            fallback:
+              - type: message
+                message: "<gray>未知维度"
+
+      # 触发器: 攻击
+      - on: attack
+        functions:
+          - type: remove_cooldown
+            id: "craftengine_tutorial:wand_cooldown"          # << CHANGE THIS 冷却ID
+            all: false                                       # << CHANGE THIS true=清除所有
+
+      # 触发器: 拾取
+      - on: pick_up
+        functions:
+          - type: message
+            message: "<aqua>你捡起了教程之杖！"
+            target: "self"
+
+      # 触发器: 消耗（如果物品可食用）
+      - on: consume
+        functions:
+          - type: play_sound
+            sound: "minecraft:entity.generic.eat"
+            target: "self"
+          - type: remove_potion_effect
+            all: true
+
+  # ----- 仅演示家具交互的物品: "家具放置器" -----
+  craftengine_tutorial:furniture_wand:
+    material: stick
+    data:
+      item_name: "<light_purple>家具魔杖"
+      lore:
+        - "<gray>右键生成/旋转/替换/移除家具"
+    behavior:
+      type: furniture_item
+      furniture:
+        events:
+          # 触发器: 右键点击家具
+          - on: right_click
+            functions:
+              # --- 30. spawn_furniture — 生成家具 ---
+              - type: spawn_furniture
+                furniture_id: "default:bench"                # << CHANGE THIS 家具ID
+                x: "<arg:position.x> + 2"
+                y: "<arg:position.y>"
+                z: "<arg:position.z>"
+                pitch: 0.0
+                yaw: 0.0
+                variant: ground                              # << CHANGE THIS 变体
+                play_sound: true
+
+              # --- 31. remove_furniture — 移除家具 ---
+              - type: remove_furniture
+                drop_loot: true                              # << CHANGE THIS 是否掉落战利品
+                play_sound: true                             # << CHANGE THIS 是否播放音效
+
+              # --- 32. replace_furniture — 替换家具 ---
+              - type: replace_furniture
+                furniture_id: "default:table"                # << CHANGE THIS 新家具ID
+                x: "<arg:furniture.x>"
+                y: "<arg:furniture.y>"
+                z: "<arg:furniture.z>"
+                pitch: "<arg:furniture.pitch>"
+                yaw: "<arg:furniture.yaw>"
+                variant: ground
+                drop_loot: false
+                play_sound: false
+
+              # --- 33. rotate_furniture — 旋转家具 ---
+              - type: rotate_furniture
+                degree: 90                                   # << CHANGE THIS 旋转角度
+                on_success:
+                  - type: play_sound
+                    sound: "minecraft:block.wooden_trapdoor.open"
+                    target: "self"
+                on_failure:
+                  - type: message
+                    message: "<red>无法旋转！有碰撞阻挡"
+                    target: "self"
+
+              # --- 34. cast_mythic_skill — 释放MythicMobs技能 ---
+              - type: cast_mythic_skill
+                skill: "tutorial_explosion"                  # << CHANGE THIS 技能ID
+                power: 1.5                                   # << CHANGE THIS 技能威力
+
+              # --- 35. spawn_mythic_mob — 生成MythicMobs生物 ---
+              - type: spawn_mythic_mob
+                mob: "SkeletalKnight"                        # << CHANGE THIS 生物ID
+                level: 3.0                                   # << CHANGE THIS 等级
+                world: "world"                               # << CHANGE THIS 世界名
+                x: "<arg:position.x> + 5"
+                y: "<arg:position.y>"
+                z: "<arg:position.z> + 5"
+                pitch: 0.0
+                yaw: 0.0
+
+              # --- 36. remove_entity — 移除实体 ---
+              - type: remove_entity
+
+              # --- 37. merchant_trade — 打开自定义村民交易 ---
+              - type: merchant_trade
+                title: "教程商人"                              # << CHANGE THIS 窗口标题
+                offers:
+                  - cost_1:
+                      item: "minecraft:emerald"
+                      components:
+                        minecraft:enchantments:
+                          minecraft:vanishing_curse: 1
+                    cost_2:
+                      item: "minecraft:diamond"
+                      count: 2
+                    result:
+                      item: "craftengine_tutorial:tutorial_wand"
+                      count: 1
+                    experience: 5
+                  - cost_1:
+                      item: "minecraft:iron_ingot"
+                    result:
+                      item: "minecraft:gold_ingot"
+                      count: 3
+
+              # --- 38. update_interaction_tick — 更新交互游戏刻 ---
+              - type: update_interaction_tick
+
+      # 物品自身的事件（非家具交互）
+      events:
+        - on: right_click
+          functions:
+            - type: open_window
+              gui_type: anvil                                 # << CHANGE THIS 窗口类型
+              title: "超级铁砧"                                # << CHANGE THIS 窗口标题
+              target: "self"
+
+# ============================================================
+# 方块定义 — 演示方块相关事件与函数
+# ============================================================
+blocks:
+  craftengine_tutorial:tutorial_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/tutorial_block"
+    events:
+      # 触发器: 放置方块
+      - on: place
+        functions:
+          - type: message
+            message: "<green>方块已放置于 <arg:position.x>, <arg:position.y>, <arg:position.z>"
+            target: "all"
+
+          # --- 39. break_block — 破坏方块（破坏上方的方块） ---
+          - type: break_block
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y> + 1"
+            z: "<arg:block.block_z>"
+
+          # --- 40. place_block — 放置方块（在破坏处放置装饰方块） ---
+          - type: place_block
+            block_state: "default:chinese_lantern"            # << CHANGE THIS 方块ID
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y> + 1"
+            z: "<arg:block.block_z>"
+
+          # --- 41. transform_block — 转换方块（原方块变为新方块，保留属性） ---
+          - type: transform_block
+            block: "minecraft:gold_block"                    # << CHANGE THIS 目标方块ID
+            properties:                                      # << CHANGE THIS 方块属性
+              axis: y
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y>"
+            z: "<arg:block.block_z>"
+
+          # --- 42. update_block_property — 更新方块属性 ---
+          - type: update_block_property
+            properties:
+              axis: x                                        # << CHANGE THIS 属性键值对
+              age: 7
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y>"
+            z: "<arg:block.block_z>"
+
+          # --- 43. cycle_block_property — 循环方块属性 ---
+          - type: cycle_block_property
+            property: facing                                 # << CHANGE THIS 属性名
+            inverse: "<arg:player.is_sneaking>"              # << CHANGE THIS 反向条件
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y>"
+            z: "<arg:block.block_z>"
+            rules:                                           # << CHANGE THIS 自定义循环规则
+              north: east
+              east: south
+              south: west
+              west: north
+
+          # --- 44. drop_loot — 掉落战利品 ---
+          - type: drop_loot
+            x: "<arg:block.block_x> + 0.5"
+            y: "<arg:block.block_y> + 0.5"
+            z: "<arg:block.block_z> + 0.5"
+            to_inventory: false                              # << CHANGE THIS 是否直接进入背包
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      item: "minecraft:diamond"
+                      weight: 1
+
+          # --- 45. teleport — 传送（示例: 传送到出生点） ---
+          - type: teleport
+            x: 0.0                                           # << CHANGE THIS X坐标
+            y: 64.0                                          # << CHANGE THIS Y坐标
+            z: 0.0                                           # << CHANGE THIS Z坐标
+            pitch: 0.0
+            yaw: 0.0
+            world: "world"                                   # << CHANGE THIS 世界名
+
+      # 触发器: 右键点击方块
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: hand                               # 主手交互条件
+                    hand: main_hand
+                functions:
+                  - type: cycle_block_property
+                    property: axis
+                    x: "<arg:block.block_x>"
+                    y: "<arg:block.block_y>"
+                    z: "<arg:block.block_z>"
+              - functions:
+                  - type: update_block_property
+                    properties:
+                      age: 0
+                    x: "<arg:block.block_x>"
+                    y: "<arg:block.block_y>"
+                    z: "<arg:block.block_z>"
+
+          - type: particle
+            particle: "minecraft:happy_villager"
+            x: "<arg:block.block_x> + 0.5"
+            y: "<arg:block.block_y> + 1.0"
+            z: "<arg:block.block_z> + 0.5"
+            count: 10
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
+            speed: 0.2
+
+          - type: play_sound
+            sound: "minecraft:block.note_block.pling"
+            target: "all"
+            pitch: 2.0
+            volume: 0.5
+            source: block
+
+          - type: set_variable
+            name: "block_clicked"
+            number: 1
+            as_int: true
+
+          - type: when
+            source: "<arg:var_block_clicked>"
+            cases:
+              - when: "1"
+                functions:
+                  - type: actionbar
+                    actionbar: "<green>方块被点击了！"
+              - when:
+                  - "2"
+                  - "3"
+                functions:
+                  - type: actionbar
+                    actionbar: "<gold>方块又被点击了！"
+
+      # 触发器: 破坏方块
+      - on: break
+        functions:
+          - type: cancel_event                                # 取消原版破坏事件
+          - type: play_sound
+            sound: "minecraft:block.stone.break"
+            target: "all"
+            pitch: 1.0
+            volume: 1.0
+            source: block
+          - type: particle
+            particle: "minecraft:block"
+            block_state: "craftengine_tutorial:tutorial_block"
+            x: "<arg:block.block_x> + 0.5"
+            y: "<arg:block.block_y> + 0.5"
+            z: "<arg:block.block_z> + 0.5"
+            count: 30
+            offset_x: 0.5
+            offset_y: 0.5
+            offset_z: 0.5
+            speed: 0.5
+          - type: drop_loot
+            x: "<arg:block.block_x> + 0.5"
+            y: "<arg:block.block_y> + 0.5"
+            z: "<arg:block.block_z> + 0.5"
+            to_inventory: false
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      name: "craftengine_tutorial:tutorial_block"
+                      weight: 1
+          - type: run
+            functions:
+              - type: command
+                command: "say <arg:player.name> 破坏了教程方块！"
+                target: "all"
+                as_player: false
+              - type: set_exp
+                count: 5
+                add: true
+                target: "self"
+
+      # 触发器: 踩踏方块
+      - on: step
+        functions:
+          - type: damage
+            amount: 1.0
+            damage_type: hot_floor
+            target: "self"
+          - type: potion_effect
+            potion_effect: "minecraft:poison"
+            duration: 60
+            amplifier: 0
+            ambient: true
+            particles: false
+          - type: actionbar
+            actionbar: "<red>⚠ 教程方块烫脚！"
+            target: "self"
+
+      # 触发器: 左键点击方块
+      - on: left_click
+        functions:
+          - type: play_totem_animation
+            item: "minecraft:redstone"
+            sound: "minecraft:block.redstone_torch.burnout"
+            pitch: 0.5
+            volume: 0.8
+            silent: false
+            target: "self"
+
+          - type: damage_item
+            amount: 1
+            slot: mainhand
+
+          - type: set_cooldown
+            time: "10s"
+            id: "craftengine_tutorial:block_left_click"
+            add: false
+
+          - type: toast
+            toast: "左键触发了红石脉冲！"
+            advancement_type: task
+            icon: "minecraft:redstone"
+
+# ============================================================
+# 家具定义 — 演示家具特有函数
+# ============================================================
+furniture:
+  craftengine_tutorial:tutorial_furniture:
+    settings:
+      item: craftengine_tutorial:tutorial_furniture_item
+    variants:
+      ground:
+        elements:
+          - item: craftengine_tutorial:tutorial_furniture_item
+    events:
+      # 触发器: 放置家具
+      - on: place
+        functions:
+          - type: message
+            message: "<light_purple>✿ 教程家具已放置！"
+            target: "all"
+          - type: play_sound
+            sound: "minecraft:block.wood.place"
+            target: "all"
+            source: block
+          - type: particle
+            particle: "minecraft:composter"
+            x: "<arg:position.x> + 0.5"
+            y: "<arg:position.y> + 0.5"
+            z: "<arg:position.z> + 0.5"
+            count: 8
+
+      # 触发器: 右键点击家具
+      - on: right_click
+        functions:
+          - type: run
+            functions:
+              - type: rotate_furniture
+                degree: 45
+                on_success:
+                  - type: actionbar
+                    actionbar: "<green>家具旋转成功"
+                    target: "self"
+                on_failure:
+                  - type: actionbar
+                    actionbar: "<red>家具旋转失败"
+                    target: "self"
+              - type: play_sound
+                sound: "minecraft:block.wooden_trapdoor.open"
+                target: "all"
+
+          - type: open_window
+            gui_type: crafting                              # << CHANGE THIS 窗口类型
+            title: "家具工作台"                                # << CHANGE THIS 窗口标题
+            target: "self"
+
+          - type: merchant_trade
+            title: "家具商人"
+            offers:
+              - cost_1:
+                  item: "minecraft:oak_planks"
+                  count: 4
+                result:
+                  item: "default:bench"
+                  count: 1
+              - cost_1:
+                  item: "minecraft:stick"
+                  count: 2
+                result:
+                  item: "default:table"
+                  count: 1
+
+      # 触发器: 破坏家具
+      - on: break
+        functions:
+          - type: cancel_event
+          - type: drop_loot
+            x: "<arg:position.x>"
+            y: "<arg:position.y>"
+            z: "<arg:position.z>"
+            to_inventory: false
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      name: "craftengine_tutorial:tutorial_furniture"
+                      weight: 1
+          - type: particle
+            particle: "minecraft:item"
+            item: "minecraft:oak_planks"
+            x: "<arg:position.x> + 0.5"
+            y: "<arg:position.y> + 0.5"
+            z: "<arg:position.z> + 0.5"
+            count: 15
+            offset_x: 0.4
+            offset_y: 0.4
+            offset_z: 0.4
+            speed: 0.3
+          - type: play_sound
+            sound: "minecraft:block.wood.break"
+            target: "all"
+            volume: 1.0
+            pitch: 0.8
+            source: block

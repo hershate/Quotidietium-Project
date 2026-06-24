@@ -1,0 +1,110 @@
+# 朝向与液体交互方块
+# 参考 wiki 文档（当前仓库）：
+#   behaviors/directional_attached_block.md                — 定向附着方块
+#   behaviors/face_attached_horizontal_directional_block.md — 水平面定向附着方块
+#   behaviors/hangable_block.md                            — 可悬挂方块
+#   behaviors/hanging_block.md                             — 悬挂方块
+#   behaviors/liquid_flowable_block.md                     — 流体推动方块
+#   behaviors/near_liquid_block.md                         — 邻液方块
+#   behaviors/on_liquid_block.md                           — 液面方块
+# 命名空间：aquifer（自定义示例）
+
+blocks:
+  # ============================================================
+  # 1. 定向附着方块 (directional_attached_block)
+  # 附着在另一方块侧面，类似墙上火把。
+  # 自带属性：facing（horizontal_direction，必需）
+  # 附着方块变动时自动破坏。
+  # ============================================================
+  aquifer:wall_torch:
+    behavior:
+      type: directional_attached_block
+      blacklist: true                          # << CHANGE THIS：true = 黑名单，false = 白名单（默认 true）
+      attached_blocks:                         # << CHANGE THIS：要检查的方块列表（可选）
+        - minecraft:air
+        - minecraft:water
+      attached_block_tags:                     # << CHANGE THIS：要检查的方块标签列表（可选）
+        - minecraft:leaves
+        - minecraft:replaceable_plants
+
+  # ============================================================
+  # 2. 水平面定向附着方块 (face_attached_horizontal_directional_block)
+  # 附着在另一方块面（侧面或上下面），类似按钮或拉杆。
+  # 自带属性：face（anchor_type，必需）、facing（horizontal_direction，必需）
+  # ============================================================
+  aquifer:stone_switch:
+    behavior:
+      type: face_attached_horizontal_directional_block
+      blacklist: false                         # << CHANGE THIS：true = 黑名单，false = 白名单（默认 true）
+      attached_blocks:                         # << CHANGE THIS：要检查的方块列表（可选）
+        - minecraft:stone
+        - minecraft:polished_blackstone
+      attached_block_tags:                     # << CHANGE THIS：要检查的方块标签列表（可选）
+        - minecraft:stone_bricks
+
+  # ============================================================
+  # 3. 可悬挂方块 (hangable_block)
+  # 可放置于地面或悬挂在方块下方，自动选择有效方式。
+  # 自带属性：hanging（boolean，必需）、waterlogged（boolean，可选）
+  # 类似原版灯笼。
+  # ============================================================
+  aquifer:moss_lantern:
+    behavior:
+      type: hangable_block
+
+  # ============================================================
+  # 4. 悬挂方块 (hanging_block)
+  # 附着在另一方块下方，类似钟乳石。支持向下堆叠。
+  # 上方支撑被移除时自动破坏。
+  # ============================================================
+  aquifer:calcite_shard:
+    behavior:
+      type: hanging_block
+      blacklist: true                          # << CHANGE THIS：true = 黑名单，false = 白名单（默认 true）
+      stackable: true                          # << CHANGE THIS：是否允许同类型向下悬挂（默认 false）
+      max_height: 5                            # << CHANGE THIS：最大悬挂长度，stackable 为 true 时生效（需 >1）
+      delay: 1                                 # << CHANGE THIS：检查延迟（刻），0 = 立即破坏（默认 0）
+      above_blocks:                            # << CHANGE THIS：要检查的上方方块列表（可选）
+        - minecraft:dripstone_block
+        - minecraft:stone
+      above_block_tags:                        # << CHANGE THIS：要检查的上方方块标签列表（可选）
+        - minecraft:base_stone_overworld
+
+  # ============================================================
+  # 5. 流体推动方块 (liquid_flowable_block)
+  # 可被水或熔岩替换，类似矮草丛或火把。
+  # 水流入时 drop_item=true 则掉落物品；熔岩直接摧毁。
+  # ============================================================
+  aquifer:coastal_grass:
+    behavior:
+      type: liquid_flowable_block
+      drop_item: true                          # << CHANGE THIS：被水替换时是否掉落物品（默认 true）
+
+  # ============================================================
+  # 6. 邻液方块 (near_liquid_block)
+  # 必须在靠近水或熔岩（含流动液体）的位置才能存活。
+  # 通过 positions 检查特定相对位置是否有目标液体。
+  # 冰视为水源。
+  # ============================================================
+  aquifer:lava_blossom:
+    behavior:
+      type: near_liquid_block
+      liquid_type: lava                        # << CHANGE THIS："water"、"lava" 或 ["water", "lava"]（默认 ["water"]）
+      stackable: true                          # << CHANGE THIS：允许堆叠在同类型方块上（默认 false）
+      positions:                               # << CHANGE THIS：检查液体的相对位置（必需）
+        - -1,-1,0
+        - 1,-1,0
+        - 0,-1,-1
+        - 0,-1,1
+
+  # ============================================================
+  # 7. 液面方块 (on_liquid_block)
+  # 只能放置在液体源表面上，类似睡莲。流动液体不算。
+  # 冰视为水源。启用 stackable 后可堆叠在同类型方块上。
+  # ============================================================
+  aquifer:lotus_pad:
+    behavior:
+      type: on_liquid_block
+      liquid_type:                             # << CHANGE THIS：可坐落的液体类型（默认 ["water"]）
+        - water
+      stackable: true                          # << CHANGE THIS：是否允许堆叠在同类型方块上（默认 false）

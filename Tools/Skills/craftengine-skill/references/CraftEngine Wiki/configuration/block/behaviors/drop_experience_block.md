@@ -1,0 +1,28 @@
+# 💎 掉落经验方块
+
+**掉落经验方块**在被破坏时掉落经验球。经验点数和掉落条件均可配置——你可以将经验掉落限制为物品带有特定附魔或任意其他条件。
+
+若方块要求正确的工具（参见[需要合适挖掘工具](../settings.md#需要合适挖掘工具)），而玩家用错误的工具破坏它，则不会掉落经验。
+
+## 示例
+
+```yaml
+blocks:
+  default:topaz_ore:
+    behavior:
+      type: drop_exp_block
+      amount: 3~7                        # 掉落的经验点数（默认 0）
+      conditions:
+        type: enchantment                # 条件：仅当未使用精准采集时掉落经验
+        predicate: minecraft:silk_touch<=0
+```
+
+:::info
+
+- `amount` 支持[🔢 数字格式](../../../reference/number_format)
+- `conditions` 为可选项，未定义时始终掉落经验，否则需满足所有条件才会掉落。
+
+:::
+
+
+![](/img/drop_experience_block.png)

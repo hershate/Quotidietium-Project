@@ -1,0 +1,313 @@
+# ============================================================
+# CraftEngine — 画 (Painting) / 分类 (Category) / 全局变量 (Global Variable)
+# 参考: CraftEngine Wiki configuration/painting.md, category.md, global_variable.md
+# 命名空间: example  (所有键均来自上述 wiki 文档)
+# ============================================================
+
+# ============================================================
+# 一、画 (Paintings)
+# ============================================================
+# Minecraft 注册表在注册后不可变，修改后需重新进入服务器。
+# 创建自定义画作变体 (painting_variant)。
+paintings:
+
+  # --- 基础画作 ---
+  example:serenity:
+    width: 2                                        # << CHANGE THIS (范围 1~16, 方块为单位)
+    height: 3                                       # << CHANGE THIS
+    asset_id: example:serenity                      # << CHANGE THIS 纹理路径: assets/example/textures/painting/serenity.png
+    title: "<lang:painting.example.serenity.title>" # << CHANGE THIS (1.21.2+)
+    author: "<lang:painting.example.serenity.author>" # << CHANGE THIS (1.21.2+)
+    show_in_op_tab: false                           # << CHANGE THIS 管理员用品标签页(true) 或 工具与实用物品标签页(false)
+
+  # --- 小尺寸画作 (1x1) ---
+  example:orb:
+    width: 1
+    height: 1
+    asset_id: example:orb
+    title: "<lang:painting.example.orb.title>"
+    author: "<lang:painting.example.orb.author>"
+    show_in_op_tab: true
+
+  # --- 最大尺寸画作 (16x16), 省略可选字段 ---
+  example:epic:
+    width: 16
+    height: 16
+    asset_id: example:epic
+
+  # --- 不同 asset_id 与 ID 分离 ---
+  example:fantasy_portrait:
+    width: 2
+    height: 4
+    asset_id: example:fantasy                    # << CHANGE THIS 与 ID 不同, 引用 assets/example/textures/painting/fantasy.png
+    title: "<lang:painting.example.fantasy_portrait.title>"
+    author: "<lang:painting.example.fantasy_portrait.author>"
+    show_in_op_tab: true
+
+# 在物品中使用画作 (painting_variant)
+items:
+  example:serenity_painting:
+    material: painting
+    data:
+      painting_variant: example:serenity          # << CHANGE THIS 绑定至上方定义的画作
+    category: example:decorations                  # << CHANGE THIS 可选, 参考下方分类配置
+
+  example:orb_painting:
+    material: painting
+    data:
+      painting_variant: example:orb
+    category: example:decorations
+
+  example:epic_painting:
+    material: painting
+    data:
+      painting_variant: example:epic
+    category: example:decorations
+
+  example:fantasy_painting:
+    material: painting
+    data:
+      painting_variant: example:fantasy_portrait
+    category: example:decorations
+
+# ============================================================
+# 二、分类 (Categories)
+# ============================================================
+# 用于物品浏览器的排列顺序和分类规则。出现在 /ce 菜单中。
+categories:
+
+  # --- 根分类 (显示在主菜单) ---
+  example:default:
+    priority: 1                                    # << CHANGE THIS 数值越小优先级越高
+    name: "<!i><white><i18n:category.example.default.name></white>"
+    lore:
+      - "<!i><gray><i18n:category.example.default.lore>"
+    icon: example:quest_book                       # << CHANGE THIS 分类图标物品
+    hidden: false                                  # << CHANGE THIS false=显示在主菜单; true=隐藏(用作子分类)
+    conditions:
+      - type: permission
+        permission: category.example.default       # << CHANGE THIS 玩家需有此权限才显示该分类
+    list:
+      - "#example:weapons"                         # # 前缀引用子分类
+      - "#example:tools"
+      - "#example:armors"
+      - "#example:decorations"
+      - "#example:materials"
+
+  # ========== 子分类 ==========
+
+  # --- 武器分类 (子分类, hidden: true) ---
+  example:weapons:
+    name: "<!i><red><i18n:category.example.weapons></red>"
+    lore:
+      - "<!i><gray><i18n:category.example.weapons.lore>"
+    icon: example:mythril_sword
+    hidden: true                                   # hidden: true 不显示在主菜单, 通过根分类的 # 前缀嵌套
+    priority: 10
+    conditions:
+      - type: permission
+        permission: category.example.weapons
+    list:
+      - "#example:swords"
+      - "#example:bows"
+      - "#example:magic_rods"
+
+  # --- 剑 (三级子分类) ---
+  example:swords:
+    name: "<!i><#FF4444><i18n:category.example.swords></#FF4444>"
+    lore:
+      - "<!i><gray><i18n:category.example.swords.lore>"
+    icon: example:mythril_sword
+    hidden: true
+    priority: 11
+    list:
+      - example:wooden_sword
+      - example:stone_sword
+      - example:iron_sword
+      - example:diamond_sword
+      - example:mythril_sword
+      - example:legendary_blade
+      - "#example:enchanted_swords"               # 四级子分类嵌套
+
+  # --- 附魔剑 (四级子分类) ---
+  example:enchanted_swords:
+    name: "<!i><#AA88FF><i18n:category.example.enchanted_swords></#AA88FF>"
+    icon: example:enchanted_mythril_sword
+    hidden: true
+    priority: 12
+    list:
+      - example:enchanted_mythril_sword
+      - example:flame_brand
+      - example:frost_reaper
+
+  # --- 弓 (三级子分类) ---
+  example:bows:
+    name: "<!i><#55AA55><i18n:category.example.bows></#55AA55>"
+    icon: example:spirit_bow
+    hidden: true
+    priority: 13
+    list:
+      - example:short_bow
+      - example:long_bow
+      - example:spirit_bow
+      - example:eldritch_crossbow
+
+  # --- 法杖 (三级子分类) ---
+  example:magic_rods:
+    name: "<!i><#AA55FF><i18n:category.example.magic_rods></#AA55FF>"
+    icon: example:fire_staff
+    hidden: true
+    priority: 14
+    list:
+      - example:fire_staff
+      - example:ice_staff
+      - example:arcane_staff
+      - example:healing_rod
+
+  # --- 工具分类 ---
+  example:tools:
+    name: "<!i><#FFAA00><i18n:category.example.tools></#FFAA00>"
+    lore:
+      - "<!i><gray><i18n:category.example.tools.lore>"
+    icon: example:mythril_pickaxe
+    hidden: true
+    priority: 20
+    conditions:
+      - type: permission
+        permission: category.example.tools
+    list:
+      - example:mythril_pickaxe
+      - example:mythril_axe
+      - example:mythril_shovel
+      - example:mythril_hoe
+      - example:mythril_fishing_rod
+      - example:mythril_shears
+
+  # --- 护甲分类 ---
+  example:armors:
+    name: "<!i><#55FFFF><i18n:category.example.armors></#55FFFF>"
+    lore:
+      - "<!i><gray><i18n:category.example.armors.lore>"
+    icon: example:mythril_chestplate
+    hidden: true
+    priority: 30
+    conditions:
+      - type: permission
+        permission: category.example.armors
+    list:
+      - example:mythril_helmet
+      - example:mythril_chestplate
+      - example:mythril_leggings
+      - example:mythril_boots
+      - example:dragon_scale_helmet
+      - example:dragon_scale_chestplate
+
+  # --- 装饰分类 (含画作物品) ---
+  example:decorations:
+    name: "<!i><#FFD700><i18n:category.example.decorations></#FFD700>"
+    lore:
+      - "<!i><gray><i18n:category.example.decorations.lore>"
+    icon: example:serenity_painting
+    hidden: true
+    priority: 40
+    conditions:
+      - type: permission
+        permission: category.example.decorations
+    list:
+      - example:serenity_painting                   # 画作物品
+      - example:orb_painting
+      - example:epic_painting
+      - example:fantasy_painting
+      - example:golden_lamp
+      - example:marble_pillar
+      - example:crystal_chandelier
+
+  # --- 材料分类 (使用 all_items 自动包含所有物品) ---
+  example:materials:
+    name: "<!i><#88FF88><i18n:category.example.materials></#88FF88>"
+    lore:
+      - "<!i><gray><i18n:category.example.materials.lore>"
+    icon: example:mythril_ingot
+    hidden: true
+    priority: 50
+    all_items: true                                # << CHANGE THIS 显示所有未被其他分类收录的物品
+    list:
+      - example:mythril_ore
+      - example:deepslate_mythril_ore
+      - example:mythril_ingot
+      - example:mythril_nugget
+      - example:phoenix_feather
+      - example:dragon_scale
+
+# 在物品上直接指定所属分类 (注意: 无法保证显示顺序)
+# 此配置可替代或补充上方 list 中的条目
+# items:
+#   example:legendary_blade:
+#     material: diamond_sword
+#     category: example:swords                      # 单一分类
+#     # category:                                    # 多分类数组
+#       # - example:swords
+#       # - example:legendary_items
+#     ...更多选项
+
+# ============================================================
+# 三、全局变量 (Global Variables)
+# ============================================================
+# 可在任意上下文 (表达式、物品数据、其他插件) 中访问的变量。
+# 使用 <arg:0> <arg:1> ... 作为可选参数，由调用方动态提供。
+# 通过 <global:变量名:参数1:参数2> 语法引用。
+global_variables:
+
+  # --- 基础文本变量 ---
+  example_greeting: "<!i><gold>欢迎来到 <arg:0>!</gold>"        # << CHANGE THIS 占位符由调用方填充
+  example_farewell: "<!i><gray>再会, <arg:0>. 期待你 <arg:1> 再次归来</gray>"
+
+  # --- 带颜色的物品名模板 ---
+  example_rarity_common: "<!i><white><arg:0></white>"
+  example_rarity_uncommon: "<!i><green><arg:0></green>"
+  example_rarity_rare: "<!i><#55FFFF><arg:0></#FFFF>"
+  example_rarity_epic: "<!i><#AA55FF><arg:0></#AA55FF>"
+  example_rarity_legendary: "<!i><#FFAA00><arg:0></#FFAA00>"
+
+  # --- 多参数组合变量 ---
+  example_item_tier: "<!i><#FF8C00>[<arg:0>] <arg:1>"           # << CHANGE THIS 如: 传说 炎之剑
+  example_currency_display: "<!shadow><image:example:coin_icon><gray> <arg:0> 金币"
+
+  # --- 无阴影图标 (可跨插件调用) ---
+  # 数据包级文本替换, 不干预其他插件功能逻辑
+  example_coin_icon_clean: "<!shadow><image:example:coin_icon>"
+
+# --- 在物品配置中使用全局变量 ---
+# 通过 <global:变量名:'参数1':'参数2'> 引用
+items:
+  # 使用 example_item_tier 变量组合显示名称
+  example:mythril_sword:
+    material: diamond_sword
+    client_bound_data:
+      item_name: "<global:example_item_tier:'<i18n:item.example.tier_mythril>':'<i18n:item.example.mythril_sword>'>"
+    category: example:swords
+
+  example:legendary_blade:
+    material: netherite_sword
+    client_bound_data:
+      item_name: "<global:example_rarity_legendary:'<i18n:item.example.legendary_blade>'>"
+
+  example:fire_staff:
+    material: blaze_rod
+    client_bound_data:
+      item_name: "<global:example_item_tier:'<i18n:item.example.tier_magic>':'<i18n:item.example.fire_staff>'>"
+    category: example:magic_rods
+
+  example:golden_lamp:
+    material: sea_lantern
+    client_bound_data:
+      item_name: "<global:example_rarity_rare:'<i18n:item.example.golden_lamp>'>"
+    category: example:decorations
+
+# --- 跨插件使用示例 (仅参考, 不在本配置中生效) ---
+# 其他插件的配置文件中:
+# holograms:
+#   coin_display:
+#     lines:
+#       - "<global:example_coin_icon_clean> 我的余额: %vault_eco_balance%"
+#       - "<global:example_currency_display:'<arg:player.name>'>: %vault_eco_balance%"
