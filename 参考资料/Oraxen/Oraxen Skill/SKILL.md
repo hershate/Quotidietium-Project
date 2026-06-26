@@ -1,6 +1,6 @@
 ---
 name: oraxen-skill
-version: 1.0.0
+version: 1.1.0
 description: >-
   Generate Oraxen plugin YAML configuration templates based strictly on the
   Oraxen Wiki (Oraxen Docs Origin) and Oraxen Template content. Analyzes user needs,
@@ -20,7 +20,7 @@ description: >-
   "oraxen mechanic", "oraxen farming", "oraxen combat".
 context: fork
 agent: general-purpose
-allowed-tools: Read Write Glob Grep Bash
+allowed-tools: Read Write Glob Grep Bash WebFetch
 ---
 
 # Oraxen Configuration Skill
@@ -188,6 +188,22 @@ allowed-tools: Read Write Glob Grep Bash
 - Wiki 和 Template 中引用的纹理路径（如 `default/amethyst.png`）仅为项目示例，生成时需提醒用户替换
 - 注意版本差异标注：Components 部分功能仅 1.20.5+ / 1.21.2+ 可用
 - Wiki 中文档适用于较新版本（1.20.5+），旧版本（1.20.5 以下）应使用 Mechanics 方式替代 Components
+
+#### 2e. 参考来源优先级规则
+
+生成配置时，严格按照以下优先级使用参考来源：
+
+1. **本地 Oraxen Docs Origin（Wiki）**（`参考资料/Oraxen/Oraxen Docs Origin/`）— 最优先，默认使用
+2. **本地 Oraxen Template（预制配置）**（`Oraxen/items/`）— 辅助参考
+3. **官方在线文档**（[https://docs.oraxen.com/](https://docs.oraxen.com/)）— **仅在用户明确要求时才使用**
+
+##### 在线文档使用规则
+
+- **在用户明确说明要使用官方在线文档之前，绝对不要使用在线文档。** 始终优先使用本地文档。
+- 如果遇到本地 Wiki 和 Template 中均未记载的功能或字段，且你觉得有必要查阅在线文档，**必须先向用户确认**是否搜索在线文档。
+- 向用户确认时，必须说明：**在线文档可能因网络原因无法访问**。
+- 如果用户同意使用在线文档，使用 `WebFetch` 工具获取在线文档内容。
+- 如果在线文档无法访问（网络超时、404 等），**必须告知用户无法访问**，并询问用户是否仍要继续生成（此时告知用户缺少参考依据，配置可能有风险），或中止当前操作。
 
 ---
 
@@ -1219,6 +1235,9 @@ Mechanics:
 - **Always** 标注版本要求（如"需要 1.20.5+"、"需要 1.21.2+")
 - **Always** 如果用户没有明确说明输出方式（对话中返回 / 输出到文件），必须向用户询问后再输出
 - **Always** 优先使用本地 Oraxen Docs Origin（Wiki）和 Oraxen Template
+- **Always** 在用户未明确要求使用在线文档之前，**绝不**使用在线文档（`https://docs.oraxen.com/`）
+- **Always** 如果需要查阅在线文档，必须先向用户确认，并说明在线文档可能因网络原因无法访问
+- **Always** 尝试在线文档后若无法访问（超时、404 等），必须告知用户并询问是否继续或中止
 - **Always** 对于 Minecraft 版本相关的差异，必须在生成前确认用户的服务器版本
 - **Never** 使用推测或假设的功能 — 只使用 Wiki 中明确记载的
 - **Never** 同时生成多个配置 — 用户需要多个配置时，分别调用
@@ -1417,6 +1436,14 @@ Mechanics:
 > ❌ 假设纹理文件 `default/amethyst_ore.png` 已经存在于项目中
 > ✅ 提醒用户需要自行准备纹理文件到 `Oraxen/pack/textures/` 目录
 
+**错误做法 — 擅自使用在线文档：**
+> ❌ 遇到本地 Wiki 没有的字段时，不询问用户就直接访问 `https://docs.oraxen.com/` 搜索
+> ✅ 应先询问用户："本地文档未记载此功能，是否尝试访问 Oraxen 官方在线文档（https://docs.oraxen.com/）？注意在线文档可能因网络原因无法访问。"
+
+**正确做法 — 在线文档无法访问时的处理：**
+> ❌ 尝试访问在线文档失败后，默不作声地继续"编造"配置
+> ✅ 告知用户："在线文档无法访问，缺少参考依据，此配置可能有风险。是否仍要继续生成，或中止当前操作？"
+
 ## Notes
 
 - **Oraxen Docs Origin（Wiki）路径**：所有 Wiki 文件位于项目 `参考资料/Oraxen/Oraxen Docs Origin/` 目录
@@ -1432,5 +1459,6 @@ Mechanics:
 - **Pack 配置两种方式**：
   1. `generate_model: true` + `parent_model` + `textures` — 自动生成模型（推荐）
   2. `generate_model: false` + `model` — 使用自定义 JSON 模型
-- **Discord 官方资源**：如有疑问可参考 [Oraxen Discord](https://discord.gg/oraxen) 或 [Oraxen 官方文档](https://docs.oraxen.com/)
+- **Oraxen 官方在线文档**：[https://docs.oraxen.com/](https://docs.oraxen.com/) — **仅在用户明确要求时才能使用**。不可擅自访问。由于网络环境差异，在线文档可能无法访问。尝试后如不可用应向用户报告。
+- **Discord 官方社区**：如有疑问可参考 [Oraxen Discord](https://discord.gg/oraxen)
 - **Oraxen 全局配置**：`Oraxen/settings.yml` 控制资源包生成方式（item_properties、model_data_ids 等），单个物品通常不需要修改这些配置。

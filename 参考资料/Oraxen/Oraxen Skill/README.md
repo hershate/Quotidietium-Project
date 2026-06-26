@@ -117,3 +117,4 @@ Skill 会自动根据用户提供的 Minecraft 版本选择正确的配置格式
 - **custom_variation 冲突**：NoteBlock/StringBlock 的 `custom_variation` 值必须在整个项目中唯一
 - **版本问题**：生成配置前确保告知 Skill 你的 Minecraft 服务器版本，以使用正确的配置格式
 - **Oraxen Docs Origin（Wiki）和 Oraxen Template（预制配置）** 必须存在于项目中，Skill 才能正常工作
+- **在线文档使用规则**：官方在线文档（<https://docs.oraxen.com/>）**仅在用户明确要求时才能使用**。不可擅自访问。由于网络环境差异，在线文档可能无法访问，尝试后如不可用会向用户报告。
