@@ -158,19 +158,44 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 
 所有 Template 参考文件位于项目目录的 `references/Oraxen Template/` 下。
 
-| 配置类型 | 参考 Template 文件 |
-|---------|-------------------|
-| 基础物品/材料 | `items.yml`（amethyst、ruby、onyx、orax 示例） |
-| 武器 | `weapons.yml`（glass_sword、storm_sword、blood_sword 等） |
-| 工具 | `tools.yml`（obsidian_pickaxe、emerald_hammer、iron_serpe、repair cog 系列） |
-| 方块/矿石 | `blocks.yml`（amethyst_ore、ruby_ore、caveblock 等） |
-| 家具 | `furniture.yml`（table、chair、cart、turntable、shelf 等） |
-| 盔甲 | `armors.yml`（emerald/obsidian/ruby 全套装） |
-| 食物 | `cooking_expansion.yml`（100+ 食物示例，含 Components 完整配置） |
-| 唱片 | `items.yml`（welcome_disk 示例） |
-| 背包 | `items.yml`（leather_backpack 示例） |
-| 作物 | `items/customcrops/crops/` 下各作物文件 |
-| 其他 | `hats.yml`、`skins.yml`、`mystical.yml`、`plants.yml` 等 |
+| 配置类型 | General 参考文件 | Example 示例文件 |
+|---------|-----------------|-----------------|
+| 基础物品/材料 | `General/基础物品.md` | `Example/物品/1. 基础材料与宝石.md` |
+| 武器 | `General/武器.md` | `Example/物品/2. 武器.md` |
+| 工具 | `General/工具.md` | `Example/物品/3. 工具.md` |
+| 食物 | `General/食物.md` | `Example/物品/4. 食物.md` |
+| 消耗品/药水 | — | `Example/物品/5. 消耗品与药水.md` |
+| 音乐唱片 | — | `Example/物品/6. 音乐唱片.md` |
+| 背包 | `General/杂项机制参考.md`（Backpack 节） | `Example/物品/7. 背包.md` |
+| 皮肤系统 | — | `Example/物品/8. 皮肤系统.md` |
+| 帽子 | — | `Example/物品/9. 帽子与头部装备.md` |
+| 方块（音符盒） | `General/音符盒方块.md` | `Example/方块/音符盒矿石.md` |
+| 方块（绊线） | `General/绊线方块.md` | `Example/方块/绊线花朵与植物.md` |
+| 方块（紫颂/透明） | `General/紫颂方块.md` | `Example/方块/紫颂透明方块.md` |
+| 方块（形状/楼梯） | `General/形状方块.md` | `Example/方块/形状方块.md` |
+| 方块（农场） | `General/农场方块.md` | `Example/方块/农场方块与种植盆.md` |
+| 家具 | `General/基础家具.md` | `Example/家具/基础家具.md` |
+| 家具（座椅） | `General/展示实体.md` | `Example/家具/座椅与大型家具.md` |
+| 家具（进化/作物） | `General/家具进化.md` | `Example/家具/进化植物.md` |
+| 家具（唱片机） | `General/家具唱片机.md` | `Example/家具/唱片机.md` |
+| 盔甲（1.21.2+） | `General/盔甲_组件_1.21.2+.md` | `Example/盔甲/完整盔甲套装_绿宝石.md` |
+| 盔甲（纹饰） | `General/盔甲_纹饰_1.20-1.21.1.md` | — |
+| 盔甲（着色器） | `General/盔甲_着色器_1.18-1.19.4.md` | — |
+| 盔甲（鞘翅） | — | `Example/盔甲/自定义鞘翅.md` |
+| 可染色物品 | `General/可染色物品.md` | — |
+| 配方 | `General/配方.md` | `Example/其他配置/配方.md` |
+| 战斗 Mechanics | `General/战斗机制参考.md` | `Example/其他配置/战斗机制完整参考.md` |
+| 农耕 Mechanics | `General/农耕机制参考.md` | `Example/其他配置/农耕机制完整参考.md` |
+| 杂项 Mechanics | `General/杂项机制参考.md` | `Example/其他配置/杂项机制完整参考.md` |
+| 自定义能力/点击 | `General/自定义能力与点击动作.md` | `Example/其他配置/自定义能力_点击动作.md` |
+| 综合配置 | `General/综合机制配置参考.md` | `Example/其他配置/综合配置示例.md` |
+| 自定义音效 | `General/自定义音效.md` | `Example/其他配置/自定义音效.md` |
+| UI/字形 | `General/字形.md` | `Example/UI与字形/界面字形.md`、`表情字形.md` |
+| GUI | `General/自定义GUI.md` | `Example/UI与字形/GUI物品.md` |
+| HUD | `General/自定义HUD.md` | `Example/UI与字形/自定义HUD.md` |
+| 文字特效 | `General/文字特效.md` | `Example/UI与字形/文字特效.md` |
+| ModelEngine 家具 | `General/ModelEngine家具.md` | — |
+| 农场方块 | `General/农场方块.md` | — |
 
 **特殊参考：**
 - 食物模板速查 → `references/Oraxen_food_template.md`
@@ -297,7 +322,7 @@ Oraxen 配置的基本结构：
 # =============================================================================
 
 <item_id>:
-  itemname: "<颜色格式>显示名称"     # 物品显示名称，支持 MiniMessage
+  displayname: "<颜色格式>显示名称"     # 物品显示名称，支持 MiniMessage
   material: <MATERIAL>               # Minecraft 基础材质
   # ========== 可选基本字段 ==========
   # lore:                             # 物品描述（多行）
@@ -339,7 +364,7 @@ Oraxen 配置的基本结构：
 
 ```yaml
 <item_id>:
-  itemname: "<颜色>显示名称"
+  displayname: "<颜色>显示名称"
   material: PAPER                     # 基础材质，推荐 PAPER 用于自定义物品
   Pack:
     generate_model: true
@@ -351,7 +376,7 @@ Oraxen 配置的基本结构：
 **参考来源：**
 - Wiki: `Items/Getting Started.md` — 基本结构和 Pack 配置
 - Wiki: `Items/Appearance & Models.md` — 纹理和模型详解
-- Template: `references/Oraxen Template/items.yml` — amethyst、ruby 等示例
+- Template: `references/Oraxen Template/General/基础物品.md` — amethyst、ruby 等示例
 
 ##### 武器 (Weapon)
 
@@ -359,7 +384,7 @@ Oraxen 配置的基本结构：
 
 ```yaml
 <item_id>:
-  itemname: "<颜色>武器名称"
+  displayname: "<颜色>武器名称"
   material: DIAMOND_SWORD             # 按武器类型选择基础材质
   lore:
     - "<颜色>描述文本"
@@ -442,8 +467,8 @@ Pack:
 - Wiki: `Items/Components.md` — durability、AttributeModifiers
 - Wiki: `Items/Appearance & Models.md` — 特殊武器模型
 - Wiki: `Items/Item Abilities/Combat.md` — 战斗 Mechanics
-- Template: `references/Oraxen Template/weapons.yml` — glass_sword、storm_sword 等
-- Template: `references/Oraxen Template/tools.yml` — 锤子系列
+- Template: `references/Oraxen Template/General/武器.md` — glass_sword、storm_sword 等
+- Template: `references/Oraxen Template/General/工具.md` — 锤子系列
 
 ##### 工具 (Tool)
 
@@ -451,7 +476,7 @@ Pack:
 
 ```yaml
 <item_id>:
-  itemname: "<颜色>工具名称"
+  displayname: "<颜色>工具名称"
   material: DIAMOND_PICKAXE           # 按工具类型选择
   lore:
     - "<颜色>描述"
@@ -486,7 +511,7 @@ Pack:
 **参考来源：**
 - Wiki: `Items/Components.md` — Tool Component
 - Wiki: `Items/Item Abilities/Farming.md` — bigmining、smelting、harvesting
-- Template: `references/Oraxen Template/tools.yml` — emerald_hammer、iron_serpe 等
+- Template: `references/Oraxen Template/General/工具.md` — emerald_hammer、iron_serpe 等
 
 ##### 食物 (Food) — 1.21.2+ 版本
 
@@ -494,7 +519,7 @@ Pack:
 
 ```yaml
 <item_id>:
-  itemname: "<颜色>食物名称"
+  displayname: "<颜色>食物名称"
   material: PAPER                     # 推荐 PAPER 或 BREAD 等
   Pack:
     generate_model: true
@@ -570,8 +595,8 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Components.md` — Food & Consumable Components（1.21.2+/1.20.5-1.21）
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Custom Food（旧版）
-- Template: `references/Oraxen Template/cooking_expansion.yml` — 100+ 食物完整示例
-- Template: `references/Oraxen Template/items.yml` — miner_sandwitch 示例
+- Template: `references/Oraxen Template/General/食物.md` — 100+ 食物完整示例
+- Template: `references/Oraxen Template/General/食物.md` — 食物完整示例
 - 速查: `references/Oraxen_food_template.md`
 
 ##### 方块 (Block) — NoteBlock 机制
@@ -580,7 +605,7 @@ Mechanics:
 
 ```yaml
 <block_id>:
-  itemname: "<颜色>方块名称"
+  displayname: "<颜色>方块名称"
   material: PAPER                     # 或其他基础材质
   Pack:
     generate_model: true/false
@@ -652,7 +677,7 @@ Mechanics:
 - Wiki: `Blocks/NoteBlock.md` — NoteBlock 完整配置
 - Wiki: `Blocks/StringBlock.md` — StringBlock 配置
 - Wiki: `Blocks/FarmBlock.md` — FarmBlock 配置
-- Template: `references/Oraxen Template/blocks.yml` — amethyst_ore、caveblock 等
+- Template: `references/Oraxen Template/Example/方块/音符盒矿石.md` — amethyst_ore、caveblock 等
 
 ##### 家具 (Furniture)
 
@@ -660,7 +685,7 @@ Mechanics:
 
 ```yaml
 <furniture_id>:
-  itemname: "<颜色>家具名称"
+  displayname: "<颜色>家具名称"
   material: PAPER
   Mechanics:
     furniture:
@@ -741,7 +766,7 @@ furniture:
 ```yaml
 # 推荐方式：Inline Stages（单物品多阶段）
 <plant_id>:
-  itemname: "<颜色>植物名称"
+  displayname: "<颜色>植物名称"
   material: PAPER
   Pack:
     generate_model: true
@@ -798,7 +823,7 @@ furniture:
 - Wiki: `Furniture/Display Entities.md` — DISPLAY_ENTITY 特性
 - Wiki: `Furniture/Position & Rotation.md` — 位置和旋转设置
 - Wiki: `Items/Item Abilities/Click Actions.md` — 点击动作
-- Template: `references/Oraxen Template/furniture.yml` — table、chair、cart、turntable、shelf
+- Template: `references/Oraxen Template/General/基础家具.md` — table、chair、cart、turntable、shelf
 - Template: `references/Oraxen Template/customcrops/crops/` — 作物示例
 
 ##### 盔甲 (Armor) — Components 方法（1.21.2+）
@@ -807,7 +832,7 @@ furniture:
 
 ```yaml
 <armor_id>:
-  itemname: "<颜色>盔甲名称"
+  displayname: "<颜色>盔甲名称"
   material: PAPER                     # 推荐 PAPER（Components 方法任何材质都可以）
   lore:
     - "<颜色>描述"
@@ -842,7 +867,7 @@ furniture:
       - default/armors/<纹理路径>
 ```
 
-**完整盔甲套装示例（参考 `armors.yml`）：**
+**完整盔甲套装示例（参考 `General/盔甲_组件_1.21.2+.md`）：**
 生成单件时，确保以下字段正确：
 - `slot`：头盔=HEAD, 胸甲=CHEST, 护腿=LEGS, 靴子=FEET
 - `model`：同套装所有件使用同一标识（如 `oraxen:emerald`）
@@ -853,7 +878,7 @@ furniture:
 - Wiki: `Armors/Overview.md` — 盔甲方法选择
 - Wiki: `Armors/Components(1.21.2+).md` — Components 方法
 - Wiki: `Items/Components.md` — equippable、durability、AttributeModifiers
-- Template: `references/Oraxen Template/armors.yml` — emerald/obsidian/ruby 全套
+- Template: `references/Oraxen Template/General/盔甲_组件_1.21.2+.md` — emerald/obsidian/ruby 全套
 
 ##### 唱片 (Music Disc) — 1.21+
 
@@ -861,7 +886,7 @@ furniture:
 
 ```yaml
 <disc_id>:
-  itemname: "<颜色>唱片名称"
+  displayname: "<颜色>唱片名称"
   material: PAPER
   Components:
     max_stack_size: 1
@@ -882,7 +907,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Components.md` — jukebox_playable
 - Wiki: `Configuration Reference/sound.yml.md` — 自定义音效配置
-- Template: `references/Oraxen Template/items.yml` — welcome_disk 示例
+- Template: `references/Oraxen Template/General/基础物品.md` — welcome_disk 示例
 
 ##### 背包 (Backpack)
 
@@ -890,7 +915,7 @@ furniture:
 
 ```yaml
 <backpack_id>:
-  itemname: "<颜色>背包名称"
+  displayname: "<颜色>背包名称"
   material: PAPER
   unstackable: true                  # 背包必须不可堆叠（防止复制漏洞）
   Mechanics:
@@ -915,7 +940,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Backpack mechanic
 - Wiki: `Items/Item Abilities/Backpack Cosmetic.md` — 背包外观
-- Template: `references/Oraxen Template/items.yml` — leather_backpack 示例
+- Template: `references/Oraxen Template/General/基础物品.md` — leather_backpack 示例
 
 ##### 战斗 Mechanics 配置
 
@@ -991,7 +1016,7 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Combat.md` — 全部战斗 Mechanics
-- Template: `references/Oraxen Template/weapons.yml` — storm_sword、blood_sword 等
+- Template: `references/Oraxen Template/General/武器.md` — storm_sword、blood_sword 等
 
 ##### 农耕 Mechanics 配置
 
@@ -1049,7 +1074,7 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Farming.md` — 全部农耕 Mechanics
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — repair、efficiency、durability
-- Template: `references/Oraxen Template/tools.yml` — iron_cog、gold_cog、diamond_cog（repair 示例）
+- Template: `references/Oraxen Template/General/工具.md` — iron_cog、gold_cog、diamond_cog（repair 示例）
 
 ##### 杂项 Mechanics 配置
 
@@ -1116,8 +1141,8 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — 全部杂项 Mechanics
-- Template: `references/Oraxen Template/items.yml` — example_efficient_pickaxe 等
-- Template: `references/Oraxen Template/skins.yml` — 皮肤相关
+- Template: `references/Oraxen Template/General/基础物品.md` — example_efficient_pickaxe 等
+- Template: `references/Oraxen Template/Example/物品/8. 皮肤系统.md` — 皮肤相关
 
 ##### 点击动作 (Click Actions)
 
@@ -1292,7 +1317,7 @@ Mechanics:
 # =============================================================================
 
 miner_sandwich:
-  itemname: "<gradient:#F69D84:#FAD98D>矿工三明治"
+  displayname: "<gradient:#F69D84:#FAD98D>矿工三明治"
   material: PAPER
   Pack:
     generate_model: true
@@ -1351,7 +1376,7 @@ miner_sandwich:
 > 6. 是否需要光照、工具等级限制等？
 > 7. 输出方式：对话中返回 / 输出到文件？
 
-**Step 4 生成（示例输出，基于 `blocks.yml` 中的 amethyst_ore 模板）：**
+**Step 4 生成（示例输出，基于 `Example/方块/音符盒矿石.md` 中的 amethyst_ore 模板）：**
 
 ```yaml
 # =============================================================================
@@ -1365,7 +1390,7 @@ miner_sandwich:
 # =============================================================================
 
 amethyst_ore:
-  itemname: "<light_purple>紫水晶矿石"
+  displayname: "<light_purple>紫水晶矿石"
   material: PAPER
   Pack:
     generate_model: true
