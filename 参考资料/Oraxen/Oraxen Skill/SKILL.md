@@ -93,16 +93,16 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 
 #### 2a. Wiki 查阅规则
 
-所有 Wiki 参考文件位于项目目录的 `参考资料/Oraxen/Oraxen Docs Origin/` 下。
+所有 Wiki 参考文件位于项目目录的 `references/Oraxen Docs Origin/` 下。
 
 **通用参考（所有配置）：**
-- 配置总览和结构 → `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Overview.md`
-- 物品基本结构（displayname、material、Pack、Mechanics） → `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Getting Started.md`
+- 配置总览和结构 → `references/Oraxen Docs Origin/Creating Content/Overview.md`
+- 物品基本结构（displayname、material、Pack、Mechanics） → `references/Oraxen Docs Origin/Creating Content/Items/Getting Started.md`
 
 **基础物品 (Basic Item)：**
-- 物品外观与模型（Pack 配置） → `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Appearance & Models.md`
-- 物品组件（Components，1.20.5+） → `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Components.md`
-- 物品染色（Dyeable Items） → `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Dyeable Items.md`
+- 物品外观与模型（Pack 配置） → `references/Oraxen Docs Origin/Creating Content/Items/Appearance & Models.md`
+- 物品组件（Components，1.20.5+） → `references/Oraxen Docs Origin/Creating Content/Items/Components.md`
+- 物品染色（Dyeable Items） → `references/Oraxen Docs Origin/Creating Content/Items/Dyeable Items.md`
 
 **武器 (Weapon)：**
 - 基础物品结构 + AttributeModifiers → `Items/Components.md`（AttributeModifiers 章节）
@@ -117,7 +117,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 **食物 (Food)：**
 - Components.food + Components.consumable（1.21.2+） → `Items/Components.md`（Food & Consumable Components 章节）
 - 食物 Mechanics（旧版本 1.20.5 以下） → `Items/Item Abilities/Miscellaneous.md`（Custom Food 章节）
-- 参考实际食物配置示例 → `参考资料/Oraxen_food_template.md`
+- 参考实际食物配置示例 → `references/Oraxen_food_template.md`
 
 **方块 (Block)：**
 - 方块机制总览 → `Blocks/Overview.md`
@@ -156,7 +156,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 
 #### 2b. Template 查阅规则
 
-所有 Template 参考文件位于项目目录的 `Oraxen/items/` 下。
+所有 Template 参考文件位于项目目录的 `references/Oraxen Template/` 下。
 
 | 配置类型 | 参考 Template 文件 |
 |---------|-------------------|
@@ -173,7 +173,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 | 其他 | `hats.yml`、`skins.yml`、`mystical.yml`、`plants.yml` 等 |
 
 **特殊参考：**
-- 食物模板速查 → `参考资料/Oraxen_food_template.md`
+- 食物模板速查 → `references/Oraxen_food_template.md`
 
 #### 2c. 参考来源交叉验证
 
@@ -193,8 +193,8 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 
 生成配置时，严格按照以下优先级使用参考来源：
 
-1. **本地 Oraxen Docs Origin（Wiki）**（`参考资料/Oraxen/Oraxen Docs Origin/`）— 最优先，默认使用
-2. **本地 Oraxen Template（预制配置）**（`Oraxen/items/`）— 辅助参考
+1. **本地 Oraxen Docs Origin（Wiki）**（`references/Oraxen Docs Origin/`）— 最优先，默认使用
+2. **本地 Oraxen Template（预制配置）**（`references/Oraxen Template/`）— 辅助参考
 3. **官方在线文档**（[https://docs.oraxen.com/](https://docs.oraxen.com/)）— **仅在用户明确要求时才使用**
 
 ##### 在线文档使用规则
@@ -291,9 +291,9 @@ Oraxen 配置的基本结构：
 # Oraxen [配置类型] 配置 — [配置名称]
 # =============================================================================
 # Wiki 参考路径:
-#   - 参考资料/Oraxen/Oraxen Docs Origin/[对应Wiki路径]
+#   - references/Oraxen Docs Origin/[对应Wiki路径]
 # Template 参考:
-#   - Oraxen/items/[对应Template文件]
+#   - references/Oraxen Template/General/[对应分类名].md
 # =============================================================================
 
 <item_id>:
@@ -351,7 +351,7 @@ Oraxen 配置的基本结构：
 **参考来源：**
 - Wiki: `Items/Getting Started.md` — 基本结构和 Pack 配置
 - Wiki: `Items/Appearance & Models.md` — 纹理和模型详解
-- Template: `Oraxen/items/items.yml` — amethyst、ruby 等示例
+- Template: `references/Oraxen Template/items.yml` — amethyst、ruby 等示例
 
 ##### 武器 (Weapon)
 
@@ -442,8 +442,8 @@ Pack:
 - Wiki: `Items/Components.md` — durability、AttributeModifiers
 - Wiki: `Items/Appearance & Models.md` — 特殊武器模型
 - Wiki: `Items/Item Abilities/Combat.md` — 战斗 Mechanics
-- Template: `Oraxen/items/weapons.yml` — glass_sword、storm_sword 等
-- Template: `Oraxen/items/tools.yml` — 锤子系列
+- Template: `references/Oraxen Template/weapons.yml` — glass_sword、storm_sword 等
+- Template: `references/Oraxen Template/tools.yml` — 锤子系列
 
 ##### 工具 (Tool)
 
@@ -486,7 +486,7 @@ Pack:
 **参考来源：**
 - Wiki: `Items/Components.md` — Tool Component
 - Wiki: `Items/Item Abilities/Farming.md` — bigmining、smelting、harvesting
-- Template: `Oraxen/items/tools.yml` — emerald_hammer、iron_serpe 等
+- Template: `references/Oraxen Template/tools.yml` — emerald_hammer、iron_serpe 等
 
 ##### 食物 (Food) — 1.21.2+ 版本
 
@@ -570,9 +570,9 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Components.md` — Food & Consumable Components（1.21.2+/1.20.5-1.21）
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Custom Food（旧版）
-- Template: `Oraxen/items/cooking_expansion.yml` — 100+ 食物完整示例
-- Template: `Oraxen/items/items.yml` — miner_sandwitch 示例
-- 速查: `参考资料/Oraxen_food_template.md`
+- Template: `references/Oraxen Template/cooking_expansion.yml` — 100+ 食物完整示例
+- Template: `references/Oraxen Template/items.yml` — miner_sandwitch 示例
+- 速查: `references/Oraxen_food_template.md`
 
 ##### 方块 (Block) — NoteBlock 机制
 
@@ -652,7 +652,7 @@ Mechanics:
 - Wiki: `Blocks/NoteBlock.md` — NoteBlock 完整配置
 - Wiki: `Blocks/StringBlock.md` — StringBlock 配置
 - Wiki: `Blocks/FarmBlock.md` — FarmBlock 配置
-- Template: `Oraxen/items/blocks.yml` — amethyst_ore、caveblock 等
+- Template: `references/Oraxen Template/blocks.yml` — amethyst_ore、caveblock 等
 
 ##### 家具 (Furniture)
 
@@ -798,8 +798,8 @@ furniture:
 - Wiki: `Furniture/Display Entities.md` — DISPLAY_ENTITY 特性
 - Wiki: `Furniture/Position & Rotation.md` — 位置和旋转设置
 - Wiki: `Items/Item Abilities/Click Actions.md` — 点击动作
-- Template: `Oraxen/items/furniture.yml` — table、chair、cart、turntable、shelf
-- Template: `Oraxen/items/customcrops/crops/` — 作物示例
+- Template: `references/Oraxen Template/furniture.yml` — table、chair、cart、turntable、shelf
+- Template: `references/Oraxen Template/customcrops/crops/` — 作物示例
 
 ##### 盔甲 (Armor) — Components 方法（1.21.2+）
 
@@ -853,7 +853,7 @@ furniture:
 - Wiki: `Armors/Overview.md` — 盔甲方法选择
 - Wiki: `Armors/Components(1.21.2+).md` — Components 方法
 - Wiki: `Items/Components.md` — equippable、durability、AttributeModifiers
-- Template: `Oraxen/items/armors.yml` — emerald/obsidian/ruby 全套
+- Template: `references/Oraxen Template/armors.yml` — emerald/obsidian/ruby 全套
 
 ##### 唱片 (Music Disc) — 1.21+
 
@@ -882,7 +882,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Components.md` — jukebox_playable
 - Wiki: `Configuration Reference/sound.yml.md` — 自定义音效配置
-- Template: `Oraxen/items/items.yml` — welcome_disk 示例
+- Template: `references/Oraxen Template/items.yml` — welcome_disk 示例
 
 ##### 背包 (Backpack)
 
@@ -915,7 +915,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Backpack mechanic
 - Wiki: `Items/Item Abilities/Backpack Cosmetic.md` — 背包外观
-- Template: `Oraxen/items/items.yml` — leather_backpack 示例
+- Template: `references/Oraxen Template/items.yml` — leather_backpack 示例
 
 ##### 战斗 Mechanics 配置
 
@@ -991,7 +991,7 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Combat.md` — 全部战斗 Mechanics
-- Template: `Oraxen/items/weapons.yml` — storm_sword、blood_sword 等
+- Template: `references/Oraxen Template/weapons.yml` — storm_sword、blood_sword 等
 
 ##### 农耕 Mechanics 配置
 
@@ -1049,7 +1049,7 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Farming.md` — 全部农耕 Mechanics
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — repair、efficiency、durability
-- Template: `Oraxen/items/tools.yml` — iron_cog、gold_cog、diamond_cog（repair 示例）
+- Template: `references/Oraxen Template/tools.yml` — iron_cog、gold_cog、diamond_cog（repair 示例）
 
 ##### 杂项 Mechanics 配置
 
@@ -1116,8 +1116,8 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — 全部杂项 Mechanics
-- Template: `Oraxen/items/items.yml` — example_efficient_pickaxe 等
-- Template: `Oraxen/items/skins.yml` — 皮肤相关
+- Template: `references/Oraxen Template/items.yml` — example_efficient_pickaxe 等
+- Template: `references/Oraxen Template/skins.yml` — 皮肤相关
 
 ##### 点击动作 (Click Actions)
 
@@ -1203,7 +1203,7 @@ Mechanics:
 2. **参考来源** — 列出参考的 Wiki 页面和 Template 文件
 3. **需修改项** — 列出所有标记了 `<< CHANGE THIS` 的项
 4. **注意事项** — 版本要求、付费版限制、已知限制等
-5. **保存建议** — 建议将配置保存到 `Oraxen/items/` 的哪个子目录
+5. **保存建议** — 建议将配置保存到 `references/Oraxen Template/` 的哪个子目录
 
 #### 6b. 输出到文件
 
@@ -1261,8 +1261,8 @@ Mechanics:
 - 不确定项：nutrition、saturation、consume_seconds、效果持续时间、输出方式
 
 **Step 2 查阅参考：**
-- Read `参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Components.md` — Food & Consumable Components 章节
-- Read `参考资料/Oraxen_food_template.md` — 食物模板速查
+- Read `references/Oraxen Docs Origin/Creating Content/Items/Components.md` — Food & Consumable Components 章节
+- Read `references/Oraxen_food_template.md` — 食物模板速查
 
 **Step 3 向用户确认：**
 > 我将为你生成一个"矿工三明治"食物配置，需要确认以下信息：
@@ -1285,10 +1285,10 @@ Mechanics:
 # Oraxen 食物配置 — 矿工三明治
 # =============================================================================
 # Wiki 参考:
-#   - 参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Items/Components.md
+#   - references/Oraxen Docs Origin/Creating Content/Items/Components.md
 # Template 参考:
-#   - 参考资料/Oraxen_food_template.md
-#   - Oraxen/items/items.yml (miner_sandwitch)
+#   - references/Oraxen_food_template.md
+#   - references/Oraxen Template/General/食物.md
 # =============================================================================
 
 miner_sandwich:
@@ -1358,10 +1358,10 @@ miner_sandwich:
 # Oraxen 方块配置 — 紫水晶矿石
 # =============================================================================
 # Wiki 参考:
-#   - 参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Blocks/Overview.md
-#   - 参考资料/Oraxen/Oraxen Docs Origin/Creating Content/Blocks/NoteBlock.md
+#   - references/Oraxen Docs Origin/Creating Content/Blocks/Overview.md
+#   - references/Oraxen Docs Origin/Creating Content/Blocks/NoteBlock.md
 # Template 参考:
-#   - Oraxen/items/blocks.yml (amethyst_ore)
+#   - references/Oraxen Template/Example/方块/音符盒矿石.md
 # =============================================================================
 
 amethyst_ore:
@@ -1446,12 +1446,12 @@ Mechanics:
 
 ## Notes
 
-- **Oraxen Docs Origin（Wiki）路径**：所有 Wiki 文件位于项目 `参考资料/Oraxen/Oraxen Docs Origin/` 目录
-- **Oraxen Template（预制配置）路径**：所有示例配置位于项目 `Oraxen/items/` 目录
-- **Oraxen 食物模板速查**：项目 `参考资料/Oraxen_food_template.md`
+- **Oraxen Docs Origin（Wiki）路径**：所有 Wiki 文件位于项目 `references/Oraxen Docs Origin/` 目录
+- **Oraxen Template（预制配置）路径**：所有示例配置位于项目 `references/Oraxen Template/` 目录
+- **Oraxen 食物模板速查**：项目 `references/Oraxen_food_template.md`
 - **版本差异重要提醒**：Oraxen 的配置格式在不同 Minecraft 版本间有显著差异。1.20.5+ 引入 Components 系统替代了大部分 Mechanics 功能。生成配置前必须先确认用户的服务器版本。
 - **材质/模型文件**：生成的配置引用纹理路径时，需要确保对应的 `.png` 文件存在于 `Oraxen/pack/textures/` 目录。模型文件（.json）需要存在于 `Oraxen/pack/models/` 目录。
-- **custom_variation 冲突**：NoteBlock 和 StringBlock 使用 `custom_variation` 作为唯一标识。生成配置时提醒用户检查 `Oraxen/items/` 下所有文件中已使用的值。
+- **custom_variation 冲突**：NoteBlock 和 StringBlock 使用 `custom_variation` 作为唯一标识。生成配置时提醒用户检查 `references/Oraxen Template/` 下所有文件中已使用的值。
 - **纹理路径规则**：路径相对于 `Oraxen/pack/textures/`，不包含扩展名 `.png`。例如 `default/amethyst_ore` 对应 `pack/textures/default/amethyst_ore.png`。
 - **MiniMessage 格式**：Oraxen 使用 Adventure API 的 MiniMessage 格式进行文本格式化。支持颜色标签（`<red>`、`<#FF0000>`）、渐变（`<gradient:#color1:#color2>`）、装饰（`<bold>`）等。
 - **YAML 格式**：配置文件使用 UTF-8 编码，2 空格缩进，不使用 Tab。

@@ -9,17 +9,16 @@
 ## 目录结构
 
 ```
-Oraxen Skill/                  # Skill 主目录
+Oraxen Skill/                  # Skill 主目录（自包含，可直接复制使用）
 ├── SKILL.md                   # 技能主文件（注册到 Claude Code 使用）
 ├── README.md                  # 本文件
 └── references/
-    └── wiki-index.md          # Wiki 索引导航（快速查找对应配置类型的 Wiki 页面）
-
-项目中的参考资源（Skill 运行时读取）：
-参考资料/Oraxen/Oraxen Docs Origin/    # Oraxen 官方 Wiki（英文）
-参考资料/Oraxen/Oraxen Docs Chinese/    # Oraxen 官方 Wiki（中文）
-参考资料/Oraxen_food_template.md        # 食物配置模板速查
-Oraxen/items/                            # Oraxen 预制配置模板
+    ├── wiki-index.md          # Wiki 索引导航（快速查找对应配置类型的 Wiki 页面）
+    ├── Oraxen Docs Origin/    # Oraxen 官方 Wiki（68 个文档，自包含）
+    ├── Oraxen Template/       # Oraxen 配置模板（General + Example 分类）
+    │   ├── General/           # 通用配置参考文档
+    │   └── Example/           # 完整配置示例
+    └── Oraxen_food_template.md # 食物配置模板速查
 ```
 
 ## 安装方式
@@ -62,13 +61,11 @@ Oraxen/items/                            # Oraxen 预制配置模板
 
 ### 强大的参考体系
 
-Skill 内置了对 Oraxen Docs Origin（Wiki）和 Oraxen Template 的完整引用映射，能够根据用户需求精准定位对应的 Wiki 页面和模板示例：
+Skill 内置了对 Oraxen Docs Origin（Wiki）和 Oraxen Template 的完整引用映射，所有参考资料均位于 Skill 的 `references/` 目录下，完全自包含：
 
-- **物品类**：参考 `Items/Getting Started.md`、`Items/Components.md`、`Items/Appearance & Models.md`
-- **方块类**：参考 `Blocks/Overview.md`、`Blocks/NoteBlock.md` 等
-- **家具类**：参考 `Furniture/Overview.md`、`Furniture/Display Entities.md` 等
-- **盔甲类**：参考 `Armors/Overview.md`、`Armors/Components(1.21.2+).md` 等
-- **Mechanics（机制）**：参考 `Items/Item Abilities/` 系列文档
+- **Wiki 参考**：`references/Oraxen Docs Origin/`（68 个文档）
+- **模板参考**：`references/Oraxen Template/General/` 和 `references/Oraxen Template/Example/`
+- **食物模板**：`references/Oraxen_food_template.md`
 
 ### 支持的配置类型
 
@@ -116,5 +113,5 @@ Skill 会自动根据用户提供的 Minecraft 版本选择正确的配置格式
 - **纹理文件需自行准备**：生成的配置引用纹理路径，但实际的 `.png` 文件需要用户自行添加到 `Oraxen/pack/textures/` 目录
 - **custom_variation 冲突**：NoteBlock/StringBlock 的 `custom_variation` 值必须在整个项目中唯一
 - **版本问题**：生成配置前确保告知 Skill 你的 Minecraft 服务器版本，以使用正确的配置格式
-- **Oraxen Docs Origin（Wiki）和 Oraxen Template（预制配置）** 必须存在于项目中，Skill 才能正常工作
+- **Skill 完全自包含**：所有 Wiki 文档和模板示例已内置在 `references/` 目录中，无需依赖项目中的其他文件
 - **在线文档使用规则**：官方在线文档（<https://docs.oraxen.com/>）**仅在用户明确要求时才能使用**。不可擅自访问。由于网络环境差异，在线文档可能无法访问，尝试后如不可用会向用户报告。
