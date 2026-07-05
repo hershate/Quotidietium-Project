@@ -1,0 +1,298 @@
+# =============================================================================
+# 文件冲突 (file_conflict.md) · 字体 (font.md) · 物品更新器 (updater.md)
+# =============================================================================
+# 参考: 本仓库 CraftEngine Wiki
+# 命名空间: zurker
+#
+# 注意事项:
+# - 文件冲突与物品更新器配置归属于 config.yml 中不同顶级节点，
+#   此处仅为示例展示，实际使用时请分别放入对应位置。
+# - 字体配置为资源包内的 default.json，非服务端 config.yml。
+# =============================================================================
+
+# =============================================================================
+# 第一部分: 文件冲突处理
+# 位置: config.yml → resource-pack.duplicated-files-handler
+# =============================================================================
+resource-pack:
+  duplicated-files-handler:
+    # -----------------------------------------------------------------------
+    # 示例 1: 合并所有物品模型 JSON (使用 "或" 匹配新旧版本路径)
+    # -----------------------------------------------------------------------
+    - term:
+        type: any_of
+        terms:
+          - type: parent_path_suffix
+            suffix: "minecraft/items"               # 1.21.4+ 物品模型路径后缀
+          - type: parent_path_suffix
+            suffix: "minecraft/models/item"          # 1.20 - 1.21.3 物品模型路径后缀
+      resolution:
+        type: merge_json
+        deeply: true                                 # 递归深层合并
+
+    # -----------------------------------------------------------------------
+    # 示例 2: 合并自定义武器 JSON (使用 "与" 多条件匹配)
+    # -----------------------------------------------------------------------
+    - term:
+        type: all_of
+        terms:
+          - type: parent_path_prefix
+            path: "assets/zurker"                    # << CHANGE 命名空间路径前缀
+          - type: parent_path_suffix
+            suffix: "zurker/weapons"                 # << CHANGE 武器目录后缀
+      resolution:
+        type: merge_json
+        deeply: true
+
+    # -----------------------------------------------------------------------
+    # 示例 3: 合并 pack.mcmeta (使用精确路径匹配)
+    # -----------------------------------------------------------------------
+    - term:
+        type: exact
+        path: "pack.mcmeta"
+      resolution:
+        type: merge_pack_mcmeta
+        description: "<gray>联合资源包"               # << CHANGE 资源包描述
+
+    # -----------------------------------------------------------------------
+    # 示例 4: pack.png 择优保留 (保留默认资源包中的文件)
+    # -----------------------------------------------------------------------
+    - term:
+        type: exact
+        path: "pack.png"
+      resolution:
+        type: retain_matching
+        term:
+          type: contains
+          path: "resources/default/resourcepack"     # 路径包含此片段则保留
+
+    # -----------------------------------------------------------------------
+    # 示例 5: 合并 sounds.json (使用文件名匹配)
+    # -----------------------------------------------------------------------
+    - term:
+        type: filename
+        name: "sounds.json"
+      resolution:
+        type: merge_json
+        deeply: false                                # 浅层合并，不递归嵌套
+
+    # -----------------------------------------------------------------------
+    # 示例 6: 合并字体文件 (父目录前缀匹配)
+    # -----------------------------------------------------------------------
+    - term:
+        type: parent_path_prefix
+        path: "assets/minecraft/font"                # 匹配所有字体目录下的文件
+      resolution:
+        type: merge_font
+
+    # -----------------------------------------------------------------------
+    # 示例 7: 合并纹理图集 (正则匹配)
+    # -----------------------------------------------------------------------
+    - term:
+        type: pattern
+        pattern: "^assets/minecraft/atlases/.+\\.json$"  # 匹配所有图集 JSON
+      resolution:
+        type: merge_atlas
+
+    # -----------------------------------------------------------------------
+    # 示例 8: 排除特定目录 (使用 "非" 条件 + 仅合并自定义家具)
+    # -----------------------------------------------------------------------
+    - term:
+        type: all_of
+        terms:
+          - type: parent_path_prefix
+            path: "assets/zurker/furniture"          # << CHANGE 家具命名空间
+          - type: inverted
+            term:
+              type: contains
+              path: "blockstates"                    # 排除 blockstates 目录
+      resolution:
+        type: merge_json
+        deeply: true
+
+    # -----------------------------------------------------------------------
+    # 示例 9: 条件解析 — 根据路径条件选择不同解决方案
+    # -----------------------------------------------------------------------
+    - term:
+        type: filename
+        name: "custom_data.json"
+      resolution:
+        type: conditional
+        term:
+          type: contains
+          path: "zurker/special"                     # << CHANGE 特殊目录路径
+        resolution:
+          type: merge_json
+          deeply: false
+
+    # -----------------------------------------------------------------------
+    # 示例 10: 保留匹配 — 当多个方块状态文件冲突时选择指定来源
+    # -----------------------------------------------------------------------
+    - term:
+        type: parent_path_suffix
+        suffix: "minecraft/blockstates"               # 匹配所有方块状态文件
+      resolution:
+        type: retain_matching
+        term:
+          type: contains
+          path: "zurker/override"                     # << CHANGE 优先保留的来源路径
+
+# =============================================================================
+# 第二部分: 字体配置
+# 位置: 资源包 → assets/minecraft/font/default.json (非服务端配置)
+# 说明: CraftEngine 支持 TTF、位图、Unihex 三种字体格式
+# =============================================================================
+# 以下为资源包内 default.json 的完整内容示例
+font_example_default_json:
+  providers:
+    # -----------------------------------------------------------------------
+    # 字体 1: TTF 矢量字体 (推荐用于中文字体渲染)
+    # -----------------------------------------------------------------------
+    - type: ttf
+      file: "minecraft:zurker_font.ttf"              # << CHANGE 字体文件路径
+      oversample: 10                                  # << CHANGE 过采样倍率 (建议 8-12)
+      size: 11                                        # << CHANGE 字体大小 (像素)
+
+    # -----------------------------------------------------------------------
+    # 字体 2: 第二个 TTF 字体 (如等宽字体)
+    # -----------------------------------------------------------------------
+    - type: ttf
+      file: "minecraft:zurker_mono.ttf"              # << CHANGE 等宽字体文件
+      oversample: 8
+      size: 10
+
+    # -----------------------------------------------------------------------
+    # 字体 3: 位图字体 (替换原版字符贴图)
+    # 说明: 将 PNG 文件置于 assets/minecraft/textures/font/ 目录即可，
+    #       无需在 default.json 中额外声明 providers
+    # -----------------------------------------------------------------------
+    # 示例文件结构:
+    #   assets/minecraft/textures/font/
+    #   ├── zurker_icons.png                          # << CHANGE 自定义图标贴图
+    #   └── zurker_ascii.png                          # << CHANGE ASCII 字符贴图
+    #
+    # 如果位图字体需要 providers 声明，参考格式如下:
+    # - type: bitmap
+    #   file: "minecraft:zurker_icons.png"
+    #   height: 8
+    #   ascent: 7
+    #   chars:
+    #     - ""
+
+    # -----------------------------------------------------------------------
+    # 字体 4: Unihex 字体 (特殊用途，较少使用)
+    # 说明: 全 Unicode 十六进制位图字体格式
+    # -----------------------------------------------------------------------
+    # - type: unihex
+    #   file: "minecraft:zurker_unicode.hex"          # << CHANGE 如果你的资源包包含 unihex
+    # 详细配置请参阅 Minecraft Wiki: 自定义字体 → Unihex
+
+# =============================================================================
+# 第三部分: 物品更新器
+# 位置: config.yml → item.update-triggers (触发器) + items 段 (物品定义)
+# =============================================================================
+item:
+  # -----------------------------------------------------------------------
+  # 更新触发器 — 控制何时触发物品版本检测
+  # 默认全部禁用，按需启用
+  # -----------------------------------------------------------------------
+  update-triggers:
+    click-in-inventory: false                          # 玩家点击物品栏时 (不含创造模式)
+    drop: false                                        # 玩家丢弃物品时
+    pick-up: false                                     # 玩家拾取物品时
+
+  # -----------------------------------------------------------------------
+  # 每次物品被检查时，更新器会按版本号从小到大依次执行所有未达成的更新。
+  # 版本 0 → 执行 1 和 2；版本 1 → 仅执行 2；版本 2 → 跳过所有。
+  # -----------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
+# 物品 1: 自定义剑 — 演示 apply_data 更新
+# -----------------------------------------------------------------------
+items:
+  zurker:flame_sword:                                  # << CHANGE 物品 ID
+    material: wooden_sword
+    updater:
+      # 版本 1 更新: 应用物品数据
+      1:
+        type: apply_data
+        data:
+          item_name: "烈焰之剑·初版"                   # << CHANGE 初始名称
+          lore:
+            - "<gold>传说级武器"
+            - "<gray>在远古熔炉中铸造"
+      # 版本 2 更新: 批量应用多个更新器
+      2:
+        - type: apply_data
+          data:
+            item_name: "烈焰之剑·觉醒"
+            lore:
+              - "<gold>传说级武器"
+              - "<red>火焰之力已觉醒"
+              - "<dark_red>+15 火焰附加"
+        - type: transmute
+          material: stone_sword                         # 将基础材质升级为石剑
+
+  # -----------------------------------------------------------------------
+  # 物品 2: 自定义弓 — 演示 transmute 材质置换
+  # -----------------------------------------------------------------------
+  zurker:old_bow:                                       # << CHANGE 物品 ID
+    material: bow
+    updater:
+      1:
+        type: transmute
+        material: crossbow                               # << CHANGE 将弓替换为弩
+
+  # -----------------------------------------------------------------------
+  # 物品 3: 自定义头盔 — 演示 reset 重置
+  # -----------------------------------------------------------------------
+  zurker:ancient_helmet:                                # << CHANGE 物品 ID
+    material: leather_helmet
+    updater:
+      1:
+        type: apply_data
+        data:
+          item_name: "远古头盔·复苏"
+      2:
+        type: reset
+        # 1.20.5+ 使用 keep_components 保留指定组件
+        keep_components:
+          - minecraft:enchantments                       # 保留附魔
+          - minecraft:custom_name                        # 保留自定义名称
+        # 旧版本 (< 1.20.5) 使用 keep_tags 保留 NBT 标签
+        keep_tags:
+          - Enchantments
+          - display
+
+  # -----------------------------------------------------------------------
+  # 物品 4: 多层次版本更新的完整示例
+  # 版本 0 → 执行 1、2、3
+  # 版本 1 → 执行 2、3
+  # 版本 2 → 仅执行 3
+  # 版本 3 → 已最新，跳过所有
+  # -----------------------------------------------------------------------
+  zurker:magic_staff:                                   # << CHANGE 物品 ID
+    material: stick
+    updater:
+      # 第一版: 赋予基础属性
+      1:
+        type: apply_data
+        data:
+          item_name: "学徒法杖"
+          lore:
+            - "<gray>一位学徒的初级法杖"
+      # 第二版: 升级材质 + 更新数据
+      2:
+        - type: apply_data
+          data:
+            item_name: "法师法杖"
+            lore:
+              - "<aqua>中级法杖"
+              - "<gray>蕴含魔力"
+        - type: transmute
+          material: blaze_rod
+      # 第三版: 重置为最新状态，保留附魔
+      3:
+        type: reset
+        keep_components:
+          - minecraft:enchantments

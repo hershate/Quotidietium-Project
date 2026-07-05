@@ -1,0 +1,78 @@
+# =============================================================================
+# 方块标签配置模板
+# 参考: reference/block_tags.md
+# =============================================================================
+# 标签配置在 blocks: → settings: → tags: 下，格式为 "namespace:tag"
+# 常见标签见 block_tags.md。
+# =============================================================================
+
+blocks:
+  # 示例：使用斧挖掘更快的方块 (minecraft:mineable/axe)
+  custom:example_log:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_log"
+    settings:
+      tags:
+        - "minecraft:mineable/axe"
+        - "minecraft:logs"
+
+  custom:example_planks:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_planks"
+    settings:
+      tags:
+        - "minecraft:mineable/axe"
+        - "minecraft:planks"
+
+  # 使用镐挖掘更快的方块 (minecraft:mineable/pickaxe)
+  custom:example_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_ore"
+    settings:
+      tags:
+        - "minecraft:mineable/pickaxe"
+
+  # 使用锹挖掘更快的方块 (minecraft:mineable/shovel)
+  custom:example_dirt:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/example_dirt"
+    settings:
+      tags:
+        - "minecraft:mineable/shovel"
+
+  # 可用作信标底座 (minecraft:beacon_base_blocks)
+  custom:example_beacon_base:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/beacon_base"
+    settings:
+      tags:
+        - "minecraft:beacon_base_blocks"
+
+  # 可攀爬方块 (minecraft:climbable) — 如自定义藤蔓
+  custom:example_vine:
+    state:
+      auto_state: vine
+      model:
+        texture: "minecraft:block/custom/vine"
+    settings:
+      tags:
+        - "minecraft:climbable"
+
+  # 在原版基础上，可用以下标签:
+  # minecraft:mineable/hoe         — 锄挖掘更快
+  # minecraft:sword_efficient      — 剑挖掘更快
+  # minecraft:fall_damage_resetting  — 重置摔落伤害
+  # minecraft:soul_fire_base_blocks  — 上方火焰变为灵魂火
+  # minecraft:infiniburn_overworld   — 主世界无限燃烧
+  # minecraft:enchantment_power_provider — 提供附魔等级
+  # minecraft:replaceable_by_trees  — 树木生长时可替换

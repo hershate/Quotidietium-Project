@@ -1,0 +1,108 @@
+# =============================================================================
+# CraftEngine 方块行为模板 — 朝向与液体交互
+# =============================================================================
+# 本地 Wiki 参考路径 (CraftEngine Wiki):
+#   configuration/block/behaviors/directional_attached_block.md
+#   configuration/block/behaviors/face_attached_horizontal_directional_block.md
+#   configuration/block/behaviors/hangable_block.md
+#   configuration/block/behaviors/hanging_block.md
+#   configuration/block/behaviors/liquid_flowable_block.md
+#   configuration/block/behaviors/near_liquid_block.md
+#   configuration/block/behaviors/on_liquid_block.md
+# =============================================================================
+# 使用前请替换 "custom:" 命名空间以及所有标记为 << CHANGE THIS 的值。
+# =============================================================================
+
+blocks:
+
+  # ---------------------------------------------------------------------------
+  # 组 1：定向附着 (附着于其他方块的侧面/表面)
+  # ---------------------------------------------------------------------------
+
+  # --- 定向附着方块 (如墙上的火把) ---
+  # 可附着在另一个方块的侧面。当附着面变动导致不再允许附着时，方块会被破坏。
+  # 属性: facing (horizontal_direction, 必需)
+  custom:example_wall_torch:                                    # << CHANGE THIS
+    behavior:
+      type: directional_attached_block
+      blacklist: true                                           # << CHANGE THIS (true=黑名单, false=白名单, 默认 true)
+      attached_blocks:                                          # << CHANGE THIS (可选)
+        - custom:xxx                                            # << CHANGE THIS
+        - minecraft:stone                                       # << CHANGE THIS
+      attached_block_tags:                                      # << CHANGE THIS (可选)
+        - minecraft:dirt                                        # << CHANGE THIS
+        - minecraft:farmland                                    # << CHANGE THIS
+
+  # --- 水平面定向附着方块 (如按钮、拉杆) ---
+  # 可附着在另一个方块的侧面或上方表面。当附着面变动导致不再允许附着时，方块会被破坏。
+  # 属性: face (anchor_type, 必需), facing (horizontal_direction, 必需)
+  custom:example_palm_button:                                   # << CHANGE THIS
+    behavior:
+      type: face_attached_horizontal_directional_block
+      blacklist: true                                           # << CHANGE THIS (true=黑名单, false=白名单, 默认 true)
+      attached_blocks:                                          # << CHANGE THIS (可选)
+        - custom:xxx                                            # << CHANGE THIS
+        - minecraft:stone                                       # << CHANGE THIS
+      attached_block_tags:                                      # << CHANGE THIS (可选)
+        - minecraft:dirt                                        # << CHANGE THIS
+        - minecraft:farmland                                    # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 组 2：悬挂 (附着于方块下方)
+  # ---------------------------------------------------------------------------
+
+  # --- 可悬挂方块 (如灯笼) ---
+  # 既可放置于地面，也可悬挂在方块下方。由 hanging 属性控制当前状态。
+  # 属性: hanging (boolean, 必需), waterlogged (boolean, 可选)
+  custom:example_lantern:                                       # << CHANGE THIS
+    behavior:
+      type: hangable_block
+    # 该 behavior 无额外配置键，所有行为由状态属性控制。
+
+  # --- 悬挂方块 (如钟乳石) ---
+  # 附着在另一个方块的下方。支持黑/白名单过滤以及可选堆叠。
+  custom:example_stalactites:                                   # << CHANGE THIS
+    behavior:
+      type: hanging_block
+      blacklist: false                                          # << CHANGE THIS (true=黑名单, false=白名单, 默认 true)
+      stackable: false                                          # << CHANGE THIS (是否允许同类型向下悬挂, 默认 false)
+      max_height: 0                                             # << CHANGE THIS (最大悬挂长度，仅当 stackable=true 且 >1 时生效)
+      delay: 0                                                  # << CHANGE THIS (检查延迟刻数，0=立即破坏, 默认 0)
+      above_blocks:                                             # << CHANGE THIS (可选)
+        - custom:xxx                                            # << CHANGE THIS
+        - minecraft:stone                                       # << CHANGE THIS
+      above_block_tags:                                         # << CHANGE THIS (可选)
+        - minecraft:dirt                                        # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 组 3：液体交互 (流体推动 / 液体依赖存活)
+  # ---------------------------------------------------------------------------
+
+  # --- 流体推动方块 (如水可替换的火把) ---
+  # 当液体流入时被破坏并替换为对应液体。水会掉落物品 (受 drop_item 控制)，熔岩直接摧毁。
+  custom:example_liquid_flowable_torch:                         # << CHANGE THIS
+    behavior:
+      type: liquid_flowable_block
+      drop_item: true                                           # << CHANGE THIS (被水替换时是否掉落物品, 默认 true)
+
+  # --- 邻液方块 (如火焰藤) ---
+  # 必须在靠近液体 (流动或源) 的位置才能存活。通过 positions 配置检查相对坐标。
+  custom:example_flame_cane:                                    # << CHANGE THIS
+    behavior:
+      type: near_liquid_block
+      liquid_type: lava                                         # << CHANGE THIS ("water", "lava", 或 ["water", "lava"], 默认 ["water"])
+      stackable: false                                          # << CHANGE THIS (允许堆叠在同类型方块上存活, 默认 false)
+      positions:                                                # << CHANGE THIS (检查液体的相对位置，必需)
+        - -1,-1,0                                               # << CHANGE THIS
+        - 1,-1,0                                                # << CHANGE THIS
+        - 0,-1,-1                                               # << CHANGE THIS
+        - 0,-1,1                                                # << CHANGE THIS
+
+  # --- 液面方块 (如睡莲) ---
+  # 只能放置在液体源方块表面上。与 near_liquid_block 不同，要求正下方必须是源方块。
+  custom:example_lily_pad:                                      # << CHANGE THIS
+    behavior:
+      type: on_liquid_block
+      liquid_type:                                              # << CHANGE THIS (可坐落的液体类型，默认 ["water"])
+        - water                                                 # << CHANGE THIS
+      stackable: false                                          # << CHANGE THIS (允许堆叠在同类型方块上存活, 默认 false)

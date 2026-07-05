@@ -1,0 +1,190 @@
+# ============================================================================
+# 物品设置完整示例
+# 本地 Wiki: configuration/item/settings.md
+# 每个设置项均以完整 items: 配置块展示，可直接使用。
+# ============================================================================
+
+items:
+  # ==================== 燃料 ====================
+  quartzietium:coal_chunk:
+    material: coal
+    data:
+      item_name: "<!i>煤炭碎块"
+    settings:
+      fuel_time: 1600                    # << CHANGE THIS 燃烧时长（刻）
+
+  # ==================== 标签 ====================
+  quartzietium:quartz_log:
+    material: paper
+    data:
+      item_name: "<!i>石英原木"
+    settings:
+      tags:
+        - "quartzietium:quartz_logs"     # << CHANGE THIS
+        - "minecraft:logs"
+
+  # ==================== 装备 ====================
+  quartzietium:topaz_helmet:
+    material: diamond_helmet
+    data:
+      item_name: "<!i>黄玉头盔"
+    settings:
+      equipment:
+        asset_id: quartzietium:topaz     # << CHANGE THIS
+        slot: head
+
+  # ==================== 可修复 ====================
+  quartzietium:repairable_sword:
+    material: diamond_sword
+    data:
+      item_name: "<!i>可修复剑"
+    settings:
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+
+  # ==================== 铁砧修复材料 ====================
+  quartzietium:special_pickaxe:
+    material: diamond_pickaxe
+    data:
+      item_name: "<!i>特殊镐"
+    settings:
+      anvil_repair_item:
+        - target: "quartzietium:repair_ingot"
+          amount: 100
+        - target: "minecraft:diamond"
+          percent: 0.25
+
+  # ==================== 可重命名 ====================
+  quartzietium:unrenameable_item:
+    material: nether_star
+    data:
+      item_name: "<!i>不可重命名之星"
+    settings:
+      renameable: false
+
+  # ==================== 可装载的弹射物 ====================
+  quartzietium:custom_crossbow:
+    material: crossbow
+    data:
+      item_name: "<!i>自定义弩"
+    settings:
+      allowed_projectiles:
+        - "minecraft:arrow"
+        - "quartzietium:magic_bolt"
+
+  # ==================== 弹射物 ====================
+  quartzietium:throwing_knife:
+    material: arrow
+    data:
+      item_name: "<!i>飞刀"
+    settings:
+      projectile:
+        display:
+          item: "quartzietium:throwing_knife"
+          translation: "0,0,0"
+          rotation: "1,1,1,1"
+          display_transform: NONE
+          scale: 1.0
+        sounds:
+          throw: "minecraft:entity.arrow.shoot"
+          hit_entity: "minecraft:entity.arrow.hit"
+          hit_block: "minecraft:entity.arrow.hit"
+        ignore_infinity_enchantment: false
+        pickupable: true
+        remove_on_hit: true
+        gravity: true
+        velocity: 2.0
+        damage: 5.0
+        pierce_level: 1
+
+  # ==================== 可染色 ====================
+  quartzietium:dyeable_helmet:
+    material: leather_horse_armor
+    data:
+      item_name: "<!i>可染色头盔"
+    settings:
+      dyeable: true
+
+  # ==================== 可附魔 ====================
+  quartzietium:unenchatable_item:
+    material: diamond_sword
+    data:
+      item_name: "<!i>不可附魔剑"
+    settings:
+      enchantable: false
+
+  # ==================== 堆肥成功率 ====================
+  quartzietium:compostable_wheat:
+    material: wheat
+    data:
+      item_name: "<!i>可堆肥小麦"
+    settings:
+      compost_probability: 0.65
+
+  # ==================== 染色颜色 ====================
+  quartzietium:dye_material:
+    material: red_dye
+    data:
+      item_name: "<!i>红色染料"
+    settings:
+      dye_color: 255, 0, 0
+
+  # ==================== 烟火颜色 ====================
+  quartzietium:firework_colorant:
+    material: blaze_powder
+    data:
+      item_name: "<!i>焰火着色粉"
+    settings:
+      firework_color: 0, 255, 0
+
+  # ==================== 消耗替代品 ====================
+  quartzietium:magic_potion:
+    material: potion
+    data:
+      item_name: "<!i>魔力药水"
+    settings:
+      consume_replacement: "minecraft:glass_bottle"
+    events:
+      - on: consume
+        functions:
+          - type: potion_effect
+            potion_effect: "minecraft:regeneration"
+            duration: 100
+
+  # ==================== 不被伤害摧毁 ====================
+  quartzietium:indestructible_gem:
+    material: diamond
+    data:
+      item_name: "<!i>不坏宝石"
+    settings:
+      invulnerable:
+        - lava
+        - fire
+        - fire_tick
+        - explosion
+
+  # ==================== 死亡保留 ====================
+  quartzietium:soul_bound_ring:
+    material: golden_ring
+    data:
+      item_name: "<!i>魂绑定指环"
+    settings:
+      keep_on_death_chance: 0.8
+
+  # ==================== 发光颜色 ====================
+  quartzietium:glowing_gem:
+    material: emerald
+    data:
+      item_name: "<!i>发光宝石"
+    settings:
+      glow_color: "green"
+
+  # ==================== 物品掉落物显示 ====================
+  quartzietium:fancy_gem:
+    material: diamond
+    data:
+      item_name: "<!i>精美宝石"
+    settings:
+      drop_display: "<arg:count>x <name>"

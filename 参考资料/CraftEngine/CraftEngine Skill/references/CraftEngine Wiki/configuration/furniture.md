@@ -1,0 +1,57 @@
+# 🪑 家具
+
+## 配置部分
+
+完整家具配置包含以下部分：
+
+* [🕹️ 家具行为](furniture/behaviors.md)
+* [⚙️ 家具设置](furniture/settings.md)
+* [📍 家具变体](furniture/variants.md)
+* [🎲 战利品表](../reference/loot_table.md)
+* [🪇 事件](../reference/events.md)
+
+## 如何绑定物品
+
+* [🪑 家具物品](item/behaviors/furniture_item.md)
+* [🌊 液体碰撞家具物品](item/behaviors/liquid_collision_furniture_item.md)
+
+## 完整配置概览
+
+```yaml
+furniture:
+  default:bench:
+    settings:
+      item: default:bench
+      sounds:
+        break: minecraft:block.bamboo_wood.break
+        place: minecraft:block.bamboo_wood.place
+    variants:
+      ground:
+        loot_spawn_offset: 0.5,0.5,0
+        entity_culling: true
+        elements:
+          - item: default:bench
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            shadow_radius: 1
+            shadow_strength: 0.2
+            apply_dyed_color: true
+            glow_color: 255,255,255
+        hitboxes:
+          - position: 0,0,0
+            type: shulker
+            direction: east
+            peek: 100
+            blocks_building: true
+            interactive: true
+            interaction_entity: true
+            seats:
+              - 0,0,-0.1 0
+              - 1,0,-0.1 0
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: default:bench
+```

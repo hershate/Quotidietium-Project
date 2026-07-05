@@ -1,0 +1,187 @@
+# 🧱 方块
+
+## 概览
+
+一个自定义方块就是在[任意配置](../configuration#简介)里的 `block` 或 `blocks` 键下的配置区域的一个子配置。每个子配置以它的键作为方块 id —— `命名空间:路径`，如 `default:palm_log`，然后由**不同的配置选项**拼装而成，你只需配置自己需要的部分。
+
+其中只有一个选项是必填的 **`state`** 或 **`states`**，其余的选项都可以按需添加。
+
+## 结构速览
+
+每个方块都遵循同样的结构。每个选项回答关于方块的一个问题：
+
+```yaml
+blocks:                 # 配置区域  ——  通常可以定义在任意配置文件夹中的任意配置文件中
+  default:my_block:     # 方块 id   ——  可以在其他地方通过 default:my_block 引用
+    state:              # 方块状态  ——  必填   → 他看起来是什么（模型、判定箱）
+      ...
+    settings:           # 方块设置  ——  可选   → 基本属性是什么（硬度、音效、亮度、标签）
+      ...
+    behavior:           # 方块行为  ——  可选   → 有什么行为（生长、下落、存储、蔓延...）
+      ...
+    loot:               # 战利品表  ——  可选   → 被破坏时掉落什么
+      ...
+    events:             # 事件      ——  可选   → 对玩家交互的反应（放置、破坏...）
+      ...
+```
+
+:::note
+多状态方块 —— 可以有朝向、含水、生长阶段等，需要额外配置 `properties`、`appearances`、`variants`。具体参考[🔣 方块状态](./block/states.md#多状态方块)。
+:::
+
+## 可配置的部分
+
+- [🔣 方块状态](block/states.md) - 模型外观、变体和属性
+- [🔧 方块设置](block/settings.md) - 硬度、音效等基本属性
+- [🕹️ 方块行为](block/behaviors.md) - 生长、下落等方块机制
+- [🎲 战利品表](../reference/loot_table.md) - 方块被破坏时掉落什么
+- [🪇 事件](../reference/events.md) - 点击、破坏等交互反应
+
+## 快速上手
+
+### 1. 最简方块
+
+一个状态和纹理，没了 —— 这就是一个完整可用的方块：
+
+```yaml
+blocks:
+  default:my_block:
+    state:
+      auto_state: note_block                       # 让插件自动选一个视觉状态
+      model:
+        texture: "minecraft:block/custom/my_block" # 单张纹理 → cube_all 模型
+```
+
+### 2. 调整基本属性
+
+加上 `settings`，让它像[石头](https://zh.minecraft.wiki/w/%E7%9F%B3%E5%A4%B4)一样 —— 音效、硬度、合适挖掘工具等：
+
+```yaml
+blocks:
+  default:my_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/my_block"
+    settings:
+      hardness: 1.5
+      resistance: 6.0
+      is_suffocating: true
+      is_redstone_conductor: true
+      instrument: basedrum
+      map_color: 11
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+        hit: minecraft:block.stone.hit
+        fall: minecraft:block.stone.fall
+      correct_tools:
+        - minecraft:wooden_pickaxe
+        - minecraft:stone_pickaxe
+        - minecraft:iron_pickaxe
+        - minecraft:golden_pickaxe
+        - minecraft:diamond_pickaxe
+        - minecraft:netherite_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+```
+
+### 3. 指定行为
+
+加上 `behavior`，让它拥有真正的功能。下面让它成为可以用斧剥皮的木头：
+
+```yaml
+blocks:
+  default:my_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/my_block"
+    settings:
+      hardness: 1.5
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+    behavior:
+      type: strippable_block
+      stripped: default:stripped_my_block
+```
+
+就像这样继续添加配置 —— `loot` 管掉落物，`events` 管交互，还可以在 `state` 里添加 [`entity_renderer`](./block/states/entity_renderer) 选项做自定义渲染。每个选项各司其职，可以按需自由组合添加。
+
+## 将方块和物品绑定到一起
+
+方块是方块，物品是物品，这两者**不是同一个东西**，你可以同时在方块和物品的配置中将其互相关联起来：
+
+### 方块需要配置的：
+
+定义这个方块对应哪个物品。主要用于对着方块按下[**鼠标中键**](https://zh.minecraft.wiki/w/%E6%8E%A7%E5%88%B6#%E9%80%89%E5%8F%96%E6%96%B9%E5%9D%97)时选取其对应物品，以及方块→物品的查询。可选，默认为自定义方块的 id。
+
+```yaml
+blocks:
+  default:my_block:
+    state: ...
+    settings:
+      item: default:my_block    # 该方块映射到的物品 id
+```
+
+### 物品需要配置的：
+
+真正让方块能被**右键放置**的就是它。给物品指定一个[🧱 方块物品](item/behaviors/block_item)行为，把它的 `block` 选项指向方块 id：
+
+```yaml
+items:
+  default:my_block:
+    behavior:
+      type: block_item
+      block: default:my_block   # 该物品放置的方块
+
+blocks:
+  default:my_block:
+    state: ...
+    settings: ...
+```
+
+同时 `block` 也可以**直接内联整段方块配置**而不仅是 id，当你想把两者放一起时：
+
+```yaml
+items:
+  default:my_block:
+    behavior:
+      type: block_item
+      block:
+        state: ...
+        settings: ...
+        loot: ...
+```
+
+:::tip
+方块物品的变体
+
+普通[🧱 方块物品](item/behaviors/block_item)只会朝你瞄准处放置。
+当需要特殊放置规则时，CraftEngine 提供了以下变体，它们都接受同样的 `block` 选项：[⬇️ 天花板方块物品](./item/behaviors/ceiling_block_item.md)、[🧱 墙面方块物品](./item/behaviors/wall_block_item.md)、[⬆️ 地面方块物品](./item/behaviors/ground_block_item.md)、[2️⃣ 双层方块物品](./item/behaviors/double_high_block_item.md)、[🔢 多层方块物品](./item/behaviors/multi_high_block_item.md)、[🌊 液体碰撞方块物品](./item/behaviors/liquid_collision_block_item.md)。
+:::
+
+:::note
+简而言之：[`settings.item`](block/settings#物品) 是**方块 → 物品**（方块应该为哪个物品，一个方块只能绑定一个物品）。
+[🧱 方块物品](item/behaviors/block_item)行为是**物品 → 方块**（物品放置哪个方块，一个物品可以绑定多个方块）。
+要让玩家能通过物品放置的方块，必须在物品上配置[🧱 方块物品](item/behaviors/block_item)行为 —— 仅设置 [`settings.item`](block/settings#物品) 是不能让物品变得可放置的。
+:::
+
+## 遇到不知道怎么配置时该看哪里
+
+根据你想做的事找到对应页面：
+
+| 你想要...                      | 去看                                                                      |
+|:----------------------------|:------------------------------------------------------------------------|
+| 给它模型、纹理或朝向等                 | [🔣 方块状态](./block/states.md)                                           |
+| 改硬度、音效、亮度、熔岩可燃性、合适挖掘工具等     | [🔧 方块设置](./block/settings.md)                                         |
+| 让它能生长、下落、纯粹、蔓延，或像门等         | [🕹️ 方块行为](./block/behaviors.md)                                       |
+| 查某个行为需要哪些属性类型               | [ℹ️ 属性](./block/states/properties.md)                                  |
+| 控制掉落物                       | [🎲 战利品表](../reference/loot_table.md)                                  |
+| 让它掉落经验                      | [💎 掉落经验方块](./block/behaviors/drop_experience_block.md)                |
+| 对放置或破坏等做出反应                 | [🪇 事件](../reference/events.md) · [⚖️ 条件](../reference/conditions.md) |
+| 渲染物品、文字、自定义模型               | [🫑 方块实体渲染器](./block/states/entity_renderer.md)                        |
+| 让方块能通过物品放置                  | [↑ 绑定物品](#将方块和物品绑定到一起) · [🧱 方块物品](./item/behaviors/block_item.md)     |
+| 通过原版标签数据驱动（加速挖掘、原木、信标基座...） | [🏷️ 方块标签](../reference/block_tags.md)                                 |

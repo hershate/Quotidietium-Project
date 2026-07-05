@@ -1,0 +1,177 @@
+# 👻 特殊模型
+
+## 简介
+
+[👻 特殊模型](https://zh.minecraft.wiki/w/物品模型映射#special)
+
+调用游戏的硬编码渲染器渲染物品堆叠。物品堆叠渲染时的渲染变换、粒子纹理变量等可以从物品模型中获取。
+
+:::caution
+当使用 `minecraft:special` 时，你需要指定一个**硬编码渲染器**。`path` 参数是基础模型渲染所必需的。
+:::
+
+```yaml
+items:
+  default:gui_head_size_1:
+    model:
+      type: minecraft:special
+      path: minecraft:item/custom/gui_head_size_1
+      model:
+        type: minecraft:head
+        kind: player
+      transformation: # 可选; 模型变换; 26.1+
+        scale: 1,1,1 # 以原点为中心缩放模型
+        translation: 0,0,0 # 平移变换
+        right_rotation: # 初始旋转
+          angle: 0.0 # 表示绕旋转轴的旋转角度（以弧度为单位）
+          axis: 0,0,0 # 一个3维向量，表示旋转轴
+        left_rotation: 0,0,0,0 # 再次旋转模型
+```
+
+## 硬编码渲染器
+
+请查看 [https://zh.minecraft.wiki/w/物品模型映射#special](https://zh.minecraft.wiki/w/物品模型映射#special) 以获取每个参数的解释。
+
+### minecraft\:trident
+
+> 渲染三叉戟
+
+### minecraft\:conduit
+
+> 渲染潮涌核心
+
+### minecraft\:shield
+
+> 渲染盾牌，底色和图案取决于 `base_color` 和 `banner_patterns` 组件
+
+### minecraft\:decorated\_pot
+
+> 渲染饰纹陶罐，四个面取决于 `pot_decorations` 组件
+
+### minecraft\:hanging\_sign
+
+> 根据指定的纹理渲染悬挂式告示牌
+
+```yaml
+model:
+  type: "minecraft:hanging_sign"
+  attachment: "ceiling_middle" # 26.1+
+  wood_type: "oak"
+  texture: ...
+```
+
+### minecraft\:standing\_sign
+
+> 根据指定的纹理渲染告示牌
+
+```yaml
+model:
+  type: "minecraft:standing_sign"
+  attachment: "ground" # 26.1+
+  wood_type: "oak"
+  texture: ...
+```
+
+### minecraft\:head
+
+> 按照指定的头颅类型渲染生物头颅 \[当适用时，使用 `minecraft:profile` 组件中的玩家游戏档案信息。(1.21.4-1.21.5)]
+
+```yaml
+model:
+  type: "minecraft:head"
+  kind: player
+  texture: ...
+  animation: 0.0
+```
+
+### minecraft\:player\_head (1.21.6+)
+
+> 渲染玩家的头，皮肤取决于 `profile` 组件
+
+```yaml
+model:
+  type: "minecraft:player_head"
+```
+
+### minecraft\:chest
+
+> 根据指定的纹理和开合程度渲染箱子
+
+```yaml
+model:
+  type: "minecraft:chest"
+  chest_type: "single" # 26.1+
+  openness: 0.0
+  texture: ...
+```
+
+### minecraft\:shulker\_box
+
+> 根据指定的纹理、开合程度和方向渲染潜影盒
+
+```yaml
+model:
+  type: "minecraft:shulker_box"
+  openness: 0.0
+  orientation: up # 1.21.4~1.21.11
+  texture: ...
+```
+
+### minecraft\:bed (已在 26.2 移除)
+
+> 根据指定的纹理渲染床
+
+```yaml
+model:
+  type: "minecraft:bed"
+  part: "head" # 26.1~26.1.2
+  texture: ...
+```
+
+### minecraft\:banner
+
+> 根据底色和 `banner_patterns` 物品堆叠组件渲染旗帜
+
+```yaml
+model:
+  type: "minecraft:banner"
+  attachment: "ground" # 26.1+
+  color: white
+```
+
+### minecraft\:copper_golem_statue
+
+> 根据指定的纹理渲染铜傀儡像
+
+```yaml
+model:
+  type: "minecraft:copper_golem_statue"
+  pose: sitting
+  texture: ...
+```
+
+### minecraft\:bell (26.1+)
+
+> 渲染钟的动画部分
+
+### minecraft\:book (26.1+)
+
+> 渲染附魔台和讲台上的书
+
+```yaml
+model:
+  type: "minecraft:book"
+  open_angle: 0
+  page1: 0
+  page2: 0
+```
+
+### minecraft\:end\_cube (26.1+)
+
+> 渲染末地折跃门或末地传送门
+
+```yaml
+model:
+  type: "minecraft:end_cube"
+  effect: "portal"
+```

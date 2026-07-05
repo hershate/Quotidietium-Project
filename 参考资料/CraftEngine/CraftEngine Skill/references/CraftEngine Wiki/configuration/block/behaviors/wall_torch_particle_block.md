@@ -1,0 +1,80 @@
+# ✨ 墙上火把粒子方块
+
+**方块实体**
+
+**墙上火把粒子方块**按固定间隔生成粒子效果，类似原版的墙上的火把。`facing` 属性用于确定粒子相对于方块的位置，并随方块朝向自动旋转。
+
+| 属性名称   | 属性类型      | 是否必需 |
+|--------|-----------|------|
+| facing | direction | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:amethyst_wall_torch:
+    behavior:
+      type: wall_torch_particle_block
+      tick_interval: 10 # 粒子生成间隔，单位：刻（默认 10）
+      particles:        # 具体选项见下方粒子参数
+        - particle: smoke
+          x: 0.5
+          y: 0.7
+          z: 0.5
+          count: 1
+          offset_x: 0
+          offset_y: 0
+          offset_z: 0
+          speed: 0
+```
+
+![](/img/wall_torch_particle_block.png)
+
+## 粒子参数
+
+```yaml
+particle: minecraft:end_rod # 粒子类型; 必填; 字符串
+x: 0 # 生成的 x 相对坐标; 可选; 数字; 默认值: 0
+y: 0 # 生成的 y 相对坐标; 可选; 数字; 默认值: 0
+z: 0 # 生成的 z 相对坐标; 可选; 数字; 默认值: 0
+count: 5 # 每次生成数量; 可选; 数字; 默认值: 1
+offset_x: 0.3 # x 方向随机扩散; 可选; 数字; 默认值: 0
+offset_y: 0.3 # y 方向随机扩散; 可选; 数字; 默认值: 0
+offset_z: 0.3 # z 方向随机扩散; 可选; 数字; 默认值: 0
+speed: 0 # 粒子速度; 可选; 数字; 默认值: 0
+
+# 以下参数仅在粒子为特定类型时才有效。
+
+# 带物品粒子选项的粒子类型：item
+item: default:chinese_lantern
+
+# 带方块粒子选项的粒子类型：block、block_marker、falling_dust、dust_pillar 和 block_crumble
+block_state: default:plam_log[axis=y]
+
+# 带幽匿块充能粒子选项的粒子类型：sculk_charge
+charge: 1.5
+
+# 带尖啸粒子选项的粒子类型：shriek
+shriek: 1
+
+# 带粉末粒子选项的粒子类型：dust
+color: 255,255,255
+scale: 1.0
+
+# 带粉末颜色过渡选项的粒子类型：dust_color_transition
+from: 255,255,255
+to: 0,0,0
+scale: 4.0
+
+# 带振动粒子选项的粒子类型：vibration
+target_x: 0
+target_y: 1
+target_z: 0
+arrival_time: 10
+
+# 带目标颜色粒子选项的粒子类型：trail
+target_x: 0
+target_y: 1
+target_z: 0
+duration: 10
+```

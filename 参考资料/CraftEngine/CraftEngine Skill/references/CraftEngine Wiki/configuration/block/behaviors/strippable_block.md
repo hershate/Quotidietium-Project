@@ -1,0 +1,23 @@
+# 🪓 可剥离方块
+
+**可剥离方块**可用斧右键剥离，就像原版原木。剥离后会转换为 `stripped` 选项指定的方块，并尽可能保留原方块的属性值。若某些属性被列入 `excluded_properties`，则不会继承其值，而是使用目标方块对应属性的默认值。
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_log:
+    behavior:
+      type: strippable_block
+      stripped: default:stripped_palm_log   # 剥离后转化成的方块（必需）
+      excluded_properties: []               # 转化时不继承的属性（默认空列表）
+```
+
+:::info
+
+默认情况下，会将原方块与目标方块中同名的属性一并保留。若某个属性不应在剥离后继承，可将其加入 `excluded_properties`。被排除的属性将使用目标方块对应属性的默认值。
+例如，如果原木和去皮原木都有 `axis`，但去皮原木总是默认为 `y`，你可以排除 `axis` 以免意外复制 `x` 或 `z`。
+
+:::
+
+![](/img/strippable_block.png)

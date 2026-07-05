@@ -1,0 +1,188 @@
+# ============================================================
+# 装饰与变化方块 - Example
+# 参考自: CraftEngine Wiki
+#   - change_over_time_block.md
+#   - decay_block.md
+#   - grass_block.md
+#   - leaves_block.md
+#   - simple_particle_block.md
+#   - wall_torch_particle_block.md
+#   - tint_source_block.md
+#   - snowy_block.md
+# 命名空间: example (请按需替换)
+# 使用 # << CHANGE THIS 标记需自定义的值
+# ============================================================
+
+blocks:
+
+  # ============================================================
+  # 1. 随时间更改方块 (change_over_time_block)
+  #    类似铜的氧化，每随机刻有概率转化为下一阶段方块
+  # ============================================================
+  example:copper_pillar:
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057                          # << CHANGE THIS 每随机刻转化概率（默认 0.057）
+      next_block: example:oxidized_copper_pillar   # << CHANGE THIS 目标方块（必需）
+      excluded_properties: []                      # 转化时忽略的属性列表（默认空）
+
+  # ============================================================
+  # 2. 衰变方块 (decay_block)
+  #    随时间增加 age，达最大值后转变为另一种方块
+  #    支持计划刻 / 随机刻两种模式
+  # ============================================================
+  example:permafrost:
+    behavior:
+      type: decay_block
+      decay_into: example:mud                    # << CHANGE THIS 完全衰变后变成的方块（默认 air）
+      delay: 100~200                              # << CHANGE THIS 计划刻模式：age 增加间隔（刻）；省略则使用随机刻模式
+      chance: 0.5                                 # << CHANGE THIS 每次间隔增加的概率（默认 1）
+      required_light: 0                           # << CHANGE THIS 衰变所需最低光照；0 = 始终衰变（默认 0）
+    properties:
+      age:
+        range: 0~3                                # age 属性范围（必需）
+        default: 0
+
+  # ============================================================
+  # 3. 草方块 (grass_block)
+  #    使用骨粉后尝试生成已配置的地物
+  # ============================================================
+  example:mycelial_soil:
+    behavior:
+      type: grass_block
+      feature: example:mycelium_bonemeal          # << CHANGE THIS 已配置的地物（必需）
+
+  # ============================================================
+  # 4. 树叶方块 (leaves_block)
+  #    在 PP 更新中计算到最近原木的距离，超距后枯萎
+  # ============================================================
+  example:palm_leaves:
+    behavior:
+      type: leaves_block
+    properties:
+      distance:
+        range: 1~10                               # << CHANGE THIS 最大距离（原版为 7）
+        default: 1
+      persistent:
+        default: false                            # << CHANGE THIS true = 不参与距离计算，永不枯萎
+      waterlogged:
+        default: false                            # 是否含水
+
+  # ============================================================
+  # 5. 简单粒子方块 (simple_particle_block)
+  #    按固定间隔生成粒子效果，支持多种粒子类型
+  # ============================================================
+  example:magic_crystal:
+    behavior:
+      type: simple_particle_block
+      tick_interval: 8                            # << CHANGE THIS 粒子生成间隔（刻），默认 10
+      particles:
+        # 常规粒子 - 飘浮烟雾
+        - particle: minecraft:smoke
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 1
+          offset_x: 0.2
+          offset_y: 0.1
+          offset_z: 0.2
+          speed: 0.01
+        # 粉末粒子 (dust) - 彩色光点
+        - particle: minecraft:dust
+          x: 0.5
+          y: 0.3
+          z: 0.5
+          count: 2
+          offset_x: 0.3
+          offset_y: 0.2
+          offset_z: 0.3
+          speed: 0
+          color: "100,200,255"                    # << CHANGE THIS RGB 颜色 (dust 专用)
+          scale: 1.0                              # << CHANGE THIS 粒子尺寸 (dust 专用)
+        # 颜色过渡粒子 (dust_color_transition)
+        - particle: minecraft:dust_color_transition
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 1
+          offset_x: 0.1
+          offset_y: 0.1
+          offset_z: 0.1
+          speed: 0.05
+          from: "255,100,200"                     # << CHANGE THIS 起始颜色 (dust_color_transition 专用)
+          to: "100,200,255"                       # << CHANGE THIS 结束颜色 (dust_color_transition 专用)
+          scale: 2.0                              # << CHANGE THIS 粒子尺寸 (dust_color_transition 专用)
+        # 物品粒子 (item)
+        - particle: minecraft:item
+          x: 0.5
+          y: 1.0
+          z: 0.5
+          count: 1
+          offset_x: 0.0
+          offset_y: 0.0
+          offset_z: 0.0
+          speed: 0.1
+          item: example:magic_crystal             # << CHANGE THIS 物品 ID (item 专用)
+        # 方块粒子 (block)
+        - particle: minecraft:block
+          x: 0.5
+          y: 0.0
+          z: 0.5
+          count: 1
+          offset_x: 0.5
+          offset_y: 0.0
+          offset_z: 0.5
+          speed: 0
+          block_state: example:magic_crystal      # << CHANGE THIS 方块状态 (block 专用)
+
+  # ============================================================
+  # 6. 墙上火把粒子方块 (wall_torch_particle_block)
+  #    粒子位置随 facing 朝向自动旋转
+  # ============================================================
+  example:wall_soul_lantern:
+    behavior:
+      type: wall_torch_particle_block
+      tick_interval: 6                            # << CHANGE THIS 粒子生成间隔（刻），默认 10
+      particles:
+        - particle: minecraft:soul_fire_flame
+          x: 0.5
+          y: 0.7
+          z: 0.5
+          count: 1
+          offset_x: 0.1
+          offset_y: 0.1
+          offset_z: 0.1
+          speed: 0.02
+        - particle: minecraft:ash
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 1
+          offset_x: 0.3
+          offset_y: 0.0
+          offset_z: 0.3
+          speed: 0.005
+    properties:
+      facing:
+        default: north                            # << CHANGE THIS 朝向 (direction)，粒子位置据此旋转
+
+  # ============================================================
+  # 7. 颜色提供器方块 (tint_source_block)
+  #    将物品作为颜色提供器存入方块实体，支持动态着色
+  # ============================================================
+  example:copper_coil:
+    behavior:
+      type: tint_source_block
+      drop_item: true                             # << CHANGE THIS 破坏后是否掉落存储的物品（默认 true）
+      data_key: "example:tint_source"             # << CHANGE THIS 持久化数据 NBT 键（默认 "craftengine:tint_source"）
+
+  # ============================================================
+  # 8. 覆雪方块 (snowy_block)
+  #    自动检测上方是否有雪并设置 snowy 属性
+  # ============================================================
+  example:snowy_mycelial_soil:
+    behavior:
+      type: snowy_block
+    properties:
+      snowy:
+        default: false                            # 由行为自动更新，detect 应设为 true 以允许自动检测

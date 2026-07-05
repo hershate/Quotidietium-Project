@@ -1,0 +1,214 @@
+# ============================================================================
+# CraftEngine 物品配置示例 - 基础材料与宝石
+# 参考文档: configuration/item.md, configuration/item/data.md, configuration/item/settings.md
+# 命名空间: quotidian (示例用自定义命名空间, 请按需替换)
+# ============================================================================
+# 说明:
+#   - # << CHANGE THIS 标记的值请根据实际需求修改
+#   - 所有 key 均来自上述 wiki 文档, 无杜撰字段
+#   - 完整物品结构: material(必填) + data/settings/model/behavior/events/category(可选)
+# ============================================================================
+
+items:
+
+  # ==========================================================================
+  # 示例 1: 简单宝石 - 最简配置
+  # 仅定义基础材质和名称, 适合快速创建概念物品
+  # ==========================================================================
+  quotidian:topaz_gem:
+    material: diamond                                                        # << CHANGE THIS: 基础材质模板
+    custom_model_data: 1000                                                  # << CHANGE THIS: 正整数, 决定模型映射
+    data:
+      item_name: "<!i><#FF8C00>黄玉宝石"                                     # << CHANGE THIS: <!i> 兼容 <1.20.5 的 item_name 组件
+
+  # ==========================================================================
+  # 示例 2: 宝石 + 模型映射
+  # 在示例1基础上添加 model 配置, 使物品在客户端显示自定义模型
+  # ==========================================================================
+  quotidian:sapphire_gem:
+    material: diamond                                                        # << CHANGE THIS
+    custom_model_data: 1001                                                  # << CHANGE THIS (与示例1不同值)
+    item_model: quotidian:sapphire_gem                                       # << CHANGE THIS: 1.21.2+ 模型命名空间ID
+    data:
+      item_name: "<!i><#4169E1>蓝宝石宝石"                                    # << CHANGE THIS
+      lore:                                                                  # 物品提示框描述
+        - "<gray>一种散发着深邃蓝光的宝石"
+        - "<gray>可用于高级装备锻造"
+    model:                                                                   # 自定义模型定义
+      type: "minecraft:model"                                                # << CHANGE THIS: 模型类型
+      path: "minecraft:item/custom/sapphire_gem"                             # << CHANGE THIS: 模型文件路径
+      generation:
+        parent: "minecraft:item/generated"                                    # << CHANGE THIS: 父模型
+    oversized_in_gui: true                                                   # 1.21.6+ 大物品在GUI中是否缩小显示
+    hand_animation_on_swap: true                                             # 切换物品时是否播放手部动画
+
+  # ==========================================================================
+  # 示例 3: 宝石 + 附魔 + 隐藏提示框
+  # 展示 data 下的 enchantment / hide_tooltip 用法
+  # ==========================================================================
+  quotidian:ruby_gem:
+    material: diamond                                                        # << CHANGE THIS
+    custom_model_data: 1002                                                  # << CHANGE THIS
+    item_model: quotidian:ruby_gem                                           # << CHANGE THIS
+    data:
+      item_name: "<!i><#DC143C>红玉宝石"                                      # << CHANGE THIS
+      lore:
+        - "<red>传说中由烈焰精华凝结而成"
+        - ""
+        - "<dark_red>❖ 镶嵌效果: 攻击力 +5"
+      enchantment:                                                           # 魔咒数据
+        merge: true                                                          # 是否和物品已有魔咒合并
+        enchantments:
+          minecraft:sharpness: 3                                             # << CHANGE THIS: 锋利 III
+          minecraft:fire_aspect: 1                                           # << CHANGE THIS: 火焰附加 I
+      hide_tooltip:                                                          # 隐藏指定组件的工具提示
+        - enchantments                                                       # 隐藏魔咒提示
+        - attribute_modifiers                                                # 隐藏属性修饰符提示
+      unbreakable: false                                                     # 是否不可破坏
+      attribute_modifiers:                                                   # 属性修饰符
+        - type: attack_damage                                                # << CHANGE THIS
+          amount: 2.0
+          operation: add_value                                               # add_value / add_multiplied_base / add_multiplied_total
+          slot: mainhand                                                     # 生效槽位
+        - type: luck
+          amount: 1.0
+          operation: add_value
+          slot: any
+    settings:
+      enchantable: true                                                      # 可在附魔台附魔
+      glow_color: red                                                        # << CHANGE THIS: 物品发光颜色
+
+  # ==========================================================================
+  # 示例 4: 燃料材料 + 标签系统
+  # 展示 settings 下的 fuel_time / tags / compost_probability 等机制
+  # ==========================================================================
+  quotidian:magic_coal:
+    material: coal                                                           # << CHANGE THIS
+    custom_model_data: 2000                                                  # << CHANGE THIS
+    data:
+      item_name: "<!i><#FFD700>魔法煤炭"                                     # << CHANGE THIS
+      lore:
+        - "<yellow>蕴含神秘能量的煤炭"
+        - "<gray>燃烧时间远超普通煤炭"
+    settings:
+      fuel_time: 2400                                                        # << CHANGE THIS: 燃烧时间(刻), 原版煤炭为1600
+      tags:                                                                  # 标签, 可在配方/命令中通过 #namespace:id 引用
+        - "quotidian:magic_fuels"                                            # << CHANGE THIS: 自定义标签
+        - "minecraft:coals"                                                  # << CHANGE THIS: 原版煤炭标签
+      compost_probability: 0.3                                               # << CHANGE THIS: 堆肥成功概率 (默认0.5)
+      fuel_remainder: quotidian:magic_ash                                    # << CHANGE THIS: 作为燃料消耗后返还的物品
+      drop_display: "<arg:count>x <name>"                                    # 掉落物显示格式
+
+  # ==========================================================================
+  # 示例 5: 完整参考物品 - 展示更多 settings 和 data 特性
+  # ==========================================================================
+  quotidian:emerald_gem:
+    material: emerald                                                        # << CHANGE THIS
+    custom_model_data: 1003                                                  # << CHANGE THIS
+    item_model: quotidian:emerald_gem                                        # << CHANGE THIS
+    data:
+      item_name: "<!i><#50C878>翠绿宝石"                                     # << CHANGE THIS
+      custom_name: "<#50C878>翠绿宝石"                                        # << CHANGE THIS: 铁砧重命名风格名称
+      lore:
+        # 基础描述
+        - content: "<green>森林之心 — 远古德鲁伊的遗物"
+        # 优先级示例: 数值越低越靠顶部
+        - content: "<dark_green>⚜ 传说物品 ⚜"
+          priority: 1
+        - content: "<gray>──────────────────"
+        # 多行文本 + 条件显示
+        - content: "<green>森林守护者的祝福"
+          split_lines: true                                                  # 启用自动换行
+          conditions:
+            - type: permission                                               # << CHANGE THIS
+              permission: quotidian.emerald.blessing
+        - content: "<gray>──────────────────"
+          priority: 3
+        # 默认显示行
+        - content: "<gray>可用于激活远古祭坛"
+          priority: 4
+      enchantment:
+        minecraft:protection: 2
+        minecraft:unbreaking: 3
+      hide_tooltip:
+        - enchantments
+      unbreakable: true
+      attribute_modifiers:
+        - type: armor
+          amount: 4.0
+          operation: add_value
+          slot: chest
+        - type: knockback_resistance
+          amount: 0.2
+          operation: add_value
+          slot: any
+      block_state:                                                           # 方块状态 (当 material 为 note_block 等时有效)
+        note: "12"
+        instrument: "harp"
+        powered: "false"
+    settings:
+      tags:
+        - "quotidian:gems"
+        - "quotidian:precious_materials"
+      repairable:                                                            # 可修复性详细控制
+        crafting_table: true                                                 # 工作台修复
+        anvil_repair: true                                                   # 铁砧材料修复
+        anvil_combine: false                                                 # 铁砧合并修复
+      anvil_repair_item:                                                     # 铁砧修复材料
+        - target: "#quotidian:gems"                                          # 使用标签
+          amount: 25                                                         # 固定恢复耐久度
+        - target: "minecraft:emerald"
+          percent: 0.50                                                      # 恢复50%总耐久度
+      renameable: true                                                       # 是否可在铁砧重命名
+      enchantable: true
+      invulnerable:                                                          # 不受指定伤害类型摧毁
+        - lava
+        - fire
+        - fire_tick
+        - block_explosion
+      keep_on_death_chance: 0.75                                             # << CHANGE THIS: 死亡保留概率
+      destroy_on_death_chance: 0.0                                           # << CHANGE THIS: 死亡损毁概率
+      glow_color: green                                                      # << CHANGE THIS: 发光颜色
+      ingredient_substitute:                                                 # 合成配方中可作为替代的原料
+        - minecraft:emerald
+        - minecraft:diamond
+
+  # ==========================================================================
+  # 示例 6: 带 equipment 和 projectile 的进阶材料
+  # ==========================================================================
+  quotidian:topaz_crystal:
+    material: diamond                                                        # << CHANGE THIS
+    custom_model_data: 1004                                                  # << CHANGE THIS
+    item_model: quotidian:topaz_crystal                                      # << CHANGE THIS
+    data:
+      item_name: "<!i><#FF8C00>黄玉水晶"                                     # << CHANGE THIS
+      lore:
+        - "<gold>纯粹的光之结晶"
+        - "<gray>装备后可散发黄玉光芒"
+      dyed_color: 255,140,0                                                  # << CHANGE THIS: 染色颜色 (RGB)
+      trim:                                                                  # 盔甲纹饰
+        pattern: eye                                                         # << CHANGE THIS: 纹饰图案
+        material: iron                                                       # << CHANGE THIS: 纹饰材料
+      pdc:                                                                   # 持久化数据容器, 供其他插件识别
+        source: "quotidian"
+        tier: 3
+        tags:
+          - "gem"
+          - "crafting"
+    settings:
+      equipment:                                                             # 装备设置
+        asset_id: quotidian:topaz                                            # << CHANGE THIS
+        slot: head                                                           # 装备槽位
+        dispensable: true                                                    # 发射器可穿戴
+        damage_on_hurt: true                                                 # 受击受损
+        swappable: true                                                      # 可直接穿戴
+        equip_on_interact: true                                              # 1.21.5+ 交互穿戴
+      dyeable: true                                                          # 可在工作台染色
+      dye_color: 255,140,0                                                   # 染色配方中提供的颜色
+      firework_color: 255,140,0                                              # 烟火之星配方中提供的颜色
+      hat_height: 1.2                                                        # 需要 CustomNameplates
+      craft_remainder:                                                       # 合成后返还物品
+        type: fixed
+        item: quotidian:topaz_shard
+        count: 1
+      consume_replacement: quotidian:topaz_shard                             # 消耗后返回物品

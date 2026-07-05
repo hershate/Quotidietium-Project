@@ -1,0 +1,170 @@
+# =============================================================================
+# CraftEngine 战利品表模板
+# 参考: reference/loot_table.md, configuration/vanilla_loot.md
+# =============================================================================
+# 注意: loot: 是 blocks/items/furniture 的子键（不是独立根键）
+#       可复用模板通过 templates: 定义
+#       独立根键 vanilla_loots: 用于覆盖原版掉落
+# =============================================================================
+
+templates:
+  custom:loot_table/self:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "${__NAMESPACE__}:${__ID__}"
+
+  custom:loot_table/furniture:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: "${item:-custom:fallback}"
+
+blocks:
+  # ===========================================================================
+  # 1. 基础掉落 — 掉落自身
+  # ===========================================================================
+  custom:stone_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/stone_block"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:stone_block"
+
+  # ===========================================================================
+  # 2. 精准采集分支 + 时运 + 经验
+  # ===========================================================================
+  custom:ruby_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/ruby_ore"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: "custom:ruby_ore"
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: "custom:ruby"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops
+                    - type: explosion_decay
+                    - type: drop_exp
+                      count:
+                        type: uniform
+                        min: 3
+                        max: 7
+
+  # ===========================================================================
+  # 3. 权重随机 + 数量限制
+  # ===========================================================================
+  custom:lucky_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/lucky_block"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:diamond"
+              weight: 10
+            - type: item
+              item: "custom:emerald"
+              weight: 30
+            - type: item
+              item: "custom:coal"
+              weight: 60
+          functions:
+            - type: set_count
+              count: 3
+              add: true
+            - type: limit_count
+              min: 1
+              max: 5
+
+  # ===========================================================================
+  # 4. 引用模板
+  # ===========================================================================
+  custom:template_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "minecraft:block/custom/template_block"
+    loot:
+      template: custom:loot_table/self
+
+furniture:
+  # ===========================================================================
+  # 5. 家具掉落
+  # ===========================================================================
+  custom:bench:
+    settings:
+      item: custom:bench
+    variants:
+      ground:
+        elements:
+          - item: custom:bench
+    loot:
+      template: custom:loot_table/furniture
+      arguments:
+        item: custom:bench
+
+  custom:table:
+    settings:
+      item: custom:table
+    variants:
+      ground:
+        elements:
+          - item: custom:table
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: "custom:table"
+
+# ===========================================================================
+# 原版战利品覆盖 (vanilla_loots:)
+# ===========================================================================
+vanilla_loots:
+  custom:grass_loot:
+    type: block
+    target: "minecraft:grass"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:grass_seeds"
+
+  custom:sheep_loot:
+    type: entity
+    target: "minecraft:sheep"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "custom:quality_mutton"

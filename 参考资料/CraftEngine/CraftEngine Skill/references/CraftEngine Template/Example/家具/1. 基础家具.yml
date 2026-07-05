@@ -1,0 +1,372 @@
+# =============================================================================
+# 基础家具示例 - CraftEngine 家具配置
+# 参考: 参考资料/CraftEngine/CraftEngine Wiki/configuration/furniture.md
+#       参考资料/CraftEngine/CraftEngine Wiki/configuration/furniture/settings.md
+#       参考资料/CraftEngine/CraftEngine Wiki/configuration/furniture/variants.md
+# 命名空间: my (自定义)
+# =============================================================================
+#
+# 展示场景:
+#   1. 简单装饰家具 (item_display)
+#   2. 椅子 + 座位判定箱 (shulker hitbox + seats)
+#   3. 桌子 + 多个元素 + 文本展示 (text_display)
+#   4. 壁挂变体 (wall)
+#   5. 天花板变体 + 发光 (ceiling + glow_color + brightness)
+#   6. 多元素组合家具 (item + armor_stand + custom hitbox)
+#
+# 注: 物品 lore / 描述文本在对应物品配置文件 (furniture_item.md) 中定义,
+#     不属于家具(furniture.yml)配置范畴, 此处不纳入。
+
+furniture:
+
+  # ==========================================================================
+  # 1. 简单装饰家具 -- 装饰花瓶
+  #    展示 ground 变体 + interaction 判定箱的基础配置
+  # ==========================================================================
+  my:decorative_vase:                                          # << CHANGE THIS
+    settings:
+      item: my:decorative_vase                                 # << CHANGE THIS
+      sounds:
+        break: minecraft:block.glass.break
+        place: minecraft:block.glass.place
+        hit: minecraft:block.glass.hit
+      hit_times: 1                                             # << CHANGE THIS
+      adventure_mode_breaking: true
+    variants:
+      ground:
+        loot_spawn_offset: 0,0.5,0                            # << CHANGE THIS
+        entity_culling: true
+        elements:
+          - item: my:decorative_vase
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            shadow_radius: 0.8                                 # << CHANGE THIS
+            shadow_strength: 0.5                               # << CHANGE THIS
+            apply_dyed_color: true
+        hitboxes:
+          - type: interaction
+            position: 0,0,0
+            scale: 0.8,1.2                                    # << CHANGE THIS
+            interactive: true
+            blocks_building: true
+            can_use_item_on: false
+            can_be_hit_by_projectile: false
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:decorative_vase
+
+  # ==========================================================================
+  # 2. 椅子 + 座位判定箱 (潜影贝判定箱 + seats)
+  #    展示 shulker hitbox + peek + direction + 多座位
+  # ==========================================================================
+  my:oak_chair:                                                # << CHANGE THIS
+    settings:
+      item: my:oak_chair                                      # << CHANGE THIS
+      sounds:
+        break: minecraft:block.bamboo_wood.break
+        place: minecraft:block.bamboo_wood.place
+        hit: minecraft:block.bamboo_wood.hit
+      hit_times: 3                                             # << CHANGE THIS
+      correct_tools:                                           # << CHANGE THIS
+        - "#minecraft:axes"
+      adventure_mode_breaking: false
+    variants:
+      ground:
+        loot_spawn_offset: 0.5,0.5,0
+        entity_culling:
+          view_distance: 48                                    # << CHANGE THIS
+          ray_tracing: false
+        elements:
+          - item: my:oak_chair
+            display_transform: fixed
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            shadow_radius: 1.0
+            shadow_strength: 0.2
+        hitboxes:
+          - type: shulker
+            position: 0,0,0
+            scale: 1
+            direction: east
+            peek: 100
+            blocks_building: true
+            interaction_entity: true
+            interactive: true
+            invisible: false
+            seats:
+              - 0,0.5,-0.1 0                                  # << CHANGE THIS
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:oak_chair
+
+  # ==========================================================================
+  # 3. 桌子 + 多元素拼接 + 文本展示
+  #    桌面 (item_display) + 桌腿 (item_display) + 欢迎文本 (text_display)
+  #    展示 type: text_display 的全部可选参数
+  # ==========================================================================
+  my:dining_table:                                             # << CHANGE THIS
+    settings:
+      item: my:dining_table                                   # << CHANGE THIS
+      sounds:
+        break:
+          id: minecraft:block.deepslate.break
+          pitch: 1.0
+          volume: 0.75
+        place: minecraft:block.deepslate.step
+        hit:
+          id: minecraft:block.deepslate.hit
+          pitch: 0.5
+          volume: 0.5
+      hit_times: 4                                             # << CHANGE THIS
+      correct_tools:                                           # << CHANGE THIS
+        - "#minecraft:pickaxes"
+    variants:
+      ground:
+        loot_spawn_offset: 0,0.5,0
+        elements:
+          # 桌面主体
+          - item: my:dining_table_top
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0.8,0.5
+            translation: 0,0.5,0
+            scale: 2,0.1,1.5                                  # << CHANGE THIS
+            shadow_radius: 1.5
+            shadow_strength: 0.3
+            rotation: 0                                       # Y 轴旋转
+          # 桌腿 1 (左下)
+          - item: my:dining_table_leg
+            display_transform: none
+            billboard: fixed
+            position: 0.15,0,0.15
+            translation: 0,0.5,0
+            scale: 0.3,1,0.3                                  # << CHANGE THIS
+            rotation: 0,0,0.7071,0.7071                       # 四元数旋转
+          # 桌腿 2 (右上)
+          - item: my:dining_table_leg
+            display_transform: none
+            billboard: fixed
+            position: 0.85,0,0.85
+            translation: 0,0.5,0
+            scale: 0.3,1,0.3
+          # 文本展示 -- 欢迎标语
+          - type: text_display
+            text: "<gold>欢迎!<white>\n祝您用餐愉快, <papi:player_name>"
+            billboard: center
+            position: 0.5,1.5,0.5
+            translation: 0,0,0
+            scale: 1.5                                        # << CHANGE THIS
+            background_color: 80,0,0,0                        # << CHANGE THIS
+            text_opacity: -1
+            has_shadow: true
+            is_see_through: false
+            use_default_background_color: false
+            alignment: center
+            line_width: 300
+            glow_color: 255,215,0                             # 金色发光
+            brightness:
+              block_light: 15
+              sky_light: 15
+            view_range: 8.0
+        hitboxes:
+          - type: interaction
+            position: 0,0,0
+            scale: 2,1.5,1.5                                  # << CHANGE THIS
+            interactive: true
+            blocks_building: true
+            can_use_item_on: true
+            can_be_hit_by_projectile: false
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:dining_table
+
+  # ==========================================================================
+  # 4. 壁挂变体 -- 墙上书架
+  #    展示 wall 变体: position 微偏移防止黑屏 + 反向 translation 修正
+  #    shulker + interaction 双判定箱 + 座位
+  # ==========================================================================
+  my:wall_shelf:                                               # << CHANGE THIS
+    settings:
+      item: my:wall_shelf                                     # << CHANGE THIS
+      sounds:
+        break: minecraft:block.bamboo_wood.break
+        place: minecraft:block.bamboo_wood.place
+        hit: minecraft:block.bamboo_wood.hit
+      hit_times: 2                                             # << CHANGE THIS
+      correct_tools:                                           # << CHANGE THIS
+        - "#minecraft:axes"
+      adventure_mode_breaking: true
+    variants:
+      wall:
+        loot_spawn_offset: 0,0,0
+        entity_culling:
+          aabb: -0.5,0,-0.2,0.5,0.6,0.2                       # << CHANGE THIS
+          view_distance: 48
+          ray_tracing: false
+        elements:
+          - item: my:wall_shelf
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0.4,0.501                           # Z 微偏移避免黑屏
+            translation: 0,0,-0.001                            # 反向修正位置
+            scale: 1,0.5,0.2                                  # << CHANGE THIS
+            glow_color: 255,255,200                            # 暖白发光
+            brightness:
+              block_light: 8
+              sky_light: 4
+        hitboxes:
+          # 硬碰撞 (shulker) -- 书架主体
+          - type: shulker
+            position: 0,0,0
+            scale: 1,0.5,0.2
+            direction: north
+            peek: 0
+            blocks_building: true
+            interaction_entity: false
+            interactive: false
+          # 交互判定 (interaction) -- 允许入座
+          - type: interaction
+            position: 0,0.2,0
+            scale: 1,0.3,0.15
+            interactive: true
+            blocks_building: false
+            seats:
+              - 0,0,0                                          # 无旋转,玩家自由旋转
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:wall_shelf
+
+  # ==========================================================================
+  # 5. 天花板变体 + 发光效果 -- 吊灯
+  #    展示 ceiling 变体 + glow_color + brightness (自发光)
+  #    双元素拼接: 链条 + 灯罩, 带完整 entity_culling 参数
+  # ==========================================================================
+  my:hanging_lamp:                                             # << CHANGE THIS
+    settings:
+      item: my:hanging_lamp                                   # << CHANGE THIS
+      sounds:
+        break:
+          id: minecraft:block.glass.break
+          pitch: 1.5
+          volume: 1.0
+        place: minecraft:block.glass.place
+        hit: minecraft:block.glass.hit
+      hit_times: 1
+    variants:
+      ceiling:
+        loot_spawn_offset: 0,0,0.5
+        entity_culling:
+          view_distance: 32                                    # << CHANGE THIS
+          ray_tracing: true
+        elements:
+          # 链条 (细长)
+          - item: my:hanging_lamp_chain
+            display_transform: none
+            billboard: fixed
+            position: 0.5,-0.3,0.501                          # Y 负值向下延伸
+            translation: 0,0.3,-0.001
+            scale: 0.08,0.8,0.08
+            pitch: 0.0
+            yaw: 0.0
+          # 灯罩 (发光)
+          - item: my:hanging_lamp_shade
+            display_transform: none
+            billboard: fixed
+            position: 0.5,-0.8,0.501
+            translation: 0,0,-0.001
+            scale: 0.8,0.3,0.8                                # << CHANGE THIS
+            glow_color: 255,200,50                             # 暖黄发光
+            brightness:
+              block_light: 15
+              sky_light: 0
+            shadow_radius: 2.0
+            shadow_strength: 0.1
+            rotation: 0,0,0                                    # 欧拉角: Y,X,Z
+        hitboxes:
+          - type: interaction
+            position: 0,0,0
+            scale: 0.8,1.2,0.8
+            interactive: true
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:hanging_lamp
+
+  # ==========================================================================
+  # 6. 多元素组合家具 -- 附魔衣柜
+  #    展示: item_display + item(掉落物) + armor_stand + custom hitbox
+  #    + glow_color 命名颜色 + tint_source 染色源
+  # ==========================================================================
+  my:enchanted_wardrobe:                                       # << CHANGE THIS
+    settings:
+      item: my:enchanted_wardrobe                             # << CHANGE THIS
+      sounds:
+        break: minecraft:block.bamboo_wood.break
+        place: minecraft:block.bamboo_wood.place
+        hit:
+          id: minecraft:block.bamboo_wood.hit
+          pitch: 0.8
+          volume: 1.0
+      hit_times: 5                                             # << CHANGE THIS
+      correct_tools:                                           # << CHANGE THIS
+        - "#minecraft:axes"
+        - "minecraft:diamond_pickaxe"
+      adventure_mode_breaking: true
+    variants:
+      ground:
+        entity_culling: false
+        elements:
+          # 衣柜主体 (item_display)
+          - item: my:wardrobe_body
+            display_transform: none
+            billboard: fixed
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            scale: 1.2,2,0.8                                  # << CHANGE THIS
+            glow_color: 100,150,255                            # 蓝色附魔发光
+          # 门把手 (item 掉落物渲染)
+          - type: item
+            item: my:wardrobe_handle
+            position: 0.5,1.2,0.51
+            tint_source:
+              - dyed_color
+          # 盔甲展示 (armor_stand)
+          - type: armor_stand
+            item: minecraft:diamond_chestplate
+            position: 0.5,0.3,0.5
+            pitch: 0.0
+            yaw: 0.0
+            scale: 1.2
+            small: false
+            glow_color: aqua                                  # 命名颜色
+            tint_source:
+              - potion_contents
+        hitboxes:
+          # 硬碰撞 (shulker) -- 衣柜主体
+          - type: shulker
+            position: 0,0,0
+            scale: 1.2,2,0.8
+            direction: north
+            peek: 0
+            blocks_building: true
+            interaction_entity: true
+            interactive: false
+            invisible: false
+          # 软碰撞 (custom) -- 门前区域防止穿模
+          - type: custom
+            position: 0.5,0.5,0.5
+            scale: 0.8
+            entity_type: slime
+            seats:
+              - 0.5,0.1,0.8 0
+    loot:
+      template: default:loot_table/furniture
+      arguments:
+        item: my:enchanted_wardrobe

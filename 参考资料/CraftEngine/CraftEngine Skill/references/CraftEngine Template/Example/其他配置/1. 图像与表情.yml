@@ -1,0 +1,154 @@
+# ============================================================================
+# 图像(Image)与表情(Emoji)配置示例
+# 参考 wiki: configuration/image.md, configuration/emoji.md
+# 命名空间: qdtp  << CHANGE THIS
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 一、图像配置 (images)
+# ---------------------------------------------------------------------------
+images:
+
+  # ── 单字符位图 ──────────────────────────────────────────────────────
+  # 一个字符映射一张图
+  qdtp:coin:
+    height: 140                                       # << CHANGE THIS
+    ascent: 18                                        # << CHANGE THIS (必须 <= height)
+    font: minecraft:internal                          # << CHANGE THIS
+    file: minecraft:font/gui/custom/coin.png          # << CHANGE THIS
+    char: '뀀'                                        # 可选，若不填则插件自动分配
+
+  # 为便于管理，也可用 UTF-8 数字 ID 指定字符
+  qdtp:star:
+    height: 120
+    ascent: 16
+    font: minecraft:internal
+    file: minecraft:font/gui/custom/star.png
+    char: 1001
+
+  # ── 多字符位图（手动指定 chars） ────────────────────────────────────
+  # 一张精灵图包含多个图标，按行列排列
+  qdtp:icons:
+    height: 10
+    ascent: 9
+    font: minecraft:icons                             # << CHANGE THIS
+    file: minecraft:font/image/icons.png              # << CHANGE THIS
+    chars:
+      - '뀀뀁뀂'                                     # 第一行
+      - '뀃뀄뀅'                                     # 第二行
+
+  # ── 多字符位图（自动分配 grid_size） ─────────────────────────────────
+  # 不写 chars，由 grid_size 自动生成字符布局
+  qdtp:items:
+    height: 18
+    ascent: 14
+    font: minecraft:internal
+    file: minecraft:font/image/items.png              # << CHANGE THIS
+    grid_size: 4,6                                    # 行数,列数  << CHANGE THIS
+
+  # ── 引用（为精灵图中的某个格子设置别名） ────────────────────────────
+  # 方法一：直接 ref + :行:列
+  qdtp:sword:
+    ref: qdtp:items:0:0                               # 第 0 行第 0 格
+
+  # 方法二：ref + row / column 分写
+  qdtp:pickaxe:
+    ref: qdtp:items
+    row: 0
+    column: 1                                         # 第 0 行第 1 格
+
+  qdtp:apple:
+    ref: qdtp:items
+    row: 2
+    column: 3
+
+  # ── 用于原版语言文件的图片（必须使用 minecraft:default 字体） ──────
+  # 当图片需要替换原版容器标题等语言文件内容时，必须设为 default 字体
+  qdtp:custom_ui:
+    height: 140
+    ascent: 18
+    font: minecraft:default                           # 必须用 default 字体
+    file: minecraft:font/gui/custom/gui.png           # << CHANGE THIS
+
+# ---------------------------------------------------------------------------
+# 二、数据包拦截配置 (使 <image:...> 标签在聊天、TAB 等位置生效)
+# 注：此段应放在 config.yml 中，此处仅为示例
+# ---------------------------------------------------------------------------
+# image:
+#   intercept-packets:
+#     system-chat: true      # 系统聊天消息
+#     tab-list: true         # TAB 玩家列表
+#     actionbar: true        # 动作栏
+#     boss-bar: true         # Boss 血条
+#     titles: true           # 标题
+#     team: true             # 队伍名称
+
+# ---------------------------------------------------------------------------
+# 三、表情配置 (emoji)
+# ---------------------------------------------------------------------------
+emoji:
+
+  # ── 基础表情 ────────────────────────────────────────────────────────
+  qdtp:time:
+    permission: qdtp.emoji.time                      # << CHANGE THIS
+    content: "<white><arg:emoji></white>"
+    image: "qdtp:icons:0:0"                          # 引用精灵图 qdtp:icons 第0行0列
+    keywords:
+      - ":time:"                                     # << CHANGE THIS
+
+  # ── 带权限的表情 ────────────────────────────────────────────────────
+  qdtp:vip:
+    permission: qdtp.emoji.vip                       # << CHANGE THIS
+    content: "<gradient:#FFD700:#FF8C00><arg:emoji></gradient>"
+    image: "qdtp:icons:1:2"
+    keywords:
+      - ":vip:"
+      - ":v:"
+
+  # ── 丰富内容：悬停提示 + PlaceholderAPI ─────────────────────────────
+  # 玩家输入 :pos: 发送当前坐标
+  qdtp:location:
+    permission: qdtp.emoji.location                  # << CHANGE THIS
+    content: >
+      <hover:show_text:'使用<yellow>"<arg:keyword>"</yellow>
+      来发送位置"<arg:emoji>"'>
+      <white><arg:emoji></white>
+      <bold><gray>[ <papi:player_x>,<papi:player_y>,<papi:player_z> ]</bold>
+      </hover>
+    image: "qdtp:icons:2:0"
+    keywords:
+      - ":pos:"                                      # << CHANGE THIS
+
+  # ── content_overrides：不同场景不同内容 ──────────────────────────────
+  qdtp:ping:
+    permission: qdtp.emoji.ping                      # << CHANGE THIS
+    image: "qdtp:icons:0:1"
+    keywords:
+      - ":ping:"                                     # << CHANGE THIS
+    content: <!shadow><white><arg:emoji></white></!shadow>
+    content_overrides:
+      chat: >
+        <hover:show_text:'<l10n:emoji.tip:"<arg:keyword>":"<arg:emoji>">'>
+        <red><arg:emoji></red>
+        </hover>
+      book: >
+        <hover:show_text:'<arg:keyword>'>
+        <gray><arg:emoji></gray>
+        </hover>
+      anvil: <!i><!shadow><white><arg:emoji></white></!shadow></!i>
+      sign: <dark_gray><arg:emoji></dark_gray>
+      command: <gold><arg:emoji></gold>
+
+  # ── 多行 content 格式（YAML 列表，CraftEngine 自动合并） ────────────
+  qdtp:weather:
+    permission: qdtp.emoji.weather                   # << CHANGE THIS
+    image: "qdtp:items:1:2"
+    keywords:
+      - ":sun:"                                      # << CHANGE THIS
+    content:                                          # 多行 -> 自动合并为单行
+      - <hover:show_text:'<l10n:emoji.weather.tip>'>
+      - <!shadow>
+      - <aqua><arg:emoji></aqua>
+      - <italic><papi:server_time_MM/dd></italic>
+      - </!shadow>
+      - </hover>

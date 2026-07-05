@@ -1,0 +1,81 @@
+# 🗡️ 物品
+
+## 概览
+
+**完整的物品配置包含以下部分：**
+
+- **material** **必填**
+
+`material` 作为物品的基础模板，例如 `paper` 或 `wooden_sword`。
+
+- **client_bound_material** **可选** **付费版专属**
+
+`client_bound_material` 表示客户端用于渲染该物品的基础材质。你可以使用此功能为服务端侧和客户端侧的物品分配完全不同的基础材质，从而影响它们在服务器或客户端环境中的特定行为。
+
+- **custom_model_data** **可选**
+
+`custom_model_data` 是一个正整数，具有相同材质的自定义物品应使用不同的 custom_model_data 值。该值决定了物品显示的模型，对下面的模型部分至关重要。
+
+- **item_model** (1.21.2+) **可选**
+
+定义此物品模型的命名空间ID。例如 `default:custom_book`
+
+- **client_bound_model** **可选** **默认值: config.yml** **付费版专属**
+
+默认情况下，使 custom_model_data 和 item_model 在客户端生效。这带来了一些好处。例如，您可以动态更新模型值，而不会导致玩家现有物品出现不一致。主要缺点是依赖 custom_model_data 进行物品识别的插件将无法正常工作，因为该数据不存在于服务端的物品实例中。
+
+- [**data**](item/data.md) **可选**
+
+物品数据指的是旧版本中物品的 NBT（命名二进制标签），或 1.20.5 及以上版本中的物品组件。通过这些数据，我们可以自定义物品的各个方面，例如其名称、描述、属性以及原版 Minecraft 提供的其他功能。
+
+- [**client_bound_data**](./item/data.md#客户端侧数据) **可选** **付费版专属**
+
+client_bound_data 仅存在于客户端，不涉及任何服务端组件。使用客户端物品组件，您可以轻松地实时更新物品描述——包括 item_model 和 custom_model_data 等属性。此外，与其他插件不同，CraftEngine 物品在创造模式下会永久保持不变！
+
+- [**behavior(s)**](item/behaviors.md) **可选**
+
+- [**settings**](item/settings.md) **可选**
+
+- [**model / legacy_model**](item/models.md) **可选**
+
+- [**events**](../reference/events.md) **可选**
+
+- [**category**](category.md) **可选**
+
+- **oversized_in_gui** (1.21.6+) **可选** **默认值: true**
+
+- **hand_animation_on_swap** **可选** **默认值: true**
+
+- **swap_animation_scale** (1.21.11+) **可选** **默认值: 1.0**
+
+<details>
+  <summary>完整配置预览</summary>
+
+  ```yaml
+  items:
+    default:palm_log:
+      material: paper
+      custom_model_data: 1000
+      item_model: default:palm_log
+      settings:
+        fuel_time: 300
+        tags:
+          - "default:palm_logs"
+          - "minecraft:logs"
+          - "minecraft:logs_that_burn"
+      data:
+        item_name: "<!i>棕榈原木"
+      model:
+        type: "minecraft:model"
+        path: "minecraft:item/custom/palm_log"
+        generation:
+          parent: "minecraft:block/custom/palm_log"
+      oversized_in_gui: true
+      hand_animation_on_swap: true
+      client_bound_model: false
+      behavior:
+        type: block_item
+        block: default:palm_log
+
+  ```
+</details>

@@ -1,0 +1,52 @@
+# 🛜 自托管
+
+**基础方案**
+
+优点？它完全免费 —— 只需要你现有的服务器即可使用。非常适合用于测试和开发环境。但请注意，除非你拥有极高的上行带宽，否则不要在生产环境中使用这种方式。资源包的下载会占用服务器的上行带宽，可能会导致其他玩家卡顿或掉线。
+
+> ⚠️ *以下为代码差异对比——请参见原始文档查看交互式差异视图*
+
+```yaml
+resource-pack:
+    delivery:
+      hosting:
+        - type: "self"
+          ip: "你服务器的IP" # 例如 111.222.333.444
+          port: 8163
+          protocol: "http"
+          # 拒绝非 Minecraft 客户端请求
+          deny_non_minecraft_request: true
+          # 生成一次性限时的下载链接
+          one_time_token: true
+          # 改进 deny_non_minecraft_request 和 one_time_token 的验证，如果你的服务器未完全启用正版验证请勿启用
+          strict_validation: false
+          rate_limiting:
+            # 每秒最大带宽限制，防止资源包下载时影响服务器其他玩家的稳定性
+            max_bandwidth_per_second: 5_000_000 # 5MB/s
+            # 每个玩家保障的最低下载速度，确保并发下载时仍能保持可接受的下载性能
+            min_download_speed_per_player: 50_000 # 50KB/s
+            # 防止单个 IP 在短时间内发送过多资源包下载请求
+            qps_per_ip: 5/60 # 每 60 秒 5 次请求
+```
+
+:::info
+
+`deny_non_minecraft_request` 设置会阻止所有非标准 Minecraft 客户端发起的请求。 \
+至于 `one_time_token`，它会为每位玩家生成一个一次性且限时的下载链接。
+
+你可以通过设置完整的 URL 来避免在资源包链接中使用 IPv4 地址。
+```yaml
+- type: "self"
+  ip: "111.222.333.444"
+  port: 8163
+  url: "https://mydomain.com:8163/"
+  # ...更多选项
+```
+
+:::
+
+:::caution
+
+如果你没有 SSL 证书，请不要使用 `https`。
+
+:::

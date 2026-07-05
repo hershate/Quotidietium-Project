@@ -1,0 +1,30 @@
+# 🚟 悬挂方块
+
+**悬挂方块**附着在另一个方块的下方，类似钟乳石。若上方支撑方块被移除，悬挂方块会破坏。
+
+可选择堆叠：开启 `stackable` 后，多个同类型方块可向下悬挂，最多 `max_height` 层。
+
+| 模式                            | 说明                      |
+|-------------------------------|-------------------------|
+| **黑名单模式**（`blacklist: true`）  | 方块可悬挂在**除了**列表以外的任何方块下方 |
+| **白名单模式**（`blacklist: false`） | 方块**只能**悬挂在列表中的方块下方     |
+
+## 示例
+
+```yaml
+blocks:
+  default:stalactites:
+    behavior:
+      type: hanging_block
+      blacklist: false                # true = 黑名单，false = 白名单
+      stackable: false                # 是否允许同类型向下悬挂
+      max_height: 0                   # 最大悬挂长度，仅在 stackable 为 true 时生效（需 >1）
+      delay: 0                        # 检查延迟（刻），0 = 立即破坏
+      above_blocks:                   # 要检查的上方方块列表（可选）
+        - custom:xxx
+        - minecraft:stone
+      above_block_tags:               # 要检查的上方方块标签列表（可选）
+        - minecraft:dirt
+```
+
+![](/img/hanging_block.png)

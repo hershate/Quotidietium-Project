@@ -1,0 +1,548 @@
+# =============================================================================
+# CraftEngine 物品数据组件配置模板
+# =============================================================================
+# 参考文档:
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/data.md
+#
+# 使用方法:
+#   1. 全局替换 "template:" 为你的命名空间 (例如 "myplugin:")
+#   2. 修改每个物品的 ID 和标记为 # << CHANGE THIS 的字段
+#   3. 删除不需要的物品条目
+#
+# 注意:
+#   - 硬编码数据由插件维护版本兼容性, 推荐优先使用
+#   - 自定义组件 (components) 格式严格遵循 Minecraft Wiki, 可能随版本变化
+#   - client_bound_data 为付费版专属, 仅存在于客户端侧
+# =============================================================================
+items:
+
+  # ===========================================================================
+  # 第 1 组: 名称相关组件
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # item_name (物品名称)
+  # 物品的默认名称. 无法通过铁砧修改, 不能在物品展示框中显示名称,
+  # 带有该组件的旗帜在充当地图标记时也不会显示名称.
+  # 该组件对物品名称的控制等级最低, 会被其他所有影响名称的组件覆盖.
+  # ---------------------------------------------------------------------------
+  template:example_item_name:
+    data:
+      item_name: "<!i><#FF8C00>示例物品名称" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # custom_name (自定义名称)
+  # 类似于在铁砧中设置的名称.
+  # ---------------------------------------------------------------------------
+  template:example_custom_name:
+    data:
+      custom_name: "<#FF8C00>示例自定义名称" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # overwritable_item_name (可覆写的物品名称)
+  # 仅在 client_bound_data 中使用. 会优先显示其他插件设置的名称.
+  # ---------------------------------------------------------------------------
+  template:example_overwritable_item_name:
+    client_bound_data:
+      overwritable_item_name: "<#FF8C00>可覆写名称" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 2 组: Lore (物品提示框描述) 相关组件
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # lore (物品提示框描述)
+  # 简单列表格式.
+  # ---------------------------------------------------------------------------
+  template:example_lore:
+    data:
+      lore:
+        - "第一行描述"   # << CHANGE THIS
+        - "第二行描述"   # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # lore (物品提示框描述) — 高级格式
+  # content:     文本内容, 支持列表(自动分段)和字符串
+  # priority:    决定显示位置, 数值越低越靠顶部 (默认继承上一行)
+  # split_lines: true 时, 按 \n 将文本拆分为多行
+  # conditions:  条件列表, 满足条件时才显示该行
+  # ---------------------------------------------------------------------------
+  template:example_lore_advanced:
+    data:
+      lore:
+        - content:
+            - "hello"     # << CHANGE THIS
+            - 123456
+        - content: "优先级 2" # << CHANGE THIS
+          priority: 2
+        - content: "优先级 1" # << CHANGE THIS
+          priority: 1
+        - content: "此行继承上一行的优先级" # << CHANGE THIS
+        - content: "分割\n此行文本"         # << CHANGE THIS
+          split_lines: true
+          conditions:
+            - type: permission
+              permission: craftengine.admin  # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # overwritable_lore (可覆写的物品提示框描述)
+  # 仅在 client_bound_data 中使用. 仅在 Lore 为空时生效,
+  # 会优先显示其他插件设置的 Lore.
+  # ---------------------------------------------------------------------------
+  template:example_overwritable_lore:
+    client_bound_data:
+      overwritable_lore:
+        - "可覆写的描述行" # << CHANGE THIS
+        - "另一行描述"    # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # insert_lore (插入物品提示框描述)
+  # 在现有 Lore 中动态插入新行.
+  # position: HEAD (头部) / TAIL (尾部) / BEFORE (之前) / AFTER (之后)
+  # pattern:  正则表达式, 匹配目标行 (仅 BEFORE/AFTER 需要)
+  # fallback: pattern 未匹配到任何行时的回退操作 (可选)
+  # ---------------------------------------------------------------------------
+  template:example_insert_lore:
+    data:
+      insert_lore:
+        position: AFTER     # HEAD / TAIL / BEFORE / AFTER  << CHANGE THIS
+        pattern: "匹配此行" # << CHANGE THIS (仅 BEFORE/AFTER 需要)
+        lore:
+          - content: "<green>插入的行" # << CHANGE THIS
+            priority: 1
+        fallback:
+          position: TAIL
+          lore:
+            - content: "<red>回退到尾部" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # remove_lore (移除物品提示框描述)
+  # 根据正则表达式匹配并移除现有 Lore 中的行.
+  # ---------------------------------------------------------------------------
+  template:example_remove_lore:
+    data:
+      remove_lore: "删除此行" # << CHANGE THIS (正则表达式)
+
+  # ===========================================================================
+  # 第 3 组: 基础属性组件
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # unbreakable (无法破坏)
+  # 控制物品是否无法被破坏.
+  # ---------------------------------------------------------------------------
+  template:example_unbreakable:
+    data:
+      unbreakable: true
+
+  # ---------------------------------------------------------------------------
+  # max_damage (最大耐久度) — 1.20.5+
+  # 和 damage 组件一起控制物品能否被损坏. 不存在时游戏视最大耐久为 0.
+  # ---------------------------------------------------------------------------
+  template:example_max_damage:
+    material: wooden_sword # << CHANGE THIS
+    data:
+      max_damage: 100      # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # dyed_color (所染颜色)
+  # 控制物品存储的颜色.
+  # ---------------------------------------------------------------------------
+  template:example_dyed_color:
+    data:
+      dyed_color: 255,255,255 # << CHANGE THIS (R,G,B)
+
+  # ---------------------------------------------------------------------------
+  # custom_model_data (自定义模型数据)
+  # 在 data 中配置仅用于使用该组件本身.
+  # 如需生成资源包文件, 请在 items 层级直接配置.
+  # 此处仅支持整数值 (向后兼容), 新版功能请使用 components.
+  # ---------------------------------------------------------------------------
+  template:example_custom_model_data:
+    data:
+      custom_model_data: 100 # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # hide_tooltip (隐藏物品提示框)
+  # 隐藏指定组件提供的工具提示. 原名 HideFlags.
+  # ---------------------------------------------------------------------------
+  template:example_hide_tooltip:
+    data:
+      hide_tooltip:
+        - dyed_color          # << CHANGE THIS
+        - enchantments        # << CHANGE THIS
+        - attribute_modifiers # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 4 组: 功能组件
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # enchantment (魔咒)
+  # 控制物品存储的魔咒信息. 物品为附魔书时魔咒自动转为"无活性".
+  # ---------------------------------------------------------------------------
+  template:example_enchantment:
+    data:
+      enchantment:
+        minecraft:sharpness: 1 # << CHANGE THIS
+        custom:enchant: 3      # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # enchantment (魔咒) — 带 merge 合并模式
+  # merge: true 时, 与物品已有的魔咒合并 (对配方后处理器有用).
+  # 使用 enchantments 子键包裹魔咒列表.
+  # ---------------------------------------------------------------------------
+  template:example_enchantment_merge:
+    data:
+      enchantment:
+        merge: true
+        enchantments:
+          minecraft:sharpness: 1 # << CHANGE THIS
+          custom:enchant: 3      # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # block_state (方块状态)
+  # 控制方块物品放置时将应用的方块状态.
+  # 方式一: 精细的键值对, 值必须为字符串.
+  # ---------------------------------------------------------------------------
+  template:example_block_state:
+    material: note_block # << CHANGE THIS
+    data:
+      block_state:
+        note: "1"         # << CHANGE THIS
+        powered: "false"  # << CHANGE THIS
+        instrument: "harp" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # block_state (方块状态)
+  # 方式二: 自动应用自定义方块状态定义的视觉属性 (字符串格式).
+  # ---------------------------------------------------------------------------
+  template:example_block_state_auto:
+    material: oak_sapling # << CHANGE THIS
+    data:
+      block_state: "default:palm_sapling[stage=0]" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # attribute_modifiers (属性修饰符)
+  # operation: add_value / add_multiplied_base / add_multiplied_total
+  # slot: any / hand / armor / mainhand / offhand / head / chest / legs / feet / body / saddle
+  # display: 1.21.5+ 可选, 自定义显示文本
+  # ---------------------------------------------------------------------------
+  template:example_attribute_modifiers:
+    data:
+      attribute_modifiers:
+        - type: attack_speed    # << CHANGE THIS
+          amount: 1.0           # << CHANGE THIS
+          operation: add_value  # add_value / add_multiplied_base / add_multiplied_total
+          id: "namespace:custom_attribute" # << CHANGE THIS (可选)
+          slot: any             # any / hand / armor / mainhand / offhand / head / chest / legs / feet / body / saddle
+          display:              # 1.21.5+ (可选)
+            type: override
+            value: "<yellow>攻击速度 +1" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # food (食物) — 1.20.5+
+  # 旧版 Minecraft 请使用 settings.food 代替.
+  # ---------------------------------------------------------------------------
+  template:example_food:
+    material: apple # << CHANGE THIS
+    data:
+      food:
+        nutrition: 5    # << CHANGE THIS
+        saturation: 3.5 # << CHANGE THIS
+        can_always_eat: false
+
+  # ---------------------------------------------------------------------------
+  # jukebox_playable (唱片机播放) — 1.21+
+  # 控制物品能否插入唱片机播放指定音乐.
+  # ---------------------------------------------------------------------------
+  template:example_jukebox_playable:
+    material: stick # << CHANGE THIS
+    data:
+      jukebox_playable: "default:credits_music" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # item_model (物品模型) — 1.21.2+
+  # 控制物品模型映射. 在 data 中配置仅用于使用该组件本身.
+  # 如需生成资源包文件, 请在 items 层级直接配置.
+  # ---------------------------------------------------------------------------
+  template:example_item_model:
+    data:
+      item_model: "default:music_stick" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # tooltip_style (物品提示框背景和边框样式) — 1.21.2+
+  # ---------------------------------------------------------------------------
+  template:example_tooltip_style:
+    data:
+      tooltip_style: "minecraft:topaz" # << CHANGE THIS (namespace:tooltip_style_id)
+
+  # ---------------------------------------------------------------------------
+  # trim (盔甲纹饰)
+  # pattern: 纹饰图案 (文件名不含 .json, 忽略 _ 开头的文件)
+  # material: 纹饰材料 (文件名不含 .json, 忽略 _ 开头的文件)
+  # 参考: https://github.com/InventivetalentDev/minecraft-assets/tree/1.21.8
+  # ---------------------------------------------------------------------------
+  template:example_trim:
+    data:
+      trim:
+        pattern: eye   # << CHANGE THIS
+        material: iron # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # equippable (可穿戴性) — 1.21.2+
+  # slot: head / chest / legs / feet / body / mainhand / offhand / saddle
+  # asset_id: 装备模型 (assets/<namespace>/equipment/<path>.json)
+  # camera_overlay: 第一人称遮罩纹理 (assets/<namespace>/textures/<path>)
+  # ---------------------------------------------------------------------------
+  template:example_equippable:
+    data:
+      equippable:
+        slot: head # << CHANGE THIS
+        asset_id: "minecraft:topaz"           # << CHANGE THIS (可选)
+        camera_overlay: "namespace:path"      # << CHANGE THIS (可选)
+        dispensable: true
+        damage_on_hurt: true
+        swappable: true
+        equip_on_interact: true               # >= 1.21.5 (可选)
+
+  # ---------------------------------------------------------------------------
+  # painting_variant (画变种)
+  # ---------------------------------------------------------------------------
+  template:example_painting_variant:
+    data:
+      painting_variant: "default:painting_custom" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 5 组: 持久化数据 & 玩家档案
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # pdc (持久化数据容器)
+  # 用于存储自定义数据供其他插件识别.
+  # 支持字符串, 数字, 列表, 映射.
+  # ---------------------------------------------------------------------------
+  template:example_pdc:
+    data:
+      pdc:
+        key1: "string_value" # << CHANGE THIS (字符串)
+        key2: 114514         # << CHANGE THIS (数字)
+        example_list:        # << CHANGE THIS (列表)
+          - 1
+          - 2
+          - 3
+        map_example:         # << CHANGE THIS (映射)
+          key: "value"
+
+  # ---------------------------------------------------------------------------
+  # profile (玩家游戏档案信息 / 头颅)
+  # 方式一: 通过玩家名显示.
+  # ---------------------------------------------------------------------------
+  template:example_profile_name:
+    data:
+      profile: "XiaoMoMi" # << CHANGE THIS (玩家名)
+
+  # ---------------------------------------------------------------------------
+  # profile (玩家游戏档案信息 / 头颅)
+  # 方式二: 通过纹理 URL 显示.
+  # ---------------------------------------------------------------------------
+  template:example_profile_url:
+    data:
+      profile: "http://textures.minecraft.net/texture/ed83db5c2294f03bf069f4a2ac5428df93a13c7c7487d6b1f2ed3ce30b5acec8" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # profile (玩家游戏档案信息 / 头颅)
+  # 方式三: 通过 Base64 字符串显示.
+  # ---------------------------------------------------------------------------
+  template:example_profile_base64:
+    data:
+      profile: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ4M2RiNWMyMjk0ZjAzYmYwNjlmNGEyYWM1NDI4ZGY5M2ExM2M3Yzc0ODdkNmIxZjJlZDNjZTMwYjVhY2VjOCJ9fX0=" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 6 组: 外部插件兼容
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # external (外部插件物品数据)
+  # plugin: 插件名称 (如 neigeitems, mmoitems)
+  # id:     外部插件中的物品标识
+  # 对于使用命名空间 ID 的插件: 直接使用 <namespace:path>
+  # 对于含类型的插件 (如 MMOItems): 使用 MATERIAL:IRON_INGOT 格式
+  # ---------------------------------------------------------------------------
+  template:example_external:
+    data:
+      external:
+        plugin: neigeitems # << CHANGE THIS
+        id: example_item   # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 7 组: 条件数据 (付费版专属)
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # conditional (条件数据)
+  # 定义应用此物品数据的条件. 每个条件单元使用 conditional#N 命名.
+  # 支持 !permission 表示"无权限"条件.
+  # ---------------------------------------------------------------------------
+  template:example_conditional:
+    client_bound_data:
+      "conditional#1":
+        conditions:
+          - type: permission
+            permission: item.unlock # << CHANGE THIS
+        data:
+          item_name: "神话剑" # << CHANGE THIS
+          lore:
+            - "由星辰打造而来" # << CHANGE THIS
+      "conditional#2":
+        conditions:
+          - type: "!permission"
+            permission: item.unlock # << CHANGE THIS
+        data:
+          item_name: "????剑" # << CHANGE THIS
+          lore:
+            - "????????" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 8 组: 自定义数据 (NBT / 组件 / 移除组件)
+  # ===========================================================================
+  # 注意: 自定义数据不由插件维护, 格式可能随 MC 版本变化.
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # NBT (命名二进制标签) — 1.20 ~ 1.20.4
+  # ---------------------------------------------------------------------------
+  template:example_nbt:
+    data:
+      nbt:
+        CustomModelData: 1000 # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # components (原始组件) — 1.20.5+
+  # 格式严格遵循 Minecraft Wiki 规范.
+  # 组件仅需存在而无须赋值时使用 {}.
+  # 以下列出 wiki 中给出的示例和常用组件参考.
+  # ---------------------------------------------------------------------------
+  template:example_components:
+    data:
+      components:
+        # 简单整数
+        minecraft:max_damage: 128 # << CHANGE THIS
+
+        # 空对象 (仅需存在)
+        minecraft:unbreakable: {}
+
+        # 复合结构
+        minecraft:food:
+          nutrition: 4    # << CHANGE THIS
+          saturation: 2.0 # << CHANGE THIS
+          can_always_eat: false
+
+        # 键值对 (值必须为字符串)
+        minecraft:block_state:
+          distance: '1'     # << CHANGE THIS
+          persistent: 'false'
+          waterlogged: 'false'
+
+        # 多类型支持 — 简单值
+        minecraft:instrument: "seek_goat_horn" # << CHANGE THIS
+
+        # 多类型支持 — 复合结构
+        minecraft:instrument:
+          description:
+            text: "自定义乐器" # << CHANGE THIS
+            color: "red"
+          sound_event: "minecraft:block.note_block.bell"
+          use_duration: 1
+          range: 16
+
+        # 列表 + 映射
+        minecraft:fireworks:
+          flight_duration: 3
+          explosions:
+            - shape: small_ball
+              colors: [11223344]
+              fade_colors: [0]
+              has_trail: true
+              has_twinkle: true
+
+        # minecraft:consumable (可消耗) — 使用后消耗物品, 可配置效果
+        minecraft:consumable:
+          consume_seconds: 1.6 # << CHANGE THIS
+          animation: eat
+          sound: "minecraft:entity.generic.eat"
+          has_consume_particles: true
+
+        # minecraft:damage (当前伤害值) — 已损坏的耐久度
+        minecraft:damage: 42 # << CHANGE THIS
+
+        # minecraft:charged_projectile (蓄力弹射物)
+        minecraft:charged_projectile:
+          id: "minecraft:arrow" # << CHANGE THIS
+
+        # minecraft:debug_stick (调试棒状态) — 键值对格式
+        minecraft:debug_stick:
+          "minecraft:note_block": "note" # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # remove_components (移除组件) — 1.20.5+
+  # 去除物品的指定组件.
+  # ---------------------------------------------------------------------------
+  template:example_remove_components:
+    data:
+      remove_components:
+        - "minecraft:equippable" # << CHANGE THIS
+        - "minecraft:dyed_color" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 9 组: 客户端侧数据 (付费版专属)
+  # ===========================================================================
+  # client_bound_data 仅存在于客户端侧, 不涉及服务端数据.
+  # 可实时更新 Lore、item_model、custom_model_data 等.
+  # 在冒险模式中对真自定义方块特别有用.
+  # ---------------------------------------------------------------------------
+
+  # ---------------------------------------------------------------------------
+  # client_bound_data (客户端侧数据)
+  # data 部分: 服务端侧数据
+  # client_bound_data 部分: 客户端侧数据 (会覆盖客户端的显示)
+  # ---------------------------------------------------------------------------
+  template:example_client_bound_data:
+    material: golden_pickaxe # << CHANGE THIS
+    settings:
+      tags:
+        - "default:topaz_tools" # << CHANGE THIS
+    data:
+      components:
+        minecraft:max_damage: 64
+        # 服务端侧方块破坏
+        minecraft:can_break:
+          blocks: "#mineable/pickaxe"
+    client_bound_data:
+      overwritable_lore:
+        - "客户端显示的描述" # << CHANGE THIS
+      components:
+        # 客户端侧方块破坏
+        minecraft:can_break:
+          blocks: "minecraft:mushroom_stem"
+    model:
+      template: "default:model/simplified_handheld"
+      arguments:
+        path: "minecraft:item/custom/topaz_pickaxe" # << CHANGE THIS
+
+  # ===========================================================================
+  # 第 10 组: use_remainder (使用后返还物品) — 1.21.2+
+  # (配置在 items 层级而非 data 层级)
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # use_remainder (使用后返还物品)
+  # 当物品被使用 (例如吃完食物) 后返还指定物品.
+  # ---------------------------------------------------------------------------
+  template:example_use_remainder:
+    material: cooked_chicken # << CHANGE THIS
+    data:
+      food:
+        nutrition: 6
+        saturation: 7.2
+    use_remainder: "template:chicken_bone" # << CHANGE THIS

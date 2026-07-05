@@ -1,0 +1,28 @@
+# 🪵 栅栏门方块
+
+**栅栏门方块**行为与原版栅栏门一致。可通过手、红石或风弹开关。用手打开时，门会根据玩家方向调整朝向——若玩家在门后，`facing` 会自动翻转。
+
+`in_wall` 属性会根据门朝向两侧的方块状态自动更新，当两侧存在是 `#minecraft:walls` 标签的方块时，该属性会设置为 `true`。
+
+| 属性名称    | 属性类型                 | 是否必需 |
+|---------|----------------------|------|
+| open    | boolean              | 是    |
+| powered | boolean              | 是    |
+| in_wall | boolean              | 是    |
+| facing  | horizontal_direction | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:palm_fence_gate:
+    behavior:
+      type: fence_gate_block
+      can_open_with_hand: true        # 允许右键点击切换（默认 true）
+      can_open_by_wind_charge: true   # 允许风弹切换（默认 true）
+      sounds:
+        open: block.fence_gate.open        # 打开时播放的音效（可选）
+        close: block.fence_gate.close      # 关闭时播放的音效（可选）
+```
+
+![](/img/fence_gate_block.png)

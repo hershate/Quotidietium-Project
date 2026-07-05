@@ -1,0 +1,369 @@
+# 📍 家具变体
+
+## 简介
+
+家具支持自定义变体。默认情况下，插件提供三种预设变体类型：`ground`、`ceiling` 和 `wall`。变体将根据物品行为和家具行为进行切换。目前仅支持通过 API 操作切换变体。
+
+下面，我将以 ground 模式为例，说明如何配置一个基本变体。
+
+```yaml
+furniture:
+  default:bench:
+    variants:
+      ground:
+        # 为掉落物创建偏移，使其不会在方块内部生成
+        loot_spawn_offset: 0,0,0
+
+        # 展示元素
+        elements:
+          - item: default:bench
+            display_transform: NONE
+            billboard: FIXED
+            position: 0.5,0,0
+            translation: 0,0.5,0
+            apply_dyed_color: true # 默认值：true
+            # glow_color: 255,255,255 # 发光颜色：r,g,b
+
+        # 家具判定箱
+        hitboxes:
+          - type: interaction # 无碰撞判定箱
+            can_use_item_on: false # 默认值：false
+            can_be_hit_by_projectile: false # 默认值：false
+            blocks_building: false # 默认值：true
+            position: 0,0,0
+            width: 1
+            height: 2
+            # 可用 'scale' 简化 'width'/'height' 配置
+            # scale: 1,2
+            interactive: true # 交互实体是否可交互
+            seats:
+              - 0,0,-0.1 0
+```
+
+## 元素
+
+在该系统中，**元素**指的是构成一件家具的每个独立组件。大多数家具结构简单，仅需单一元素即可完成。
+不过，你也可以通过组装拼接多个元素来打造更复杂的家具。
+例如，一个全息投影仪可由两个元素构成：基座与投影部分。基座可采用固定朝向，而投影部分则可以设置为始终面向玩家。
+
+### 物品展示实体
+
+https://zh.minecraft.wiki/w/展示实体
+
+**必填参数**
+
+```yaml
+type: item_display
+item: default:bench
+```
+
+**可选参数**
+
+```yaml
+display_transform: none # none  / third_person_left_hand / third_person_right_hand
+                        # 不变换 /   第三人称视角左手变换  /   第三人称视角右手变换
+                        # first_person_left_hand / first_person_right_hand
+                        #   第一人称视角左手变换  /   第一人称视角右手变换
+                        #         head         /        gui        /     ground     /  fixed  /    on_shelf
+                        # 放置在头部物品栏的变换 / 在图形界面中的变换 / 平铺在地面的变换 / 默认变换 / 在展示架中的变换
+billboard: fixed  #      fixed      /  vertical   /  horizontal /         center
+                  # 固定垂直和水平轴 /  固定垂直轴  /  固定水平轴  / 按照中心旋转跟随玩家视角
+position: 0.5,0,0
+translation: 0,0.5,0
+pitch: 0.0
+yaw: 0.0
+scale: 1 # scale: 1,2,1
+glow_color: 255,255,255
+brightness:
+  block_light: 15
+  sky_light: 15
+view_range: 1.0
+# rotation 支持 3 种格式
+# 译者注：我推荐这个旋转工具 https://iwatake2222.github.io/rotation_master/rotation_master.html 操作起来更方便
+rotation: 45  # Y 轴
+rotation: 45,45,0  # 欧拉角
+rotation: 0,0,0.7071,0.7071  # 四元数  https://quaternions.online/
+# 染色源，选择影响此家具颜色的组件。通常来说你只需要选择根据家具元素的物品选择下列之一的组件类型即可。
+tint_source:
+  - dyed_color
+  - map_color
+  - firework_explosion
+  - potion_contents
+```
+
+:::warning
+请注意区分 `position` 与 `translation`，`position` 改变对应展示实体的坐标位置，而 `translation` 是展示实体自身的位移属性。
+:::
+
+:::danger
+对于 wall（墙壁）或 ceiling（天花板）类型的家具，必须通过 `position` 参数设置微小的偏移；否则，家具可能会显示为黑色。
+
+实体的变黑与其位置有关。因此，在调整 `position` 后，可以通过应用一个反向的 `translation` 来将实体恢复到正确的位置。
+:::
+
+### 文本展示实体
+
+https://zh.minecraft.wiki/w/展示实体
+
+**必填参数**
+
+```yaml
+type: text_display
+text: 你好 <papi:player_name>
+```
+
+**可选参数**
+
+```yaml
+billboard: fixed  #      fixed      /  vertical   /  horizontal /         center
+                  # 固定垂直和水平轴 /  固定垂直轴  /  固定水平轴  / 按照中心旋转跟随玩家视角
+position: 0.5,0,0
+translation: 0,0.5,0
+pitch: 0.0
+yaw: 0.0
+scale: 1 # scale: 1,2,1
+glow_color: 255,255,255
+brightness:
+  block_light: 15
+  sky_light: 15
+view_range: 1.0
+# rotation 支持 3 种格式
+rotation: 45  # 基于 Y 轴
+rotation: 45,45,0  # 欧拉角
+rotation: 0,0,0.7071,0.7071  # 四元数  https://quaternions.online/
+line_width: 200
+background_color: 64,0,0,0 # ARGB
+text_opacity: -1
+has_shadow: false
+is_see_through: false
+use_default_background_color: false
+alignment: center  # center / left  / right
+                   #  居中  / 左对齐 / 右对齐
+```
+
+### 掉落物
+
+渲染一个掉落物
+
+**必填参数**
+
+```yaml
+type: item
+item: default:bench
+position: 0,1,0
+# 染色源，选择影响此家具颜色的组件。通常来说你只需要选择根据家具元素的物品选择下列之一的组件类型即可。
+tint_source:
+  - dyed_color
+  - map_color
+  - firework_explosion
+  - potion_contents
+```
+
+### 盔甲架
+
+基于盔甲架渲染自定义物品
+
+```yaml
+type: armor_stand
+item: default:bench
+position: 0,1,0
+pitch: 0.0
+yaw: 0.0
+scale: 1
+small: false
+glow_color: white  # black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
+# 染色源，选择影响此家具颜色的组件。通常来说你只需要选择根据家具元素的物品选择下列之一的组件类型即可。
+tint_source:
+  - dyed_color
+  - map_color
+  - firework_explosion
+  - potion_contents
+```
+
+### BetterModel
+
+通过 BetterModel 渲染自定义模型
+
+**必填参数**
+
+```yaml
+type: better_model
+model: custom_model # 指定需要渲染的模型
+```
+
+**可选参数**
+
+```yaml
+position: 0,0,0
+yaw: 0
+pitch: 0
+sight_trace: true
+```
+
+### ModelEngine
+
+通过 ModelEngine 渲染自定义模型
+
+**必填参数**
+
+```yaml
+type: model_engine
+model: custom_model # 指定需要渲染的模型
+```
+
+**可选参数**
+
+```yaml
+position: 0,0,0
+yaw: 0
+pitch: 0
+```
+
+## 判定箱
+
+家具判定箱定义了玩家可与物体进行交互的交互体积。CraftEngine 提供多种判定箱类型，每种都具有独特的属性。你可以通过设置参数来添加并配置合适的判定箱，以满足你的需求。
+
+![](/img/furniture_variants_1.png)
+
+### 交互实体
+
+无碰撞判定箱
+
+```yaml
+type: interaction
+can_use_item_on: false
+can_be_hit_by_projectile: false
+blocks_building: false
+position: 0,0,0
+width: 1
+height: 2
+# 交互实体是否可交互
+interactive: true
+# 交互实体是否在 F3+B 下可见
+invisible: false
+seats:
+  - 0,0,-0.1 0
+```
+
+:::tip
+`width` 和 `height` 可简化为单个 `scale` 选项
+```yaml
+type: interaction
+scale: 1,2
+```
+:::
+
+### 潜影贝
+
+硬碰撞判定箱
+
+```yaml
+type: shulker
+can_use_item_on: true
+can_be_hit_by_projectile: true
+blocks_building: true
+position: 1,0,0
+scale: 1
+peek: 0 # 0~100
+# 相对方向。north = 面向玩家
+direction: UP # up/down/north/west/east/south
+              # 上/ 下 / 北  / 西 / 东 /  南
+# 是否生成另外一个交互实体以获得更好的交互体验
+interaction_entity: true
+# 交互实体是否可交互
+interactive: true
+# 交互实体是否在F3+B下可见
+invisible: false
+seats:
+  - 1,0,-0.1 0
+```
+
+![](/img/peek.png)
+*peek: 0   peek: 50   peek: 100*
+
+### 快乐恶魂
+
+硬或软碰撞判定箱
+
+```yaml
+type: happy_ghast
+can_use_item_on: true
+can_be_hit_by_projectile: true
+blocks_building: true
+hard_collision: true
+position: 1,0,0
+scale: 0.25 # 默认值：1
+seats:
+  - 1,0,-0.1 0
+```
+
+### 自定义
+
+软碰撞判定箱
+
+```yaml
+type: custom
+position: 1,0,0
+scale: 5
+# 你可以在此处使用任何实体
+# 默认值：slime
+entity_type: slime
+seats:
+  - 1,0,-0.1 0
+```
+
+:::tip
+一个 `hitbox` 可以配置多个座位。如果多个 `hitbox` 的座位被放置在同一位置，其效果等同于仅存在一个座位。
+:::
+
+:::info
+`seat` 的位置由坐标和旋转角度共同决定，在配置中以空格分隔：
+
+```
+0,0,0 0
+```
+
+也可选择不配置旋转角度，此时玩家入座后可自由旋转至任意方向：
+
+```
+0,0,0
+```
+:::
+
+![](/img/furniture_variants_2.gif)
+*0,0,0 0*
+
+![](/img/furniture_variants_3.gif)
+*0,0,0*
+
+## 实体剔除
+
+你可以单独控制每个家具变体是否启用实体剔除功能
+
+```yaml
+ground:
+  entity_culling: false # 关闭
+```
+
+启用实体剔除后，你可以配置剔除参数
+
+```yaml
+ground:
+  entity_culling:
+    aabb: -0.5,0,-0.5,0.5,2,0.5 # x1,y1,z1,x2,y2,z2，不建议自行配置 aabb，插件会自动计算
+    view_distance: 64 # 可视距离剔除，-1 表示不限制距离。
+                      # 但是不建议在开启光线追踪的情况下设置为 -1，否则会导致算法路径过长，造成性能消耗
+    ray_tracing: false # 是否启用光线追踪剔除
+```
+
+## 外部模型
+
+你也可以使用来自 ModelEngine/BetterModel 或通过 API 注册的模型
+
+```yaml
+furniture:
+  default:bench:
+    variants:
+      ground:
+        blueprint: model_id
+```

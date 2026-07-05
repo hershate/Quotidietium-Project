@@ -1,0 +1,151 @@
+# =============================================================================
+# CraftEngine 特殊机制方块 — 综合配置模板
+# 本地 Wiki 参考路径（行为文档）：
+#   - strippable_block   : 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/strippable_block.md
+#   - sturdy_base_block  : 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/sturdy_base_block.md
+#   - budding_block      : 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/budding_block.md
+#   - snowy_block        : 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/snowy_block.md
+#   - drop_experience_block: 参考资料/CraftEngine/CraftEngine Wiki/configuration/block/behaviors/drop_experience_block.md
+# 用法：将下方 blocks 整体复制到您的 namespace 配置中，替换所有含
+#       "# << CHANGE THIS" 标记的值为您实际的值即可使用。
+# =============================================================================
+
+blocks:
+
+  # ===========================================================================
+  # 1. 可剥离方块 (Strippable Block)
+  #    用斧右键剥离，转换为 stripped 指定的方块。
+  #    默认保留原方块与目标方块中同名的属性值。
+  # ===========================================================================
+  mycustom:example_log:
+    behavior:
+      type: strippable_block
+      # 剥离后转化成的方块 ID（必需）
+      stripped: mycustom:stripped_example_log          # << CHANGE THIS
+      # 转化时**不**继承的属性名列表。被排除的属性将使用目标方块对应属性的默认值。
+      # 例如，排除 axis 可避免剥离后意外复制 x/z 方向。
+      excluded_properties: []                           # << CHANGE THIS (optional)
+
+  # ---------------------------------------------------------------------------
+  # 完整示例：带 excluded_properties 的可剥离方块
+  # ---------------------------------------------------------------------------
+  mycustom:example_log_with_exclusions:
+    behavior:
+      type: strippable_block
+      stripped: mycustom:stripped_example_log          # << CHANGE THIS
+      excluded_properties:
+        - axis                                          # << CHANGE THIS
+
+  # ===========================================================================
+  # 2. 稳固基底方块 (Sturdy Base Block)
+  #    在指定方向上需要有坚固支撑面；支撑被移除时方块被破坏。
+  #    支撑类型：full、rigid、center
+  # ===========================================================================
+  mycustom:pebble:
+    behavior:
+      type: sturdy_base_block
+      # 检查支撑的方向（默认 down）
+      direction: down                                   # << CHANGE THIS
+      # 所需的支撑类型列表（默认 ["full"]）
+      support_types:
+        - full                                          # << CHANGE THIS
+      # 是否允许在同类型方块上堆叠（默认 false）
+      stackable: false                                  # << CHANGE THIS
+      # 堆叠时的最大连续高度，仅在 stackable: true 时有效（必须 >1）
+      max_height: 0                                     # << CHANGE THIS (stackable 时须 >1)
+      # 失去支撑后的破坏延迟（刻），0 = 立即破坏
+      delay: 0                                          # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 完整示例：允许堆叠的稳固基底方块
+  # ---------------------------------------------------------------------------
+  mycustom:stackable_column:
+    behavior:
+      type: sturdy_base_block
+      direction: down
+      support_types:
+        - full
+      stackable: true
+      max_height: 5                                     # << CHANGE THIS
+      delay: 2                                          # << CHANGE THIS
+
+  # ===========================================================================
+  # 3. 母岩方块 (Budding Block)
+  #    按随机刻催生相邻方块，类似紫水晶母岩的生长机制。
+  #    自动处理 facing（朝向生长方向）与 waterlogged 属性。
+  # ===========================================================================
+  mycustom:infected_log:
+    behavior:
+      type: budding_block
+      # 每次随机刻触发生长的概率（默认 0.2）
+      growth_chance: 0.2                                # << CHANGE THIS
+      # 分阶段方块 ID 列表（必需）。
+      # - 目标为空气/水时：放置 blocks 中第一个方块。
+      # - 目标已是列表中非最后的方块时：升级为下一个方块。
+      blocks:                                           # << CHANGE THIS (至少 1 个)
+        - mycustom:small_mushroom                       # << CHANGE THIS
+        - mycustom:medium_mushroom                      # << CHANGE THIS
+        - mycustom:large_mushroom                       # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 完整示例：两阶段生长的母岩方块（最小配置）
+  # ---------------------------------------------------------------------------
+  mycustom:budding_crystal:
+    behavior:
+      type: budding_block
+      growth_chance: 0.3                                # << CHANGE THIS
+      blocks:
+        - mycustom:small_crystal                        # << CHANGE THIS
+        - mycustom:large_crystal                        # << CHANGE THIS
+
+  # ===========================================================================
+  # 4. 覆雪方块 (Snowy Block)
+  #    自动检测顶部是否有雪（minecraft:snow 标签），并设置 snowy 布尔属性。
+  #    注意：该方块必须在 block 定义中声明 snowy 属性（boolean，必需）。
+  # ===========================================================================
+  mycustom:snowy_grass_block:
+    behavior:
+      type: snowy_block
+    # property 示例（需要在对应的 block 定义中声明，而非 behavior 内）：
+    # properties:
+    #   snowy: false
+
+  # ===========================================================================
+  # 5. 掉落经验方块 (Drop Experience Block)
+  #    被破坏时掉落经验球，支持条件限制（如特定附魔检查）。
+  # ===========================================================================
+  mycustom:example_ore:
+    behavior:
+      type: drop_exp_block
+      # 掉落的经验点数（支持数字格式：整数、范围如 "3~7" 等）
+      # 详细语法参考：参考资料/CraftEngine/CraftEngine Wiki/reference/number_format
+      amount: 3~7                                       # << CHANGE THIS
+      # 掉落条件（可选）。未定义时始终掉落经验。
+      # 需要满足所有条件才会掉落经验。
+      conditions:
+        type: enchantment                               # << CHANGE THIS
+        # predicate 使用原版附魔 ID 与比较符
+        predicate: "minecraft:silk_touch<=0"            # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 完整示例：无条件掉落经验（始终掉落）
+  # ---------------------------------------------------------------------------
+  mycustom:experience_block:
+    behavior:
+      type: drop_exp_block
+      amount: 10                                        # << CHANGE THIS
+    # conditions: 省略 = 始终掉落
+
+  # ---------------------------------------------------------------------------
+  # 完整示例：带多种条件的经验掉落（组合条件链）
+  # ---------------------------------------------------------------------------
+  mycustom:conditional_ore:
+    behavior:
+      type: drop_exp_block
+      amount: 5~15                                      # << CHANGE THIS
+      conditions:                                       # << CHANGE THIS (optional)
+        type: enchantment
+        predicate: "minecraft:silk_touch<=0"
+    # 提示：conditions 是可选键；省略时无论如何都会掉落经验。
+    # 若方块要求正确挖掘工具（参见 settings.md 中的"需要合适挖掘工具"），
+    # 使用错误工具破坏时不会掉落经验。

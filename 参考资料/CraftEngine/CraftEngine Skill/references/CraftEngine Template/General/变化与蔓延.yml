@@ -1,0 +1,136 @@
+# ============================================================================
+# CraftEngine 方块行为配置模板 —— 变化与蔓延
+# ============================================================================
+# 参考 Wiki 路径（本地）:
+#   configuration/block/behaviors/change_over_time_block.md
+#   configuration/block/behaviors/spreading_block.md
+#   configuration/block/behaviors/surface_spreading_block.md
+#   configuration/block/behaviors/decay_block.md
+#   configuration/block/behaviors/grass_block.md
+#   configuration/block/behaviors/leaves_block.md
+# ============================================================================
+# 使用前请将 `my_ns` 替换为你的命名空间，并修改所有 # << CHANGE THIS 标记的值。
+# ============================================================================
+
+blocks:
+  # ==========================================================================
+  # 1. 【变化类】随时间更改方块 (change_over_time_block)
+  #    类似铜的氧化，收到随机刻后以 change_speed 概率转化为 next_block。
+  #    原方块的属性会携带到目标方块，但 excluded_properties 中列出的除外。
+  # ==========================================================================
+  my_ns:example_change_block:                    # << CHANGE THIS 方块注册名
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057                       # << CHANGE THIS 每随机刻转化的概率（默认 0.057）
+      next_block: my_ns:oxidized_example         # << CHANGE THIS 转化成的目标方块（必需）
+      excluded_properties: []                    # << CHANGE THIS 转化时忽略的属性列表（默认空列表）
+
+  # 带排除属性的变体 —— 转化时丢弃 waterlogged / snowy 状态
+  my_ns:example_change_exclude:                  # << CHANGE THIS 方块注册名
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.1                          # << CHANGE THIS 每随机刻转化的概率
+      next_block: my_ns:final_stage              # << CHANGE THIS 转化成的目标方块（必需）
+      excluded_properties:                       # << CHANGE THIS 转化时忽略的属性名称列表
+        - waterlogged
+        - snowy
+
+  # ==========================================================================
+  # 2. 【蔓延类】扩散方块 (spreading_block)
+  #    收到随机刻后向周围随机位置尝试扩散。
+  #    若目标位置方块类型与 target_block 相同，则替换为自身。
+  #    扩散范围: X/Z ±1, Y -3 ~ +1
+  # ==========================================================================
+  my_ns:example_corruption:                      # << CHANGE THIS 方块注册名
+    behavior:
+      type: spreading_block
+      target_block: my_ns:corruptible_stone       # << CHANGE THIS 可被转化的目标方块（必需）
+
+  # ==========================================================================
+  # 3. 【蔓延类】表面扩散方块 (surface_spreading_block)
+  #    类似原版草方块：光照满足 light_requirement ~ max_light_requirement 时，
+  #    将附近的 base_block 扩散为自身；自身无法存活（光照被遮挡/上方有水）
+  #    时退化回 base_block。
+  #
+  #    可选属性: snowy (boolean) — 声明后顶部有雪时自动置 true，切换覆雪材质。
+  # ==========================================================================
+  my_ns:example_surface_spread:                  # << CHANGE THIS 方块注册名
+    behavior:
+      type: surface_spreading_block
+      light_requirement: 9                      # << CHANGE THIS 扩散所需最低光照（默认 0）
+      max_light_requirement: 15                 # << CHANGE THIS 扩散所需最高光照（默认 15）
+      base_block: my_ns:dirt                     # << CHANGE THIS 扩散目标 / 退化回退方块（默认 minecraft:dirt）
+
+  # 带 snowy 属性的变体
+  my_ns:example_surface_snowy:                   # << CHANGE THIS 方块注册名
+    behavior:
+      type: surface_spreading_block
+      light_requirement: 7                      # << CHANGE THIS 扩散所需最低光照
+      max_light_requirement: 15                 # << CHANGE THIS 扩散所需最高光照
+      base_block: my_ns:grassless_dirt           # << CHANGE THIS 扩散目标 / 退化回退方块
+
+  # ==========================================================================
+  # 4. 【变化类】衰变方块 (decay_block)
+  #    随时间逐步增加 age，到最大值时转变为 decay_into 方块（如冰→水）。
+  #    两种工作模式:
+  #       计划刻模式: 设 delay > 0，按指定间隔安排任务
+  #       随机刻模式: 不设 delay 或 delay ≤ 0，由游戏随机刻速率驱动
+  #
+  #    每次触发前检查光照 >= required_light 且概率 <= chance，通过则 age+1。
+  #    age 到达 range 最大值时方块变为 decay_into。
+  # ==========================================================================
+  # --- 随机刻模式（delay 未设置） ---
+  my_ns:example_decay_random:                    # << CHANGE THIS 方块注册名
+    behavior:
+      type: decay_block
+      decay_into: my_ns:melted                   # << CHANGE THIS 完全衰变后变成的方块（默认 air）
+      # delay: 未设置或 ≤ 0 → 随机刻模式
+      chance: 0.5                               # << CHANGE THIS 每次触发增加 age 的概率（默认 1）
+      required_light: 0                         # << CHANGE THIS 衰变所需最低光照，0 = 始终衰变（默认 0）
+
+  # --- 计划刻模式（delay 指定范围） ---
+  my_ns:example_decay_scheduled:                 # << CHANGE THIS 方块注册名
+    behavior:
+      type: decay_block
+      decay_into: my_ns:water                    # << CHANGE THIS 完全衰变后变成的方块（默认 air）
+      delay: 100~200                            # << CHANGE THIS 每次增加 age 的间隔（刻）（可选，设此值启用计划刻模式）
+      chance: 1.0                               # << CHANGE THIS 每次触发增加 age 的概率（默认 1）
+      required_light: 8                         # << CHANGE THIS 衰变所需最低光照（默认 0）
+
+  # ==========================================================================
+  # 5. 【增长类】草方块 (grass_block)
+  #    使用骨粉后尝试生成一个已配置的地物（feature），例如 minecraft:grass_bonemeal
+  #    会生成草和花。
+  #
+  #    注意: 方块必须拥有 minecraft:dirt 和 minecraft:supports_vegetation(26.1+)
+  #    标签，否则其上生成的植被无法存活。
+  # ==========================================================================
+  my_ns:example_grass:                           # << CHANGE THIS 方块注册名
+    behavior:
+      type: grass_block
+      feature: my_ns:grass_bonemeal              # << CHANGE THIS 尝试生成的已配置的地物（必需）
+
+  # 带自定义地物的变体
+  my_ns:example_mycelium:                        # << CHANGE THIS 方块注册名
+    behavior:
+      type: grass_block
+      feature: my_ns:mycelium_bonemeal           # << CHANGE THIS 尝试生成的已配置的地物（必需）
+
+  # ==========================================================================
+  # 6. 【结构类】树叶方块 (leaves_block)
+  #    PP 更新中计算到最近原木的距离并存为 distance 属性（原木=0，相邻=1，类推）。
+  #    达到最大距离（distance 属性的 range 最大值）时，在随机刻中枯萎并掉落。
+  #    persistent=true 时树叶不参与距离计算，永不枯萎。
+  #
+  #    方块状态属性: distance (int, 必需), persistent (boolean, 必需),
+  #                  waterlogged (boolean, 可选)
+  # ==========================================================================
+  my_ns:example_leaves:                          # << CHANGE THIS 方块注册名
+    behavior:
+      type: leaves_block
+
+  # 大树变体 —— 调大 distance range 使树叶在更远距离才枯萎
+  #   （原版最大距离为 7；大树可设 1~10 使树叶距离原木 10 格才枯萎）
+  my_ns:example_tall_tree_leaves:                # << CHANGE THIS 方块注册名
+    behavior:
+      type: leaves_block

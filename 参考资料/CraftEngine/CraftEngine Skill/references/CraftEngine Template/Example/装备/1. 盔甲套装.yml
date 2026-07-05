@@ -1,0 +1,206 @@
+# ============================================================================
+# 盔甲套装配置示例
+# 参考文档: CraftEngine Wiki/configuration/equipment.md
+# 命名空间: example (请替换为你的项目命名空间)
+# ============================================================================
+#
+# 本文件演示五种装备配置方式:
+#   1. 组件型盔甲套装 (1.21.2+)   — 完整盔甲, 支持所有模型类型
+#   2. 纹饰型盔甲套装 (1.20+)     — 仅 humanoid / humanoid_leggings
+#   3. 可染色盔甲                  — 皮革染色 + 局部染色
+#   4. 鞘翅 (翅膀)                 — 使用 wings 模型类型
+#   5. 马铠                        — 使用 horse_body 模型类型
+#
+# 所有装备均需通过物品的 settings.equipment.asset_id 绑定。
+# ============================================================================
+
+
+# ============================================================================
+# 物品定义
+# 将装备绑定到具体物品上
+# ============================================================================
+items:
+  # --------------------------------------------------------------------------
+  # 1. 组件型盔甲套装 - 头盔
+  # --------------------------------------------------------------------------
+  example:ruby_helmet:
+    material: diamond_helmet
+    settings:
+      equipment:
+        asset_id: example:ruby_armor           # << CHANGE THIS: 对应下方 equipments 的 ID
+
+  # 1. 组件型盔甲套装 - 胸甲
+  example:ruby_chestplate:
+    material: diamond_chestplate
+    settings:
+      equipment:
+        asset_id: example:ruby_armor
+
+  # 1. 组件型盔甲套装 - 护腿
+  example:ruby_leggings:
+    material: diamond_leggings
+    settings:
+      equipment:
+        asset_id: example:ruby_armor
+
+  # 1. 组件型盔甲套装 - 靴子
+  example:ruby_boots:
+    material: diamond_boots
+    settings:
+      equipment:
+        asset_id: example:ruby_armor
+
+  # --------------------------------------------------------------------------
+  # 2. 纹饰型盔甲套装 - 各部件
+  # --------------------------------------------------------------------------
+  example:sapphire_helmet:
+    material: iron_helmet
+    settings:
+      equipment:
+        asset_id: example:sapphire_armor
+
+  example:sapphire_chestplate:
+    material: iron_chestplate
+    settings:
+      equipment:
+        asset_id: example:sapphire_armor
+
+  example:sapphire_leggings:
+    material: iron_leggings
+    settings:
+      equipment:
+        asset_id: example:sapphire_armor
+
+  example:sapphire_boots:
+    material: iron_boots
+    settings:
+      equipment:
+        asset_id: example:sapphire_armor
+
+  # --------------------------------------------------------------------------
+  # 3. 可染色盔甲 - 头盔 & 胸甲 (仅展示两件)
+  # --------------------------------------------------------------------------
+  example:dyeable_helmet:
+    material: leather_helmet
+    settings:
+      equipment:
+        asset_id: example:dyeable_armor
+
+  example:dyeable_chestplate:
+    material: leather_chestplate
+    settings:
+      equipment:
+        asset_id: example:dyeable_armor
+
+  # --------------------------------------------------------------------------
+  # 4. 鞘翅 (翅膀)
+  # --------------------------------------------------------------------------
+  example:dragon_wings:
+    material: elytra
+    settings:
+      equipment:
+        asset_id: example:dragon_wings
+
+  # --------------------------------------------------------------------------
+  # 5. 马铠
+  # --------------------------------------------------------------------------
+  example:crystal_horse_armor:
+    material: diamond_horse_armor
+    settings:
+      equipment:
+        asset_id: example:crystal_horse_armor
+
+
+# ============================================================================
+# 装备定义
+# ============================================================================
+equipments:
+
+  # ==========================================================================
+  # 1. 组件型盔甲套装 (1.21.2+)
+  # 完整四件套: 头盔/胸甲使用 humanoid, 护腿使用 humanoid_leggings, 靴子使用 humanoid
+  # 支持所有预设模型类型: humanoid, humanoid_leggings, wings, wolf_body,
+  # horse_body, llama_body, pig_saddle, strider_saddle, camel_saddle 等
+  # ==========================================================================
+  example:ruby_armor:
+    type: component
+    # 头盔 & 胸甲 & 靴子 共用上身纹理
+    humanoid: "example:entity/equipment/humanoid/ruby"                    # << CHANGE THIS: 纹理路径
+    # 护腿使用独立的下身纹理
+    humanoid_leggings: "example:entity/equipment/humanoid_leggings/ruby"  # << CHANGE THIS: 纹理路径
+
+  # ==========================================================================
+  # 2. 纹饰型盔甲套装 (1.20+)
+  # 注意: 基于盔甲纹饰的方式仅支持 humanoid 和 humanoid_leggings 模型类型
+  # 此盔甲后续无法再接受额外纹饰
+  # ==========================================================================
+  example:sapphire_armor:
+    type: trim
+    humanoid: "example:entity/equipment/humanoid/sapphire"               # << CHANGE THIS: 纹理路径
+    humanoid_leggings: "example:entity/equipment/humanoid_leggings/sapphire" # << CHANGE THIS: 纹理路径
+
+  # ==========================================================================
+  # 3. 可染色盔甲
+  # 使用 dyeable 配置块实现皮革染色效果
+  # 演示两种方式: 整体染色 & 局部染色(多层纹理)
+  # ==========================================================================
+  example:dyeable_armor:
+    type: component
+    # 整体染色: 可染色的单层纹理
+    humanoid:
+      texture: "example:entity/equipment/humanoid/dyeable_base"          # << CHANGE THIS: 纹理路径
+      dyeable:
+        color_when_undyed: -6265536                                      # << CHANGE THIS: 未染色时的颜色 (RGB 十进制)
+    humanoid_leggings:
+      texture: "example:entity/equipment/humanoid_leggings/dyeable_base" # << CHANGE THIS: 纹理路径
+      dyeable:
+        color_when_undyed: -6265536                                      # << CHANGE THIS: 未染色时的颜色
+
+  # 局部染色示例: 多层纹理组合, 其中一层可染色, 另一层保持原色
+  example:partialy_dyeable_armor:
+    type: component
+    humanoid:
+      - texture: "example:entity/equipment/humanoid/dyeable_part"       # << CHANGE THIS: 可染色层
+        dyeable:
+          color_when_undyed: -6265536                                    # << CHANGE THIS: 未染色时的颜色
+      - texture: "example:entity/equipment/humanoid/undyeable_part"     # << CHANGE THIS: 不可染色层 (金属装饰)
+    humanoid_leggings:
+      - texture: "example:entity/equipment/humanoid_leggings/dyeable_part"
+        dyeable:
+          color_when_undyed: -6265536
+      - texture: "example:entity/equipment/humanoid_leggings/undyeable_part"
+
+  # ==========================================================================
+  # 4. 鞘翅 (翅膀)
+  # 使用 wings 模型类型, 可配置是否使用玩家皮肤纹理
+  # ==========================================================================
+  example:dragon_wings:
+    type: component
+    wings:
+      texture: "example:entity/equipment/wings/dragon"                   # << CHANGE THIS: 纹理路径
+      # 是否使用玩家皮肤纹理替代自定义纹理 (false 使用上方 texture)
+      use_player_texture: false                                          # << CHANGE THIS
+
+  # 使用玩家纹理的鞘翅示例 (类似原版鞘翅行为)
+  example:player_wings:
+    type: component
+    wings:
+      texture: "example:entity/equipment/wings/default"                  # << CHANGE THIS: 默认纹理
+      use_player_texture: true                                           # << CHANGE THIS: true = 使用玩家皮肤纹理
+
+  # ==========================================================================
+  # 5. 马铠
+  # 使用 horse_body 模型类型
+  # ==========================================================================
+  example:crystal_horse_armor:
+    type: component
+    horse_body: "example:entity/equipment/horse_body/crystal"            # << CHANGE THIS: 纹理路径
+
+  # 带染色功能的马铠 (多层纹理)
+  example:dyeable_horse_armor:
+    type: component
+    horse_body:
+      - texture: "example:entity/equipment/horse_body/dyeable_layer"    # << CHANGE THIS: 可染色层
+        dyeable:
+          color_when_undyed: -6265536                                    # << CHANGE THIS: 未染色时的颜色
+      - texture: "example:entity/equipment/horse_body/armor_layer"      # << CHANGE THIS: 金属护甲层 (不染色)

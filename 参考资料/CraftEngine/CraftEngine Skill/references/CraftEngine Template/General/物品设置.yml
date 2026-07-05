@@ -1,0 +1,297 @@
+# =============================================================================
+# CraftEngine 物品设置 (Item Settings) — 完整配置模板
+# =============================================================================
+# 文档参考:
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration/item/settings.md
+#
+# 用法:
+#   1. 将 your_namespace 替换为你的命名空间 (仅英文小写)
+#   2. 将 your_item 替换为目标物品 ID
+#   3. 取消注释并按需修改各配置项
+# =============================================================================
+
+namespace: "your_namespace"  # << CHANGE THIS
+items:
+  your_item:  # << CHANGE THIS
+    settings:
+      configs:
+
+        # --------------------------------------------------------------------
+        # 燃料烧炼时间 (fuel_time)
+        # --------------------------------------------------------------------
+        fuel_time: 100  # 单位: 刻 (ticks)  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 标签 (tags)
+        #   可在命令/配方中以 #<命名空间:ID> 调用
+        # --------------------------------------------------------------------
+        tags:
+          - "your_namespace:your_log"         # << CHANGE THIS
+          - "minecraft:logs"                  # << CHANGE THIS (可选)
+          - "minecraft:logs_that_burn"        # << CHANGE THIS (可选)
+
+        # --------------------------------------------------------------------
+        # 装备 (equipment)
+        #   将装备定义应用到本物品
+        # --------------------------------------------------------------------
+        equipment:
+          asset_id: "your_namespace:your_equipment"  # << CHANGE THIS (必填)
+
+          # 是否使用客户端绑定模型 (默认读取 config.yml 全局设置)
+          client_bound_model: true  # << CHANGE THIS
+
+          # --- 1.21.2+ 选项 (需指定 slot) ---
+          slot: head  # << CHANGE THIS — head / chest / legs / feet / body / saddle
+
+          # 玩家穿戴时第一人称视角纹理遮罩
+          # assets/<命名空间>/textures/<路径>
+          camera_overlay: "your_namespace:path/to/overlay"  # << CHANGE THIS
+
+          # 是否可通过发射器使生物穿戴
+          dispensable: true  # << CHANGE THIS
+
+          # 受伤害时此物品是否耐久受损
+          damage_on_hurt: true  # << CHANGE THIS
+
+          # 物品是否可直接右键穿戴
+          swappable: true  # << CHANGE THIS
+
+          # --- 1.21.5+ ---
+          # 对生物使用时是否让其在空槽穿戴此物品
+          equip_on_interact: true  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 可修复 (repairable)
+        #   总开关，或细化到各修复场景
+        # --------------------------------------------------------------------
+        # 方式 A: 布尔总开关
+        repairable: true  # << CHANGE THIS
+
+        # 方式 B: 细化场景
+        # repairable:
+        #   crafting_table: true   # << CHANGE THIS
+        #   anvil_repair: false    # << CHANGE THIS
+        #   anvil_combine: true    # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 铁砧材料修复 (anvil_repair_item)
+        #   指定铁砧修复时可用的材料及恢复耐久度
+        # --------------------------------------------------------------------
+        anvil_repair_item:
+          - target: "#your_namespace:your_tools"  # << CHANGE THIS (标签)
+            amount: 20  # << CHANGE THIS — 固定恢复耐久值
+          - target:                              # << CHANGE THIS (具体物品列表)
+              - "minecraft:iron_pickaxe"
+              - "minecraft:shears"
+            percent: 0.25  # << CHANGE THIS — 恢复总耐久的百分比 (0.25 = 25%)
+
+        # --------------------------------------------------------------------
+        # 可重命名 (renameable)
+        #   是否可在铁砧中重命名 (默认 true)
+        # --------------------------------------------------------------------
+        renameable: false  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 可装载弹射物 (allowed_projectiles)
+        #   弩/弓可使用的弹药
+        # --------------------------------------------------------------------
+        allowed_projectiles:
+          - "your_namespace:your_ammo"  # << CHANGE THIS
+          - "minecraft:ender_pearl"     # << CHANGE THIS (可选)
+
+        # --------------------------------------------------------------------
+        # 弹射物 (projectile)
+        #   基于本物品创建自定义弹射物实体
+        # --------------------------------------------------------------------
+        projectile:
+          display:
+            item: "your_namespace:your_projectile_item"  # << CHANGE THIS
+            translation: 0,0,0          # << CHANGE THIS
+            rotation: 1,1,1,1           # << CHANGE THIS
+            display_transform: NONE      # << CHANGE THIS
+            scale: 0.5                  # << CHANGE THIS
+
+          # --- 音效: 简单格式 ---
+          sounds:
+            throw: "minecraft:item.trident.throw"        # << CHANGE THIS
+            hit_entity: "minecraft:item.trident.hit"     # << CHANGE THIS
+            hit_block: "minecraft:item.trident.hit_ground"  # << CHANGE THIS
+
+          # --- 音效: 高级格式 (取消下方注释以使用) ---
+          # sounds:
+          #   throw:
+          #     id: "minecraft:item.trident.throw"  # << CHANGE THIS
+          #     pitch: 0.9~1                         # << CHANGE THIS
+          #     volume: 1                            # << CHANGE THIS
+          #   hit_block:
+          #     default: "minecraft:item.trident.hit"  # << CHANGE THIS
+          #     overrides:
+          #       "minecraft:stone": "minecraft:item.trident.hit_stone"     # << CHANGE THIS
+          #       "your_namespace:your_log": "minecraft:item.trident.hit_log"  # << CHANGE THIS
+
+          # 是否忽略无限附魔 (作为弹药时)
+          ignore_infinity_enchantment: false  # << CHANGE THIS
+          # 命中后是否可捡起
+          pickupable: true  # << CHANGE THIS
+          # 命中后是否移除
+          remove_on_hit: false  # << CHANGE THIS
+          # 是否受重力影响
+          gravity: true  # << CHANGE THIS
+          # 弹射物速度
+          velocity: 1  # << CHANGE THIS
+          # 基础伤害
+          damage: 10  # << CHANGE THIS
+          # 穿透等级 (可穿透实体数)
+          pierce_level: 5  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 可染色 (dyeable)
+        #   是否可在工作台中染色 (默认: 未定义)
+        # --------------------------------------------------------------------
+        dyeable: true  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 食物 (food)
+        #   基于插件的 food 组件替代实现 (建议 1.20.5+)
+        # --------------------------------------------------------------------
+        food:
+          nutrition: 5       # << CHANGE THIS — 0~20 整数
+          saturation: 3.5    # << CHANGE THIS — 0~10 单精度浮点数
+
+        # --------------------------------------------------------------------
+        # 消耗替代品 (consume_replacement)
+        #   消耗后返回的物品 (如水瓶返回空瓶, 默认 null)
+        # --------------------------------------------------------------------
+        consume_replacement: "minecraft:apple"  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 合成剩余物品 (craft_remainder / craft_remaining_item)
+        #   合成配方完成后返还的物品或特殊操作
+        # --------------------------------------------------------------------
+        # 方式 A: 固定物品 (字符串)
+        # craft_remainder: bucket  # << CHANGE THIS
+
+        # 方式 B: 固定物品 (字典)
+        craft_remainder:
+          type: fixed           # << CHANGE THIS
+          item: bucket          # << CHANGE THIS
+          count: 1              # << CHANGE THIS
+
+        # 方式 C: 消耗耐久
+        # craft_remainder:
+        #   type: hurt_and_break  # << CHANGE THIS
+        #   damage: 1             # << CHANGE THIS (默认 1)
+
+        # 方式 D: 基于配方选择
+        # craft_remainder:
+        #   type: recipe_based  # << CHANGE THIS
+        #   terms:
+        #     - recipes:
+        #         - "test:test1"
+        #         - "test:test3"
+        #       craft_remainder:
+        #         type: hurt_and_break  # << CHANGE THIS
+        #     - recipes:
+        #         - "test:test2"
+        #       craft_remainder: "minecraft:stone"  # << CHANGE THIS
+
+        # 别名 (两者等效)
+        # craft_remaining_item: ...
+
+        # --------------------------------------------------------------------
+        # 燃料剩余物品 (fuel_remainder)
+        #   作为燃料消耗后返还的物品 (仅堆叠数量=1)
+        # --------------------------------------------------------------------
+        fuel_remainder: "paper"  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 不被指定伤害类型摧毁 (invulnerable)
+        #   通过取消事件实现 (与 damage_resistant 组件不同)
+        # --------------------------------------------------------------------
+        invulnerable:
+          - lava                # << CHANGE THIS
+          - fire                # << CHANGE THIS
+          - fire_tick           # << CHANGE THIS
+          - block_explosion     # << CHANGE THIS (如重生锚)
+          - entity_explosion    # << CHANGE THIS (如苦力怕/TNT)
+          - lightning           # << CHANGE THIS
+          - contact             # << CHANGE THIS (如仙人掌)
+
+        # --------------------------------------------------------------------
+        # 可附魔 (enchantable)
+        #   是否可在附魔台附魔 (默认 true)
+        #   注: 让不可附魔物品可附魔需用 enchantable 数据组件 + 对应标签
+        # --------------------------------------------------------------------
+        enchantable: false  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 堆肥成功率 (compost_probability)
+        #   (默认 0.5)
+        # --------------------------------------------------------------------
+        compost_probability: 0.5  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 尊重 repairable 组件 (respect_repairable_component)
+        #   铁砧中是否允许被 repairable 组件指定的物品修复 (默认 false)
+        # --------------------------------------------------------------------
+        respect_repairable_component: false  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 染色颜色 (dye_color)
+        #   在染色配方中提供的颜色 (RGB)
+        # --------------------------------------------------------------------
+        dye_color: "255,140,0"  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 烟火颜色 (firework_color)
+        #   在烟火之星配方中提供的颜色 (RGB)
+        # --------------------------------------------------------------------
+        firework_color: "255,140,0"  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 原料替代物 (ingredient_substitute)
+        #   在合成配方中提供的替代物
+        # --------------------------------------------------------------------
+        ingredient_substitute:
+          - "minecraft:leather"  # << CHANGE THIS
+          - "minecraft:paper"    # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 帽子高度 (hat_height) — 需 CustomNameplates 插件
+        #   影响玩家铭牌高度
+        # --------------------------------------------------------------------
+        hat_height: 1.5  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 死亡保留概率 (keep_on_death_chance)
+        #   死亡后保留本物品的概率 (0~1)
+        # --------------------------------------------------------------------
+        keep_on_death_chance: 0.2  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 死亡损毁概率 (destroy_on_death_chance)
+        #   死亡后损毁本物品的概率 (0~1)
+        # --------------------------------------------------------------------
+        destroy_on_death_chance: 0.5  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 掉落物显示名称 (drop_display)
+        #   控制掉落物是否显示名称及显示内容
+        # --------------------------------------------------------------------
+        # 方式 A: 关闭显示
+        # drop_display: false  # << CHANGE THIS
+
+        # 方式 B: 按物品名显示实体名
+        # drop_display: true  # << CHANGE THIS
+
+        # 方式 C: 自定义格式
+        drop_display: "<arg:count>x <name>"  # << CHANGE THIS
+
+        # --------------------------------------------------------------------
+        # 发光颜色 (glow_color)
+        #   使物品发光并指定颜色
+        # --------------------------------------------------------------------
+        # 可选值: black, dark_blue, dark_green, dark_aqua, dark_red,
+        #         dark_purple, gold, gray, dark_gray, blue, green,
+        #         aqua, red, light_purple, yellow, white
+        glow_color: "white"  # << CHANGE THIS

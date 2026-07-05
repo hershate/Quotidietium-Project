@@ -1,0 +1,185 @@
+# =============================================================================
+# CraftEngine 分类配置模板 (Categories Configuration)
+# =============================================================================
+# 来源文档:
+#   CraftEngine Wiki/configuration/category.md
+#   CraftEngine Wiki/reference/conditions.md
+# =============================================================================
+# 使用说明:
+#   1. 将 your_namespace 替换为你的实际命名空间
+#   2. 修改所有 # << CHANGE THIS 标记的值
+#   3. 按需增删分类和物品条目
+#   4. 子分类需设置 hidden: true 并用 # 前缀引用
+# =============================================================================
+
+categories:
+
+  # ===========================================================================
+  # [示例 1] 基础分类 —— 独立显示在 /ce 菜单中
+  # ===========================================================================
+  your_namespace:example_category:             # << CHANGE THIS 分类 ID (namespace:id)
+    name: "<!i><green><i18n:category.example></green>"  # << CHANGE THIS 分类图标名称
+    lore: []                                             # << CHANGE THIS 分类描述文本列表
+    hidden: false                                        # << CHANGE THIS 是否隐藏 (子分类需 true)
+    priority: 1                                          # << CHANGE THIS 显示优先级 (越小越靠前)
+    icon: your_namespace:example_item                    # << CHANGE THIS 图标物品 ID
+    conditions:                                          # << CHANGE THIS 显示条件组
+      - type: permission
+        permission: category.your_namespace.example      # << CHANGE THIS 权限节点
+    # all_items: true                                    # << CHANGE THIS 设为 true 显示所有物品 (无视 list)
+    list:                                                # << CHANGE THIS 该分类包含的物品列表
+      - your_namespace:item_a
+      - your_namespace:item_b
+      - your_namespace:item_c
+
+  # ===========================================================================
+  # [示例 2] 基础分类 —— 无条件限制，适用于公开目录
+  # ===========================================================================
+  your_namespace:public_category:                       # << CHANGE THIS 分类 ID
+    name: "<!i><gold>公开分类</gold>"                    # << CHANGE THIS 可直接使用中文名
+    lore:
+      - "<!i><gray>所有玩家可见的分类</gray>"             # << CHANGE THIS 支持多行描述
+      - "<!i><dark_gray>包含基础物品</dark_gray>"
+    hidden: false
+    priority: 10
+    icon: your_namespace:icon_item                      # << CHANGE THIS 图标物品
+    list:
+      - your_namespace:item_x
+      - your_namespace:item_y
+
+  # ===========================================================================
+  # [示例 3] 使用 all_items 显示分类下所有物品
+  # ===========================================================================
+  your_namespace:auto_collection:                       # << CHANGE THIS 分类 ID
+    name: "<!i><aqua>自动汇总</aqua>"
+    lore:
+      - "<!i><gray>自动收录命名空间下所有物品</gray>"
+    hidden: false
+    priority: 20
+    icon: your_namespace:auto_item                      # << CHANGE THIS 图标物品
+    all_items: true                                     # 启用后无视 list 配置
+    # list: []                                          # all_items: true 时 list 不生效
+
+  # ===========================================================================
+  # [示例 4] 多级分类 —— 父分类 + 子分类嵌套结构
+  # ===========================================================================
+  # 父分类 (显示在主菜单，通过 # 前缀引用子分类)
+  your_namespace:main_category:                         # << CHANGE THIS 父分类 ID
+    priority: 1
+    name: "<!i><white><i18n:category.main></white>"     # << CHANGE THIS
+    lore:
+      - "<!i><gray><i18n:category.main.lore></gray>"    # << CHANGE THIS
+    icon: your_namespace:main_icon                      # << CHANGE THIS 父分类图标
+    hidden: false                                       # 父分类可见
+    list:
+      - "#your_namespace:sub_a"                         # # 前缀引用子分类
+      - "#your_namespace:sub_b"
+      - "#your_namespace:sub_c"
+
+  # 子分类 A (hidden: true，不显示在主菜单，通过父分类引用)
+  your_namespace:sub_a:                                 # << CHANGE THIS 子分类 ID
+    name: "<!i><green><i18n:category.sub_a></green>"    # << CHANGE THIS
+    hidden: true                                        # 子分类必须 hidden: true
+    icon: your_namespace:sub_a_icon                     # << CHANGE THIS
+    list:
+      - your_namespace:sub_a_item_1
+      - your_namespace:sub_a_item_2
+      - your_namespace:sub_a_item_3
+
+  # 子分类 B
+  your_namespace:sub_b:                                 # << CHANGE THIS
+    name: "<!i><#FF8C00><i18n:category.sub_b></#FF8C00>" # << CHANGE THIS 支持 Hex 颜色
+    hidden: true
+    icon: your_namespace:sub_b_icon                     # << CHANGE THIS
+    list:
+      - your_namespace:sub_b_item_1
+      - your_namespace:sub_b_item_2
+
+  # 子分类 C
+  your_namespace:sub_c:                                 # << CHANGE THIS
+    name: "<!i><gray><i18n:category.sub_c></gray>"      # << CHANGE THIS
+    hidden: true
+    icon: your_namespace:sub_c_icon                     # << CHANGE THIS
+    list:
+      - your_namespace:sub_c_item_1
+      - your_namespace:sub_c_item_2
+      - your_namespace:sub_c_item_3
+      - your_namespace:sub_c_item_4
+
+  # ===========================================================================
+  # [示例 5] 三级及以上深度嵌套 (子分类的 list 中继续使用 # 前缀)
+  # ===========================================================================
+  your_namespace:level_one:                             # << CHANGE THIS 一级分类
+    priority: 30
+    name: "<!i><light_purple>一级分类</light_purple>"
+    hidden: false
+    icon: your_namespace:level_one_icon
+    list:
+      - "#your_namespace:level_two"                    # 引用二级分类
+
+  your_namespace:level_two:                             # << CHANGE THIS 二级分类
+    name: "<!i><yellow>二级分类</yellow>"
+    hidden: true
+    icon: your_namespace:level_two_icon
+    list:
+      - "#your_namespace:level_three"                  # 引用三级分类
+      - your_namespace:level_two_item
+
+  your_namespace:level_three:                           # << CHANGE THIS 三级分类
+    name: "<!i><aqua>三级分类</aqua>"
+    hidden: true
+    icon: your_namespace:level_three_icon
+    list:
+      - your_namespace:level_three_item_1
+      - your_namespace:level_three_item_2
+
+# =============================================================================
+# 物品级分类指定 (Item-Level Category Assignment)
+# 在 items 配置中直接指定物品所属分类
+# 注意: 此方式无法保证物品在分类中的显示顺序
+# =============================================================================
+# 使用方法: 在物品配置中添加 category 字段
+# 以下为参考示例，实际应放在 items 配置中而非此处
+# =============================================================================
+#
+# # 示例 A: 单个分类
+# items:
+#   your_namespace:example_sword:                       # << CHANGE THIS 物品 ID
+#     material: diamond_sword                           # << CHANGE THIS
+#     category: your_namespace:weapons                  # << CHANGE THIS 所属分类
+#     ...                                               # 其他物品配置项
+#
+# # 示例 B: 多个分类 (物品同时出现在多个分类中)
+# items:
+#   your_namespace:multi_category_item:                 # << CHANGE THIS 物品 ID
+#     material: diamond                                 # << CHANGE THIS
+#     category:                                         # << CHANGE THIS 所属分类列表
+#       - your_namespace:weapons
+#       - your_namespace:gears
+#       - your_namespace:precious
+#     ...                                               # 其他物品配置项
+
+# =============================================================================
+# 附录: 条件 (Conditions) 配置参考
+# 完整条件类型和选项请参见 wiki/reference/conditions.md
+# =============================================================================
+# conditions 支持的类型示例:
+#
+#   conditions:
+#     - type: permission
+#       permission: category.your_namespace.example
+#
+#     - type: permission                    # 多权限: 任一满足即可
+#       permission:
+#         - category.your_namespace.vip
+#         - category.your_namespace.admin
+#
+#     - type: world                         # 世界限制
+#       worlds:
+#         - world
+#         - world_nether
+#
+#     - type: biome                         # 生物群系限制
+#       biomes:
+#         - plains
+#         - forest

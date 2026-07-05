@@ -1,0 +1,398 @@
+# 🔧 物品设置
+
+## 简介
+
+与 data 不同，settings 中的内容涉及由插件处理的特殊机制。
+
+## 类型
+
+### fuel_time（烧炼时间）
+
+控制物品可燃烧的时间（或称燃料热值）。
+
+```yaml
+fuel_time: 100 # 单位：刻
+```
+
+![](/img/i18n/zh-Hans/item_settings_1.png)
+
+### tags（标签）
+
+标签可以在用命令测试物品时以 `#<命名空间ID>` 的形式调用。也可以在配方中用 `#<命名空间ID>` 的格式使用。只要物品满足了该标签中定义的任何一个物品，测试就会通过。
+
+```yaml
+tags:
+  - "default:palm_logs"
+  - "minecraft:logs"
+  - "minecraft:logs_that_burn"
+```
+
+### equipment（装备）
+
+将[装备](../equipment.md)应用于此物品。
+
+![](/img/item_settings_2.png)
+
+```yaml
+equipment:
+  #
+  # 必填参数
+  #
+  asset_id: default:topaz
+  
+  # 
+  # 可选参数。默认为 config.yml 中的全局 client_bound_model 选项。
+  #
+  client_bound_model: true
+  
+  #
+  # 1.21.2 及以上版本的可选参数
+  # 这些选项需要指定 'slot' 选项才能生效
+  #
+  slot: head # head / chest / legs / feet / body (animal armor) / saddle
+             # 头盔 / 胸甲  / 护腿  / 靴子 / 身体（动物盔甲）      / 鞍
+  # 当此项存在且物品被玩家穿戴时，玩家第一人称视角将渲染指定的纹理遮罩。
+  # 此遮罩可以使用多个设置此标签的物品互相叠加，每个物品指定的遮罩都会被渲染，
+  # 且渲染顺序按照主手、副手、头盔、胸甲、护腿、靴子、身体、鞍的顺序依次叠加渲染。
+  # 当遮罩纹理渲染时，遮罩纹理被视为独立纹理，即无法作为动态纹理或GUI纹理渲染，但可以指定纹理过滤方式。
+  # 此处的目录指的是 assets/<命名空间>/textures/<路径>
+  # 译者注：这里不允许使用中文作为命名空间ID
+  camera_overlay: 命名空间:路径
+  # 是否可以使用发射器使生物穿戴此物品。如果物品本身有特殊的发射器行为则此项无效。
+  dispensable: true
+  # 生物在受到会影响损害盔甲的伤害时此物品是否会受损而减少耐久。
+  damage_on_hurt: true
+  # 物品是否可以直接使用穿戴。
+  swappable: true
+  # >= 1.21.5
+  # 对生物使用此物品时，是否可以让被交互的生物在允许的空槽位上穿戴此物品。
+  equip_on_interact: true
+```
+
+### repairable（可修复）
+
+控制物品是否可以通过工作台或铁砧修复。（默认值：true）
+
+```yaml
+# 简单的总开关
+repairable: true
+
+# 或者设定具体修复场景
+repairable:
+  crafting_table: true
+  anvil_repair: false
+  anvil_combine: true
+```
+
+![](/img/i18n/zh-Hans/item_settings_3.png)
+
+### anvil_repair_item（铁砧材料修复）
+
+控制指定物品在铁砧修复时提供的耐久度。
+
+```yaml
+anvil_repair_item:
+  - target: "#topaz_tools" # 使用标签
+    amount: 20  # 指定恢复耐久度
+  - target:
+      - "minecraft:iron_pickaxe"
+      - "minecraft:shears"
+    percent: 0.25  # 0.25 = 25%, 恢复 n% 总耐久度
+```
+
+### renameable（可重命名）
+
+控制物品是否可以在铁砧中重命名。（默认值: true）
+
+```yaml
+renameable: false
+```
+
+### allowed_projectiles (可装载的弹射物)
+
+决定了什么弹药可以装在弩和弓上
+
+```yaml
+allowed_projectiles:
+  - gun_world:gun_ammo
+  - minecraft:ender_pearl
+```
+
+### projectile（弹射物）
+
+基于该物品创建一个自定义弹射物实体。支持 `trident`、`arrow`、`snowball` 等类型。
+
+```yaml
+projectile:
+  display:
+    item: default:topaz_trident # 显示的物品
+    translation: 0,0,0
+    rotation: 1,1,1,1
+    display_transform: NONE
+    scale: 0.5
+  sounds:
+    throw: minecraft:item.trident.throw
+    hit_entity: minecraft:item.trident.hit
+    hit_block: minecraft:item.trident.hit_ground
+  # 作为弹药时是否忽略无限附魔
+  ignore_infinity_enchantment: false
+  # 射出命中后是否可以被捡起来
+  pickupable: true
+  # 是否在命中后移除
+  remove_on_hit: false
+  # 弹射物是否受重力影响
+  gravity: true
+  # 弹射物速度
+  velocity: 1
+  # 基础伤害
+  damage: 10
+  # 穿透等级（即可以穿透几个实体）
+  pierce_level: 5
+```
+
+:::tip
+任何音效配置均支持高级配置格式
+
+```yaml
+sounds:
+  throw:
+    id: minecraft:item.trident.throw
+    pitch: 0.9~1
+    volume: 1
+```
+
+`hit_block` 和 `hit_entity` 支持根据命中目标改变音效类型
+
+```yaml
+sounds:
+  hit_block:
+    default: minecraft:item.trident.hit
+    overrides:
+      minecraft:stone: minecraft:item.trident.hit_stone
+      default:palm_log: minecraft:item.trident.hit_log
+```
+
+:::
+
+![](/img/item_settings_4.png)
+
+<details>
+  <summary>如何建模</summary>
+
+  你的建模方式将直接影响配置文件中的 `rotation` 参数。
+
+  无论你使用哪种建模方法，最关键的是将三叉戟的尖端指向在上图所示的位置，以确保最佳的命中点。
+
+![](/img/i18n/zh-Hans/item_settings_6.png)
+![](/img/i18n/zh-Hans/item_settings_7.png)
+
+</details>
+
+### dyeable（可染色）
+
+控制物品是否可以在工作台中染色。（默认值：未定义）
+
+```yaml
+dyeable: true
+```
+
+![](/img/i18n/zh-Hans/item_settings_5.png)
+
+### food（可食用）
+
+基于插件的 food 组件替代实现方案。
+
+```yaml
+food:
+  nutrition: 5  # 0~20, 整数
+  saturation: 3.5  # 0~10, 单精度浮点数
+```
+
+:::caution
+建议在 1.20.5 及以上版本的服务器上使用 food 组件
+:::
+
+### consume_replacement（消耗替代品）
+
+控制物品消耗后返回的物品。例如，玩家喝完水瓶后，会返回空瓶。（默认值：null）
+
+```yaml
+consume_replacement: minecraft:apple
+```
+
+### craft_remainder / craft_remaining_item（合成剩余物品）
+
+控制在合成配方完成后，物品是否应返还其他物品，或是对参与合成的物品进行一些特殊操作。
+
+返回一个固定物品
+
+```yaml
+craft_remainder: bucket
+```
+
+```yaml
+craft_remainder:
+  type: fixed
+  item: bucket
+  count: 1
+```
+
+消耗一定耐久度
+
+```yaml
+craft_remainder:
+  type: hurt_and_break
+  damage: 1 # 默认1
+```
+
+根据配方选择合成剩余物品
+
+```yaml
+craft_remainder:
+  type: recipe_based
+  terms:
+    - recipes: 
+        - test:test1
+        - test:test3
+      craft_remainder:
+        type: hurt_and_break
+    - recipes: 
+        - test:test2
+      craft_remainder: minecraft:stone
+```
+
+![](/img/i18n/zh-Hans/item_settings_8.png)
+
+### fuel_remainder（燃料剩余物品）
+
+作为燃料消耗后会返还的物品，仅适用于堆叠数量为1的物品。
+
+```yaml
+fuel_remainder: paper
+```
+
+### invulnerable（不被指定伤害类型摧毁）
+
+译者注：与数据组件 damage_resistant 不同，此设置的实现方法是通过取消事件实现
+
+```yaml
+invulnerable:
+  - lava
+  - fire
+  - fire_tick
+  - block_explosion  # 例如重生锚
+  - entity_explosion  # 例如苦力怕，TNT
+  - lightning
+  - contact  # 例如仙人掌
+```
+
+![](/img/item_settings_9.png)
+
+### enchantable（可附魔）
+
+控制物品是否可在附魔台上被附魔。提示：将此项设置为 true 并不会神奇地让原本不可附魔的物品变得可附魔。（默认值：true）\
+译者注：如果你想让不可附魔的物品可以附魔应该使用 enchantable 数据组件以及对应的物品标签。
+
+```yaml
+enchantable: false
+```
+
+### compost_probability（堆肥成功率）
+
+控制物品堆肥成功的几率（默认值：0.5）。
+
+```yaml
+compost_probability: 0.5
+```
+
+### respect_repairable_component（尊重 repairable 组件）
+
+控制物品在铁砧界面中是否允许被 repairable 组件中指定的物品修复。（默认值：false）
+
+```yaml
+respect_repairable_component: false
+```
+
+### dye_color（染色颜色）
+
+控制物品在染色配方中提供的颜色。
+
+```yaml
+dye_color: 255,140,0
+```
+
+![](/img/item_settings_10.png)
+
+### firework_color（烟火颜色）
+
+控制物品在烟火之星配方中提供的颜色。
+
+```yaml
+firework_color: 255,140,0
+```
+
+### ingredient_substitute（原料替代物）
+
+控制物品在合成配方中提供的替代物。
+
+```yaml
+ingredient_substitute:
+  - minecraft:leather
+  - minecraft:paper
+```
+
+![](/img/item_settings_11.png)
+
+### hat_height（帽子高度，需要 CustomNameplates）
+
+决定了这个帽子物品对玩家铭牌高度的影响
+
+```yaml
+hat_height: 1.5
+```
+
+### keep_on_death_chance（死亡保留概率）
+
+决定了死亡后保留此物品的概率
+
+```yaml
+keep_on_death_chance: 0.2 # 0~1
+```
+
+### destroy_on_death_chance（死亡损毁概率）
+
+决定了死亡后损毁此物品的概率
+
+```yaml
+destroy_on_death_chance: 0.5 # 0~1
+```
+
+### drop_display（掉落物显示名称）
+
+用于控制掉落物是否显示名称，以及显示的内容
+
+```yaml
+drop_display: false  # 如果全局开启，可以单独关闭
+```
+
+```yaml
+drop_display: true  # 根据物品名显示实体名
+```
+
+```yaml
+# 自定义显示名称 <arg:count> 为数量，<name> 为物品名
+drop_display: "<arg:count>x <name>"
+```
+
+![](/img/i18n/zh-Hans/item_settings_12.png)
+
+### glow_color（发光颜色）
+
+使物品发光并显示颜色
+
+```yaml
+# black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
+glow_color: white
+```
+
+![](/img/item_settings_13.png)

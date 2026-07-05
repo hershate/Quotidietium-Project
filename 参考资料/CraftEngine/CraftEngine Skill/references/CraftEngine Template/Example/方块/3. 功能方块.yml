@@ -1,0 +1,129 @@
+# ============================================================================
+# CraftEngine 功能方块示例
+# 参考：CraftEngine Wiki -> configuration/block/behaviors/
+#   door_block.md, trapdoor_block.md, fence_block.md, fence_gate_block.md,
+#   button_block.md, pressure_plate_block.md, stairs_block.md, slab_block.md,
+#   double_high_block.md, multi_high_block.md
+# 命名空间使用自定义值：example_demo
+# ============================================================================
+
+blocks:
+
+  # ==========================================================================
+  # 1. 门 (door_block)
+  # 两格高结构，可通过手、红石或风弹开关。铰链侧自动判定。
+  # ==========================================================================
+  example_demo:ebony_door:
+    behavior:
+      type: door_block
+      can_open_with_hand: true              # 允许右键切换 # << CHANGE THIS
+      can_open_by_wind_charge: true          # 允许风弹切换 # << CHANGE THIS
+      sounds:                                # # << CHANGE THIS
+        open: block.wooden_door.open         #   打开音效（可选）
+        close: block.wooden_door.close       #   关闭音效（可选）
+
+  # ==========================================================================
+  # 2. 活板门 (trapdoor_block)
+  # 单格铰链面板，可含水。放置时自动检测红石信号和水体状态。
+  # ==========================================================================
+  example_demo:ebony_trapdoor:
+    behavior:
+      type: trapdoor_block
+      can_open_with_hand: true              # # << CHANGE THIS
+      can_open_by_wind_charge: false         # 禁用风弹切换 # << CHANGE THIS
+      sounds:                                # # << CHANGE THIS
+        open: block.wooden_trapdoor.open
+        close: block.wooden_trapdoor.close
+
+  # ==========================================================================
+  # 3. 栅栏 (fence_block)
+  # 四向自动连接相邻方块，可选拴绳功能。
+  # ==========================================================================
+  example_demo:ebony_fence:
+    behavior:
+      type: fence_block
+      connectable_block_tag: minecraft:wooden_fences  # 连接标签 # << CHANGE THIS
+      can_leash: true                                  # 允许拴绳 # << CHANGE THIS
+
+  # ==========================================================================
+  # 4. 栅栏门 (fence_gate_block)
+  # 可开关栅栏门，in_wall 属性随相邻围墙方块自动更新。
+  # ==========================================================================
+  example_demo:ebony_fence_gate:
+    behavior:
+      type: fence_gate_block
+      can_open_with_hand: true              # # << CHANGE THIS
+      can_open_by_wind_charge: true          # # << CHANGE THIS
+      sounds:                                # # << CHANGE THIS
+        open: block.fence_gate.open
+        close: block.fence_gate.close
+
+  # ==========================================================================
+  # 5. 按钮 (button_block)
+  # 红石电源，按下激活片刻后弹起。需要配合 face_attached_horizontal_
+  # directional_block 实现强充能。
+  # ==========================================================================
+  example_demo:ebony_button:
+    behaviors:                                            # 复合行为使用列表
+      - type: face_attached_horizontal_directional_block  # 提供 face/facing 属性
+        attached_block_tags:                              # # << CHANGE THIS
+          - minecraft:dirt
+      - type: button_block
+        ticks_to_stay_pressed: 30          # 保持激活刻数 # << CHANGE THIS
+        can_be_activated_by_arrows: true   # 箭/三叉戟触发 # << CHANGE THIS
+        sounds:                            # # << CHANGE THIS
+          on: minecraft:block.wooden_button.click_on
+          off: minecraft:block.wooden_button.click_off
+
+  # ==========================================================================
+  # 6. 压力板 (pressure_plate_block)
+  # 探测实体，输出 15 强度红石信号。sensitivity 控制触发类型。
+  # ==========================================================================
+  example_demo:ebony_pressure_plate:
+    behavior:
+      type: pressure_plate_block
+      sensitivity: all                      # "all" 或 "mob" # << CHANGE THIS
+      pressed_time: 20                      # 保持按下刻数   # << CHANGE THIS
+      sounds:                               # # << CHANGE THIS
+        on: minecraft:block.wooden_pressure_plate.click_on
+        off: minecraft:block.wooden_pressure_plate.click_off
+
+  # ==========================================================================
+  # 7. 楼梯 (stairs_block)
+  # shape 自动计算直梯/内角/外角。自定义楼梯无法与原版楼梯连接。
+  # ==========================================================================
+  example_demo:ebony_stairs:
+    behavior:
+      type: stairs_block
+
+  # ==========================================================================
+  # 8. 台阶 (slab_block)
+  # 上下半放置，同类台阶叠加为双层。双层不可含水。
+  # ==========================================================================
+  example_demo:ebony_slab:
+    behavior:
+      type: slab_block
+
+  # ==========================================================================
+  # 9. 双层方块 (double_high_block)
+  # 两格高简单结构，上半部分孤立时自动破坏。
+  # ==========================================================================
+  example_demo:tall_lamp:
+    behavior:
+      type: double_high_block
+
+  # ==========================================================================
+  # 10. 多层方块 (multi_high_block)
+  # 由 int 属性控制高度层数，自动生成连续多层结构。
+  # range: 0~2 生成底部(0) / 中部(1) / 顶部(2) 三层。
+  # ==========================================================================
+  example_demo:tall_pillar:
+    states:
+      properties:
+        layer:                              # 自定义 int 属性名 # << CHANGE THIS
+          type: int
+          default: 0
+          range: 0~2                        # 0=底部, 1=中部, 2=顶部 # << CHANGE THIS
+    behavior:
+      type: multi_high_block
+      property: layer                       # 与控制层数的属性同名 # << CHANGE THIS

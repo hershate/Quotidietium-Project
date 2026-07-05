@@ -1,0 +1,302 @@
+# =============================================================================
+# CraftEngine 模板系统 — 完整参考模板
+# 本地 Wiki: 参考资料/CraftEngine/CraftEngine Wiki/reference/template.md
+# =============================================================================
+# 使用方法:
+#   1. 将 example_namespace 全局替换为你的实际命名空间
+#   2. 将所有 # << CHANGE THIS 标记的值替换为实际值
+#   3. 按需启用/禁用各 section
+# =============================================================================
+
+# =============================================================================
+# 一、模板定义 (Templates Definition)
+# =============================================================================
+templates:
+  # ---------------------------------------------------------------------------
+  # 基本模板
+  # ---------------------------------------------------------------------------
+  example_namespace:basic_template:  # << CHANGE THIS (namespace:template_id)
+    # 模板内容完全自定义，只需符合 YAML 语法
+    option_1: true                   # << CHANGE THIS
+    option_2: false                  # << CHANGE THIS
+    option_3:                        # << CHANGE THIS
+      - hello
+    option_4: 20.25                  # << CHANGE THIS
+    option_5:                        # << CHANGE THIS
+      hello: world
+
+  # ---------------------------------------------------------------------------
+  # 带参数的模板 (Parameters)
+  # ---------------------------------------------------------------------------
+  example_namespace:apple_template:
+    material: apple
+    data:
+      food:
+        nutrition: "${nutrition}"      # << CHANGE THIS
+        saturation: "${saturation}"    # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 带默认值参数的模板 (Default Values ${:-})
+  # ---------------------------------------------------------------------------
+  example_namespace:defaulted_template:
+    data:
+      food:
+        nutrition: "${nutrition:-1}"          # << CHANGE THIS 默认值 1，SNBT 格式
+        saturation: "${saturation:-2.5d}"     # << CHANGE THIS 默认值 2.5d
+      optional_map: "${map:-{aa:bb,cc:dd}}"   # << CHANGE THIS 默认映射
+      optional_string: "${string:-'1234'}"    # << CHANGE THIS 默认字符串
+      nullable_value: "${nullable:-null}"     # << CHANGE THIS 默认 null
+      # 递归嵌套默认值（最多三层）
+      recursive_item_name: "<!i><white>${arg1:-${arg2:-${arg3:-abc}}}"
+
+  # ---------------------------------------------------------------------------
+  # 使用 ${__NAMESPACE__} 和 ${__ID__} 特殊参数
+  # ---------------------------------------------------------------------------
+  example_namespace:auto_namespace_template:
+    data:
+      # 自动从调用处的 namespace:custom_id 中提取
+      item_name: "<lang:item.${__NAMESPACE__}.${__ID__}>"
+
+  # ---------------------------------------------------------------------------
+  # 多模板组合 (Multi-Template)
+  # ---------------------------------------------------------------------------
+  example_namespace:first_component:
+    material: stone
+    enchantable: true
+
+  example_namespace:second_component:
+    material: diamond
+    durability: 1561
+
+  # ---------------------------------------------------------------------------
+  # 模板之间可相互引用（支持链式）
+  # ---------------------------------------------------------------------------
+  example_namespace:tier_template:
+    template: example_namespace:tier_template/internal
+    arguments:
+      tier.uppercase:
+        type: to_upper_case
+        value: "${tier}"
+        locale: en
+
+  example_namespace:tier_template/internal:
+    data:
+      item_name: "<!i><white><image:${tier}> ${name}"
+      nbt:
+        MMOITEMS_TIER: "${tier.uppercase}"
+
+# =============================================================================
+# 二、使用模板调用 (Template Usage)
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# 单模板调用
+# ---------------------------------------------------------------------------
+items:
+  example_namespace:custom_apple:  # << CHANGE THIS
+    template: example_namespace:apple_template
+    arguments:
+      nutrition: 1                 # << CHANGE THIS
+      saturation: 2.5              # << CHANGE THIS
+
+  # ---------------------------------------------------------------------------
+  # 多模板调用 (Multi-Template)
+  # ---------------------------------------------------------------------------
+  example_namespace:composite_item:  # << CHANGE THIS
+    template:
+      - example_namespace:first_component    # 上方模板
+      - example_namespace:second_component   # 下方会覆盖上方相同键，列表合并
+
+  # ---------------------------------------------------------------------------
+  # 带 ${__NAMESPACE__} / ${__ID__} 的模板调用
+  # ---------------------------------------------------------------------------
+  example_namespace:palm_log:
+    template: example_namespace:auto_namespace_template
+    # 自动解析: __NAMESPACE__ = example_namespace, __ID__ = palm_log
+
+  # ---------------------------------------------------------------------------
+  # 合并 (Merges) — 深度合并所有层级（含列表）
+  # ---------------------------------------------------------------------------
+  example_namespace:merged_bread:  # << CHANGE THIS
+    template: example_namespace:apple_template
+    arguments:
+      nutrition: 1                 # << CHANGE THIS
+      saturation: 2.5              # << CHANGE THIS
+    merges:
+      data:
+        food:
+          can_always_eat: true     # << CHANGE THIS 合并到 food 下，不影响原有键
+
+  # ---------------------------------------------------------------------------
+  # 覆写 (Overrides) — 完全替换指定路径（含列表和映射）
+  # ---------------------------------------------------------------------------
+  example_namespace:overridden_item:  # << CHANGE THIS
+    template: example_namespace:apple_template
+    arguments:
+      nutrition: 1                 # << CHANGE THIS
+      saturation: 2.5              # << CHANGE THIS
+    overrides:
+      material: bread              # << CHANGE THIS 完全替换 material（而非合并）
+
+  # ---------------------------------------------------------------------------
+  # 参数顺序应用 — 参数可引用前面定义的参数
+  # ---------------------------------------------------------------------------
+  example_namespace:chained_args_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      arg1: topaz                  # << CHANGE THIS
+      arg2: helmet                 # << CHANGE THIS
+      arg3: "${arg1}_${arg2}"      # 结果: topaz_helmet
+
+# =============================================================================
+# 三、扩展参数类型 (Extended Parameter Types)
+# =============================================================================
+items:
+  # ---------------------------------------------------------------------------
+  # 列表 (List)
+  # ---------------------------------------------------------------------------
+  example_namespace:list_arg_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      arg1:                        # << CHANGE THIS
+        - value1
+        - value2
+
+  # ---------------------------------------------------------------------------
+  # 映射 (Map) — 注意: 若含 type 键需使用 __skip_template_argument__
+  # ---------------------------------------------------------------------------
+  example_namespace:map_arg_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      arg_1:                       # << CHANGE THIS
+        option1: value1
+        option2: value2
+
+  # ---------------------------------------------------------------------------
+  # 映射 + __skip_template_argument__ (避免 type 被误解释为参数类型)
+  # ---------------------------------------------------------------------------
+  example_namespace:hitbox_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      hitbox:                      # << CHANGE THIS
+        __skip_template_argument__: {}
+        type: shulker
+        scale: 2
+        peek: 100
+
+  # ---------------------------------------------------------------------------
+  # condition — 条件参数 (将字符串参数转为布尔条件)
+  # ---------------------------------------------------------------------------
+  example_namespace:conditional_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      leaves_base_model:           # << CHANGE THIS
+        type: condition
+        condition: "${tintable:-false}"  # << CHANGE THIS
+        on_true: leaves
+        on_false: cube_all
+
+  # ---------------------------------------------------------------------------
+  # when — 条件匹配 (映射输入值到输出值)
+  # ---------------------------------------------------------------------------
+  example_namespace:when_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      slot:                        # << CHANGE THIS
+        type: when
+        source: "${part}"          # << CHANGE THIS
+        when:
+          helmet: head
+          chestplate: chest
+          leggings: legs
+          boots: feet
+        fallback: any              # << CHANGE THIS 未匹配时的回退值
+
+  # ---------------------------------------------------------------------------
+  # to_upper_case / to_lower_case — 大小写转换
+  # ---------------------------------------------------------------------------
+  example_namespace:case_convert_item:  # << CHANGE THIS
+    template: example_namespace:tier_template
+    arguments:
+      tier: common                 # << CHANGE THIS
+      name: "Test Item"            # << CHANGE THIS
+    # tier.uppercase 在模板内部通过 to_upper_case 定义
+
+  # ---------------------------------------------------------------------------
+  # self_increase_int — 自增/自减整数
+  # ---------------------------------------------------------------------------
+  example_namespace:self_incr_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      id:                          # << CHANGE THIS
+        type: self_increase_int
+        from: 0                    # << CHANGE THIS 起始值
+        to: 20                     # << CHANGE THIS 上限值
+        step: 1                    # << CHANGE THIS 步长
+        step_interval: 1           # << CHANGE THIS 每 N 次递增 1
+
+  # ---------------------------------------------------------------------------
+  # expression — 数学表达式
+  # ---------------------------------------------------------------------------
+  example_namespace:expression_item:  # << CHANGE THIS
+    template: example_namespace:basic_template
+    arguments:
+      damage:                      # << CHANGE THIS
+        type: expression
+        expression: "${base_damage:-10d} * ${damage_multiplier:-1d}"  # << CHANGE THIS
+        value_type: double         # int / double / short / long / float / boolean / byte
+
+# =============================================================================
+# 四、配置工厂 (Config Factory)
+# =============================================================================
+# 通过 blueprint + instances 批量生成配置
+
+config_factory# << CHANGE THIS (_#wool 是工厂名称后缀):
+  blueprint:
+    items:
+      # ${color} 会被 instances 中定义的值逐个替换
+      "example_namespace:${color}_wool":  # << CHANGE THIS
+        material: "${color}_wool"
+        data::
+          item_name: "<lang:block.minecraft.${color}_wool>"
+    recipes:
+      "example_namespace:${color}_wool":  # << CHANGE THIS
+        type: shaped
+        pattern:
+          - AA
+          - AB
+        ingredients:
+          A: "minecraft:white_wool"
+          B: "minecraft:${color}_dye"
+        result:
+          # __NAMESPACE__ → example_namespace
+          # __ID__ → red_wool / blue_wool / orange_wool
+          id: "${__NAMESPACE__}:${__ID__}"
+          count: "${result_count:-3}"
+
+  instances:
+    # 每个 instance 对应一次 blueprint 展开
+    - color: red                   # << CHANGE THIS
+      result_count: 5              # << CHANGE THIS 覆盖默认值
+    - color: blue                  # << CHANGE THIS
+      result_count: 2              # << CHANGE THIS
+    - color: orange                # << CHANGE THIS (使用默认 result_count: 3)
+
+# =============================================================================
+# 附录: 常用技巧
+# =============================================================================
+
+# 转义花括号（用于普通文本而非参数）:
+#   \{  → {
+#   \}  → }
+#   \${你好世界}  →  ${你好世界} (原样输出)
+
+# 参数应用顺序:
+#   模板参数按顺序应用，已定义的参数可立即用于后续参数值中。
+#
+# 多模板合并规则:
+#   - 相同键: 下方的模板覆盖上方
+#   - 列表值: 合并为一个列表
+#   merges 与 overrides 的区别:
+#   - merges:   深度合并，列表合并，不破坏已有键
+#   - overrides: 完全替换指定路径，列表/映射整体替换

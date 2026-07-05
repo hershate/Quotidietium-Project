@@ -1,0 +1,38 @@
+# 🌽 农作物方块
+
+**农作物方块**通过随机刻在年龄阶段中生长，类似小麦或马铃薯。仅在光照等级位于 `light_requirement` 与 `max_light_requirement`（包含两端）之间时生长。骨粉可按配置的值增加 `age` 值，但不会超过最大值。
+
+`grow_speed` 决定农作物成熟速度。整数部分每次随机刻直接增加对应数量的 `age`，小数部分作为概率额外增加 `1`。例如 `0.25` 表示 `age` 每次随机刻有 25% 概率增加 `1`，而 `1.25` 表示 `age` 必定增加 `1`，并额外有 25% 概率再增加 `1`。
+
+`spawn_light_requirement` 与 `max_spawn_light_requirement` 是仅在区块生成时使用的独立光照阈值——农作物不会在该范围之外生成。
+
+| 属性名称 | 属性类型 | 是否必需 |
+|------|------|------|
+| age  | int  | 是    |
+
+## 示例
+
+```yaml
+blocks:
+  default:ender_pearl_flower:
+    behavior:
+      type: crop_block
+      grow_speed: 0.25                # 每随机刻增加的 age 值（默认 0.125）
+      light_requirement: 9            # 生长所需最低光照
+      max_light_requirement: 15       # 生长所需最高光照（默认 15）
+      spawn_light_requirement: 9      # 区块生成时的最低光照（默认等于 light_requirement）
+      max_spawn_light_requirement: 15 # 区块生成时的最高光照（默认等于 max_light_requirement）
+      is_bone_meal_target: true       # 骨粉是否对此农作物生效（默认 true）
+      bone_meal_age_bonus:            # 骨粉增加的 age 值，支持范围
+        type: uniform
+        min: 1
+        max: 3
+```
+
+:::warning
+
+这是一个**随机刻**行为——只有方块收到随机刻时才会生长。
+
+:::
+
+![](/img/crop_block.png)
