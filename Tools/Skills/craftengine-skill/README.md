@@ -10,14 +10,16 @@
 
 ## 目录结构
 
-```
+```text
 craftengine-skill/
 ├── SKILL.md                              # 技能主文件
 ├── README.md                             # 本文件
+├── scripts/
+│   └── craftengine_validator.py          # Python 配置校验脚本（基于 Wiki Schema）
 ├── references/
 │   ├── CraftEngine Wiki/                 # 本地 Wiki 副本（145 个 .md 文件）
 │   └── CraftEngine Template/             # 本地 Template 副本（76 个 .yml/.md 文件）
-└── scripts/                              # (预留) 辅助脚本
+└── ...                                   # (预留) 其他辅助文件
 ```
 
 ## 安装方式
@@ -48,7 +50,7 @@ craftengine-skill/
 2. **查阅参考资料** — 读取 Skill 内置的 Wiki 和 Template 对应页面
 3. **确认不确定项** — 向用户询问缺失信息（含输出方式选择）
 4. **生成配置模板** — 严格依据 Wiki 内容生成 YAML 配置
-5. **校验** — YAML 语法校验 + Wiki 逐字段对照校验
+5. **校验** — 运行 `scripts/craftengine_validator.py` 执行全维度自动化校验（YAML 语法、字段存在性、类型、枚举值、行为类型、版本感知等）
 6. **交付** — 按用户选择的输出方式交付（对话返回 / 保存文件）
 
 ## 支持的全部配置类型
@@ -96,7 +98,8 @@ Skill **始终优先使用内置的本地文档**。官方在线文档（[https:
 
 ### 依赖
 
-- **Python 3**（可选） — 用于自动 YAML 语法校验（`pip install pyyaml`）。未安装时使用手动校验。
+- **Python 3** — 运行 `scripts/craftengine_validator.py` 校验脚本（必需）。
+- **PyYAML** — YAML 解析库。安装：`pip install pyyaml`
 - **Skill 内置的 CraftEngine Wiki 和 CraftEngine Template** — 位于 `references/` 目录下，安装即用。
 
 ### 使用的工具
@@ -105,7 +108,7 @@ Skill **始终优先使用内置的本地文档**。官方在线文档（[https:
 - `Write` — 保存生成的配置到文件
 - `Glob` — 搜索对应的参考文件
 - `Grep` — 在 Wiki 中搜索特定字段确认用法
-- `Bash` — 运行 YAML 语法校验命令
+- `Bash` — 运行 Python 校验脚本
 - `WebFetch` — 用户明确要求时访问官方在线文档
 
 ### 输出说明
@@ -118,7 +121,7 @@ Skill **始终优先使用内置的本地文档**。官方在线文档（[https:
 
 ## 注意事项
 
-- **PyYAML 依赖**：如需自动 YAML 语法校验，需安装 PyYAML（`pip install pyyaml`）。未安装时使用手动校验。
+- **PyYAML 依赖**：运行 `scripts/craftengine_validator.py` 需要 PyYAML 库（`pip install pyyaml`）。校验脚本基于 Wiki 构建了完备的字段 Schema，支持深层自动化校验。
 - **CraftEngine 版本**：内置 Wiki 基于官方文档仓库 [Xiao-MoMi/craft-engine-wiki](https://github.com/Xiao-MoMi/craft-engine-wiki) 在 **2026 年 6 月 23 日**的内容，可能落后于 CraftEngine 最新版本。如需查阅最新内容，可告知 Skill 尝试访问官方在线文档（[https://ce.gtemc.cn/zh-Hans/](https://ce.gtemc.cn/zh-Hans/)），但需注意在线文档可能因网络原因无法访问。
 - **内容准确性**：本 Skill 的 Wiki 和 Template 内容均整理自上述官方仓库。**如有错误欢迎指正。**
 - **付费版功能标注**：配置中所有付费版功能（`client_bound_data`、`visual_result` 等）都会标注 `# 付费版专属`，方便用户区分。
@@ -127,7 +130,7 @@ Skill **始终优先使用内置的本地文档**。官方在线文档（[https:
 
 ## 版权与许可
 
-本 Skill 所有内容（包括 SKILL.md、README.md 除 references/ 目录下的所有文件，因为使用了官方文档）统一采用 **Apache License 2.0** 协议开源。
+本 Skill 所有内容（包括 SKILL.md、README.md 及 references/ 目录下的所有文件）统一采用 **Apache License 2.0** 协议开源。
 
 ### 署名要求（强制）
 

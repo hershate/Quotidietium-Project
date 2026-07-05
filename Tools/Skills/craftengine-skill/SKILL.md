@@ -1,6 +1,6 @@
 ---
 name: craftengine-skill
-version: 1.4.0
+version: 2.0.0
 description: >-
   Generate CraftEngine plugin YAML configuration templates based strictly on the
   CraftEngine Wiki and CraftEngine Template content. Analyzes user needs,
@@ -367,43 +367,85 @@ recipes:
 - **使用 MiniMessage 格式** 进行文本格式化（来源：Wiki reference/text_format.md）。
 - **可选字段注释掉** 而非删除，方便用户按需启用。
 
-### Step 5: 校验生成的配置
+### Step 5: 使用 Python 脚本校验
 
-生成配置后，执行以下校验步骤：
+生成配置后，使用 `scripts/craftengine_validator.py` 进行自动化校验。该脚本基于 CraftEngine Wiki 构建了完备的字段 Schema，支持深层校验和精确的错误定位。
 
-#### 5a. YAML 语法校验
+#### 5a. 准备校验环境
 
-运行以下命令验证 YAML 是否合法：
+检查 Python 环境和 PyYAML 依赖：
 
 ```bash
-python -c "import yaml; yaml.safe_load(open('配置路径', 'r', encoding='utf-8'))" 2>&1
+python -c "import yaml; print('PyYAML OK')" 2>&1 || echo "需要安装 PyYAML"
 ```
 
-如果 Python 不可用，手动逐行检查：
-- 缩进是否一致（统一 2 空格）
-- 冒号后是否有空格
-- 列表项 `- ` 格式是否正确
-- 字符串引号是否匹配
-- 多行字符串格式是否正确
+如果缺少 PyYAML，安装：
+```bash
+pip install pyyaml
+```
 
-#### 5b. Wiki 对照校验
+#### 5b. 执行校验脚本
 
-逐字段检查生成的配置，确保：
+将生成的配置文件传递给校验脚本：
 
-1. **所有字段名都存在于 Wiki 中** — 对照 Step 2 中读取的 Wiki 页面，逐一确认每个键名
-2. **所有字段类型正确** — Wiki 中定义为字符串的不写为数字，列表不写为映射
-3. **所有字段值范围正确** — 如 boolean 只用 `true`/`false`，方向值用 `north`/`south`/`east`/`west`/`up`/`down`
-4. **没有虚构功能** — 不要假设 CraftEngine 支持某个 Wiki 未记载的功能
-5. **auto_state 组名** — 必须使用 Wiki states.md 表格中列出的组名（如 `solid`、`note_block`、`leaves` 等）
-6. **属性类型** — 必须使用 Wiki properties.md 中定义的 11 种类型之一
+```bash
+python scripts/craftengine_validator.py <config.yml>
+```
 
-#### 5c. 不确定项标记检查
+脚本会自动执行以下全维度校验：
 
-检查所有不确定的值是否已使用 `<< CHANGE THIS` 标记，以便用户知晓需要修改。
+| 校验维度 | 覆盖内容 |
+|---------|---------|
+| **YAML 语法** | 解析 YAML 文件，捕获语法错误（错误码 4） |
+| **根键合法性** | 检查根键是否在 Wiki 定义的 20+ 种合法根键中 |
+| **字段存在性** | 逐字段对照 Wiki Schema 检查，报告未知字段 |
+| **必填字段** | 检查必填字段是否缺失（如 items 的 `material`、blocks 的 `state/states`） |
+| **字段类型** | 检查值类型（string/int/boolean/list/mapping 等 14 种类型检查器） |
+| **枚举值校验** | `auto_state` 组名（25 种）、`push_reaction`（5 种）、属性类型（13 种）等 |
+| **物品行为** | 11 种行为类型的特有字段和必填参数 |
+| **方块行为** | 50+ 种行为类型的特有字段和必需属性 |
+| **家具元素** | 6 种元素类型、4 种判定箱类型的字段校验 |
+| **配方类型** | 11 种配方的 type-specific 字段和 category 合法性 |
+| **事件函数** | 46 种函数类型的必填参数和 conditions 嵌套 |
+| **条件类型** | 28 种条件类型的必填字段（支持 `!` 前缀取反） |
+| **版本感知** | 标注需要特定 MC 版本的功能（1.20.5+、1.21.2+ 等） |
+| **付费版标注** | 标注付费版专属功能（client_bound_data、conditional 等） |
+| **交叉引用** | 检查引用的分类 ID 是否存在 |
+| **物品行为规则** | rotation（8 种）、alignment（5 种）枚举校验 |
 
-#### 5d. 修复并重校验
+#### 5c. 读取校验结果
 
-如果发现问题，立即修正配置，然后重新执行 Step 5a-5c 直到全部通过。
+**纯文本模式**（默认），逐条显示：
+```
+[错误] items.my:sword.material: 字段"material"为必填但缺失
+[错误] blocks.my:block.state.auto_state: auto_state 'invalid_type' 无效 (期望: {solid, note_block, ...})
+[错误] recipes.my:recipe.type: 配方类型 'wrong_type' 无效 (期望: {shaped, shapeless, ...})
+[错误] items.my:sword.behavior.type: 物品行为类型 'unknown' 无效 (期望: {block_item, furniture_item, ...})
+[错误] furniture.my:chair.variants.ground.hitboxes[0].type: 判定箱类型 'unknown' 无效 (期望: {interaction, shulker, ...})
+[警告] items.my:item.data.equippable: 字段需要 1.21.2+，当前版本 1.21.2
+```
+
+**JSON 模式**（`--json`），结构化输出：
+```json
+{"config.yml": [{"path": "items.my:sword.material", "type": "missing_field", "severity": "error", ...}]}
+```
+
+#### 5d. 修复与重校验
+
+- 根据错误路径定位到配置中的对应位置
+- 对照 Wiki 确认正确的字段名、类型和枚举值
+- **Error 级别的错误必须全部修复**，Warning 可酌情处理
+- 修正后重新执行 Step 5b，直到脚本退出码为 0
+
+#### 退出码说明
+
+| 退出码 | 含义 |
+|--------|------|
+| 0 | 校验通过，无错误 |
+| 1 | 校验完成，存在错误/警告 |
+| 2 | 参数错误 |
+| 3 | 文件读取失败 |
+| 4 | YAML 解析错误 |
 
 ### Step 6: 输出结果
 
