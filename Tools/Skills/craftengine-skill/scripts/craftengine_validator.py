@@ -46,9 +46,12 @@ VALID_ROOT_KEYS = {
     "categories", "loots", "vanilla_loots", "templates",
     "images", "sounds", "jukebox_songs", "paintings",
     "fonts", "lang", "i18n", "global_variables",
-    "emojis", "config_factory", "item_updaters",
-    "config_merges",
+    "emojis", "emoji", "config_factory", "item_updaters",
+    "config_merges", "configured_feature", "translations",
 }
+
+# Fields from the template system that can appear in ANY configuration block
+TEMPLATE_SYSTEM_FIELDS = {"template", "arguments", "overrides", "merges"}
 
 VERSION_PREFIX = re.compile(r'^\$\$')
 
@@ -176,11 +179,11 @@ ITEM_BEHAVIOR_SCHEMA = {
         }
     },
     "range_mining_item": {
-        "required": ["type", "shape"],
+        "required": ["type"],
         "fields": {
             "type": {"type": "enum", "values": ["range_mining_item"], "required": True},
-            "shape": {"type": "string", "required": True},
-            "range": {"type": "int", "required": False},
+            "shape": {"type": "string", "required": False},
+            "range": {"type": "list_of_string", "required": False},
             "check_durability": {"type": "boolean", "required": False},
         }
     },
@@ -190,7 +193,7 @@ ITEM_FURNITURE_RULES_ROTATION = ["any", "four", "eight", "sixteen", "north", "ea
 ITEM_FURNITURE_RULES_ALIGNMENT = ["any", "center", "half", "quarter", "corner"]
 
 ITEM_FIELDS = {
-    "material": {"type": "string", "required": True},
+    "material": {"type": "string", "required": False},
     "custom_model_data": {"type": "int", "required": False, "version": "any"},
     "item_model": {"type": "string", "required": False, "version": "1.21.2+"},
     "client_bound_material": {"type": "string", "required": False, "paid_only": True},
@@ -1054,10 +1057,12 @@ class ConfigValidator:
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
 
-            # 跳过版本条件键
+            # 跳过版本条件键和模板系统字段
             if VERSION_PREFIX.match(field_name):
                 continue
             if field_name.startswith("$$"):
+                continue
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
                 continue
 
             # 检查字段是否在 schema 中
@@ -1089,10 +1094,13 @@ class ConfigValidator:
             else:
                 self.add_error(field_path, "unknown_field", f"物品字段 '{field_name}' 在 Wiki 中未找到")
 
-        # 检查必填字段
-        for field_name, schema in ITEM_FIELDS.items():
-            if schema.get("required") and field_name not in value:
-                self.add_error(f"{path}", "missing_field", f"物品必填字段 '{field_name}' 缺失")
+        # material 在 CraftEngine 中并非严格必填：
+        # - 家具/方块变体的展示实体子物品不需要 material（仅作渲染引用）
+        # - 使用 template 或 behavior 时可隐式提供材质
+        # 因此当 material 缺失时不报错，仅在有时校验其格式
+        for field_name, field_value in value.items():
+            if field_name == "material" and not isinstance(field_value, str):
+                self.add_error(f"{path}.material", "wrong_type", "material 应为字符串")
 
     def _validate_item_data(self, value: Any, path: str, is_client_bound: bool = False):
         """校验物品数据"""
@@ -1133,6 +1141,12 @@ class ConfigValidator:
 
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
+
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
+                continue
+            if VERSION_PREFIX.match(field_name):
+                continue
+
             schema = ITEM_SETTINGS_FIELDS.get(field_name)
 
             if schema:
@@ -1282,6 +1296,8 @@ class ConfigValidator:
                     self.add_error(field_path, "wrong_type", "state 值应为字符串")
             elif field_name in ("model", "models"):
                 pass  # 模型字段结构复杂，浅层校验
+            elif field_name in ("texture", "textures"):
+                pass  # 简化模型，单张/多张纹理
             elif field_name == "transparent":
                 if not isinstance(field_value, bool):
                     self.add_error(field_path, "wrong_type", "transparent 应为布尔值")
@@ -1331,6 +1347,10 @@ class ConfigValidator:
 
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
+
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
+                continue
+
             schema = BLOCK_SETTINGS_FIELDS.get(field_name)
 
             if schema:
@@ -1580,7 +1600,7 @@ class ConfigValidator:
                             cref = item_ref[1:]
                             if cref not in self.defined_categories:
                                 self.add_error(f"{field_path}[{item_ref}]", "invalid_ref",
-                                               f"引用的分类 '{cref}' 未定义")
+                                               f"引用的子分类 '{cref}' 未定义，可能来自其他包，将被跳过", severity="warning")
             else:
                 self.add_error(field_path, "unknown_field", f"分类字段 '{field_name}' 在 Wiki 中未找到")
 
