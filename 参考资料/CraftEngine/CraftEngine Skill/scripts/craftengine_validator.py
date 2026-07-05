@@ -1600,7 +1600,7 @@ class ConfigValidator:
                             cref = item_ref[1:]
                             if cref not in self.defined_categories:
                                 self.add_error(f"{field_path}[{item_ref}]", "invalid_ref",
-                                               f"引用的分类 '{cref}' 未定义")
+                                               f"引用的子分类 '{cref}' 未定义，可能来自其他包，将被跳过", severity="warning")
             else:
                 self.add_error(field_path, "unknown_field", f"分类字段 '{field_name}' 在 Wiki 中未找到")
 
