@@ -1,0 +1,158 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 经济与交易产业链
+# =============================================================================
+# 展示从货币→商店物品→村民交易→分类菜单的完整端到端配置
+# 注意: 同一根键(items/recipes/categories)在文件中只能出现一次
+# 命名空间: myeco (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 货币 + 商品 + 交易站
+# =============================================================================
+items:
+  # ----- 1. 货币体系 -----
+  myeco:copper_coin:
+    material: sunflower
+    custom_model_data: 9001
+    data:
+      item_name: "<!i><#B87333>铜币"
+    settings:
+      tags:
+        - "myeco:currency"
+
+  myeco:silver_coin:
+    material: sunflower
+    custom_model_data: 9002
+    data:
+      item_name: "<!i><#C0C0C0>银币"
+    settings:
+      tags:
+        - "myeco:currency"
+
+  myeco:gold_coin:
+    material: sunflower
+    custom_model_data: 9003
+    data:
+      item_name: "<!i><#FFD700>金币"
+    settings:
+      tags:
+        - "myeco:currency"
+
+  # ----- 2. 交易商品 -----
+  myeco:empty_shell:
+    material: nautilus_shell
+    custom_model_data: 9010
+    data:
+      item_name: "<!i><#DEB887>空螺壳"
+
+  myeco:mysterious_orb:
+    material: fire_charge
+    custom_model_data: 9011
+    data:
+      item_name: "<!i><#AA00FF>神秘宝珠"
+
+  myeco:treasure_map_fragment:
+    material: paper
+    custom_model_data: 9012
+    data:
+      item_name: "<!i><#FFD700>藏宝图碎片"
+      insert_lore:
+        - position: TAIL
+          lore:
+            - content: "<dark_gray>碎片 1/3"
+
+  # ----- 3. 交易站(右键打开交易界面) -----
+  myeco:trading_station:
+    material: crafting_table
+    custom_model_data: 9020
+    data:
+      item_name: "<!i><#FFD700>交易站"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myeco:trade_open"
+        functions:
+          - type: set_cooldown
+            id: "myeco:trade_open"
+            time: 2s
+          - type: merchant_trade
+            title: "商人之家"
+            offers:
+              - cost_1:
+                  item: myeco:silver_coin
+                  count: 5
+                result:
+                  item: myeco:mysterious_orb
+                  count: 1
+              - cost_1:
+                  item: myeco:silver_coin
+                  count: 3
+                result:
+                  item: myeco:empty_shell
+                  count: 1
+              - cost_1:
+                  item: myeco:copper_coin
+                  count: 32
+                result:
+                  item: myeco:treasure_map_fragment
+                  count: 1
+
+# =============================================================================
+# 二、配方 - 兑换 + 合成
+# =============================================================================
+recipes:
+  myeco:silver_to_copper:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "myeco:silver_coin"
+    result:
+      id: myeco:copper_coin
+      count: 100
+
+  myeco:copper_to_silver:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "myeco:copper_coin"
+    result:
+      id: myeco:silver_coin
+      count: 1
+
+  myeco:treasure_map_combine:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "myeco:treasure_map_fragment"
+      - "myeco:treasure_map_fragment"
+      - "myeco:treasure_map_fragment"
+    result:
+      id: "minecraft:filled_map"
+      count: 1
+
+# =============================================================================
+# 三、分类 - 经济物品菜单
+# =============================================================================
+categories:
+  myeco:currency_category:
+    priority: 1
+    name: "<!i><#FFD700>货币"
+    icon: myeco:gold_coin
+    list:
+      - myeco:copper_coin
+      - myeco:silver_coin
+      - myeco:gold_coin
+
+  myeco:trade_goods_category:
+    priority: 2
+    name: "<!i><#DEB887>交易品"
+    icon: myeco:empty_shell
+    list:
+      - myeco:empty_shell
+      - myeco:mysterious_orb
+      - myeco:treasure_map_fragment
