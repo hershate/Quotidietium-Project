@@ -1,0 +1,173 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 方块演化与氧化产业链
+# =============================================================================
+# 展示change_over_time_block+decay_block的方块演化完整配置
+# 命名空间: myevo (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 氧化演化(铜式)
+# =============================================================================
+blocks:
+  # 1a. 魔化铜块(初始→轻微→中度→完全氧化)
+  myevo:magic_copper:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myevo:block/magic_copper"
+    settings:
+      hardness: 3.0
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057
+      next_block: myevo:magic_copper_exposed
+      excluded_properties: []
+
+  # 1b. 暴露魔化铜
+  myevo:magic_copper_exposed:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myevo:block/magic_copper_exposed"
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057
+      next_block: myevo:magic_copper_weathered
+
+  # 1c. 风化魔化铜
+  myevo:magic_copper_weathered:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myevo:block/magic_copper_weathered"
+    behavior:
+      type: change_over_time_block
+      change_speed: 0.057
+      next_block: myevo:magic_copper_oxidized
+
+  # 1d. 完全氧化魔化铜(最终阶段)
+  myevo:magic_copper_oxidized:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myevo:block/magic_copper_oxidized"
+
+# =============================================================================
+# 二、方块 - 蜡封(阻止氧化)
+# =============================================================================
+blocks:
+  myevo:waxed_magic_copper:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myevo:block/magic_copper"
+
+# =============================================================================
+# 三、方块 - 衰变演化(冰→水式)
+# =============================================================================
+blocks:
+  # 3a. 压缩雪(计划刻衰变)
+  myevo:compacted_snow:
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~3
+    behavior:
+      type: decay_block
+      decay_into: myevo:melting_snow
+      delay: 200~400
+      chance: 0.5
+      required_light: 10
+
+  # 3b. 融化的雪(中间态)
+  myevo:melting_snow:
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~2
+    behavior:
+      type: decay_block
+      decay_into: minecraft:water
+      delay: 100~200
+      chance: 1.0
+
+  # 3c. 魔法冰块(随机刻衰变)
+  myevo:magic_ice:
+    states:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~2
+    behavior:
+      type: decay_block
+      decay_into: minecraft:water
+      chance: 0.3
+      required_light: 0
+
+# =============================================================================
+# 四、物品 - 方块物品
+# =============================================================================
+items:
+  myevo:magic_copper_item:
+    material: copper_block
+    data:
+      item_name: "<!i><#B87333>魔化铜块"
+    behavior:
+      type: block_item
+      block: myevo:magic_copper
+
+  myevo:waxed_magic_copper_item:
+    material: copper_block
+    data:
+      item_name: "<!i><#B87333>蜡封魔化铜块"
+    behavior:
+      type: block_item
+      block: myevo:waxed_magic_copper
+
+  myevo:compacted_snow_item:
+    material: snow_block
+    data:
+      item_name: "<!i>压缩雪块"
+    behavior:
+      type: block_item
+      block: myevo:compacted_snow
+
+  myevo:magic_ice_item:
+    material: ice
+    data:
+      item_name: "<!i><#E0FFFF>魔法冰块"
+    behavior:
+      type: block_item
+      block: myevo:magic_ice
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  myevo:magic_copper_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:copper_ingot"
+    result:
+      id: myevo:magic_copper_item
+      count: 1
+
+  myevo:waxed_magic_copper_recipe:
+    type: shapeless
+    category: building
+    ingredients:
+      - "myevo:magic_copper_item"
+      - "minecraft:honeycomb"
+    result:
+      id: myevo:waxed_magic_copper_item
+      count: 1
