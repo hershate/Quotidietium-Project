@@ -1,0 +1,169 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 任务与成就系统产业链
+# =============================================================================
+# 展示多阶段任务→条件检测→成就奖励的完整任务系统
+# 包含事件链、条件嵌套、多阶段推进、title通知
+# 命名空间: myquest (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 任务道具
+# =============================================================================
+items:
+  # 1a. 任务卷轴(接受/查看任务)
+  myquest:quest_scroll:
+    material: paper
+    custom_model_data: 42001
+    data:
+      item_name: "<!i><#FFD700>任务卷轴"
+      lore:
+        - "<gray>右键查看当前任务进度"
+
+  # 1b. 任务物品(收集物)
+  myquest:mystic_herb:
+    material: grass
+    custom_model_data: 42002
+    data:
+      item_name: "<!i><#228B22>神秘草药"
+      lore:
+        - "<gray>任务物品 - 采集5个"
+
+  myquest:monster_trophy:
+    material: bone
+    custom_model_data: 42003
+    data:
+      item_name: "<!i><#FF4500>怪物勋章"
+      lore:
+        - "<gray>任务物品 - 击败10只怪物"
+
+  myquest:ancient_relic:
+    material: prismarine_shard
+    custom_model_data: 42004
+    data:
+      item_name: "<!i><#AA00FF>远古遗物"
+      lore:
+        - "<gray>任务物品 - 最终阶段"
+
+# =============================================================================
+# 二、物品 - 阶段检测物品(使用事件)
+# =============================================================================
+items:
+  # 2a. 采集任务物品(检测收集)
+  myquest:herb_gatherer:
+    material: shears
+    custom_model_data: 42010
+    data:
+      item_name: "<!i><#228B22>采药镰刀"
+      lore:
+        - "<gray>采集神秘草药"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myquest:herb_cd"
+        functions:
+          - type: set_cooldown
+            id: "myquest:herb_cd"
+            time: 5s
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: inventory_has_item
+                    id: "myquest:mystic_herb"
+                    count: 5
+                functions:
+                  - type: message
+                    message: "<green>采集完成! 你已收集了5株草药!"
+                  - type: title
+                    title: "<green>任务完成!"
+                    subtitle: "<gray>采集草药阶段完成"
+                  - type: clear_item
+                    id: "myquest:mystic_herb"
+                    count: 5
+                  - type: command
+                    command: "give <arg:player.name> myquest:ancient_relic 1"
+              - functions:
+                  - type: message
+                    message: "<gray>已采集 <papi:checkceitem_count_myquest:mystic_herb>/5"
+
+  # 2b. 战斗检测(击杀检测)
+  myquest:monster_hunter:
+    material: diamond_sword
+    custom_model_data: 42011
+    data:
+      item_name: "<!i><#FF4500>怪物猎人之刃"
+    events:
+      - on: attack
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: match_entity
+                    id: "minecraft:zombie"
+                  - type: random
+                    value: 0.5
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myquest:monster_trophy 1"
+
+# =============================================================================
+# 三、物品 - 成就奖励
+# =============================================================================
+items:
+  myquest:hero_medal:
+    material: gold_nugget
+    custom_model_data: 42020
+    data:
+      item_name: "<!i><#FFD700>英雄勋章"
+      lore:
+        - "<gray>完成全部任务的证明"
+    settings:
+      glow_color: gold
+
+  myquest:exp_boost_scroll:
+    material: paper
+    custom_model_data: 42021
+    data:
+      item_name: "<!i><#AA00FF>经验加成卷轴"
+    events:
+      - on: right_click
+        functions:
+          - type: set_cooldown
+            id: "myquest:exp_boost"
+            time: 600s
+          - type: command
+            command: "effect give <arg:player.name> minecraft:conduit_power 600 0"
+          - type: message
+            message: "<green>你获得了10分钟经验加成!"
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myquest:hero_medal_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "myquest:monster_trophy"
+      B: "myquest:ancient_relic"
+    result:
+      id: myquest:hero_medal
+      count: 1
+    conditions:
+      - type: permission
+        permission: "myquest.recipe.hero_medal"
+
+  myquest:exp_boost_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "myquest:mystic_herb"
+      - "myquest:ancient_relic"
+    result:
+      id: myquest:exp_boost_scroll
+      count: 1
