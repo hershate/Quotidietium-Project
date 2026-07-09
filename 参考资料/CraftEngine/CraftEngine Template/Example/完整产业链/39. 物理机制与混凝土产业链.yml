@@ -1,0 +1,169 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物理机制与混凝土产业链
+# =============================================================================
+# 展示falling_block+concrete_powder+bouncing_block完整物理配置
+# 命名空间: myphys (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 下落类
+# =============================================================================
+blocks:
+  # 1a. 魔法沙(下落+伤害)
+  myphys:magic_sand:
+    behavior:
+      type: falling_block
+      hurt_amount: 2.0
+      max_hurt: 5
+      sounds:
+        land: minecraft:block.sand.land
+    settings:
+      hardness: 0.5
+
+  # 1b. 危险的砾石(下落+高伤害)
+  myphys:sharp_gravel:
+    behavior:
+      type: falling_block
+      hurt_amount: 4.0
+      max_hurt: 15
+      sounds:
+        land: minecraft:block.gravel.land
+
+# =============================================================================
+# 二、方块 - 混凝土粉末(下落+遇水凝固)
+# =============================================================================
+blocks:
+  # 2a. 红色混凝土粉末
+  myphys:red_concrete_powder:
+    behavior:
+      - type: falling_block
+      - type: concrete_powder_block
+        solid_block: myphys:red_concrete
+    settings:
+      hardness: 0.5
+
+  # 2b. 红色混凝土(凝固后)
+  myphys:red_concrete:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myphys:block/red_concrete"
+    settings:
+      hardness: 1.8
+
+  # 2c. 蓝色混凝土粉末+灯(复合)
+  myphys:glow_concrete_powder:
+    behaviors:
+      - type: falling_block
+      - type: concrete_powder_block
+        solid_block: myphys:glow_concrete
+      - type: lamp_block
+    settings:
+      hardness: 0.5
+
+  # 2d. 发光混凝土(凝固后+灯)
+  myphys:glow_concrete:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myphys:block/glow_concrete"
+    behaviors:
+      - type: lamp_block
+    settings:
+      hardness: 1.8
+      luminance: 10
+
+# =============================================================================
+# 三、方块 - 弹跳类
+# =============================================================================
+blocks:
+  # 3a. 弹力平台
+  myphys:bounce_pad:
+    behavior:
+      - type: bouncing_block
+        bounce_height: 2.0
+        fall_damage_multiplier: 0.0
+        sync_player_position: true
+      - type: lamp_block
+        can_open_with_hand: true
+    settings:
+      bounce_restitution: 1.0
+      luminance: 7
+      hardness: 0.5
+
+  # 3b. 弹力方块(低弹力)
+  myphys:bouncy_block:
+    behavior:
+      type: bouncing_block
+      bounce_height: 0.66
+      fall_damage_multiplier: 0.5
+      sync_player_position: true
+    settings:
+      bounce_restitution: 0.75
+      hardness: 0.5
+
+# =============================================================================
+# 四、物品 - 方块物品
+# =============================================================================
+items:
+  myphys:magic_sand_item:
+    material: sand
+    data:
+      item_name: "<!i><#FFD700>魔法沙"
+    behavior:
+      type: block_item
+      block: myphys:magic_sand
+
+  myphys:red_concrete_powder_item:
+    material: red_sand
+    data:
+      item_name: "<!i><#FF0000>红色混凝土粉末"
+    behavior:
+      type: block_item
+      block: myphys:red_concrete_powder
+
+  myphys:glow_concrete_powder_item:
+    material: sand
+    data:
+      item_name: "<!i><#FFFF00>发光混凝土粉末"
+    behavior:
+      type: block_item
+      block: myphys:glow_concrete_powder
+
+  myphys:bounce_pad_item:
+    material: slime_block
+    data:
+      item_name: "<!i><#90EE90>弹力平台"
+    behavior:
+      type: block_item
+      block: myphys:bounce_pad
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  myphys:red_concrete_powder_recipe:
+    type: shapeless
+    category: building
+    ingredients:
+      - "minecraft:sand"
+      - "minecraft:gravel"
+      - "minecraft:red_dye"
+    result:
+      id: myphys:red_concrete_powder_item
+      count: 2
+
+  myphys:bounce_pad_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:slime_ball"
+      B: "minecraft:iron_ingot"
+      C: "minecraft:redstone_block"
+    result:
+      id: myphys:bounce_pad_item
+      count: 1
