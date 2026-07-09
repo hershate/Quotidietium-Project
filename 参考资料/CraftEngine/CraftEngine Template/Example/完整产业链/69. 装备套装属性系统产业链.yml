@@ -1,0 +1,212 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 装备套装属性系统产业链
+# =============================================================================
+# 展示多件装备→套装效果→属性叠加→特效触发完整套装系统
+# 包含多件装备联动、事件触发、粒子特效、条件检测
+# 命名空间: myset2 (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、装备 - 火焰领主套装
+# =============================================================================
+equipments:
+  myset2:flame_lord_armor:
+    type: component
+    humanoid: "myset2:entity/equipment/humanoid/flame_lord"
+    humanoid_leggings: "myset2:entity/equipment/humanoid_leggings/flame_lord"
+
+# =============================================================================
+# 二、物品 - 套装部件(每件带独立属性+事件)
+# =============================================================================
+items:
+  # 2a. 火焰头盔
+  myset2:flame_helmet:
+    material: diamond_helmet
+    custom_model_data: 58001
+    data:
+      item_name: "<!i><#FF4500>火焰头盔"
+      lore:
+        - "<#FF4500>火焰领主套装 (1/4)"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: head
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset2:flame_lord_armor"
+
+  # 2b. 火焰胸甲
+  myset2:flame_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 58002
+    data:
+      item_name: "<!i><#FF4500>火焰胸甲"
+      lore:
+        - "<#FF4500>火焰领主套装 (2/4)"
+      attribute_modifiers:
+        - type: armor
+          amount: 8.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: chest
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset2:flame_lord_armor"
+
+  # 2c. 火焰护腿
+  myset2:flame_leggings:
+    material: diamond_leggings
+    custom_model_data: 58003
+    data:
+      item_name: "<!i><#FF4500>火焰护腿"
+      lore:
+        - "<#FF4500>火焰领主套装 (3/4)"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          slot: legs
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: legs
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset2:flame_lord_armor"
+
+  # 2d. 火焰靴子(受击触发特殊效果)
+  myset2:flame_boots:
+    material: diamond_boots
+    custom_model_data: 58004
+    data:
+      item_name: "<!i><#FF4500>火焰靴子"
+      lore:
+        - "<#FF4500>火焰领主套装 (4/4)"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: feet
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: feet
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset2:flame_lord_armor"
+    events:
+      - on: attack
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:fire_resistance
+                    duration: 100
+                    amplifier: 0
+                    target: self
+                  - type: particle
+                    particle: minecraft:flame
+                    count: 8
+
+# =============================================================================
+# 三、物品 - 套装效果触发道具
+# =============================================================================
+items:
+  myset2:flame_ring:
+    material: gold_nugget
+    custom_model_data: 58010
+    data:
+      item_name: "<!i><#FF4500>火焰之环"
+      lore:
+        - "<#FF4500>火焰领主套装专属"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 2.0
+          operation: add_value
+          slot: any
+        - type: armor
+          amount: 1.0
+          operation: add_value
+          slot: any
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myset2:flame_helmet_recipe:
+    type: shaped
+    category: equipment
+    group: flame_lord_set
+    pattern:
+      - "AAA"
+      - "A A"
+    ingredients:
+      A: "minecraft:netherite_ingot"
+    result:
+      id: myset2:flame_helmet
+      count: 1
+
+  myset2:flame_chestplate_recipe:
+    type: shaped
+    category: equipment
+    group: flame_lord_set
+    pattern:
+      - "A A"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:netherite_ingot"
+    result:
+      id: myset2:flame_chestplate
+      count: 1
+
+  myset2:flame_leggings_recipe:
+    type: shaped
+    category: equipment
+    group: flame_lord_set
+    pattern:
+      - "AAA"
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "minecraft:netherite_ingot"
+    result:
+      id: myset2:flame_leggings
+      count: 1
+
+  myset2:flame_boots_recipe:
+    type: shaped
+    category: equipment
+    group: flame_lord_set
+    pattern:
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "minecraft:netherite_ingot"
+    result:
+      id: myset2:flame_boots
+      count: 1
+
+  myset2:flame_ring_recipe:
+    type: smithing_transform
+    base: "minecraft:gold_nugget"
+    addition: "minecraft:blaze_rod"
+    result:
+      id: myset2:flame_ring
+      count: 1
