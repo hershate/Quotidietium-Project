@@ -73,10 +73,11 @@ items:
               - "<gradient:#FF6B6B:#FFE66D>净狱之刃"
               - "<gray>已升级至第二代"
             attribute_modifiers:
-              - attribute: minecraft:attack_damage
-                operation: ADD_VALUE
-                value: 2.5
-                name: generic.attack_damage
+              - type: attack_damage
+                amount: 2.5
+                operation: add_value
+                id: "your_namespace:updater_attack_damage"
+                slot: mainhand
 
   # -------------------------------------------------------------------------
   # 示例 3: reset 更新器 (将物品重置为最新定义，保留指定组件/NBT)
@@ -117,9 +118,8 @@ items:
           item_name: <light_purple>远古遗刃
           lore:
             - <gray>历经沧桑，锋芒不减
-          enchantments:
-            - enchantment: minecraft:sharpness
-              level: 3
+          enchantment:
+            minecraft:sharpness: 3
 
       # 步骤 3: 重置物品至最新定义，同时保留附魔
       3:
