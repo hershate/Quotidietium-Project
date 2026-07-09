@@ -182,7 +182,7 @@ items:
   # -- 6a. range_mining_item — 3-block cross pattern --
   your_namespace:topaz_hammer:
     material: golden_pickaxe                 # << CHANGE THIS: item material
-    conditions: []                           # << CHANGE THIS: usage conditions
+
     behavior:
       - type: range_mining_item
         range:                               # << CHANGE THIS: width,height,depth tuples
@@ -194,7 +194,7 @@ items:
   # -- 6b. range_mining_item — full 3x3 area (9-block pattern) --
   your_namespace:topaz_wide_hammer:
     material: diamond_pickaxe
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
