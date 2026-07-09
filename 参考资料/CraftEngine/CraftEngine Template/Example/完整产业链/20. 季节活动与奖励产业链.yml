@@ -1,0 +1,212 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 季节活动与奖励产业链
+# =============================================================================
+# 展示从活动货币→活动物品→限时奖励→活动商店的端到端配置
+# 使用条件/权限/冷却/随机等系统实现活动机制
+# 命名空间: myevent (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 活动货币 + 活动物品 + 活动商店 + 限定物品
+# =============================================================================
+items:
+  # ----- 1. 活动货币 -----
+  myevent:event_token:
+    material: sunflower
+    custom_model_data: 17001
+    data:
+      item_name: "<!i><#FFD700>活动代币"
+
+  # ----- 2. 节日活动物品 -----
+  myevent:red_packet:
+    material: paper
+    custom_model_data: 17010
+    data:
+      item_name: "<!i><#FF0000>新春红包"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.1
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myevent:event_token 10"
+                  - type: message
+                    message: "<#FFD700>恭喜! 获得10枚活动代币!"
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myevent:event_token 5"
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> myevent:event_token 1"
+          - type: clear_item
+            id: "myevent:red_packet"
+            count: 1
+
+  myevent:spooky_candy:
+    material: sugar
+    custom_model_data: 17020
+    data:
+      item_name: "<!i><#FF4500>万圣节糖果"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.5
+                functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:invisibility
+                    duration: 200
+                    amplifier: 0
+                    target: self
+              - functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:glowing
+                    duration: 100
+                    amplifier: 0
+                    target: self
+
+  myevent:christmas_gift:
+    material: chest
+    custom_model_data: 17030
+    data:
+      item_name: "<!i><#FF0000>圣诞礼物"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myevent:gift_cd"
+        functions:
+          - type: set_cooldown
+            id: "myevent:gift_cd"
+            time: 300s
+          - type: command
+            command: "give <arg:player.name> myevent:event_token 3"
+          - type: particle
+            particle: minecraft:heart
+            count: 10
+
+  # ----- 3. 限定物品 -----
+  myevent:festival_firework:
+    material: firework_rocket
+    custom_model_data: 17050
+    data:
+      item_name: "<!i><#FF0000>国庆烟花"
+    events:
+      - on: right_click
+        conditions:
+          - type: permission
+            permission: "myevent.firework.use"
+        functions:
+          - type: command
+            command: "firework <arg:player.x> <arg:player.y> <arg:player.z>"
+
+  myevent:anniversary_cake:
+    material: cake
+    custom_model_data: 17051
+    data:
+      item_name: "<!i><#FF69B4>周年庆蛋糕"
+    events:
+      - on: right_click
+        functions:
+          - type: heal
+            amount: 2.0
+          - type: set_food
+            add: true
+            food: 2
+          - type: message
+            message: "<#FF69B4>感谢你与服务器共度周年!"
+
+  myevent:summer_hat:
+    material: leather_helmet
+    custom_model_data: 17052
+    data:
+      item_name: "<!i><#FFFF00>夏日遮阳帽"
+      dyed_color: "255,255,0"
+    settings:
+      dyeable: true
+      hat_height: 0.8
+
+  myevent:trade_voucher:
+    material: paper
+    custom_model_data: 17040
+    data:
+      item_name: "<!i><#FFD700>活动兑换券"
+
+  # ----- 4. 活动商店(merchant_trade) -----
+  myevent:event_shop:
+    material: emerald
+    custom_model_data: 17060
+    data:
+      item_name: "<!i><#FFD700>活动商店"
+    events:
+      - on: right_click
+        functions:
+          - type: merchant_trade
+            title: "活动商店"
+            offers:
+              - cost_1:
+                  item: myevent:event_token
+                  count: 5
+                result:
+                  item: myevent:festival_firework
+                  count: 1
+              - cost_1:
+                  item: myevent:event_token
+                  count: 3
+                result:
+                  item: myevent:spooky_candy
+                  count: 1
+              - cost_1:
+                  item: myevent:event_token
+                  count: 10
+                result:
+                  item: myevent:summer_hat
+                  count: 1
+
+# =============================================================================
+# 二、配方
+# =============================================================================
+recipes:
+  myevent:red_packet_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:paper"
+      B: "minecraft:red_dye"
+    result:
+      id: myevent:red_packet
+      count: 1
+
+  myevent:spooky_candy_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:sugar"
+      - "minecraft:orange_dye"
+    result:
+      id: myevent:spooky_candy
+      count: 4
+
+  myevent:event_token_recipe:
+    type: smelting
+    category: misc
+    experience: 0.1
+    time: 100
+    ingredient: "minecraft:gold_nugget"
+    result:
+      id: myevent:event_token
+      count: 1
