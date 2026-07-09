@@ -1,0 +1,219 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 探索与导航产业链
+# =============================================================================
+# 展示从传送点→导航工具→探索奖励的完整端到端配置
+# 命名空间: mymap (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 传送点/信标
+# =============================================================================
+blocks:
+  mymap:waystone:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mymap:block/waystone"
+    settings:
+      hardness: -1.0
+
+  mymap:beacon_marker:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mymap:block/beacon_marker"
+    behavior:
+      type: lamp_block
+    settings:
+      luminance: 15
+
+# =============================================================================
+# 二、物品 - 所有物品(传送/探索/标记)
+# =============================================================================
+items:
+  # ----- 1. 传送石碑 -----
+  mymap:waystone_item:
+    material: stone_brick_wall
+    custom_model_data: 22001
+    data:
+      item_name: "<!i><#AA00FF>传送石碑"
+    behavior:
+      type: block_item
+      block: mymap:waystone
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymap:waystone_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymap:waystone_cd"
+            time: 10s
+          - type: teleport
+            x: "<arg:position.x>"
+            y: "<arg:position.y> + 1"
+            z: "<arg:position.z>"
+          - type: particle
+            particle: minecraft:end_rod
+            count: 15
+
+  # ----- 2. 传送工具 -----
+  mymap:recall_scroll:
+    material: paper
+    custom_model_data: 22010
+    data:
+      item_name: "<!i><#FFD700>回城卷轴"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymap:recall_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymap:recall_cd"
+            time: 20s
+          - type: teleport
+            x: "<arg:player.position.world.spawn_x>"
+            y: "<arg:player.position.world.spawn_y>"
+            z: "<arg:player.position.world.spawn_z>"
+          - type: play_totem_animation
+            item: "mymap:recall_scroll"
+
+  mymap:teleport_compass:
+    material: compass
+    custom_model_data: 22011
+    data:
+      item_name: "<!i><#FFD700>传送罗盘"
+
+  # ----- 3. 探索工具 -----
+  mymap:explorer_staff:
+    material: stick
+    custom_model_data: 22020
+    data:
+      item_name: "<!i><#00CED1>探索者之杖"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymap:explorer_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymap:explorer_cd"
+            time: 3s
+          - type: particle
+            particle: minecraft:dust_color_transition
+            count: 20
+            offset_x: 3.0
+            offset_y: 1.0
+            offset_z: 3.0
+            from: "0,255,255"
+            to: "0,206,209"
+          - type: potion_effect
+            potion_effect: minecraft:night_vision
+            duration: 200
+            amplifier: 0
+            target: self
+
+  mymap:locator_gem:
+    material: emerald
+    custom_model_data: 22021
+    data:
+      item_name: "<!i><#00FF00>定位宝石"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<green>位于 <arg:player.block_x> <arg:player.block_y> <arg:player.block_z>"
+
+  mymap:mark_scroll:
+    material: paper
+    custom_model_data: 22022
+    data:
+      item_name: "<!i><#FFD700>标记卷轴"
+    events:
+      - on: right_click
+        functions:
+          - type: place_block
+            block_state: "mymap:beacon_marker"
+            x: "<arg:position.x>"
+
+  mymap:adventure_map:
+    material: filled_map
+    custom_model_data: 22023
+    data:
+      item_name: "<!i><#FFD700>探险家地图"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: cartography
+            title: "探险地图"
+
+  # ----- 4. 方块物品 -----
+  mymap:beacon_marker_item:
+    material: sea_lantern
+    custom_model_data: 22030
+    data:
+      item_name: "<!i><#00CED1>信标标记"
+    behavior:
+      type: block_item
+      block: mymap:beacon_marker
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mymap:waystone_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "BBB"
+    ingredients:
+      A: "minecraft:obsidian"
+      B: "minecraft:stone_bricks"
+      C: "minecraft:ender_pearl"
+    result:
+      id: mymap:waystone_item
+      count: 1
+
+  mymap:recall_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:compass"
+      - "minecraft:ender_pearl"
+    result:
+      id: mymap:recall_scroll
+      count: 1
+
+  mymap:explorer_staff_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "  A"
+      - " B "
+      - "C  "
+    ingredients:
+      A: "minecraft:ender_eye"
+      B: "minecraft:stick"
+      C: "minecraft:feather"
+    result:
+      id: mymap:explorer_staff
+      count: 1
+
+  mymap:beacon_marker_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:sea_lantern"
+    result:
+      id: mymap:beacon_marker_item
+      count: 1
