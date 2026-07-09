@@ -41,7 +41,7 @@
 
 ## General/ 文件分类索引
 
-General/ 目录共包含 **43 个 YAML 模板文件**，按功能分为以下 19 个类别。
+General/ 目录共包含 **44 个 YAML 模板文件**，按功能分为以下 19 个类别。
 
 ### 一、方块设置与基础
 
@@ -180,6 +180,7 @@ General/ 目录共包含 **43 个 YAML 模板文件**，按功能分为以下 19
 | `模板系统.yml` | 模板定义（基本/带参数/带默认值/自动命名空间/多模板组合/链式引用）、模板调用（单模板/多模板/合并/覆写/参数顺序应用）、扩展参数类型（列表/映射/__skip_template_argument__/condition/when/大小写转换/自增整数/数学表达式）、配置工厂（blueprint + instances 批量生成）。 | `reference/template.md` |
 | `文件冲突配置.yml` | 资源包文件冲突处理规则：通用匹配（all_of/any_of/inverted/filename/exact/parent_path_prefix/parent_path_suffix/contains/pattern）、冲突解决方案（merge_json/retain_matching/conditional/merge_pack_mcmeta/merge_atlas/merge_font）。含完整 config.yml 配置示例。 | `reference/file_conflict.md` |
 | `物品更新器.yml` | 物品更新器配置：触发器配置（点击/丢弃/拾取）、单步更新（apply_data）、多步更新（apply_data + transmute 组合）、reset 更新器（保留指定组件/NBT 重置为最新定义）、综合多步更新示例。更新器类型速查。 | `configuration/item/updater.md`、`configuration/item/data.md` |
+| `高级配置特性.yml` | 高级配置系统特性：Section Identifiers（节标识符 `items#0` 语法）、Section Separators（`::` 双冒号键折叠）、Version-Based Configuration（`$$>=1.21.2` 版本条件选择与合并）、Extended Value Types（`!!long`、`!!float` 等 YAML 类型标签）、Subpacks（`pack.yml` 子包配置）。 | `configuration.md` |
 
 ---
 
@@ -187,7 +188,7 @@ General/ 目录共包含 **43 个 YAML 模板文件**，按功能分为以下 19
 
 ```
 CraftEngine Template/
-├── General/                ← 通用配置模板（43 个 .yml 文件，覆盖全部功能类别）
+├── General/                ← 通用配置模板（44 个 .yml 文件，覆盖全部功能类别）
 └── Example/                ← 完整示例包（32 个 .yml 文件，分类编排，可直接使用）
     ├── 物品/               ← 10 个示例（基础材料、武器、工具、食物、消耗品、唱片、数据组件、设置、模型、行为）
     ├── 方块/               ← 9 个示例（基础、农作物、功能、物理、存储、装饰、朝向、特殊、实体渲染器）
