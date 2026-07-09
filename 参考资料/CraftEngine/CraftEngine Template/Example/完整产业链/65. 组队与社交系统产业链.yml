@@ -1,0 +1,213 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 组队与社交系统产业链
+# =============================================================================
+# 展示组队邀请→社交物品→好友互动→公会基础的社交体系
+# 包含物品事件、条件检测、消息互动
+# 命名空间: mysocial (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 组队/社交工具
+# =============================================================================
+items:
+  # 1a. 组队卷轴(创建队伍)
+  mysocial:party_scroll:
+    material: paper
+    custom_model_data: 54001
+    data:
+      item_name: "<!i><#55FF55>组队卷轴"
+      lore:
+        - "<gray>右键创建或加入队伍"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<green>队伍已创建! 使用 /party invite <玩家名> 邀请成员"
+
+  # 1b. 好友邀请卡(发送好友请求)
+  mysocial:friend_card:
+    material: paper
+    custom_model_data: 54002
+    data:
+      item_name: "<!i><#FF69B4>好友邀请卡"
+      lore:
+        - "<gray>右键发送好友请求"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mysocial:friend_cd"
+        functions:
+          - type: set_cooldown
+            id: "mysocial:friend_cd"
+            time: 10s
+          - type: message
+            message: "<#FF69B4>好友请求已发送!"
+          - type: play_sound
+            sound: minecraft:entity.experience_orb.pickup
+
+  # 1c. 结婚戒指(结婚系统)
+  mysocial:wedding_ring:
+    material: gold_nugget
+    custom_model_data: 54003
+    data:
+      item_name: "<!i><#FFD700>结婚戒指"
+      lore:
+        - "<gray>对玩家右键求婚"
+    settings:
+      glow_color: gold
+
+  # 1d. 公会旗帜(创建公会)
+  mysocial:guild_banner:
+    material: white_banner
+    custom_model_data: 54004
+    data:
+      item_name: "<!i><#FFD700>公会旗帜"
+      lore:
+        - "<gray>右键创建公会"
+
+# =============================================================================
+# 二、物品 - 社交互动物品
+# =============================================================================
+items:
+  # 2a. 感谢卡(发送感谢)
+  mysocial:thanks_card:
+    material: paper
+    custom_model_data: 54010
+    data:
+      item_name: "<!i><#55FF55>感谢卡"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<green>感谢 <arg:player.name> 的帮助!"
+          - type: particle
+            particle: minecraft:heart
+            count: 5
+
+  # 2b. 挑战书(PvP挑战)
+  mysocial:challenge_book:
+    material: book
+    custom_model_data: 54011
+    data:
+      item_name: "<!i><#FF4500>挑战书"
+      lore:
+        - "<gray>向其他玩家发起PvP挑战"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<#FF4500>挑战已发出! 等待对方接受..."
+
+  # 2c. 传送请求(拉队友)
+  mysocial:party_teleport:
+    material: ender_pearl
+    custom_model_data: 54012
+    data:
+      item_name: "<!i><#AA00FF>队友传送"
+      lore:
+        - "<gray>传送至队友身边"
+    events:
+      - on: right_click
+        functions:
+          - type: teleport
+            x: "<arg:player.x>"
+            y: "<arg:player.y>"
+            z: "<arg:player.z>"
+
+# =============================================================================
+# 三、物品 - 社交礼物
+# =============================================================================
+items:
+  mysocial:rose:
+    material: red_tulip
+    custom_model_data: 54020
+    data:
+      item_name: "<!i><#FF0000>玫瑰"
+      lore:
+        - "<gray>送给心仪的玩家"
+
+  mysocial:chocolate_box:
+    material: cookie
+    custom_model_data: 54021
+    data:
+      item_name: "<!i><#8B4513>巧克力礼盒"
+      lore:
+        - "<gray>表达感谢的礼物"
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mysocial:friend_card_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:pink_dye"
+    result:
+      id: mysocial:friend_card
+      count: 4
+
+  mysocial:wedding_ring_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:gold_nugget"
+      B: "minecraft:diamond"
+    result:
+      id: mysocial:wedding_ring
+      count: 1
+
+  mysocial:thanks_card_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:green_dye"
+    result:
+      id: mysocial:thanks_card
+      count: 4
+
+  mysocial:challenge_book_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - " B "
+      - " C "
+    ingredients:
+      A: "minecraft:red_dye"
+      B: "minecraft:book"
+      C: "minecraft:iron_sword"
+    result:
+      id: mysocial:challenge_book
+      count: 1
+
+  mysocial:rose_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:red_tulip"
+      - "minecraft:red_dye"
+    result:
+      id: mysocial:rose
+      count: 2
+
+  mysocial:chocolate_box_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:paper"
+      B: "minecraft:cookie"
+    result:
+      id: mysocial:chocolate_box
+      count: 1
