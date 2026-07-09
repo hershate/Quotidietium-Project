@@ -585,12 +585,16 @@ items:
 #       有 50% 概率获得双倍掉落
 # wiki-ref: all_of | match_item | enchantment | permission | random
 # ---------------------------------------------------------------------------
-events:
-  - on: block_break                        # 方块破坏事件
+items:
+  quartzietium:events_demo:
+    material: stick
+    data:
+      item_name: "<gold>事件演示物品"
+    events:
+      - on: block_break                        # 方块破坏事件
     functions:
-      - type: give_item
-        item: quartzietium:topaz_gem       # << CHANGE THIS
-        amount: 1
+      - type: command
+        command: "give <arg:player.name> quartzietium:topaz_gem 1"  # << CHANGE THIS
       - type: command
         command: "say <arg:player.name> 挖到了黄水晶！"
     conditions:
@@ -627,7 +631,7 @@ events:
     functions:
       - type: command
         command: "doors open <arg:position.x> <arg:position.y> <arg:position.z>"
-      - type: sound
+      - type: play_sound
         sound: "minecraft:block.iron_door.open"
       - type: set_cooldown
         id: "quartzietium:key_cooldown"
@@ -662,9 +666,8 @@ events:
 # ---------------------------------------------------------------------------
   - on: entity_kill                        # 实体击杀事件
     functions:
-      - type: give_item
-        item: quartzietium:dragon_trophy   # << CHANGE THIS
-        amount: 1
+      - type: command
+        command: "give <arg:player.name> quartzietium:dragon_trophy 1"  # << CHANGE THIS
       - type: message
         message: "&6恭喜 <arg:player.name> 击败了首领！"
     conditions:
@@ -699,10 +702,9 @@ events:
     functions:
       - type: command
         command: "setblock <arg:position.x> <arg:position.y> <arg:position.z> minecraft:wheat[age=0]"
-      - type: give_item
-        item: "minecraft:wheat"
-        amount: 3
-      - type: sound
+      - type: command
+        command: "give <arg:player.name> minecraft:wheat 3"  # << CHANGE THIS
+      - type: play_sound
         sound: "minecraft:block.crop.break"
     conditions:
       - type: all_of
@@ -799,9 +801,8 @@ events:
 # ---------------------------------------------------------------------------
   - on: block_drop                         # 方块掉落物生成事件
     functions:
-      - type: give_item
-        item: "quartzietium:ancient_relic" # << CHANGE THIS
-        amount: 1
+      - type: command
+        command: "give <arg:player.name> quartzietium:ancient_relic 1"  # << CHANGE THIS
     conditions:
       - type: all_of
         terms:
