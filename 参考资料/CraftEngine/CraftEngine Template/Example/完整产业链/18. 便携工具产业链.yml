@@ -1,0 +1,222 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 便携工具产业链
+# =============================================================================
+# 展示从传送工具→照明工具→建筑辅助→实用物品的完整端到端配置
+# 命名空间: myutil (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 所有工具(传送/照明/建筑/实用)
+# =============================================================================
+items:
+  # ----- 1. 传送工具 -----
+  myutil:recall_scroll:
+    material: paper
+    custom_model_data: 15001
+    data:
+      item_name: "<!i><#AA00FF>传送卷轴"
+      lore:
+        - "<gray>右键传送至世界出生点"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myutil:recall_cd"
+        functions:
+          - type: set_cooldown
+            id: "myutil:recall_cd"
+            time: 30s
+          - type: teleport
+            x: "<arg:player.position.world.spawn_x>"
+            y: "<arg:player.position.world.spawn_y>"
+            z: "<arg:player.position.world.spawn_z>"
+          - type: particle
+            particle: minecraft:end_rod
+            count: 20
+
+  myutil:recall_stone:
+    material: ender_eye
+    custom_model_data: 15002
+    data:
+      item_name: "<!i><#AA00FF>传送石"
+      unbreakable: true
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myutil:recall_stone_cd"
+        functions:
+          - type: set_cooldown
+            id: "myutil:recall_stone_cd"
+            time: 60s
+          - type: teleport
+            x: "<arg:player.position.world.spawn_x>"
+            y: "<arg:player.position.world.spawn_y>"
+            z: "<arg:player.position.world.spawn_z>"
+          - type: play_totem_animation
+            item: "myutil:recall_stone"
+
+  # ----- 2. 照明工具 -----
+  myutil:portable_lantern:
+    material: lantern
+    custom_model_data: 15010
+    data:
+      item_name: "<!i><#FFD700>便携灯笼"
+    events:
+      - on: right_click
+        functions:
+          - type: place_block
+            block_state: "minecraft:lantern[hanging=true]"
+            x: "<arg:position.x>"
+            y: "<arg:position.y> + 1"
+            z: "<arg:position.z>"
+
+  myutil:magic_torch:
+    material: torch
+    custom_model_data: 15011
+    data:
+      item_name: "<!i><#FF4500>魔法火把"
+    events:
+      - on: right_click
+        functions:
+          - type: place_block
+            block_state: "minecraft:torch"
+            x: "<arg:position.x>"
+
+  # ----- 3. 建筑辅助 -----
+  myutil:building_wand:
+    material: stick
+    custom_model_data: 15020
+    data:
+      item_name: "<!i><#FF8C00>建筑魔杖"
+      unbreakable: true
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myutil:wand_cd"
+        functions:
+          - type: set_cooldown
+            id: "myutil:wand_cd"
+            time: 1s
+          - type: command
+            command: "fill <arg:block.block_x> <arg:block.block_y> <arg:block.block_z> <arg:block.block_x> <arg:block.block_y> <arg:block.block_z> minecraft:stone"
+
+  myutil:timber_axe:
+    material: diamond_axe
+    custom_model_data: 15021
+    data:
+      item_name: "<!i><#8B4513>砍树斧"
+    behaviors:
+      - type: range_mining_item
+        range:
+          - 0,1,0
+          - 0,2,0
+          - 0,3,0
+          - 0,4,0
+          - 0,5,0
+          - 0,6,0
+          - 0,7,0
+
+  # ----- 4. 实用工具 -----
+  myutil:portable_crafting:
+    material: crafting_table
+    custom_model_data: 15030
+    data:
+      item_name: "<!i><#DEB887>便携工作台"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: crafting
+
+  myutil:portable_anvil:
+    material: anvil
+    custom_model_data: 15031
+    data:
+      item_name: "<!i><#DEB887>便携铁砧"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: anvil
+            title: "便携铁砧"
+
+  myutil:portable_enchanting:
+    material: enchanting_table
+    custom_model_data: 15032
+    data:
+      item_name: "<!i><#AA00FF>便携附魔台"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: enchantment
+
+  myutil:multitool:
+    material: iron_sword
+    custom_model_data: 15040
+    data:
+      item_name: "<!i><#FF8C00>多功能刀"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: crafting
+      - on: left_click
+        functions:
+          - type: damage_item
+            amount: 1
+          - type: particle
+            particle: minecraft:crit
+            count: 5
+
+# =============================================================================
+# 二、配方
+# =============================================================================
+recipes:
+  myutil:recall_scroll_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:paper"
+      B: "minecraft:ender_pearl"
+    result:
+      id: myutil:recall_scroll
+      count: 1
+
+  myutil:recall_stone_recipe:
+    type: smithing_transform
+    base: "myutil:recall_scroll"
+    addition: "minecraft:nether_star"
+    result:
+      id: myutil:recall_stone
+      count: 1
+
+  myutil:building_wand_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "  A"
+      - " B "
+      - "B  "
+    ingredients:
+      A: "minecraft:diamond"
+      B: "minecraft:stick"
+    result:
+      id: myutil:building_wand
+      count: 1
+
+  myutil:portable_crafting_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:crafting_table"
+      - "minecraft:stick"
+    result:
+      id: myutil:portable_crafting
+      count: 1
