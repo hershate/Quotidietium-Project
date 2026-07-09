@@ -1,0 +1,198 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 附魔与升级产业链
+# =============================================================================
+# 展示从附魔材料→升级卷轴→锻造升级的完整端到端配置
+# 包含配方后处理器、锻造转化、模板系统等高级机制
+# 命名空间: myupg (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 所有物品(材料+装备)
+# =============================================================================
+items:
+  # ----- 1. 附魔/升级材料 -----
+  myupg:experience_scroll:
+    material: paper
+    custom_model_data: 14001
+    data:
+      item_name: "<!i><#AA00FF>经验卷轴"
+    events:
+      - on: right_click
+        functions:
+          - type: set_exp
+            count: 100
+            add: true
+          - type: message
+            message: "<green>你获得了 100 点经验值!"
+          - type: play_sound
+            sound: minecraft:entity.player.levelup
+
+  myupg:upgrade_crystal:
+    material: amethyst_shard
+    custom_model_data: 14002
+    data:
+      item_name: "<!i><#FF69B4>升级水晶"
+    settings:
+      glow_color: light_purple
+
+  myupg:enchantment_shard:
+    material: prismarine_crystals
+    custom_model_data: 14003
+    data:
+      item_name: "<!i><#00CED1>附魔碎片"
+
+  # ----- 2. 已附魔装备 -----
+  myupg:enchanted_blade:
+    material: diamond_sword
+    custom_model_data: 14010
+    data:
+      item_name: "<!i><#AA00FF>附魔之刃"
+      enchantment:
+        minecraft:sharpness: 3
+        minecraft:unbreaking: 2
+        minecraft:looting: 1
+      hide_tooltip:
+        - enchantments
+
+  myupg:upgraded_crossbow:
+    material: crossbow
+    custom_model_data: 14020
+    data:
+      item_name: "<!i><#FF69B4>强化弩"
+      enchantment:
+        minecraft:quick_charge: 3
+        minecraft:piercing: 2
+
+  myupg:ancient_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 14021
+    data:
+      item_name: "<!i><#FFD700>远古胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 10.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 4.0
+          operation: add_value
+          slot: chest
+      max_damage: 800
+
+# =============================================================================
+# 二、配方 - 后处理器+转化处理器
+# =============================================================================
+recipes:
+  myupg:enchanted_blade_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_sword"
+    addition: "myupg:upgrade_crystal"
+    merge_components: true
+    result:
+      id: myupg:enchanted_blade
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            enchantment:
+              minecraft:sharpness: 3
+              minecraft:unbreaking: 2
+
+  myupg:upgrade_crossbow:
+    type: shaped_transform
+    pattern:
+      - 'ABA'
+      - 'ACA'
+      - 'AAA'
+    ingredients:
+      A: "myupg:upgrade_crystal"
+      B:
+        item: "minecraft:crossbow"
+        source: true
+      C: "minecraft:netherite_ingot"
+    result:
+      id: myupg:upgraded_crossbow
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: keep_components
+        components:
+          - minecraft:enchantments
+          - minecraft:unbreakable
+
+  myupg:ancient_upgrade:
+    type: smithing_transform
+    template_type: "myupg:ancient_template"
+    base: "minecraft:diamond_chestplate"
+    addition: "myupg:upgrade_crystal"
+    result:
+      id: myupg:ancient_chestplate
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FFD700>远古胸甲"
+      - type: merge_enchantments
+      - type: keep_components
+        components:
+          - minecraft:enchantments
+          - minecraft:trim
+      - type: keep_custom_data
+        paths:
+          - upgrade_level
+          - owner
+
+  myupg:experience_scroll_recipe:
+    type: smelting
+    category: misc
+    experience: 5.0
+    time: 600
+    ingredient: "minecraft:paper"
+    result:
+      id: myupg:experience_scroll
+      count: 1
+
+  myupg:upgrade_crystal_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:amethyst_shard"
+      B: "minecraft:nether_star"
+    result:
+      id: myupg:upgrade_crystal
+      count: 1
+
+  myupg:enchantment_shard_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:prismarine_crystals"
+      - "minecraft:lapis_lazuli"
+      - "minecraft:experience_bottle"
+    result:
+      id: myupg:enchantment_shard
+      count: 3
+
+  myupg:crossbow_keep_recipe:
+    type: shaped_transform
+    pattern:
+      - 'BBB'
+      - 'BAB'
+      - 'BBB'
+    ingredients:
+      A:
+        item: "minecraft:crossbow"
+        source: true
+      B: "myupg:enchantment_shard"
+    result:
+      id: myupg:upgraded_crossbow
+      count: 1
+    transform_processors:
+      - type: keep_tags
+        tags:
+          - Enchantments
+          - display.Name
