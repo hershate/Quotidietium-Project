@@ -1,0 +1,195 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 幻化与外观系统产业链
+# =============================================================================
+# 展示外观道具→幻化石→幻化装备→时装系统的完整配置
+# 包含dyeable染色、glow_color发光、hat_height帽子、模型替换
+# 命名空间: mycosmetic (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 幻化材料
+# =============================================================================
+items:
+  # 1a. 幻化石(改变装备外观)
+  mycosmetic:transmog_stone:
+    material: prismarine_crystals
+    custom_model_data: 52001
+    data:
+      item_name: "<!i><#AA00FF>幻化石"
+      lore:
+        - "<gray>改变装备的外观"
+
+  # 1b. 染色剂(改变装备颜色)
+  mycosmetic:dye_potion:
+    material: potion
+    custom_model_data: 52002
+    data:
+      item_name: "<!i><#FF69B4>染色剂"
+      lore:
+        - "<gray>改变装备的颜色"
+    settings:
+      dye_color: "255,105,180"
+      tags:
+        - "mycosmetic:dyes"
+
+  # 1c. 幻彩染料(随机颜色)
+  mycosmetic:magic_dye:
+    material: potion
+    custom_model_data: 52003
+    data:
+      item_name: "<!i><#FFD700>幻彩染料"
+      lore:
+        - "<gray>随机改变装备颜色"
+
+# =============================================================================
+# 二、物品 - 时装装备
+# =============================================================================
+items:
+  # 2a. 幻化头盔(隐藏原版盔甲,显示自定义模型)
+  mycosmetic:fashion_helmet:
+    material: golden_helmet
+    custom_model_data: 52010
+    data:
+      item_name: "<!i><#FFD700>幻化头盔"
+      lore:
+        - "<gray>改变头盔外观"
+      equippable:
+        slot: head
+    settings:
+      hat_height: 0.5
+      dyeable: true
+
+  # 2b. 发光翅膀(背部装饰)
+  mycosmetic:glow_wings:
+    material: elytra
+    custom_model_data: 52011
+    data:
+      item_name: "<!i><#AA00FF>发光翅膀"
+      lore:
+        - "<gray>背部装饰"
+    settings:
+      glow_color: light_purple
+      hat_height: 0.0
+
+  # 2c. 幻彩法袍(可染色)
+  mycosmetic:fashion_robe:
+    material: leather_chestplate
+    custom_model_data: 52012
+    data:
+      item_name: "<!i><#FF69B4>幻彩法袍"
+      dyed_color: "255,105,180"
+      lore:
+        - "<gray>可染色时装"
+    settings:
+      dyeable: true
+
+  # 2d. 王冠(发光+帽子高度)
+  mycosmetic:royal_crown:
+    material: golden_helmet
+    custom_model_data: 52013
+    data:
+      item_name: "<!i><#FFD700>皇家王冠"
+      lore:
+        - "<#FFD700>传说中的王者之冠"
+    settings:
+      glow_color: gold
+      hat_height: 1.2
+
+  # 2e. 3D头盔(禁用盔甲渲染器)
+  mycosmetic:3d_helmet:
+    material: diamond_helmet
+    custom_model_data: 52014
+    data:
+      item_name: "<!i>3D头盔"
+      equippable:
+        slot: head
+
+# =============================================================================
+# 三、物品 - 外观改变道具(事件)
+# =============================================================================
+items:
+  mycosmetic:appearance_wand:
+    material: stick
+    custom_model_data: 52020
+    data:
+      item_name: "<!i><#AA00FF>外观魔杖"
+      lore:
+        - "<gray>右键改变手持物品外观"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mycosmetic:wand_cd"
+        functions:
+          - type: set_cooldown
+            id: "mycosmetic:wand_cd"
+            time: 10s
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: has_item
+                functions:
+                  - type: message
+                    message: "<green>外观已应用!"
+                    target: self
+                  - type: particle
+                    particle: minecraft:end_rod
+                    count: 15
+              - functions:
+                  - type: message
+                    message: "<red>请手持要改变外观的物品!"
+                    target: self
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mycosmetic:transmog_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:prismarine_shard"
+      B: "minecraft:diamond"
+      C: "minecraft:gold_ingot"
+    result:
+      id: mycosmetic:transmog_stone
+      count: 1
+
+  mycosmetic:magic_dye_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:potion"
+      - "mycosmetic:transmog_stone"
+    result:
+      id: mycosmetic:magic_dye
+      count: 1
+
+  mycosmetic:royal_crown_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - "ABA"
+      - "ACA"
+    ingredients:
+      A: "minecraft:gold_ingot"
+      B: "minecraft:diamond"
+      C: "minecraft:nether_star"
+    result:
+      id: mycosmetic:royal_crown
+      count: 1
+    conditions:
+      - type: permission
+        permission: "mycosmetic.recipe.royal_crown"
+
+  mycosmetic:fashion_helmet_recipe:
+    type: smithing_transform
+    base: "minecraft:golden_helmet"
+    addition: "mycosmetic:transmog_stone"
+    result:
+      id: mycosmetic:fashion_helmet
+      count: 1
