@@ -1,0 +1,210 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 存储与物流产业链
+# =============================================================================
+# 展示从基础容器→抽屉→展示框→物流交互的完整端到端配置
+# 命名空间: mystore (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 所有存储/展示方块
+# =============================================================================
+blocks:
+  # 1a. 小型板条箱 (1行)
+  mystore:crate_small:
+    behavior:
+      type: simple_storage_block
+      title: "小型板条箱"
+      rows: 1
+      has_signal: true
+      sounds:
+        open: minecraft:block.barrel.open
+        close: minecraft:block.barrel.close
+    settings:
+      hardness: 2.0
+
+  # 1b. 大型板条箱 (6行)
+  mystore:crate_large:
+    behavior:
+      type: simple_storage_block
+      title: "大型板条箱"
+      rows: 6
+      has_signal: true
+      sounds:
+        open: minecraft:block.barrel.open
+        close: minecraft:block.barrel.close
+    settings:
+      hardness: 2.5
+
+  # 1c. 矿石抽屉 (单物品大储量)
+  mystore:ore_drawer:
+    behavior:
+      type: drawer_block
+      max_stacks: 64
+      has_signal: true
+      item_position: "0.5,0.5,0.1"
+      item_scale: 0.5
+      compatible_mode: true
+      sounds:
+        put: minecraft:block.barrel.open
+        take: minecraft:block.barrel.close
+    settings:
+      hardness: 2.0
+
+  # 1d. 可堆叠方块 (stackable 1~4)
+  mystore:stackable_pearl:
+    state:
+      properties:
+        amount:
+          type: int
+          default: 1
+          range: 1~4
+    behavior:
+      type: stackable_block
+      items:
+        - mystore:stackable_pearl_item
+    settings:
+      hardness: 0.2
+      luminance: 3
+
+  # 1e. 展示架 (display_item_block)
+  mystore:display_shelf:
+    behavior:
+      type: display_item_block
+      tint_source: false
+      sounds:
+        put: minecraft:block.decorated_pot.insert
+        take: minecraft:block.decorated_pot.insert_fail
+
+  # 1f. 发光展示框 (item_frame_block)
+  mystore:glow_display:
+    behavior:
+      type: item_frame_block
+      glow: true
+      invisible: true
+      sounds:
+        put: entity.item_frame.add_item
+        take: entity.item_frame.remove_item
+        rotate: entity.item_frame.rotate_item
+
+# =============================================================================
+# 二、物品 - 所有方块物品
+# =============================================================================
+items:
+  mystore:crate_small_item:
+    material: barrel
+    data:
+      item_name: "<!i><#DEB887>小型板条箱"
+    behavior:
+      type: block_item
+      block: mystore:crate_small
+
+  mystore:crate_large_item:
+    material: barrel
+    data:
+      item_name: "<!i><#DEB887>大型板条箱"
+    behavior:
+      type: block_item
+      block: mystore:crate_large
+
+  mystore:ore_drawer_item:
+    material: barrel
+    data:
+      item_name: "<!i><#A0522D>矿石抽屉"
+    behavior:
+      type: block_item
+      block: mystore:ore_drawer
+
+  mystore:stackable_pearl_item:
+    material: ender_pearl
+    custom_model_data: 7001
+    data:
+      item_name: "<!i><#9370DB>堆叠珍珠"
+    behavior:
+      type: block_item
+      block: mystore:stackable_pearl
+
+  mystore:display_shelf_item:
+    material: item_frame
+    custom_model_data: 7010
+    data:
+      item_name: "<!i><#8B4513>展示架"
+    behavior:
+      type: block_item
+      block: mystore:display_shelf
+
+  mystore:glow_display_item:
+    material: item_frame
+    custom_model_data: 7011
+    data:
+      item_name: "<!i><#FFD700>发光展示框"
+    behavior:
+      type: block_item
+      block: mystore:glow_display
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mystore:crate_small_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:chest"
+    result:
+      id: mystore:crate_small_item
+      count: 1
+
+  mystore:crate_large_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "mystore:crate_small_item"
+    result:
+      id: mystore:crate_large_item
+      count: 1
+
+  mystore:ore_drawer_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "B B"
+      - "AAA"
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:iron_nugget"
+    result:
+      id: mystore:ore_drawer_item
+      count: 1
+
+  mystore:display_shelf_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "B B"
+      - "AAA"
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:item_frame"
+    result:
+      id: mystore:display_shelf_item
+      count: 2
+
+  mystore:glow_display_recipe:
+    type: smithing_transform
+    base: "minecraft:item_frame"
+    addition: "minecraft:glow_ink_sac"
+    result:
+      id: mystore:glow_display_item
+      count: 1
