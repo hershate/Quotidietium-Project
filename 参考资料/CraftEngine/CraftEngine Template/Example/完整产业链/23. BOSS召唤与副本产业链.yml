@@ -1,0 +1,180 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - BOSS召唤与副本产业链
+# =============================================================================
+# 展示从召唤材料→召唤祭坛→BOSS召唤→BOSS掉落→奖励箱的完整流程
+# 命名空间: myboss (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 召唤祭坛
+# =============================================================================
+blocks:
+  myboss:summon_altar:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myboss:block/summon_altar"
+    settings:
+      hardness: -1.0
+
+# =============================================================================
+# 二、物品 - 材料 + 祭坛 + 掉落 + 奖励箱
+# =============================================================================
+items:
+  # ----- 1. 召唤材料 -----
+  myboss:soul_shard:
+    material: amethyst_shard
+    custom_model_data: 20001
+    data:
+      item_name: "<!i><#AA00FF>灵魂碎片"
+
+  myboss:soul_stone:
+    material: nether_star
+    custom_model_data: 20002
+    data:
+      item_name: "<!i><#FF00FF>灵魂石"
+
+  myboss:dragon_horn:
+    material: goat_horn
+    custom_model_data: 20003
+    data:
+      item_name: "<!i><#FF4500>龙之号角"
+
+  # ----- 2. 召唤祭坛物品 -----
+  myboss:summon_altar_item:
+    material: beacon
+    custom_model_data: 20010
+    data:
+      item_name: "<!i><#AA00FF>召唤祭坛"
+    behavior:
+      type: block_item
+      block: myboss:summon_altar
+    events:
+      - on: right_click
+        conditions:
+          - type: all_of
+            terms:
+              - type: match_item
+                id: "myboss:soul_stone"
+              - type: "!on_cooldown"
+                id: "myboss:summon_cd"
+              - type: permission
+                permission: "myboss.summon"
+        functions:
+          - type: set_cooldown
+            id: "myboss:summon_cd"
+            time: 300s
+          - type: clear_item
+            id: "myboss:soul_stone"
+            count: 1
+          - type: particle
+            particle: minecraft:dust_color_transition
+            x: "<arg:position.x> + 0.5"
+            y: "<arg:position.y> + 1"
+            z: "<arg:position.z> + 0.5"
+            count: 50
+            from: "255,0,255"
+            to: "255,0,0"
+            scale: 3.0
+          - type: play_sound
+            sound: minecraft:entity.wither.spawn
+            volume: 2.0
+          - type: title
+            title: "<#FF0000>警告!"
+            subtitle: "<gray>远古BOSS已被唤醒!"
+          - type: command
+            command: "say BOSS出现在 <arg:position.x> <arg:position.y> <arg:position.z>!"
+
+  # ----- 3. BOSS掉落物 -----
+  myboss:boss_core:
+    material: heart_of_the_sea
+    custom_model_data: 20020
+    data:
+      item_name: "<!i><#FF4500>BOSS晶核"
+    settings:
+      glow_color: red
+
+  myboss:ancient_fragment:
+    material: netherite_scrap
+    custom_model_data: 20021
+    data:
+      item_name: "<!i><#FFD700>远古装备碎片"
+
+  # ----- 4. 奖励箱(随机if_else) -----
+  myboss:raid_loot_box:
+    material: ender_chest
+    custom_model_data: 20030
+    data:
+      item_name: "<!i><#FFD700>突袭奖励箱"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.1
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myboss:ancient_fragment 1"
+                  - type: message
+                    message: "<#FFD700>传说! 获得远古碎片!"
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myboss:boss_core 1"
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> minecraft:diamond 5"
+          - type: clear_item
+            id: "myboss:raid_loot_box"
+            count: 1
+          - type: particle
+            particle: minecraft:end_rod
+            count: 20
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myboss:soul_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "myboss:soul_shard"
+    result:
+      id: myboss:soul_stone
+      count: 1
+
+  myboss:summon_altar_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "BBB"
+    ingredients:
+      A: "myboss:soul_shard"
+      B: "minecraft:obsidian"
+      C: "minecraft:beacon"
+    result:
+      id: myboss:summon_altar_item
+      count: 1
+
+  myboss:ancient_fragment_combine:
+    type: shaped
+    category: equipment
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "myboss:ancient_fragment"
+    result:
+      id: "minecraft:netherite_ingot"
+      count: 1
