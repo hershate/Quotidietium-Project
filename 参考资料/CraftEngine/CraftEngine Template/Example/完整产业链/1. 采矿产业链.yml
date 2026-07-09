@@ -1,0 +1,465 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 采矿产业链
+# =============================================================================
+# 展示从矿石 → 锭 → 工具 → 盔甲的完整端到端配置
+# 命名空间: mymining (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 矿石及其变种
+# =============================================================================
+blocks:
+  # 1a. 主世界矿石
+  mymining:mythril_ore:
+    state:
+      auto_state: solid
+      model:
+        texture: "mymining:block/mythril_ore"
+    settings:
+      hardness: 3.0
+      resistance: 6.0
+      require_correct_tools: true
+      correct_tools:
+        - minecraft:iron_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+      sounds:
+        break: minecraft:block.stone.break
+        step: minecraft:block.stone.step
+        place: minecraft:block.stone.place
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: "mymining:mythril_ore"
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: "mymining:raw_mythril"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops
+
+  # 1b. 深层变种
+  mymining:deepslate_mythril_ore:
+    state:
+      auto_state: solid
+      model:
+        texture: "mymining:block/deepslate_mythril_ore"
+    settings:
+      hardness: 4.5
+      resistance: 9.0
+      require_correct_tools: true
+      correct_tools:
+        - minecraft:iron_pickaxe
+      tags:
+        - minecraft:mineable/pickaxe
+        - minecraft:needs_iron_tool
+    loot:
+      template: mymining:loot/deepslate_ore
+
+# =============================================================================
+# 二、物品 - 原材料
+# =============================================================================
+items:
+  # 2a. 粗矿石
+  mymining:raw_mythril:
+    material: raw_iron
+    custom_model_data: 2001
+    item_model: "mymining:raw_mythril"
+    data:
+      item_name: "<!i><#FF8C00>粗秘银"
+      lore:
+        - "<gray>需熔炼后方可使用"
+    settings:
+      fuel_time: 0
+
+  # 2b. 秘银锭
+  mymining:mythril_ingot:
+    material: iron_ingot
+    custom_model_data: 2002
+    item_model: "mymining:mythril_ingot"
+    data:
+      item_name: "<!i><#FF8C00>秘银锭"
+      lore:
+        - "<gray>一种轻而坚硬的合金"
+    settings:
+      tags:
+        - "mymining:mythril_ingots"
+
+  # 2c. 秘银粒 (合成剩余物/副产品)
+  mymining:mythril_nugget:
+    material: iron_nugget
+    custom_model_data: 2003
+    item_model: "mymining:mythril_nugget"
+    data:
+      item_name: "<!i><#FF8C00>秘银粒"
+
+# =============================================================================
+# 三、配方 - 冶炼 + 合成
+# =============================================================================
+recipes:
+  # 3a. 粗矿 → 锭 (熔炉)
+  mymining:mythril_ingot_from_smelting:
+    type: smelting
+    experience: 1.0
+    category: misc
+    time: 200
+    ingredient: "mymining:raw_mythril"
+    result:
+      id: mymining:mythril_ingot
+      count: 1
+
+  # 3b. 粗矿 → 锭 (高炉)
+  mymining:mythril_ingot_from_blasting:
+    type: blasting
+    experience: 1.0
+    category: misc
+    time: 100
+    ingredient: "mymining:raw_mythril"
+    result:
+      id: mymining:mythril_ingot
+      count: 1
+
+  # 3c. 锭 → 粒
+  mymining:mythril_nugget_from_ingot:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "mymining:mythril_ingot"
+    result:
+      id: mymining:mythril_nugget
+      count: 9
+
+  # 3d. 粒 → 锭
+  mymining:mythril_ingot_from_nuggets:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mymining:mythril_nugget"
+    result:
+      id: mymining:mythril_ingot
+      count: 1
+
+# =============================================================================
+# 四、物品 - 全套工具
+# =============================================================================
+  # 4a. 秘银镐
+  mymining:mythril_pickaxe:
+    material: iron_pickaxe
+    custom_model_data: 2010
+    item_model: "mymining:mythril_pickaxe"
+    data:
+      item_name: "<!i><#FF8C00>秘银镐"
+      lore:
+        - "<gray>挖掘速度超越钻石"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 4.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.2
+          operation: add_value
+          slot: mainhand
+      unbreakable: false
+      max_damage: 500
+      enchantment:
+        minecraft:efficiency: 3
+    settings:
+      tags:
+        - "mymining:mythril_tools"
+      repairable:
+        crafting_table: true
+        anvil_repair: true
+        anvil_combine: true
+      anvil_repair_item:
+        - target: "#mymining:mythril_ingots"
+          amount: 50
+
+  # 4b. 秘银斧
+  mymining:mythril_axe:
+    material: iron_axe
+    custom_model_data: 2011
+    item_model: "mymining:mythril_axe"
+    data:
+      item_name: "<!i><#FF8C00>秘银斧"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 7.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 0.8
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+    settings:
+      tags:
+        - "mymining:mythril_tools"
+
+  # 4c. 秘银锹
+  mymining:mythril_shovel:
+    material: iron_shovel
+    custom_model_data: 2012
+    item_model: "mymining:mythril_shovel"
+    data:
+      item_name: "<!i><#FF8C00>秘银锹"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 3.5
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+    settings:
+      tags:
+        - "mymining:mythril_tools"
+
+  # 4d. 秘银锄
+  mymining:mythril_hoe:
+    material: iron_hoe
+    custom_model_data: 2013
+    item_model: "mymining:mythril_hoe"
+    data:
+      item_name: "<!i><#FF8C00>秘银锄"
+      max_damage: 500
+    settings:
+      tags:
+        - "mymining:mythril_tools"
+
+  # 4e. 秘银剑
+  mymining:mythril_sword:
+    material: iron_sword
+    custom_model_data: 2014
+    item_model: "mymining:mythril_sword"
+    data:
+      item_name: "<!i><#FF8C00>秘银剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 6.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.6
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+      enchantment:
+        minecraft:sharpness: 2
+    settings:
+      tags:
+        - "mymining:mythril_tools"
+
+# =============================================================================
+# 五、配方 - 工具合成
+# =============================================================================
+  # 5a. 秘银镐
+  mymining:mythril_pickaxe_recipe:
+    type: shaped
+    category: equipment
+    group: mythril_tools
+    pattern:
+      - "AAA"
+      - " B "
+      - " B "
+    ingredients:
+      A: "mymining:mythril_ingot"
+      B: "minecraft:stick"
+    result:
+      id: mymining:mythril_pickaxe
+      count: 1
+
+  # 5b. 秘银斧
+  mymining:mythril_axe_recipe:
+    type: shaped
+    category: equipment
+    group: mythril_tools
+    pattern:
+      - "AA"
+      - "AB"
+      - " B"
+    ingredients:
+      A: "mymining:mythril_ingot"
+      B: "minecraft:stick"
+    result:
+      id: mymining:mythril_axe
+      count: 1
+
+  # 5c. 秘银剑
+  mymining:mythril_sword_recipe:
+    type: shaped
+    category: equipment
+    group: mythril_tools
+    pattern:
+      - "A"
+      - "A"
+      - "B"
+    ingredients:
+      A: "mymining:mythril_ingot"
+      B: "minecraft:stick"
+    result:
+      id: mymining:mythril_sword
+      count: 1
+
+# =============================================================================
+# 六、装备 - 全套盔甲
+# =============================================================================
+equipments:
+  mymining:mythril_armor:
+    type: component
+    humanoid: "mymining:entity/equipment/humanoid/mythril"
+    humanoid_leggings: "mymining:entity/equipment/humanoid_leggings/mythril"
+
+items:
+  # 6a. 秘银头盔
+  mymining:mythril_helmet:
+    material: iron_helmet
+    custom_model_data: 2020
+    item_model: "mymining:mythril_helmet"
+    data:
+      item_name: "<!i><#FF8C00>秘银头盔"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: head
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6b. 秘银胸甲
+  mymining:mythril_chestplate:
+    material: iron_chestplate
+    custom_model_data: 2021
+    item_model: "mymining:mythril_chestplate"
+    data:
+      item_name: "<!i><#FF8C00>秘银胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 8.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: chest
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6c. 秘银护腿
+  mymining:mythril_leggings:
+    material: iron_leggings
+    custom_model_data: 2022
+    item_model: "mymining:mythril_leggings"
+    data:
+      item_name: "<!i><#FF8C00>秘银护腿"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          slot: legs
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: legs
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6d. 秘银靴子
+  mymining:mythril_boots:
+    material: iron_boots
+    custom_model_data: 2023
+    item_model: "mymining:mythril_boots"
+    data:
+      item_name: "<!i><#FF8C00>秘银靴子"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: feet
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: feet
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+# =============================================================================
+# 七、配方 - 盔甲合成
+# =============================================================================
+recipes:
+  mymining:mythril_helmet_recipe:
+    type: shaped
+    category: equipment
+    group: mythril_armor
+    pattern:
+      - "AAA"
+      - "A A"
+    ingredients:
+      A: "mymining:mythril_ingot"
+    result:
+      id: mymining:mythril_helmet
+      count: 1
+
+  mymining:mythril_chestplate_recipe:
+    type: shaped
+    category: equipment
+    group: mythril_armor
+    pattern:
+      - "A A"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mymining:mythril_ingot"
+    result:
+      id: mymining:mythril_chestplate
+      count: 1
+
+# =============================================================================
+# 八、战利品表模板 (复用)
+# =============================================================================
+templates:
+  mymining:loot/deepslate_ore:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: "${__NAMESPACE__}:${__ID__}"
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: "mymining:raw_mythril"
+                  functions:
+                    - type: apply_bonus
+                      enchantment: minecraft:fortune
+                      formula:
+                        type: ore_drops
