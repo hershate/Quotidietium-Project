@@ -1,0 +1,184 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 自定义附魔书与附魔系统产业链
+# =============================================================================
+# 展示附魔书制作→附魔书应用→附魔书交易的完整附魔书系统
+# 包含apply_data后处理器、配方条件、merchant_trade交易
+# 命名空间: myenchant (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 附魔书
+# =============================================================================
+items:
+  myenchant:sharpness_book:
+    material: enchanted_book
+    custom_model_data: 56001
+    data:
+      item_name: "<!i><#FF4500>附魔书 - 锋利 V"
+      lore:
+        - "<red>锋利 V"
+      enchantment:
+        minecraft:sharpness: 5
+      hide_tooltip:
+        - enchantments
+
+  myenchant:protection_book:
+    material: enchanted_book
+    custom_model_data: 56002
+    data:
+      item_name: "<!i><#00CED1>附魔书 - 保护 IV"
+      enchantment:
+        minecraft:protection: 4
+
+  myenchant:efficiency_book:
+    material: enchanted_book
+    custom_model_data: 56003
+    data:
+      item_name: "<!i><#FFD700>附魔书 - 效率 V"
+      enchantment:
+        minecraft:efficiency: 5
+
+  myenchant:unbreaking_book:
+    material: enchanted_book
+    custom_model_data: 56004
+    data:
+      item_name: "<!i><#55FF55>附魔书 - 耐久 III"
+      enchantment:
+        minecraft:unbreaking: 3
+
+  myenchant:fortune_book:
+    material: enchanted_book
+    custom_model_data: 56005
+    data:
+      item_name: "<!i><#FFD700>附魔书 - 时运 III"
+      enchantment:
+        minecraft:fortune: 3
+
+  myenchant:mending_book:
+    material: enchanted_book
+    custom_model_data: 56006
+    data:
+      item_name: "<!i><#AA00FF>附魔书 - 经验修补"
+      enchantment:
+        minecraft:mending: 1
+
+# =============================================================================
+# 二、配方 - 附魔书制作(后处理器)
+# =============================================================================
+recipes:
+  myenchant:sharpness_book_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:book"
+      - "minecraft:diamond_sword"
+    result:
+      id: myenchant:sharpness_book
+      count: 1
+    post_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FF4500>附魔书 - 锋利 V"
+          enchantment:
+            minecraft:sharpness: 5
+
+  myenchant:protection_book_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:book"
+      - "minecraft:diamond_chestplate"
+    result:
+      id: myenchant:protection_book
+      count: 1
+    post_processors:
+      - type: apply_data
+        data:
+          enchantment:
+            minecraft:protection: 4
+
+  myenchant:efficiency_book_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:book"
+      - "minecraft:diamond_pickaxe"
+    result:
+      id: myenchant:efficiency_book
+      count: 1
+    post_processors:
+      - type: apply_data
+        data:
+          enchantment:
+            minecraft:efficiency: 5
+
+  myenchant:mending_book_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:book"
+      - "minecraft:experience_bottle"
+    result:
+      id: myenchant:mending_book
+      count: 1
+    post_processors:
+      - type: apply_data
+        data:
+          enchantment:
+            minecraft:mending: 1
+
+# =============================================================================
+# 三、村民交易-附魔书商店
+# =============================================================================
+items:
+  myenchant:enchant_merchant:
+    material: emerald
+    custom_model_data: 56010
+    data:
+      item_name: "<!i><#FFD700>附魔商店"
+    events:
+      - on: right_click
+        functions:
+          - type: merchant_trade
+            title: "附魔商店"
+            offers:
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 30
+                result:
+                  item: myenchant:sharpness_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 20
+                result:
+                  item: myenchant:protection_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 15
+                result:
+                  item: myenchant:efficiency_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 10
+                result:
+                  item: myenchant:unbreaking_book
+                  count: 1
+
+# =============================================================================
+# 四、物品 - 附魔台替代(右键打开附魔GUI)
+# =============================================================================
+items:
+  myenchant:portable_enchant:
+    material: enchanting_table
+    custom_model_data: 56020
+    data:
+      item_name: "<!i><#AA00FF>便携附魔台"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: enchantment
+            title: "便携附魔台"
