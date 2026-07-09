@@ -1,0 +1,346 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 装饰产业链
+# =============================================================================
+# 展示从原木 → 木板 → 台阶/楼梯 → 家具的完整端到端配置
+# 命名空间: mydeco (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 原木及其变种
+# =============================================================================
+blocks:
+  # 1a. 幻彩原木 (多轴向)
+  mydeco:magic_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "mydeco:block/magic_log_top"
+                side: "mydeco:block/magic_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mydeco:block/magic_log_top"
+                side: "mydeco:block/magic_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mydeco:block/magic_log_top"
+                side: "mydeco:block/magic_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      burnable: true
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+      sounds:
+        break: minecraft:block.wood.break
+        step: minecraft:block.wood.step
+        place: minecraft:block.wood.place
+    behavior:
+      type: strippable_block
+      stripped: mydeco:stripped_magic_log
+
+  # 1b. 去皮幻彩原木
+  mydeco:stripped_magic_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "mydeco:block/stripped_magic_log_top"
+                side: "mydeco:block/stripped_magic_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mydeco:block/stripped_magic_log_top"
+                side: "mydeco:block/stripped_magic_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mydeco:block/stripped_magic_log_top"
+                side: "mydeco:block/stripped_magic_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+
+  # 1c. 幻彩木板
+  mydeco:magic_planks:
+    state:
+      auto_state: note_block
+      model:
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "mydeco:block/magic_planks"
+    settings:
+      hardness: 2.0
+      burnable: true
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:planks
+        - minecraft:wooden_tool_materials
+
+  # 1d. 幻彩台阶
+  mydeco:magic_slab:
+    states:
+      properties:
+        type:
+          type: slab_type
+          default: bottom
+        waterlogged:
+          type: boolean
+          default: false
+      appearances:
+        bottom:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/slab"
+              textures:
+                bottom: "mydeco:block/magic_planks"
+                top: "mydeco:block/magic_planks"
+                side: "mydeco:block/magic_planks"
+        top:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/slab_top"
+              textures:
+                bottom: "mydeco:block/magic_planks"
+                top: "mydeco:block/magic_planks"
+                side: "mydeco:block/magic_planks"
+        double:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_bottom_top"
+              textures:
+                bottom: "mydeco:block/magic_planks"
+                top: "mydeco:block/magic_planks"
+                side: "mydeco:block/magic_planks"
+      variants:
+        type=bottom: { appearance: bottom }
+        type=top: { appearance: top }
+        type=double: { appearance: double }
+        waterlogged=true:
+          settings:
+            fluid_state: water
+    settings:
+      hardness: 2.0
+      burnable: true
+      tags:
+        - minecraft:mineable/axe
+
+  # 1e. 幻彩楼梯
+  mydeco:magic_stairs:
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        half:
+          type: single_block_half
+          default: bottom
+        shape:
+          type: stairs_shape
+          default: straight
+        waterlogged:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/stairs"
+              textures:
+                bottom: "mydeco:block/magic_planks"
+                top: "mydeco:block/magic_planks"
+                side: "mydeco:block/magic_planks"
+      variants:
+        waterlogged=true:
+          settings:
+            fluid_state: water
+    settings:
+      hardness: 2.0
+      burnable: true
+      tags:
+        - minecraft:mineable/axe
+
+# =============================================================================
+# 二、物品 - 方块物品
+# =============================================================================
+items:
+  mydeco:magic_log_item:
+    material: stick
+    data:
+      item_name: "<!i><#B8860B>幻彩原木"
+    behavior:
+      type: block_item
+      block: mydeco:magic_log
+    settings:
+      fuel_time: 300
+      tags:
+        - mydeco:magic_logs
+
+  mydeco:magic_planks_item:
+    material: stick
+    data:
+      item_name: "<!i>幻彩木板"
+    behavior:
+      type: block_item
+      block: mydeco:magic_planks
+    settings:
+      fuel_time: 300
+      tags:
+        - minecraft:planks
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mydeco:magic_planks_from_log:
+    type: shapeless
+    category: building
+    group: planks
+    ingredients:
+      - "#mydeco:magic_logs"
+    result:
+      id: mydeco:magic_planks_item
+      count: 4
+
+  mydeco:magic_slab_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+    ingredients:
+      A: mydeco:magic_planks_item
+    result:
+      id: "mydeco:magic_slab_item"
+      count: 6
+
+  mydeco:magic_stairs_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "A  "
+      - "AA "
+      - "AAA"
+    ingredients:
+      A: mydeco:magic_planks_item
+    result:
+      id: "mydeco:magic_stairs_item"
+      count: 4
+
+# =============================================================================
+# 四、家具 - 装饰
+# =============================================================================
+furniture:
+  # 4a. 幻彩椅子
+  mydeco:magic_chair:
+    settings:
+      item: mydeco:magic_chair_item
+      sounds:
+        break: minecraft:block.wood.break
+        place: minecraft:block.wood.place
+        hit: minecraft:block.wood.hit
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: mydeco:magic_chair_item
+            scale: 1.0
+            translation: 0.5,0.3,0.5
+        hitboxes:
+          - type: shulker
+            position: 0.5,0.4,0.5
+            scale: 0.8
+            seats:
+              - "0.5,0.5,0.5"
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: furniture_item
+              item: mydeco:magic_chair_item
+
+  # 4b. 幻彩桌子
+  mydeco:magic_table:
+    settings:
+      item: mydeco:magic_table_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: mydeco:magic_table_item
+            translation: 0.5,0.5,0.5
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.2,0.5
+            width: 0.9
+            height: 0.4
+
+# =============================================================================
+# 五、物品 - 家具物品
+# =============================================================================
+items:
+  mydeco:magic_chair_item:
+    material: stick
+    data:
+      item_name: "<!i><#B8860B>幻彩椅子"
+    behavior:
+      type: furniture_item
+      furniture: mydeco:magic_chair
+
+  mydeco:magic_table_item:
+    material: stick
+    data:
+      item_name: "<!i>幻彩桌子"
+    behavior:
+      type: furniture_item
+      furniture: mydeco:magic_table
