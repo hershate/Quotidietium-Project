@@ -1,0 +1,194 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - MythicMobs联动产业链
+# =============================================================================
+# 展示CraftEngine与MythicMobs联动: 掉落/装备/技能召唤
+# 命名空间: mymm (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - MythicMobs掉落映射
+# =============================================================================
+items:
+  # 1a. 映射MythicMobs物品(需config.yml启用MythicMobs)
+  mythicmobs:kingscrown:
+    material: golden_helmet
+    data:
+      item_name: "<!i><#FFD700>国王之冠"
+      external:
+        plugin: MythicMobs
+        id: KingsCrown
+    settings:
+      tags:
+        - "mymm:mythic_items"
+
+  mythicmobs:dragon_scale:
+    material: netherite_scrap
+    data:
+      item_name: "<!i><#FF4500>龙鳞"
+      external:
+        plugin: MythicMobs
+        id: DragonScale
+    settings:
+      tags:
+        - "mymm:mythic_items"
+
+  mythicmobs:magic_essence:
+    material: blaze_powder
+    data:
+      item_name: "<!i><#AA00FF>魔法精华"
+      external:
+        plugin: MythicMobs
+        id: MagicEssence
+    settings:
+      tags:
+        - "mymm:mythic_items"
+
+# =============================================================================
+# 二、物品 - CraftEngine自定义物品(使用MM掉落物合成)
+# =============================================================================
+items:
+  mymm:dragon_armor_chestplate:
+    material: netherite_chestplate
+    custom_model_data: 29001
+    data:
+      item_name: "<!i><#FF4500>龙鳞胸甲"
+      lore:
+        - "<gray>使用MythicMobs掉落物合成"
+      attribute_modifiers:
+        - type: armor
+          amount: 10.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 4.0
+          operation: add_value
+          slot: chest
+      max_damage: 1000
+
+  mymm:dragon_scale_sword:
+    material: netherite_sword
+    custom_model_data: 29002
+    data:
+      item_name: "<!i><#FF4500>龙鳞剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 12.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 1000
+
+# =============================================================================
+# 三、配方 - 使用MM物品作原料
+# =============================================================================
+recipes:
+  mymm:dragon_armor_chestplate_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - "A A"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mythicmobs:dragon_scale"
+    result:
+      id: mymm:dragon_armor_chestplate
+      count: 1
+
+  mymm:dragon_scale_sword_recipe:
+    type: smithing_transform
+    base: "minecraft:netherite_sword"
+    addition: "mythicmobs:dragon_scale"
+    result:
+      id: mymm:dragon_scale_sword
+      count: 1
+
+  mymm:king_crown_block:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "A A"
+    ingredients:
+      A: "mythicmobs:kingscrown"
+    result:
+      id: "minecraft:gold_block"
+      count: 1
+
+# =============================================================================
+# 四、物品 - 召唤技能物品(cast_mythic_skill)
+# =============================================================================
+items:
+  mymm:lightning_wand:
+    material: stick
+    custom_model_data: 29010
+    data:
+      item_name: "<!i><#FFD700>雷电法杖"
+      lore:
+        - "<gray>右键释放闪电技能"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymm:lightning_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymm:lightning_cd"
+            time: 10s
+          - type: cast_mythic_skill
+            skill: "LightningStrike"
+            power: 1.0
+          - type: particle
+            particle: minecraft:end_rod
+            count: 10
+
+  mymm:summon_staff:
+    material: stick
+    custom_model_data: 29011
+    data:
+      item_name: "<!i><#AA00FF>召唤法杖"
+      lore:
+        - "<gray>右键召唤MythicMobs生物"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymm:summon_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymm:summon_cd"
+            time: 30s
+          - type: spawn_mythic_mob
+            mob: "TestMob"
+            level: 1.0
+            world: "<arg:player.world.name>"
+            x: "<arg:player.x>"
+            y: "<arg:player.y>"
+            z: "<arg:player.z>"
+          - type: message
+            message: "<#AA00FF>你召唤了一个 MythicMobs 生物!"
+
+# =============================================================================
+# 五、配方 - 技能物品
+# =============================================================================
+recipes:
+  mymm:lightning_wand_recipe:
+    type: smithing_transform
+    base: "minecraft:stick"
+    addition: "mythicmobs:magic_essence"
+    result:
+      id: mymm:lightning_wand
+      count: 1
+
+  mymm:summon_staff_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "  A"
+      - " B "
+      - "B  "
+    ingredients:
+      A: "mythicmobs:magic_essence"
+      B: "minecraft:stick"
+    result:
+      id: mymm:summon_staff
+      count: 1
