@@ -1,0 +1,205 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 画作与装饰产业链
+# =============================================================================
+# 展示从画作注册→画作物品→挂墙装饰→家具的完整端到端配置
+# 包含painting variants、image配置、item_frame展示
+# 命名空间: myart (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、画作 - Painting Variants
+# =============================================================================
+paintings:
+  # 1a. 风景画（大尺寸）
+  myart:landscape:
+    width: 4
+    height: 2
+    asset_id: myart:landscape
+    title: "<lang:painting.myart.landscape.title>"
+    author: "<lang:painting.myart.landscape.author>"
+    show_in_op_tab: false
+
+  # 1b. 肖像画（小尺寸）
+  myart:portrait:
+    width: 1
+    height: 2
+    asset_id: myart:portrait
+    title: "<lang:painting.myart.portrait.title>"
+    show_in_op_tab: false
+
+  # 1c. 超大壁画（管理员用品标签页）
+  myart:mural:
+    width: 3
+    height: 3
+    asset_id: myart:mural
+    title: "<lang:painting.myart.mural.title>"
+    author: "<lang:painting.myart.mural.author>"
+    show_in_op_tab: true
+
+  # 1d. 最小尺寸装饰画
+  myart:mini_art:
+    width: 1
+    height: 1
+    asset_id: myart:mini_art
+
+# =============================================================================
+# 二、物品 - 画作物品（可放置）
+# =============================================================================
+items:
+  myart:landscape_item:
+    material: painting
+    custom_model_data: 18001
+    data:
+      item_name: "<!i><#DEB887>风景画 - 山水之间"
+      painting_variant: myart:landscape
+
+  myart:portrait_item:
+    material: painting
+    custom_model_data: 18002
+    data:
+      item_name: "<!i>肖像画"
+      painting_variant: myart:portrait
+
+  myart:mural_item:
+    material: painting
+    custom_model_data: 18003
+    data:
+      item_name: "<!i><#FF4500>史诗壁画"
+      painting_variant: myart:mural
+
+  myart:mini_art_item:
+    material: painting
+    custom_model_data: 18004
+    data:
+      item_name: "<!i>迷你装饰画"
+      painting_variant: myart:mini_art
+
+# =============================================================================
+# 三、家具 - 展示装饰
+# =============================================================================
+furniture:
+  # 3a. 画架（展示画作）
+  myart:easel:
+    settings:
+      item: myart:easel_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myart:mini_art_item
+            translation: 0.5,0.8,0.5
+            scale: 0.8
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.5,0.5
+            width: 0.6
+            height: 0.8
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: myart:easel_item
+
+  # 3b. 展示台（display_item_furniture）
+  myart:display_pedestal:
+    settings:
+      item: myart:pedestal_item
+    behavior:
+      type: display_item_furniture
+      variants:
+        ground:
+          item_position: 0,0.7,0
+          hitboxes: []
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: myart:pedestal_item
+
+# =============================================================================
+# 四、物品 - 家具物品
+# =============================================================================
+items:
+  myart:easel_item:
+    material: stick
+    custom_model_data: 18010
+    data:
+      item_name: "<!i><#DEB887>画架"
+    behavior:
+      type: furniture_item
+      furniture: myart:easel
+
+  myart:pedestal_item:
+    material: stone
+    custom_model_data: 18011
+    data:
+      item_name: "<!i><#A9A9A9>展示台"
+    behavior:
+      type: furniture_item
+      furniture: myart:display_pedestal
+
+# =============================================================================
+# 五、图像 - Image配置（用于画作/图标展示）
+# =============================================================================
+images:
+  myart:gallery_icon:
+    height: 32
+    ascent: 16
+    file: "myart:font/gallery/icons.png"
+    chars:
+      - "01"
+      - "23"
+
+  myart:frame_ornament:
+    height: 64
+    ascent: 32
+    file: "myart:font/gallery/frame.png"
+    grid_size: 1,4
+
+# =============================================================================
+# 六、配方
+# =============================================================================
+recipes:
+  myart:landscape_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:stick"
+      B: "minecraft:painting"
+    result:
+      id: myart:landscape_item
+      count: 1
+
+  myart:easel_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "A A"
+      - "AAA"
+      - " B "
+    ingredients:
+      A: "minecraft:stick"
+      B: "minecraft:oak_planks"
+    result:
+      id: myart:easel_item
+      count: 1
+
+  myart:pedestal_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "A A"
+      - "AAA"
+      - "ABA"
+    ingredients:
+      A: "minecraft:stone"
+      B: "minecraft:stone_slab"
+    result:
+      id: myart:pedestal_item
+      count: 1
