@@ -1,0 +1,213 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 生物战利品专业化产业链
+# =============================================================================
+# 展示针对不同生物类型的专业化战利品掉落系统
+# 包含vanilla_loots、条件检测、稀有度分层
+# 命名空间: mymob (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 生物专属掉落
+# =============================================================================
+items:
+  # 1a. 亡灵生物掉落
+  mymob:undead_ash:
+    material: gunpowder
+    custom_model_data: 27001
+    data:
+      item_name: "<!i><#808080>亡灵灰烬"
+      lore:
+        - "<gray>僵尸/骷髅的稀有掉落"
+
+  mymob:ancient_bone:
+    material: bone
+    custom_model_data: 27002
+    data:
+      item_name: "<!i><#FFD700>远古骸骨"
+      lore:
+        - "<gray>凋零骷髅的稀有掉落"
+
+  # 1b. 爬行生物掉落
+  mymob:spider_silk:
+    material: string
+    custom_model_data: 27003
+    data:
+      item_name: "<!i><#F5F5DC>蜘蛛丝"
+      lore:
+        - "<gray>洞穴蜘蛛的稀有掉落"
+
+  mymob:venom_sac:
+    material: slime_ball
+    custom_model_data: 27004
+    data:
+      item_name: "<!i><#7CFC00>毒液囊"
+      lore:
+        - "<gray>蜘蛛/洞穴蜘蛛掉落"
+
+  # 1c. 末地生物掉落
+  mymob:ender_fragment:
+    material: ender_pearl
+    custom_model_data: 27005
+    data:
+      item_name: "<!i><#AA00FF>末影碎片"
+      lore:
+        - "<gray>末影人的稀有掉落"
+
+  mymob:void_crystal:
+    material: end_crystal
+    custom_model_data: 27006
+    data:
+      item_name: "<!i><#4B0082>虚空水晶"
+      lore:
+        - "<gray>击败末影龙的奖励"
+
+  # 1d. 下界生物掉落
+  mymob:blaze_core:
+    material: blaze_rod
+    custom_model_data: 27007
+    data:
+      item_name: "<!i><#FF4500>烈焰核心"
+      lore:
+        - "<gray>烈焰人的稀有掉落"
+
+  mymob:wither_fragment:
+    material: coal
+    custom_model_data: 27008
+    data:
+      item_name: "<!i><#4B0082>凋零碎片"
+      lore:
+        - "<gray>凋零骷髅的稀有掉落"
+
+# =============================================================================
+# 二、原版战利品覆盖 - 生物
+# =============================================================================
+vanilla_loots:
+  # 2a. 僵尸额外掉落
+  mymob:zombie_special:
+    type: entity
+    target: "minecraft:zombie"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "mymob:undead_ash"
+              weight: 5
+              functions:
+                - type: set_count
+                  count: 0~1
+            - type: item
+              item: "mymob:undead_ash"
+              weight: 1
+              functions:
+                - type: set_count
+                  count: 1~2
+
+  # 2b. 蜘蛛额外掉落
+  mymob:spider_special:
+    type: entity
+    target:
+      - minecraft:spider
+      - minecraft:cave_spider
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "mymob:venom_sac"
+              weight: 3
+            - type: item
+              item: "mymob:spider_silk"
+              weight: 1
+
+  # 2c. 末影人额外掉落
+  mymob:enderman_special:
+    type: entity
+    target: "minecraft:enderman"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "mymob:ender_fragment"
+              weight: 1
+              functions:
+                - type: set_count
+                  count: 0~1
+
+  # 2d. 烈焰人掉落
+  mymob:blaze_special:
+    type: entity
+    target: "minecraft:blaze"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "mymob:blaze_core"
+              weight: 1
+
+# =============================================================================
+# 三、配方 - 掉落物合成
+# =============================================================================
+recipes:
+  mymob:undead_ash_smelt:
+    type: smelting
+    category: misc
+    experience: 0.5
+    time: 100
+    ingredient: "mymob:undead_ash"
+    result:
+      id: "minecraft:gunpowder"
+      count: 1
+
+  mymob:ancient_bone_combine:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mymob:ancient_bone"
+    result:
+      id: "minecraft:bone_block"
+      count: 1
+
+  mymob:spider_silk_combine:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+    ingredients:
+      A: "mymob:spider_silk"
+    result:
+      id: "minecraft:cobweb"
+      count: 1
+
+  mymob:ender_fragment_combine:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mymob:ender_fragment"
+    result:
+      id: "minecraft:ender_pearl"
+      count: 1
+
+  mymob:blaze_core_combine:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mymob:blaze_core"
+    result:
+      id: "minecraft:blaze_rod"
+      count: 1
