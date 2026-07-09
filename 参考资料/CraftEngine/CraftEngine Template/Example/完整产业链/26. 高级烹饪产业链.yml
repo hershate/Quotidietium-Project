@@ -1,0 +1,294 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 高级烹饪产业链
+# =============================================================================
+# 展示从食材准备→初级烹饪→高级料理→特殊效果的完整端到端配置
+# 包含cooking/consumable/food/effect的完整组合
+# 命名空间: mycook (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 基础食材
+# =============================================================================
+items:
+  # 1a. 基础食材
+  mycook:basic_dough:
+    material: wheat
+    custom_model_data: 23001
+    data:
+      item_name: "<!i><#FFF8DC>基础面团"
+
+  mycook:butter:
+    material: sugar
+    custom_model_data: 23002
+    data:
+      item_name: "<!i><#FFFACD>黄油"
+
+  mycook:cream:
+    material: sugar
+    custom_model_data: 23003
+    data:
+      item_name: "<!i><#FFF5EE>鲜奶油"
+
+  mycook:chocolate:
+    material: cocoa_beans
+    custom_model_data: 23004
+    data:
+      item_name: "<!i><#D2691E>巧克力块"
+
+  # 1b. 香料
+  mycook:cinnamon:
+    material: stick
+    custom_model_data: 23005
+    data:
+      item_name: "<!i><#8B4513>肉桂棒"
+
+  mycook:magic_salt:
+    material: sugar
+    custom_model_data: 23006
+    data:
+      item_name: "<!i><#E6E6FA>魔法盐"
+      lore:
+        - "<gray>为料理添加特殊效果"
+
+# =============================================================================
+# 二、物品 - 半成品
+# =============================================================================
+items:
+  mycook:raw_pizza:
+    material: bread
+    custom_model_data: 23010
+    data:
+      item_name: "<!i><#FFD700>生披萨"
+      lore:
+        - "<gray>需要烘烤"
+
+  mycook:raw_cake_batter:
+    material: wheat
+    custom_model_data: 23011
+    data:
+      item_name: "<!i><#FFE4B5>蛋糕糊"
+      lore:
+        - "<gray>需要烘烤"
+
+# =============================================================================
+# 三、物品 - 成品料理(带消耗组件)
+# =============================================================================
+items:
+  # 3a. 披萨(基础食物)
+  mycook:pizza:
+    material: bread
+    custom_model_data: 23020
+    data:
+      item_name: "<!i><#FFD700>披萨"
+      food:
+        nutrition: 10
+        saturation: 8.0
+        can_always_eat: true
+
+  # 3b. 巧克力蛋糕(带效果)
+  mycook:chocolate_cake:
+    material: cake
+    custom_model_data: 23021
+    data:
+      item_name: "<!i><#D2691E>巧克力蛋糕"
+      food:
+        nutrition: 6
+        saturation: 5.0
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:speed
+                  duration: 400
+                  amplifier: 1
+                - id: minecraft:haste
+                  duration: 400
+                  amplifier: 0
+
+  # 3c. 魔法烤肉(高级效果)
+  mycook:magic_roast:
+    material: cooked_beef
+    custom_model_data: 23022
+    data:
+      item_name: "<!i><#FF4500>魔法烤肉"
+      lore:
+        - "<gray>食用后大幅提升战斗力"
+      food:
+        nutrition: 12
+        saturation: 10.0
+      components:
+        minecraft:consumable:
+          consume_seconds: 3.0
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:strength
+                  duration: 1200
+                  amplifier: 1
+                - id: minecraft:regeneration
+                  duration: 300
+                  amplifier: 1
+                - id: minecraft:saturation
+                  duration: 100
+                  amplifier: 0
+
+  # 3d. 魔力糖果(多效果)
+  mycook:magic_candy:
+    material: sugar
+    custom_model_data: 23023
+    data:
+      item_name: "<!i><#FF69B4>魔力糖果"
+      food:
+        nutrition: 1
+        saturation: 0.5
+      components:
+        minecraft:consumable:
+          consume_seconds: 0.5
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:jump_boost
+                  duration: 600
+                  amplifier: 1
+                - id: minecraft:glowing
+                  duration: 200
+                  amplifier: 0
+
+# =============================================================================
+# 四、配方 - 食材+烹饪
+# =============================================================================
+recipes:
+  # 食材合成
+  mycook:basic_dough_recipe:
+    type: shapeless
+    category: food
+    ingredients:
+      - "minecraft:wheat"
+      - "minecraft:wheat"
+      - "minecraft:wheat"
+    result:
+      id: mycook:basic_dough
+      count: 2
+
+  mycook:butter_recipe:
+    type: shapeless
+    category: food
+    ingredients:
+      - "minecraft:milk_bucket"
+    result:
+      id: mycook:butter
+      count: 2
+
+  mycook:chocolate_recipe:
+    type: shapeless
+    category: food
+    ingredients:
+      - "minecraft:cocoa_beans"
+      - "minecraft:sugar"
+    result:
+      id: mycook:chocolate
+      count: 2
+
+  mycook:cinnamon_recipe:
+    type: shapeless
+    category: food
+    ingredients:
+      - "minecraft:stick"
+      - "minecraft:brown_dye"
+    result:
+      id: mycook:cinnamon
+      count: 1
+
+  # 半成品合成
+  mycook:raw_pizza_recipe:
+    type: shaped
+    category: food
+    pattern:
+      - "ABA"
+      - "CDC"
+      - "AEA"
+    ingredients:
+      A: "mycook:basic_dough"
+      B: "mycook:butter"
+      C: "mycook:chocolate"
+      D: "mycook:magic_salt"
+      E: "mycook:cinnamon"
+    result:
+      id: mycook:raw_pizza
+      count: 1
+
+  mycook:raw_cake_batter_recipe:
+    type: shaped
+    category: food
+    pattern:
+      - " A "
+      - "BCD"
+      - " E "
+    ingredients:
+      A: "mycook:chocolate"
+      B: "mycook:butter"
+      C: "mycook:basic_dough"
+      D: "mycook:cream"
+      E: "minecraft:egg"
+    result:
+      id: mycook:raw_cake_batter
+      count: 1
+
+  # 烹饪(烧炼)
+  mycook:pizza_bake:
+    type: smelting
+    category: food
+    experience: 1.0
+    time: 300
+    ingredient: "mycook:raw_pizza"
+    result:
+      id: mycook:pizza
+      count: 1
+
+  mycook:cake_bake:
+    type: smelting
+    category: food
+    experience: 1.5
+    time: 400
+    ingredient: "mycook:raw_cake_batter"
+    result:
+      id: mycook:chocolate_cake
+      count: 1
+
+  # 高级烹饪(烟熏炉更快)
+  mycook:magic_roast_smoke:
+    type: smoking
+    category: food
+    experience: 2.0
+    time: 200
+    ingredient: "minecraft:beef"
+    result:
+      id: mycook:magic_roast
+      count: 1
+
+  # 糖果
+  mycook:magic_candy_recipe:
+    type: shaped
+    category: food
+    pattern:
+      - " A "
+      - "BCB"
+      - " A "
+    ingredients:
+      A: "mycook:magic_salt"
+      B: "mycook:chocolate"
+      C: "minecraft:sugar"
+    result:
+      id: mycook:magic_candy
+      count: 4
