@@ -1,0 +1,159 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 特殊功能方块产业链
+# =============================================================================
+# 展示信标底座→酿造燃料→音符盒乐器→铁砧修复→堆肥桶配置
+# 这些是Minecraft原版机制的CraftEngine配置扩展
+# 命名空间: myspecial (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 信标底座方块
+# =============================================================================
+blocks:
+  myspecial:crystal_beacon_base:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myspecial:block/crystal_beacon_base"
+    settings:
+      hardness: 5.0
+      tags:
+        - minecraft:beacon_base_blocks
+        - minecraft:mineable/pickaxe
+
+# =============================================================================
+# 二、物品 - 特殊燃料与材料
+# =============================================================================
+items:
+  # 2a. 魔法燃料(熔炉燃料)
+  myspecial:magic_fuel:
+    material: blaze_powder
+    custom_model_data: 55001
+    data:
+      item_name: "<!i><#FF4500>魔法燃料"
+    settings:
+      fuel_time: 1600
+
+  # 2b. 信标燃料(更长燃烧)
+  myspecial:beacon_fuel:
+    material: coal_block
+    custom_model_data: 55002
+    data:
+      item_name: "<!i><#FFD700>信标燃料"
+    settings:
+      fuel_time: 8000
+
+  # 2c. 酿造燃料(酿造台燃料替代)
+  myspecial:brew_fuel:
+    material: blaze_powder
+    custom_model_data: 55003
+    data:
+      item_name: "<!i><#AA00FF>酿造燃料"
+
+  # 2d. 堆肥材料
+  myspecial:compost_material:
+    material: wheat
+    custom_model_data: 55004
+    data:
+      item_name: "<!i><#DEB887>堆肥材料"
+    settings:
+      compost_probability: 0.7
+
+  # 2e. 高级堆肥材料
+  myspecial:rich_compost:
+    material: wheat
+    custom_model_data: 55005
+    data:
+      item_name: "<!i><#FFD700>高级堆肥"
+    settings:
+      compost_probability: 1.0
+
+# =============================================================================
+# 三、物品 - 音符盒乐器(放置于音符盒下方)
+# =============================================================================
+blocks:
+  myspecial:instrument_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myspecial:block/instrument_block"
+    settings:
+      hardness: 1.0
+      instrument: bell
+      tags:
+        - minecraft:mineable/pickaxe
+
+# =============================================================================
+# 四、物品 - 铁砧修复材料
+# =============================================================================
+items:
+  myspecial:repair_ingot:
+    material: iron_ingot
+    custom_model_data: 55010
+    data:
+      item_name: "<!i><#FFD700>修复锭"
+      lore:
+        - "<gray>在铁砧中修复装备"
+    settings:
+      anvil_repair_item:
+        - target: "#myspecial:repairable"
+          amount: 100
+        - target:
+            - "minecraft:diamond_sword"
+            - "minecraft:diamond_pickaxe"
+          percent: 0.5
+
+  myspecial:repair_kits:
+    material: iron_ingot
+    custom_model_data: 55011
+    data:
+      item_name: "<!i><#55FF55>修复套件"
+    settings:
+      anvil_repair_item:
+        - target: "myspecial:repair_ingot"
+          amount: 50
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  myspecial:crystal_beacon_base_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:diamond_block"
+      B: "minecraft:nether_star"
+    result:
+      id: "myspecial:crystal_beacon_base_item"
+      count: 1
+
+  myspecial:magic_fuel_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:blaze_powder"
+      - "minecraft:coal"
+    result:
+      id: myspecial:magic_fuel
+      count: 2
+
+  myspecial:repair_ingot_recipe:
+    type: smithing_transform
+    base: "minecraft:iron_ingot"
+    addition: "minecraft:diamond"
+    result:
+      id: myspecial:repair_ingot
+      count: 1
+
+items:
+  myspecial:crystal_beacon_base_item:
+    material: diamond_block
+    data:
+      item_name: "<!i><#AA00FF>水晶信标基座"
+    behavior:
+      type: block_item
+      block: myspecial:crystal_beacon_base
