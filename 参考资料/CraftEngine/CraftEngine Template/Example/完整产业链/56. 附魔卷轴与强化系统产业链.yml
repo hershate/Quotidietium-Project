@@ -1,0 +1,219 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 附魔卷轴与强化系统产业链
+# =============================================================================
+# 展示附魔卷轴→随机附魔→强化石→强化装备完整系统
+# 包含apply_data后处理器、概率、事件效果
+# 命名空间: myench (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 附魔卷轴
+# =============================================================================
+items:
+  # 1a. 锋利卷轴(右键获得锋利附魔)
+  myench:sharpness_scroll:
+    material: paper
+    custom_model_data: 45001
+    data:
+      item_name: "<!i><#FF4500>锋利卷轴"
+      lore:
+        - "<gray>对武器使用: 获得锋利效果"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<green>在锻造台与武器结合!"
+
+  # 1b. 保护卷轴
+  myench:protection_scroll:
+    material: paper
+    custom_model_data: 45002
+    data:
+      item_name: "<!i><#00CED1>保护卷轴"
+      lore:
+        - "<gray>对盔甲使用: 获得保护效果"
+
+  # 1c. 随机附魔卷轴(随机获得一种附魔)
+  myench:random_ench_scroll:
+    material: paper
+    custom_model_data: 45003
+    data:
+      item_name: "<!i><#AA00FF>随机附魔卷轴"
+      lore:
+        - "<gray>随机获得一种附魔"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.5
+                functions:
+                  - type: message
+                    message: "<#FFD700>获得了锋利附魔!"
+              - functions:
+                  - type: message
+                    message: "<#AA00FF>获得了保护附魔!"
+
+# =============================================================================
+# 二、物品 - 强化石
+# =============================================================================
+items:
+  # 2a. 强化石(基础)
+  myench:enhance_stone:
+    material: diamond
+    custom_model_data: 45010
+    data:
+      item_name: "<!i><#FFD700>强化石"
+      lore:
+        - "<gray>用于强化装备 +1~+3"
+
+  # 2b. 高级强化石
+  myench:high_enhance_stone:
+    material: nether_star
+    custom_model_data: 45011
+    data:
+      item_name: "<!i><#FF4500>高级强化石"
+      lore:
+        - "<gray>用于强化装备 +4~+6"
+    settings:
+      glow_color: red
+
+  # 2c. 顶级强化石
+  myench:perfect_enhance_stone:
+    material: nether_star
+    custom_model_data: 45012
+    data:
+      item_name: "<!i><#AA00FF>顶级强化石"
+      lore:
+        - "<gray>用于强化装备 +7~+9"
+    settings:
+      glow_color: light_purple
+
+# =============================================================================
+# 三、物品 - 强化装备示例
+# =============================================================================
+items:
+  myench:enhanced_sword:
+    material: diamond_sword
+    custom_model_data: 45020
+    data:
+      item_name: "<!i><#FFD700>强化之剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 800
+      enchantment:
+        minecraft:sharpness: 3
+        minecraft:unbreaking: 3
+
+  myench:ancient_blade:
+    material: netherite_sword
+    custom_model_data: 45021
+    data:
+      item_name: "<!i><#FF4500>远古之刃"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 14.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 1200
+      enchantment:
+        minecraft:sharpness: 5
+        minecraft:fire_aspect: 2
+    settings:
+      glow_color: red
+
+# =============================================================================
+# 四、配方 - 卷轴+强化
+# =============================================================================
+recipes:
+  # 锋利卷轴合成
+  myench:sharpness_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:diamond_sword"
+    result:
+      id: myench:sharpness_scroll
+      count: 1
+    post_processors:
+      - type: apply_data
+        data:
+          enchantment:
+            minecraft:sharpness: 3
+
+  # 保护卷轴合成
+  myench:protection_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:diamond_chestplate"
+    result:
+      id: myench:protection_scroll
+      count: 1
+
+  # 强化石合成
+  myench:enhance_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:obsidian"
+      B: "minecraft:diamond"
+    result:
+      id: myench:enhance_stone
+      count: 1
+
+  myench:high_enhance_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "myench:enhance_stone"
+      B: "minecraft:netherite_scrap"
+    result:
+      id: myench:high_enhance_stone
+      count: 1
+
+  # 强化装备配方(smithing)
+  myench:enhanced_sword_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_sword"
+    addition: "myench:enhance_stone"
+    result:
+      id: myench:enhanced_sword
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FFD700>强化之剑"
+          attribute_modifiers:
+            - type: attack_damage
+              amount: 10.0
+              operation: add_value
+              slot: mainhand
+
+  myench:ancient_blade_recipe:
+    type: smithing_transform
+    base: "myench:enhanced_sword"
+    addition: "myench:high_enhance_stone"
+    result:
+      id: myench:ancient_blade
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: apply_data
+        data:
+          item_name: "<!i><#FF4500>远古之刃"
