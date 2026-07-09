@@ -30,18 +30,21 @@ blocks:
   # 2. 衰变方块 (decay_block)
   #    随时间增加 age，达最大值后转变为另一种方块
   #    支持计划刻 / 随机刻两种模式
+  #    必需属性: age (int)
   # ============================================================
   example:permafrost:
+    states:
+      properties:
+        age:
+          type: int                                 # 必需: 属性类型
+          range: 0~3                                # age 属性范围（必需）
+          default: 0
     behavior:
       type: decay_block
       decay_into: example:mud                    # << CHANGE THIS 完全衰变后变成的方块（默认 air）
       delay: 100~200                              # << CHANGE THIS 计划刻模式：age 增加间隔（刻）；省略则使用随机刻模式
       chance: 0.5                                 # << CHANGE THIS 每次间隔增加的概率（默认 1）
       required_light: 0                           # << CHANGE THIS 衰变所需最低光照；0 = 始终衰变（默认 0）
-    properties:
-      age:
-        range: 0~3                                # age 属性范围（必需）
-        default: 0
 
   # ============================================================
   # 3. 草方块 (grass_block)
@@ -55,18 +58,24 @@ blocks:
   # ============================================================
   # 4. 树叶方块 (leaves_block)
   #    在 PP 更新中计算到最近原木的距离，超距后枯萎
+  #    必需属性: distance (int), persistent (boolean)
+  #    可选属性: waterlogged (boolean)
   # ============================================================
   example:palm_leaves:
+    states:
+      properties:
+        distance:
+          type: int                                 # 必需: 属性类型
+          range: 1~10                               # << CHANGE THIS 最大距离（原版为 7）
+          default: 1
+        persistent:
+          type: boolean                             # 必需: 属性类型
+          default: false                            # << CHANGE THIS true = 不参与距离计算，永不枯萎
+        waterlogged:
+          type: boolean                             # 必需: 属性类型
+          default: false                            # 是否含水
     behavior:
       type: leaves_block
-    properties:
-      distance:
-        range: 1~10                               # << CHANGE THIS 最大距离（原版为 7）
-        default: 1
-      persistent:
-        default: false                            # << CHANGE THIS true = 不参与距离计算，永不枯萎
-      waterlogged:
-        default: false                            # 是否含水
 
   # ============================================================
   # 5. 简单粒子方块 (simple_particle_block)
@@ -138,8 +147,14 @@ blocks:
   # ============================================================
   # 6. 墙上火把粒子方块 (wall_torch_particle_block)
   #    粒子位置随 facing 朝向自动旋转
+  #    必需属性: facing (direction)
   # ============================================================
   example:wall_soul_lantern:
+    states:
+      properties:
+        facing:
+          type: direction                           # 必需: 属性类型 (支持 6 方向: up/down/north/south/west/east)
+          default: north                            # << CHANGE THIS 朝向，粒子位置据此旋转
     behavior:
       type: wall_torch_particle_block
       tick_interval: 6                            # << CHANGE THIS 粒子生成间隔（刻），默认 10
@@ -162,9 +177,6 @@ blocks:
           offset_y: 0.0
           offset_z: 0.3
           speed: 0.005
-    properties:
-      facing:
-        default: north                            # << CHANGE THIS 朝向 (direction)，粒子位置据此旋转
 
   # ============================================================
   # 7. 颜色提供器方块 (tint_source_block)
@@ -179,10 +191,13 @@ blocks:
   # ============================================================
   # 8. 覆雪方块 (snowy_block)
   #    自动检测上方是否有雪并设置 snowy 属性
+  #    必需属性: snowy (boolean)
   # ============================================================
   example:snowy_mycelial_soil:
+    states:
+      properties:
+        snowy:
+          type: boolean                             # 必需: 属性类型
+          default: false                            # 由行为自动更新
     behavior:
       type: snowy_block
-    properties:
-      snowy:
-        default: false                            # 由行为自动更新，detect 应设为 true 以允许自动检测
