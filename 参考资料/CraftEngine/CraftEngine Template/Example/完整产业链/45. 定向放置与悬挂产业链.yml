@@ -1,0 +1,140 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 定向放置与悬挂产业链
+# =============================================================================
+# 展示ceiling/wall/ground定向放置+悬挂系统完整配置
+# 命名空间: mydir (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 所有方块
+# =============================================================================
+blocks:
+  # 吊灯(hangable_block可悬挂地+天)
+  mydir:chandelier:
+    behavior:
+      type: hangable_block
+    settings:
+      hardness: 0.3
+
+  # 壁灯(定向附着墙面)
+  mydir:wall_lamp:
+    states:
+      properties:
+        facing:
+          type: direction
+          default: north
+    behavior:
+      type: directional_attached_block
+      attached_block_tags:
+        - minecraft:dirt
+    settings:
+      hardness: 0.3
+      luminance: 12
+
+  # 落地灯(地面放置)
+  mydir:floor_lamp:
+    behavior:
+      type: hangable_block
+    settings:
+      hardness: 0.3
+
+  # 钟乳石(hanging_block悬挂堆叠)
+  mydir:crystal_stalactite:
+    behavior:
+      type: hanging_block
+      stackable: true
+      max_height: 4
+      above_block_tags:
+        - minecraft:stone
+    settings:
+      hardness: 1.0
+
+  # 墙上画框(定向附着)
+  mydir:wall_frame:
+    states:
+      properties:
+        facing:
+          type: direction
+          default: north
+    behavior:
+      type: directional_attached_block
+
+# =============================================================================
+# 二、物品 - 定向放置
+# =============================================================================
+items:
+  mydir:chandelier_item:
+    material: torch
+    custom_model_data: 36001
+    data:
+      item_name: "<!i><#FFD700>吊灯"
+    behavior:
+      type: ceiling_block_item
+      block: mydir:chandelier
+
+  mydir:wall_lamp_item:
+    material: torch
+    custom_model_data: 36002
+    data:
+      item_name: "<!i><#DEB887>壁灯"
+    behavior:
+      type: wall_block_item
+      block: mydir:wall_lamp
+
+  mydir:floor_lamp_item:
+    material: torch
+    custom_model_data: 36003
+    data:
+      item_name: "<!i><#DEB887>落地灯"
+    behavior:
+      type: ground_block_item
+      block: mydir:floor_lamp
+
+  mydir:crystal_stalactite_item:
+    material: amethyst_shard
+    custom_model_data: 36010
+    data:
+      item_name: "<!i><#AA00FF>水晶吊坠"
+    behavior:
+      type: ceiling_block_item
+      block: mydir:crystal_stalactite
+
+  mydir:wall_frame_item:
+    material: stick
+    custom_model_data: 36011
+    data:
+      item_name: "<!i><#DEB887>墙上画框"
+    behavior:
+      type: wall_block_item
+      block: mydir:wall_frame
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mydir:chandelier_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:iron_nugget"
+      B: "minecraft:torch"
+    result:
+      id: mydir:chandelier_item
+      count: 1
+
+  mydir:wall_lamp_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - " B "
+    ingredients:
+      A: "minecraft:torch"
+      B: "minecraft:iron_nugget"
+    result:
+      id: mydir:wall_lamp_item
+      count: 1
