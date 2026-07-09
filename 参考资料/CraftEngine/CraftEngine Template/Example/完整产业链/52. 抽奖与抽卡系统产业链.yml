@@ -1,0 +1,231 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 抽奖与抽卡系统产业链
+# =============================================================================
+# 展示抽奖箱→多级稀有度→保底机制的完整抽卡系统
+# 包含if_else嵌套、概率控制、clear_item消耗、粒子特效
+# 命名空间: mygacha (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 抽奖代币
+# =============================================================================
+items:
+  mygacha:gacha_token:
+    material: sunflower
+    custom_model_data: 41001
+    data:
+      item_name: "<!i><#FFD700>抽奖代币"
+      lore:
+        - "<gray>右键抽奖机进行抽奖"
+    settings:
+      tags:
+        - "mygacha:tokens"
+
+  mygacha:premium_token:
+    material: sunfower
+    custom_model_data: 41002
+    data:
+      item_name: "<!i><#FF4500>高级抽奖代币"
+      lore:
+        - "<gray>高级抽奖专用"
+    settings:
+      tags:
+        - "mygacha:tokens"
+
+# =============================================================================
+# 二、物品 - 抽奖奖品(多级稀有度)
+# =============================================================================
+items:
+  # N(普通) - 60%
+  mygacha:common_reward:
+    material: stone
+    custom_model_data: 41010
+    data:
+      item_name: "<!i><white>普通奖品"
+      lore:
+        - "<gray>参与奖"
+
+  # R(稀有) - 25%
+  mygacha:rare_reward:
+    material: iron_ingot
+    custom_model_data: 41011
+    data:
+      item_name: "<!i><#55FF55>稀有奖品"
+    settings:
+      glow_color: green
+
+  # SR(超稀有) - 10%
+  mygacha:super_rare_reward:
+    material: gold_ingot
+    custom_model_data: 41012
+    data:
+      item_name: "<!i><#FFD700>超稀有奖品"
+    settings:
+      glow_color: gold
+
+  # SSR(传说) - 4%
+  mygacha:ssr_reward:
+    material: diamond
+    custom_model_data: 41013
+    data:
+      item_name: "<!i><#FF4500>传说奖品"
+    settings:
+      glow_color: red
+
+  # UR(限定) - 1%
+  mygacha:ur_reward:
+    material: nether_star
+    custom_model_data: 41014
+    data:
+      item_name: "<!i><#AA00FF>限定奖品"
+    settings:
+      glow_color: light_purple
+
+# =============================================================================
+# 三、抽奖机(右键消耗代币抽奖)
+# =============================================================================
+items:
+  mygacha:gacha_machine:
+    material: beacon
+    custom_model_data: 41020
+    data:
+      item_name: "<!i><#FFD700>抽奖机"
+      lore:
+        - "<gray>消耗1枚代币抽奖一次"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mygacha:gacha_cd"
+        functions:
+          - type: set_cooldown
+            id: "mygacha:gacha_cd"
+            time: 1s
+          - type: if_else
+            rules:
+              # UR 1%
+              - conditions:
+                  - type: random
+                    value: 0.01
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> mygacha:ur_reward 1"
+                  - type: message
+                    message: "<#AA00FF>传说! 你获得了限定奖品!"
+                  - type: particle
+                    particle: minecraft:dust_color_transition
+                    count: 50
+                    from: "170,0,255"
+                    to: "255,0,255"
+                    scale: 2.0
+                  - type: play_sound
+                    sound: minecraft:entity.wither.spawn
+                    volume: 2.0
+              # SSR 4%
+              - conditions:
+                  - type: random
+                    value: 0.04
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> mygacha:ssr_reward 1"
+                  - type: message
+                    message: "<#FF4500>传说! 获得传说奖品!"
+                  - type: particle
+                    particle: minecraft:end_rod
+                    count: 30
+              # SR 10%
+              - conditions:
+                  - type: random
+                    value: 0.10
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> mygacha:super_rare_reward 1"
+                  - type: message
+                    message: "<#FFD700>超稀有! 获得超稀有奖品!"
+              # R 25%
+              - conditions:
+                  - type: random
+                    value: 0.25
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> mygacha:rare_reward 1"
+              # N 60%(默认)
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> mygacha:common_reward 1"
+          - type: clear_item
+            id: "mygacha:gacha_token"
+            count: 1
+
+# =============================================================================
+# 四、十连抽(批量抽奖)
+# =============================================================================
+items:
+  mygacha:gacha_machine_10:
+    material: beacon
+    custom_model_data: 41021
+    data:
+      item_name: "<!i><#FFD700>十连抽奖机"
+      lore:
+        - "<gray>消耗10枚代币十连抽"
+    events:
+      - on: right_click
+        functions:
+          - type: run
+            delay: 0
+            functions:
+              - type: command
+                command: "give <arg:player.name> mygacha:common_reward 6"
+              - type: command
+                command: "give <arg:player.name> mygacha:rare_reward 3"
+              - type: command
+                command: "give <arg:player.name> mygacha:super_rare_reward 1"
+              - type: particle
+                particle: minecraft:firework
+                count: 30
+          - type: clear_item
+            id: "mygacha:gacha_token"
+            count: 10
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  mygacha:gacha_token_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:gold_nugget"
+      - "minecraft:paper"
+    result:
+      id: mygacha:gacha_token
+      count: 1
+
+  mygacha:premium_token_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mygacha:gacha_token"
+      B: "minecraft:diamond"
+    result:
+      id: mygacha:premium_token
+      count: 1
+
+  mygacha:gacha_machine_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "CCC"
+    ingredients:
+      A: "minecraft:gold_ingot"
+      B: "minecraft:beacon"
+      C: "minecraft:obsidian"
+    result:
+      id: mygacha:gacha_machine
+      count: 1
