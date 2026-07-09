@@ -1,0 +1,164 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 多格方块与建筑结构产业链
+# =============================================================================
+# 展示double_high_block+multi_high_block完整建筑结构配置
+# 命名空间: mymulti (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 2格高结构
+# =============================================================================
+blocks:
+  # 1a. 双层门(double_high_block)
+  mymulti:glass_door:
+    behavior:
+      type: double_high_block
+    settings:
+      hardness: 0.5
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1b. 双层花
+  mymulti:tall_flower:
+    behavior:
+      type: double_high_block
+    settings:
+      hardness: 0.0
+      push_reaction: DESTROY
+
+# =============================================================================
+# 二、方块 - 多层方块
+# =============================================================================
+blocks:
+  # 2a. 3层书架(自定义int属性)
+  mymulti:tall_bookshelf:
+    states:
+      properties:
+        layer:
+          type: int
+          default: 1
+          range: 1~3
+    behavior:
+      type: multi_high_block
+      property: layer
+    settings:
+      hardness: 1.5
+      tags:
+        - minecraft:mineable/axe
+
+  # 2b. 5层旗杆
+  mymulti:flag_pole:
+    states:
+      properties:
+        height:
+          type: int
+          default: 1
+          range: 1~5
+    behavior:
+      type: multi_high_block
+      property: height
+    settings:
+      hardness: 2.0
+
+  # 2c. 2层矮柜台
+  mymulti:counter:
+    states:
+      properties:
+        level:
+          type: int
+          default: 1
+          range: 1~2
+    behavior:
+      type: multi_high_block
+      property: level
+
+# =============================================================================
+# 三、物品 - 多格放置
+# =============================================================================
+items:
+  mymulti:glass_door_item:
+    material: glass_pane
+    data:
+      item_name: "<!i><#E0FFFF>玻璃门"
+    behavior:
+      type: double_high_block_item
+      block: mymulti:glass_door
+
+  mymulti:tall_flower_item:
+    material: peony
+    data:
+      item_name: "<!i><#FF69B4>双层花"
+    behavior:
+      type: double_high_block_item
+      block: mymulti:tall_flower
+
+  mymulti:tall_bookshelf_item:
+    material: bookshelf
+    custom_model_data: 34001
+    data:
+      item_name: "<!i><#DEB887>高书架"
+    behavior:
+      type: multi_high_block_item
+      block: mymulti:tall_bookshelf
+
+  mymulti:flag_pole_item:
+    material: stick
+    custom_model_data: 34002
+    data:
+      item_name: "<!i><#FFD700>旗杆"
+    behavior:
+      type: multi_high_block_item
+      block: mymulti:flag_pole
+
+  mymulti:counter_item:
+    material: barrel
+    custom_model_data: 34003
+    data:
+      item_name: "<!i><#DEB887>柜台"
+    behavior:
+      type: multi_high_block_item
+      block: mymulti:counter
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mymulti:glass_door_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AA"
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "minecraft:glass_pane"
+    result:
+      id: mymulti:glass_door_item
+      count: 3
+
+  mymulti:tall_bookshelf_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:bookshelf"
+    result:
+      id: mymulti:tall_bookshelf_item
+      count: 1
+
+  mymulti:flag_pole_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - " A "
+      - " B "
+    ingredients:
+      A: "minecraft:stick"
+      B: "minecraft:white_wool"
+    result:
+      id: mymulti:flag_pole_item
+      count: 1
