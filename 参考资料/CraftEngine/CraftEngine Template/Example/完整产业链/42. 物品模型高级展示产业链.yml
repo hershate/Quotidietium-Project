@@ -1,0 +1,220 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物品模型高级展示产业链
+# =============================================================================
+# 展示所有高级物品模型类型的完整端到端配置
+# 包含composite/condition/range_dispatch/select/special/legacy_model
+# 命名空间: mymodel (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 复合模型(composite)
+# =============================================================================
+items:
+  mymodel:layered_sword:
+    material: diamond_sword
+    custom_model_data: 33001
+    data:
+      item_name: "<!i><#FF8C00>分层剑"
+    model:
+      type: minecraft:composite
+      models:
+        - type: minecraft:model
+          path: "mymodel:item/sword_blade"
+        - type: minecraft:model
+          path: "mymodel:item/sword_glow"
+
+# =============================================================================
+# 二、物品 - 条件模型(condition)
+# =============================================================================
+items:
+  # 2a. broken条件(耐久将耗尽时)
+  mymodel:ancient_sword:
+    material: diamond_sword
+    custom_model_data: 33002
+    data:
+      item_name: "<!i>远古之剑"
+      max_damage: 100
+    model:
+      type: minecraft:condition
+      property: "minecraft:broken"
+      on_false:
+        type: minecraft:model
+        path: "mymodel:item/ancient_sword"
+      on_true:
+        type: minecraft:model
+        path: "mymodel:item/ancient_sword_broken"
+
+  # 2b. using_item条件(使用中)
+  mymodel:special_bow:
+    material: bow
+    custom_model_data: 33003
+    data:
+      item_name: "<!i><#FFD700>特殊弓"
+    model:
+      type: minecraft:condition
+      property: "minecraft:using_item"
+      on_false:
+        type: minecraft:model
+        path: "mymodel:item/special_bow"
+      on_true:
+        type: minecraft:model
+        path: "mymodel:item/special_bow_pulling"
+
+  # 2c. selected条件(快捷栏选中)
+  mymodel:glow_sword:
+    material: iron_sword
+    custom_model_data: 33004
+    data:
+      item_name: "<!i><#AA00FF>发光剑"
+    model:
+      type: minecraft:condition
+      property: "minecraft:selected"
+      on_false:
+        type: minecraft:model
+        path: "mymodel:item/glow_sword"
+      on_true:
+        type: minecraft:model
+        path: "mymodel:item/glow_sword_selected"
+
+# =============================================================================
+# 三、物品 - 值调配模型(range_dispatch)
+# =============================================================================
+items:
+  # 3a. damage损伤程度(耐久变化)
+  mymodel:damage_sword:
+    material: diamond_sword
+    custom_model_data: 33010
+    data:
+      item_name: "<!i>损伤剑"
+      max_damage: 100
+    model:
+      type: minecraft:range_dispatch
+      property: "minecraft:damage"
+      normalize: true
+      fallback:
+        type: minecraft:model
+        path: "mymodel:item/damage_sword_new"
+      entries:
+        - threshold: 0.33
+          model:
+            type: minecraft:model
+            path: "mymodel:item/damage_sword_worn"
+        - threshold: 0.66
+          model:
+            type: minecraft:model
+            path: "mymodel:item/damage_sword_damaged"
+
+  # 3b. cooldown冷却程度
+  mymodel:cooldown_staff:
+    material: stick
+    custom_model_data: 33011
+    data:
+      item_name: "<!i><#AA00FF>冷却法杖"
+    model:
+      type: minecraft:range_dispatch
+      property: "minecraft:cooldown"
+      fallback:
+        type: minecraft:model
+        path: "mymodel:item/cooldown_staff_ready"
+      entries:
+        - threshold: 0.5
+          model:
+            type: minecraft:model
+            path: "mymodel:item/cooldown_staff_ready"
+        - threshold: 1.0
+          model:
+            type: minecraft:model
+            path: "mymodel:item/cooldown_staff_cooling"
+
+# =============================================================================
+# 四、物品 - 枚举模型(select)
+# =============================================================================
+items:
+  # 4a. display_context(渲染位置)
+  mymodel:display_sword:
+    material: diamond_sword
+    custom_model_data: 33020
+    data:
+      item_name: "<!i>展示剑"
+    model:
+      type: minecraft:select
+      property: "minecraft:display_context"
+      cases:
+        - when: gui
+          model:
+            type: minecraft:model
+            path: "mymodel:item/display_sword_gui"
+        - when: ground
+          model:
+            type: minecraft:model
+            path: "mymodel:item/display_sword_ground"
+        - when: thirdperson_righthand
+          model:
+            type: minecraft:model
+            path: "mymodel:item/display_sword_hand"
+      fallback:
+        type: minecraft:model
+        path: "mymodel:item/display_sword"
+
+  # 4b. charge_type(弩装填类型)
+  mymodel:ammo_crossbow:
+    material: crossbow
+    custom_model_data: 33021
+    data:
+      item_name: "<!i>弹药弩"
+    model:
+      type: minecraft:select
+      property: "minecraft:charge_type"
+      cases:
+        - when: arrow
+          model:
+            type: minecraft:model
+            path: "mymodel:item/ammo_crossbow_arrow"
+        - when: rocket
+          model:
+            type: minecraft:model
+            path: "mymodel:item/ammo_crossbow_rocket"
+
+# =============================================================================
+# 五、物品 - 特殊模型(special)
+# =============================================================================
+items:
+  # 5a. player_head(玩家头)
+  mymodel:custom_head:
+    material: player_head
+    custom_model_data: 33030
+    data:
+      item_name: "<!i><#FFD700>自定义头颅"
+    model:
+      type: minecraft:special
+      path: "mymodel:item/custom_head"
+      model:
+        type: minecraft:player_head
+
+  # 5b. shield(盾牌)
+  mymodel:custom_shield:
+    material: shield
+    custom_model_data: 33031
+    data:
+      item_name: "<!i><#FF4500>自定义盾牌"
+    model:
+      type: minecraft:special
+      path: "mymodel:item/custom_shield"
+      model:
+        type: minecraft:shield
+
+# =============================================================================
+# 六、物品 - legacy_model(旧版兼容)
+# =============================================================================
+items:
+  mymodel:legacy_sword:
+    material: diamond_sword
+    custom_model_data: 33040
+    data:
+      item_name: "<!i>旧版剑"
+    legacy_model:
+      path: "mymodel:item/legacy_sword"
+      overrides:
+        - path: "mymodel:item/legacy_sword_broken"
+          predicate:
+            broken: 1
