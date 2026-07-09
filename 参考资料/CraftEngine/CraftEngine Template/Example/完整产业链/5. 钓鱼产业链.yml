@@ -1,0 +1,172 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 钓鱼产业链
+# =============================================================================
+# 展示从钓鱼竿→鱼类→烹饪→特殊战利品的完整端到端配置
+# 命名空间: myfish (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 钓鱼竿
+# =============================================================================
+items:
+  myfish:magic_fishing_rod:
+    material: fishing_rod
+    custom_model_data: 5001
+    item_model: "myfish:magic_fishing_rod"
+    data:
+      item_name: "<!i><#00CED1>魔法钓鱼竿"
+      lore:
+        - "<gray>有概率钓到稀有物品"
+      max_damage: 300
+      attribute_modifiers:
+        - type: luck
+          amount: 1.0
+          operation: add_value
+          slot: any
+      enchantment:
+        minecraft:luck_of_the_sea: 3
+        minecraft:lure: 2
+        minecraft:unbreaking: 2
+    settings:
+      repairable:
+        anvil_repair: true
+        crafting_table: false
+        anvil_combine: true
+    model:
+      type: minecraft:condition
+      property: "minecraft:fishing_rod/cast"
+      on_false:
+        type: minecraft:model
+        path: "myfish:item/magic_fishing_rod"
+      on_true:
+        type: minecraft:model
+        path: "myfish:item/magic_fishing_rod_cast"
+
+# =============================================================================
+# 二、物品 - 鱼类
+# =============================================================================
+items:
+  # 2a. 彩虹鲑鱼
+  myfish:rainbow_salmon:
+    material: salmon
+    custom_model_data: 5010
+    data:
+      item_name: "<!i><#FF69B4>彩虹鲑鱼"
+      lore:
+        - "<gray>散发着七彩光泽的鱼"
+    settings:
+      food:
+        nutrition: 2
+        saturation: 1.0
+
+  # 2b. 月光鳕鱼
+  myfish:moonlight_cod:
+    material: cod
+    custom_model_data: 5011
+    data:
+      item_name: "<!i><#E6E6FA>月光鳕鱼"
+      lore:
+        - "<gray>夜晚捕获的稀有鳕鱼"
+    settings:
+      food:
+        nutrition: 2
+        saturation: 1.0
+
+  # 2c. 魔法河豚 (带效果)
+  myfish:magic_pufferfish:
+    material: pufferfish
+    custom_model_data: 5012
+    data:
+      item_name: "<!i><#FFD700>魔法河豚"
+      lore:
+        - "<gray>食用后获得水下呼吸"
+      components:
+      minecraft:consumable:
+        consume_seconds: 2.0
+        animation: eat
+        on_consume_effects:
+          - type: minecraft:apply_effects
+            effects:
+              - id: minecraft:water_breathing
+                duration: 600
+                amplifier: 0
+              - id: minecraft:nausea
+                duration: 100
+                amplifier: 0
+
+# =============================================================================
+# 三、配方 - 烹饪
+# =============================================================================
+recipes:
+  myfish:cooked_rainbow_salmon:
+    type: smelting
+    category: food
+    experience: 0.7
+    time: 200
+    ingredient: "myfish:rainbow_salmon"
+    result:
+      id: "myfish:cooked_rainbow_salmon"
+      count: 1
+
+  myfish:cooked_moonlight_cod:
+    type: smelting
+    category: food
+    experience: 0.5
+    time: 200
+    ingredient: "myfish:moonlight_cod"
+    result:
+      id: "myfish:cooked_moonlight_cod"
+      count: 1
+
+# =============================================================================
+# 四、物品 - 熟鱼
+# =============================================================================
+items:
+  myfish:cooked_rainbow_salmon:
+    material: cooked_salmon
+    custom_model_data: 5020
+    data:
+      item_name: "<!i><#FF69B4>烤彩虹鲑鱼"
+      lore:
+        - "<gray>恢复大量饱食度"
+      food:
+        nutrition: 8
+        saturation: 7.0
+        can_always_eat: true
+
+  myfish:cooked_moonlight_cod:
+    material: cooked_cod
+    custom_model_data: 5021
+    data:
+      item_name: "<!i><#E6E6FA>烤月光鳕鱼"
+      food:
+        nutrition: 6
+        saturation: 5.0
+
+# =============================================================================
+# 五、原版战利品覆盖 - 钓鱼
+# =============================================================================
+vanilla_loots:
+  myfish:fishing_rewards:
+    type: entity
+    target: "minecraft:fishing_bobber"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfish:rainbow_salmon"
+              weight: 30
+            - type: item
+              item: "myfish:moonlight_cod"
+              weight: 30
+            - type: item
+              item: "myfish:magic_pufferfish"
+              weight: 10
+            - type: item
+              item: "mymagic:arcane_crystal"
+              weight: 5
+            - type: item
+              item: "minecraft:enchanted_book"
+              weight: 15
