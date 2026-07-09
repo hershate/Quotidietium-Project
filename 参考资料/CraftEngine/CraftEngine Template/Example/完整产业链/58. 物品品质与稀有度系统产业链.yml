@@ -1,0 +1,191 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物品品质与稀有度系统产业链
+# =============================================================================
+# 展示从普通→稀有→史诗→传说→神话5阶品质装备系统
+# 包含品质等级、发光效果、属性缩放、视觉差异
+# 命名空间: myquality (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、全局变量 - 品质前缀
+# =============================================================================
+global_variables:
+  myquality:common_tag: "<!i><white>[普通]</white>"
+  myquality:uncommon_tag: "<!i><green>[优秀]</green>"
+  myquality:rare_tag: "<!i><#55FF55>[稀有]</#55FF55>"
+  myquality:epic_tag: "<!i><#AA00FF>[史诗]</#AA00FF>"
+  myquality:legendary_tag: "<!i><#FF4500>[传说]</#FF4500>"
+  myquality:mythic_tag: "<!i><#FFD700>[神话]</#FFD700>"
+
+# =============================================================================
+# 二、物品 - 5阶品质武器
+# =============================================================================
+items:
+  # 2a. 普通品质(T1)
+  myquality:common_sword:
+    material: wooden_sword
+    custom_model_data: 47001
+    data:
+      item_name: "<!i><global:myquality:common_tag><#FFFFFF>普通之剑"
+      lore:
+        - "<gray>一把普通的剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 4.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 200
+
+  # 2b. 优秀品质(T2)
+  myquality:uncommon_sword:
+    material: stone_sword
+    custom_model_data: 47002
+    data:
+      item_name: "<!i><global:myquality:uncommon_tag><#55FF55>优秀之剑"
+      lore:
+        - "<green>品质: 优秀"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 6.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 350
+
+  # 2c. 稀有品质(T3)
+  myquality:rare_sword:
+    material: iron_sword
+    custom_model_data: 47003
+    data:
+      item_name: "<!i><global:myquality:rare_tag><#55FF55>稀有之剑"
+      lore:
+        - "<#55FF55>品质: 稀有"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+    settings:
+      glow_color: green
+
+  # 2d. 史诗品质(T4)
+  myquality:epic_sword:
+    material: diamond_sword
+    custom_model_data: 47004
+    data:
+      item_name: "<!i><global:myquality:epic_tag><#AA00FF>史诗之剑"
+      lore:
+        - "<#AA00FF>品质: 史诗"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.6
+          operation: add_value
+          slot: mainhand
+      max_damage: 700
+      enchantment:
+        minecraft:sharpness: 2
+    settings:
+      glow_color: light_purple
+
+  # 2e. 传说品质(T5)
+  myquality:legendary_sword:
+    material: diamond_sword
+    custom_model_data: 47005
+    data:
+      item_name: "<!i><global:myquality:legendary_tag><#FF4500>传说之剑"
+      lore:
+        - "<#FF4500>品质: 传说"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 13.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.8
+          operation: add_value
+          slot: mainhand
+      max_damage: 1000
+      enchantment:
+        minecraft:sharpness: 4
+        minecraft:unbreaking: 3
+    settings:
+      glow_color: red
+
+  # 2f. 神话品质(T6)
+  myquality:mythic_sword:
+    material: netherite_sword
+    custom_model_data: 47006
+    data:
+      item_name: "<!i><global:myquality:mythic_tag><#FFD700>神话之剑"
+      lore:
+        - "<#FFD700>品质: 神话"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 16.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 2.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 1500
+      enchantment:
+        minecraft:sharpness: 5
+        minecraft:fire_aspect: 2
+        minecraft:looting: 3
+        minecraft:unbreaking: 3
+    settings:
+      glow_color: gold
+
+# =============================================================================
+# 三、配方 - 品质升级
+# =============================================================================
+recipes:
+  myquality:upgrade_to_uncommon:
+    type: smithing_transform
+    base: "myquality:common_sword"
+    addition: "minecraft:iron_ingot"
+    result:
+      id: myquality:uncommon_sword
+      count: 1
+
+  myquality:upgrade_to_rare:
+    type: smithing_transform
+    base: "myquality:uncommon_sword"
+    addition: "minecraft:gold_ingot"
+    result:
+      id: myquality:rare_sword
+      count: 1
+
+  myquality:upgrade_to_epic:
+    type: smithing_transform
+    base: "myquality:rare_sword"
+    addition: "minecraft:diamond"
+    result:
+      id: myquality:epic_sword
+      count: 1
+
+  myquality:upgrade_to_legendary:
+    type: smithing_transform
+    base: "myquality:epic_sword"
+    addition: "minecraft:netherite_ingot"
+    result:
+      id: myquality:legendary_sword
+      count: 1
+
+  myquality:upgrade_to_mythic:
+    type: smithing_transform
+    base: "myquality:legendary_sword"
+    addition: "minecraft:nether_star"
+    result:
+      id: myquality:mythic_sword
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: apply_data
+        data:
+          item_name: "<!i><global:myquality:mythic_tag><#FFD700>神话之剑"
