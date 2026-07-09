@@ -1,0 +1,304 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 红石与机械产业链
+# =============================================================================
+# 展示从基础元件→红石机械→陷阱系统的完整端到端配置
+# 注意: 同一文件中 items/blocks/recipes 各只能出现一次(根键合并由CraftEngine处理)
+# 命名空间: myred (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 基础元件 + 红石机械 + 陷阱
+# =============================================================================
+blocks:
+  # 1a. 铜按钮 (face_attached + button 复合)
+  myred:copper_button:
+    behaviors:
+      - type: face_attached_horizontal_directional_block
+        attached_block_tags:
+          - minecraft:dirt
+      - type: button_block
+        ticks_to_stay_pressed: 40
+        can_be_activated_by_arrows: false
+        sounds:
+          on: minecraft:block.stone_button.click_on
+          off: minecraft:block.stone_button.click_off
+    settings:
+      hardness: 0.5
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1b. 铜压力板
+  myred:copper_pressure_plate:
+    behavior:
+      type: pressure_plate_block
+      sensitivity: all
+      pressed_time: 30
+      sounds:
+        on: minecraft:block.stone_pressure_plate.click_on
+        off: minecraft:block.stone_pressure_plate.click_off
+    settings:
+      hardness: 0.5
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1c. 铜门
+  myred:copper_door:
+    behavior:
+      type: door_block
+      can_open_with_hand: true
+      sounds:
+        open: minecraft:block.copper_door.open
+        close: minecraft:block.copper_door.close
+    settings:
+      hardness: 3.0
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1d. 铜活板门
+  myred:copper_trapdoor:
+    behavior:
+      type: trapdoor_block
+      can_open_with_hand: true
+      sounds:
+        open: minecraft:block.copper_trapdoor.open
+        close: minecraft:block.copper_trapdoor.close
+    settings:
+      hardness: 3.0
+
+  # 1e. 铜栅栏门
+  myred:copper_fence_gate:
+    behavior:
+      type: fence_gate_block
+      can_open_with_hand: true
+      sounds:
+        open: minecraft:block.copper_fence_gate.open
+        close: minecraft:block.copper_fence_gate.close
+
+  # 1f. 铜灯 (红石控制亮灭)
+  myred:copper_lamp:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            texture: "myred:block/copper_lamp_off"
+      variants:
+        lit=true:
+          settings:
+            luminance: 15
+    behavior:
+      type: lamp_block
+    settings:
+      hardness: 0.3
+      luminance: 0
+
+  # 1g. 可切换铜灯 (红石翻转+右键切换)
+  myred:toggleable_copper_lamp:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+        powered:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            texture: "myred:block/copper_lamp_off"
+      variants:
+        lit=true:
+          settings:
+            luminance: 15
+    behavior:
+      type: toggleable_lamp_block
+      can_open_with_hand: true
+
+  # 1h. 铜钟 (弹射物触发音效)
+  myred:copper_chime:
+    behavior:
+      type: chime_block
+      sounds:
+        chime: minecraft:block.note_block.bell
+
+  # 1i. 粘性平台 (弹跳方块)
+  myred:bouncing_platform:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myred:block/bouncing_platform"
+    behavior:
+      type: bouncing_block
+      bounce_height: 1.0
+      fall_damage_multiplier: 0.0
+      sync_player_position: true
+    settings:
+      hardness: 1.0
+      bounce_restitution: 1.0
+
+  # 1j. 下陷陷阱 (下落方块+伤害)
+  myred:falling_trap:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myred:block/falling_trap"
+    behavior:
+      type: falling_block
+      hurt_amount: 2.0
+      max_hurt: 10
+      sounds:
+        land: minecraft:block.anvil.land
+    settings:
+      hardness: 0.5
+      push_reaction: DESTROY
+
+  # 1k. 经验水晶 (灯+掉落经验 复合行为)
+  myred:experience_crystal:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            texture: "myred:block/experience_crystal"
+      variants:
+        lit=true:
+          settings:
+            luminance: 10
+    behaviors:
+      - type: lamp_block
+      - type: drop_experience_block
+        amount: 3~7
+    settings:
+      hardness: 0.2
+      luminance: 0
+
+# =============================================================================
+# 二、物品 - 所有方块物品
+# =============================================================================
+items:
+  myred:copper_button_item:
+    material: stone_button
+    data:
+      item_name: "<!i><#B87333>铜按钮"
+    behavior:
+      type: block_item
+      block: myred:copper_button
+
+  myred:copper_pressure_plate_item:
+    material: stone_pressure_plate
+    data:
+      item_name: "<!i><#B87333>铜压力板"
+    behavior:
+      type: block_item
+      block: myred:copper_pressure_plate
+
+  myred:copper_door_item:
+    material: iron_door
+    data:
+      item_name: "<!i><#B87333>铜门"
+    behavior:
+      type: double_high_block_item
+      block: myred:copper_door
+
+  myred:copper_lamp_item:
+    material: redstone_lamp
+    data:
+      item_name: "<!i><#B87333>铜灯"
+    behavior:
+      type: block_item
+      block: myred:copper_lamp
+
+  myred:bouncing_platform_item:
+    material: slime_block
+    data:
+      item_name: "<!i><#90EE90>粘性平台"
+    behavior:
+      type: block_item
+      block: myred:bouncing_platform
+
+  myred:experience_crystal_item:
+    material: amethyst_shard
+    data:
+      item_name: "<!i><#AA00FF>经验水晶"
+    behavior:
+      type: block_item
+      block: myred:experience_crystal
+
+  myred:falling_trap_item:
+    material: anvil
+    data:
+      item_name: "<!i><#8B0000>下陷陷阱"
+    behavior:
+      type: block_item
+      block: myred:falling_trap
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myred:copper_button_recipe:
+    type: shaped
+    category: redstone
+    pattern:
+      - "A"
+    ingredients:
+      A: "minecraft:copper_ingot"
+    result:
+      id: myred:copper_button_item
+      count: 1
+
+  myred:copper_pressure_plate_recipe:
+    type: shaped
+    category: redstone
+    pattern:
+      - "AA"
+    ingredients:
+      A: "minecraft:copper_ingot"
+    result:
+      id: myred:copper_pressure_plate_item
+      count: 1
+
+  myred:copper_door_recipe:
+    type: shaped
+    category: redstone
+    pattern:
+      - "AA"
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "minecraft:copper_ingot"
+    result:
+      id: myred:copper_door_item
+      count: 3
+
+  myred:bouncing_platform_recipe:
+    type: shaped
+    category: redstone
+    pattern:
+      - "AAA"
+      - "BBB"
+      - "CCC"
+    ingredients:
+      A: "minecraft:slime_ball"
+      B: "minecraft:iron_ingot"
+      C: "minecraft:stone"
+    result:
+      id: myred:bouncing_platform_item
+      count: 1
+
+  myred:experience_crystal_recipe:
+    type: smithing_transform
+    base: "minecraft:amethyst_shard"
+    addition: "minecraft:experience_bottle"
+    result:
+      id: myred:experience_crystal_item
+      count: 1
