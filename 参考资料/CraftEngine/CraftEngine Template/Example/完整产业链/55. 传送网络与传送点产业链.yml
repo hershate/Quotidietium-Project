@@ -1,0 +1,198 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 传送网络与传送点产业链
+# =============================================================================
+# 展示多传送点→传送网络→传送门家具的完整传送系统
+# 包含座椅式传送、传送卷轴、传送冷却网络
+# 命名空间: mywarp (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 传送点
+# =============================================================================
+blocks:
+  # 1a. 传送石碑(核心传送点)
+  mywarp:warp_stone:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mywarp:block/warp_stone"
+    settings:
+      hardness: -1.0
+
+  # 1b. 传送台(可交互传送)
+  mywarp:warp_plate:
+    behavior:
+      type: seat_block
+      seats:
+        - "0.5,0.5,0.5"
+
+# =============================================================================
+# 二、物品 - 传送工具
+# =============================================================================
+items:
+  # 2a. 传送石(右键打开传送菜单)
+  mywarp:warp_stone_item:
+    material: ender_eye
+    custom_model_data: 44001
+    data:
+      item_name: "<!i><#AA00FF>传送石"
+      lore:
+        - "<gray>右键打开传送菜单"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mywarp:menu_cd"
+        functions:
+          - type: set_cooldown
+            id: "mywarp:menu_cd"
+            time: 3s
+          - type: message
+            message: "<#AA00FF>=== 传送菜单 ==="
+          - type: message
+            message: "<gray>1. 主城 - /warp spawn"
+          - type: message
+            message: "<gray>2. 商店 - /warp shop"
+          - type: message
+            message: "<gray>3. 矿区 - /warp mine"
+          - type: message
+            message: "<gray>4. 副本 - /warp dungeon"
+
+  # 2b. 回城卷(传送至主城)
+  mywarp:town_scroll:
+    material: paper
+    custom_model_data: 44002
+    data:
+      item_name: "<!i><#FFD700>回城卷"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mywarp:town_cd"
+        functions:
+          - type: set_cooldown
+            id: "mywarp:town_cd"
+            time: 30s
+          - type: teleport
+            x: 0
+            y: 64
+            z: 0
+          - type: particle
+            particle: minecraft:end_rod
+            count: 20
+          - type: play_sound
+            sound: minecraft:entity.enderman.teleport
+
+  # 2c. 绑定石(绑定传送点)
+  mywarp:bind_stone:
+    material: ender_pearl
+    custom_model_data: 44003
+    data:
+      item_name: "<!i><#FFD700>绑定石"
+      lore:
+        - "<gray>绑定当前位置为传送点"
+
+  # 2d. 传送卷轴(指定坐标)
+  mywarp:warp_scroll:
+    material: paper
+    custom_model_data: 44004
+    data:
+      item_name: "<!i><#AA00FF>传送卷轴"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mywarp:warp_cd"
+        functions:
+          - type: set_cooldown
+            id: "mywarp:warp_cd"
+            time: 10s
+          - type: teleport
+            x: "<arg:block.block_x>"
+            y: "<arg:block.block_y> + 1"
+            z: "<arg:block.block_z>"
+          - type: play_totem_animation
+            item: "mywarp:warp_scroll"
+
+# =============================================================================
+# 三、家具 - 传送门
+# =============================================================================
+furniture:
+  mywarp:portal_frame:
+    settings:
+      item: mywarp:portal_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: mywarp:portal_item
+            translation: 0.5,0.5,0.5
+            scale: 1.0,2.0,0.5
+        hitboxes:
+          - type: interaction
+            position: 0.5,1.0,0.5
+            width: 0.8
+            height: 1.8
+
+items:
+  mywarp:portal_item:
+    material: end_rod
+    custom_model_data: 44010
+    data:
+      item_name: "<!i><#AA00FF>传送门"
+    behavior:
+      type: furniture_item
+      furniture: mywarp:portal_frame
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mywarp:warp_stone_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "BBB"
+    ingredients:
+      A: "minecraft:obsidian"
+      B: "minecraft:stone_bricks"
+      C: "minecraft:ender_pearl"
+    result:
+      id: mywarp:warp_stone_item
+      count: 1
+
+  mywarp:town_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:compass"
+      - "minecraft:ender_pearl"
+    result:
+      id: mywarp:town_scroll
+      count: 1
+
+  mywarp:bind_stone_recipe:
+    type: smithing_transform
+    base: "minecraft:ender_pearl"
+    addition: "minecraft:lapis_lazuli"
+    result:
+      id: mywarp:bind_stone
+      count: 1
+
+  mywarp:portal_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:obsidian"
+      B: "minecraft:ender_eye"
+      C: "minecraft:end_crystal"
+    result:
+      id: mywarp:portal_item
+      count: 1
