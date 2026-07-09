@@ -1,0 +1,185 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 战利品与宝藏产业链
+# =============================================================================
+# 展示从基础掉落→随机战利品→宝藏箱→原版覆盖的完整端到端配置
+# 命名空间: myloot (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 宝藏箱
+# =============================================================================
+blocks:
+  myloot:treasure_chest:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myloot:block/treasure_chest"
+
+# =============================================================================
+# 二、物品 - 战利品+宝藏+宝箱
+# =============================================================================
+items:
+  # ----- 1. 基础战利品 -----
+  myloot:ancient_coin:
+    material: sunflower
+    custom_model_data: 12001
+    data:
+      item_name: "<!i><#FFD700>古代钱币"
+    settings:
+      tags:
+        - "myloot:loot_items"
+
+  myloot:dragon_scale:
+    material: prismarine_shard
+    custom_model_data: 12002
+    data:
+      item_name: "<!i><#FF4500>龙鳞碎片"
+    settings:
+      tags:
+        - "myloot:loot_items"
+
+  myloot:treasure_key:
+    material: tripwire_hook
+    custom_model_data: 12003
+    data:
+      item_name: "<!i><#FFD700>宝藏钥匙"
+      lore:
+        - "<gray>用于开启埋藏的宝藏"
+
+  # ----- 2. 神秘宝箱(右键随机奖励) -----
+  myloot:mystery_box:
+    material: ender_chest
+    custom_model_data: 12010
+    data:
+      item_name: "<!i><#FFD700>神秘宝箱"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myloot:mystery_box_cd"
+        functions:
+          - type: set_cooldown
+            id: "myloot:mystery_box_cd"
+            time: 10s
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.05
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myloot:dragon_scale 1"
+                  - type: message
+                    message: "<#FF4500>传说! 你获得了龙鳞碎片!"
+              - conditions:
+                  - type: random
+                    value: 0.2
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> myloot:ancient_coin 5"
+                  - type: message
+                    message: "<#FFD700>稀有! 5枚古代钱币!"
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> myloot:ancient_coin 1"
+          - type: particle
+            particle: minecraft:end_rod
+            count: 15
+
+  # ----- 3. 宝藏箱物品(需钥匙解锁) -----
+  myloot:treasure_chest_item:
+    material: chest
+    custom_model_data: 12020
+    data:
+      item_name: "<!i><#FFD700>宝藏箱"
+    behavior:
+      type: block_item
+      block: myloot:treasure_chest
+    events:
+      - on: right_click
+        conditions:
+          - type: all_of
+            terms:
+              - type: match_item
+                id: "myloot:treasure_key"
+              - type: "!on_cooldown"
+                id: "myloot:treasure_chest_cd"
+        functions:
+          - type: set_cooldown
+            id: "myloot:treasure_chest_cd"
+            time: 3600s
+          - type: command
+            command: "give <arg:player.name> myloot:ancient_coin 10"
+          - type: command
+            command: "give <arg:player.name> myloot:dragon_scale 1"
+          - type: particle
+            particle: minecraft:dust_color_transition
+            x: "<arg:position.x> + 0.5"
+            y: "<arg:position.y> + 1"
+            z: "<arg:position.z> + 0.5"
+            count: 30
+            from: "255,215,0"
+            to: "255,69,0"
+            scale: 2.0
+
+# =============================================================================
+# 三、原版战利品覆盖
+# =============================================================================
+vanilla_loots:
+  myloot:zombie_extra_drops:
+    type: entity
+    target: "minecraft:zombie"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myloot:ancient_coin"
+              weight: 3
+              functions:
+                - type: set_count
+                  count: 0~2
+
+  myloot:grass_extra_drops:
+    type: block
+    target: "minecraft:grass"
+    override: false
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myloot:ancient_coin"
+              weight: 1
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myloot:treasure_key_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A"
+      - "B "
+    ingredients:
+      A: "minecraft:iron_nugget"
+      B: "minecraft:gold_nugget"
+    result:
+      id: myloot:treasure_key
+      count: 1
+
+  myloot:mystery_box_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:ender_chest"
+    result:
+      id: myloot:mystery_box
+      count: 1
