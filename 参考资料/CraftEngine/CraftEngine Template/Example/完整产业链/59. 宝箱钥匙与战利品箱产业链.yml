@@ -1,0 +1,207 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 宝箱钥匙与战利品箱产业链
+# =============================================================================
+# 展示多种宝箱→对应钥匙→分层战利品→稀有度的完整开箱系统
+# 包含条件检测、概率控制、特殊粒子效果、冷却
+# 命名空间: mycrate (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 钥匙系列
+# =============================================================================
+items:
+  # 1a. 铜钥匙(基础宝箱)
+  mycrate:copper_key:
+    material: tripwire_hook
+    custom_model_data: 48001
+    data:
+      item_name: "<!i><#B87333>铜钥匙"
+      lore:
+        - "<gray>用于开启普通宝箱"
+
+  # 1b. 银钥匙(稀有宝箱)
+  mycrate:silver_key:
+    material: tripwire_hook
+    custom_model_data: 48002
+    data:
+      item_name: "<!i><#C0C0C0>银钥匙"
+      lore:
+        - "<gray>用于开启稀有宝箱"
+
+  # 1c. 金钥匙(史诗宝箱)
+  mycrate:golden_key:
+    material: tripwire_hook
+    custom_model_data: 48003
+    data:
+      item_name: "<!i><#FFD700>金钥匙"
+      lore:
+        - "<gray>用于开启史诗宝箱"
+    settings:
+      glow_color: gold
+
+  # 1d. 水晶钥匙(传说宝箱)
+  mycrate:crystal_key:
+    material: tripwire_hook
+    custom_model_data: 48004
+    data:
+      item_name: "<!i><#AA00FF>水晶钥匙"
+      lore:
+        - "<gray>用于开启传说宝箱"
+    settings:
+      glow_color: light_purple
+
+# =============================================================================
+# 二、物品 - 宝箱系列
+# =============================================================================
+items:
+  # 2a. 普通宝箱(需铜钥匙)
+  mycrate:common_crate:
+    material: chest
+    custom_model_data: 48010
+    data:
+      item_name: "<!i><#B87333>普通宝箱"
+    events:
+      - on: right_click
+        conditions:
+          - type: all_of
+            terms:
+              - type: match_item
+                id: "mycrate:copper_key"
+              - type: "!on_cooldown"
+                id: "mycrate:common_cd"
+        functions:
+          - type: set_cooldown
+            id: "mycrate:common_cd"
+            time: 5s
+          - type: clear_item
+            id: "mycrate:copper_key"
+            count: 1
+          - type: command
+            command: "give <arg:player.name> minecraft:stone 5"
+          - type: command
+            command: "give <arg:player.name> minecraft:coal 3"
+          - type: particle
+            particle: minecraft:smoke
+            count: 10
+
+  # 2b. 稀有宝箱(需银钥匙)
+  mycrate:rare_crate:
+    material: chest
+    custom_model_data: 48011
+    data:
+      item_name: "<!i><#C0C0C0>稀有宝箱"
+    events:
+      - on: right_click
+        conditions:
+          - type: all_of
+            terms:
+              - type: match_item
+                id: "mycrate:silver_key"
+              - type: "!on_cooldown"
+                id: "mycrate:rare_cd"
+        functions:
+          - type: set_cooldown
+            id: "mycrate:rare_cd"
+            time: 5s
+          - type: clear_item
+            id: "mycrate:silver_key"
+            count: 1
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.2
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> minecraft:diamond 1"
+                  - type: message
+                    message: "<#FFD700>稀有! 获得了钻石!"
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> minecraft:iron_ingot 5"
+          - type: particle
+            particle: minecraft:end_rod
+            count: 15
+
+  # 2c. 史诗宝箱(需金钥匙)
+  mycrate:epic_crate:
+    material: ender_chest
+    custom_model_data: 48012
+    data:
+      item_name: "<!i><#FFD700>史诗宝箱"
+    events:
+      - on: right_click
+        conditions:
+          - type: all_of
+            terms:
+              - type: match_item
+                id: "mycrate:golden_key"
+              - type: "!on_cooldown"
+                id: "mycrate:epic_cd"
+        functions:
+          - type: set_cooldown
+            id: "mycrate:epic_cd"
+            time: 5s
+          - type: clear_item
+            id: "mycrate:golden_key"
+            count: 1
+          - type: command
+            command: "give <arg:player.name> minecraft:diamond 3"
+          - type: command
+            command: "give <arg:player.name> minecraft:golden_apple 1"
+          - type: particle
+            particle: minecraft:dust_color_transition
+            count: 20
+            from: "255,215,0"
+            to: "255,69,0"
+
+# =============================================================================
+# 三、配方 - 钥匙合成
+# =============================================================================
+recipes:
+  mycrate:copper_key_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A"
+      - "B "
+    ingredients:
+      A: "minecraft:copper_ingot"
+      B: "minecraft:iron_nugget"
+    result:
+      id: mycrate:copper_key
+      count: 1
+
+  mycrate:silver_key_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A"
+      - "B "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:gold_nugget"
+    result:
+      id: mycrate:silver_key
+      count: 1
+
+  mycrate:golden_key_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A"
+      - "B "
+    ingredients:
+      A: "minecraft:gold_ingot"
+      B: "minecraft:diamond"
+    result:
+      id: mycrate:golden_key
+      count: 1
+
+  mycrate:crystal_key_recipe:
+    type: smithing_transform
+    base: "mycrate:golden_key"
+    addition: "minecraft:diamond"
+    result:
+      id: mycrate:crystal_key
+      count: 1
