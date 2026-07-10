@@ -34,11 +34,6 @@ items:
     data:
       item_name: "<!i><#FF00FF>灵魂石"
 
-  myboss:dragon_horn:
-    material: goat_horn
-    custom_model_data: 20003
-    data:
-      item_name: "<!i><#FF4500>龙之号角"
 
   # ----- 2. 召唤祭坛物品 -----
   myboss:summon_altar_item:
