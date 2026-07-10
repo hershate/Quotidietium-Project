@@ -54,23 +54,6 @@ items:
 # =============================================================================
 # 二、配方 - 宝石合成
 # =============================================================================
-recipes:
-  mymagic:arcane_crystal_recipe:
-    type: shaped
-    category: misc
-    pattern:
-      - "AA"
-      - "AA"
-    ingredients:
-      A: "mymagic:arcane_shard"
-    result:
-      id: mymagic:arcane_crystal
-      count: 1
-
-# =============================================================================
-# 三、物品 - 魔法武器
-# =============================================================================
-items:
   # 3a. 奥术法杖 (右键施法)
   mymagic:arcane_staff:
     material: stick
@@ -182,29 +165,6 @@ items:
 # =============================================================================
 # 四、配方 - 武器合成
 # =============================================================================
-recipes:
-  mymagic:arcane_staff_recipe:
-    type: smithing_transform
-    template_type: "mymagic:arcane_upgrade"
-    base: "minecraft:stick"
-    addition: "mymagic:arcane_crystal"
-    merge_components: true
-    result:
-      id: mymagic:arcane_staff
-      count: 1
-
-  mymagic:flame_blade_recipe:
-    type: smithing_transform
-    base: "minecraft:diamond_sword"
-    addition: "mymagic:fire_gem"
-    result:
-      id: mymagic:flame_blade
-      count: 1
-
-# =============================================================================
-# 五、事件 - 任务/奖励系统
-# =============================================================================
-items:
   # 5a. 魔法宝箱 (右键打开获得随机奖励)
   mymagic:magic_chest:
     material: ender_chest
@@ -245,13 +205,6 @@ items:
 # =============================================================================
 # 六、装备 - 法师套
 # =============================================================================
-equipments:
-  mymagic:mage_armor:
-    type: component
-    humanoid: "mymagic:entity/equipment/humanoid/mage"
-    humanoid_leggings: "mymagic:entity/equipment/humanoid_leggings/mage"
-
-items:
   mymagic:mage_hood:
     material: diamond_helmet
     custom_model_data: 4040
@@ -281,3 +234,46 @@ items:
     settings:
       equipment:
         asset_id: "mymagic:mage_armor"
+recipes:
+  mymagic:arcane_crystal_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mymagic:arcane_shard"
+    result:
+      id: mymagic:arcane_crystal
+      count: 1
+
+# =============================================================================
+# 三、物品 - 魔法武器
+# =============================================================================
+  mymagic:arcane_staff_recipe:
+    type: smithing_transform
+    template_type: "mymagic:arcane_upgrade"
+    base: "minecraft:stick"
+    addition: "mymagic:arcane_crystal"
+    merge_components: true
+    result:
+      id: mymagic:arcane_staff
+      count: 1
+
+  mymagic:flame_blade_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_sword"
+    addition: "mymagic:fire_gem"
+    result:
+      id: mymagic:flame_blade
+      count: 1
+
+# =============================================================================
+# 五、事件 - 任务/奖励系统
+# =============================================================================
+equipments:
+  mymagic:mage_armor:
+    type: component
+    humanoid: "mymagic:entity/equipment/humanoid/mage"
+    humanoid_leggings: "mymagic:entity/equipment/humanoid_leggings/mage"
+
