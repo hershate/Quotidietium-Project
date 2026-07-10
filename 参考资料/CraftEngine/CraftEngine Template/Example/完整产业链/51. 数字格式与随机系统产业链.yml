@@ -70,7 +70,6 @@ items:
 # =============================================================================
 # 四、物品 - 事件中使用数字格式
 # =============================================================================
-items:
   mynum:random_staff:
     material: stick
     custom_model_data: 40010
@@ -101,6 +100,32 @@ items:
 # =============================================================================
 # 五、配方 - 随机数量输出
 # =============================================================================
+  mynum:lucky_coin:
+    material: sunflower
+    custom_model_data: 40020
+    data:
+      item_name: "<!i><#FFD700>幸运币"
+    events:
+      - on: right_click
+        conditions:
+          - type: random
+            value: 0.3
+        functions:
+          - type: drop_loot
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      item: "mynum:random_gem"
+                      functions:
+                        - type: set_count
+                          count:
+                            type: log_normal
+                            min: 1
+                            max: 20
+                            mean: 5
+                            std_dev: 3
 recipes:
   mynum:random_gem_recipe:
     type: smelting
@@ -132,30 +157,3 @@ recipes:
 # =============================================================================
 # 六、函数中使用数字格式
 # =============================================================================
-items:
-  mynum:lucky_coin:
-    material: sunflower
-    custom_model_data: 40020
-    data:
-      item_name: "<!i><#FFD700>幸运币"
-    events:
-      - on: right_click
-        conditions:
-          - type: random
-            value: 0.3
-        functions:
-          - type: drop_loot
-            loot:
-              pools:
-                - rolls: 1
-                  entries:
-                    - type: item
-                      item: "mynum:random_gem"
-                      functions:
-                        - type: set_count
-                          count:
-                            type: log_normal
-                            min: 1
-                            max: 20
-                            mean: 5
-                            std_dev: 3
