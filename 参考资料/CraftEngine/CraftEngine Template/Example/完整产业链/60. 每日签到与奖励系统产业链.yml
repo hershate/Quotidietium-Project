@@ -96,20 +96,9 @@ items:
         - "<gray>30天每日额外奖励"
 
 # =============================================================================
-# 三、物品 - 每日任务
+# 三、物品 - 任务凭证
 # =============================================================================
-  # 3a. 每日任务卷轴(显示当日任务)
-  mydaily:quest_scroll:
-    material: paper
-    custom_model_data: 49020
-    data:
-      item_name: "<!i><#FFD700>每日任务"
-      lore:
-        - "<gray>挖掘50个石头"
-        - "<gray>击败10只僵尸"
-        - "<gray>采集20个小麦"
-
-  # 3b. 任务完成凭证
+  # 3a. 任务完成凭证
   mydaily:quest_complete_token:
     material: sunflower
     custom_model_data: 49021
