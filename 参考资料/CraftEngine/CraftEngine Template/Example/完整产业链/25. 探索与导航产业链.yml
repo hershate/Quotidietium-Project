@@ -79,12 +79,6 @@ items:
           - type: play_totem_animation
             item: "mymap:recall_scroll"
 
-  mymap:teleport_compass:
-    material: compass
-    custom_model_data: 22011
-    data:
-      item_name: "<!i><#FFD700>传送罗盘"
-
   # ----- 3. 探索工具 -----
   mymap:explorer_staff:
     material: stick
