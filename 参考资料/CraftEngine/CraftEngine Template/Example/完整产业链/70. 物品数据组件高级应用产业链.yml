@@ -142,13 +142,23 @@ items:
     data:
       item_name: "<!i><#FFD700>配方解锁书"
       lore:
-        - "<gray>右键解锁特殊配方"
+        - "<gray>右键查看可解锁的配方"
+    events:
+      - on: right_click
+        functions:
+          - type: toast
+            toast: "配方书已打开!"
+            icon: minecraft:knowledge_book
+          - type: play_sound
+            sound: minecraft:item.book.page_turn
 
   mycomp:written_guide:
     material: written_book
     custom_model_data: 59051
     data:
       item_name: "<!i><#FFD700>服务器指南"
+      lore:
+        - "<gray>包含服务器的基础信息"
 
   # -- 七、物品模型映射 --
   mycomp:model_mapped_item:
