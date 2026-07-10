@@ -24,6 +24,20 @@ blocks:
 # =============================================================================
 # 二、物品 - 特殊燃料与材料
 # =============================================================================
+  myspecial:instrument_block:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myspecial:block/instrument_block"
+    settings:
+      hardness: 1.0
+      instrument: bell
+      tags:
+        - minecraft:mineable/pickaxe
+
+# =============================================================================
+# 四、物品 - 铁砧修复材料
+# =============================================================================
 items:
   # 2a. 魔法燃料(熔炉燃料)
   myspecial:magic_fuel:
@@ -71,22 +85,6 @@ items:
 # =============================================================================
 # 三、物品 - 音符盒乐器(放置于音符盒下方)
 # =============================================================================
-blocks:
-  myspecial:instrument_block:
-    state:
-      auto_state: note_block
-      model:
-        texture: "myspecial:block/instrument_block"
-    settings:
-      hardness: 1.0
-      instrument: bell
-      tags:
-        - minecraft:mineable/pickaxe
-
-# =============================================================================
-# 四、物品 - 铁砧修复材料
-# =============================================================================
-items:
   myspecial:repair_ingot:
     material: iron_ingot
     custom_model_data: 55010
@@ -116,6 +114,13 @@ items:
 # =============================================================================
 # 五、配方
 # =============================================================================
+  myspecial:crystal_beacon_base_item:
+    material: diamond_block
+    data:
+      item_name: "<!i><#AA00FF>水晶信标基座"
+    behavior:
+      type: block_item
+      block: myspecial:crystal_beacon_base
 recipes:
   myspecial:crystal_beacon_base_recipe:
     type: shaped
@@ -149,11 +154,3 @@ recipes:
       id: myspecial:repair_ingot
       count: 1
 
-items:
-  myspecial:crystal_beacon_base_item:
-    material: diamond_block
-    data:
-      item_name: "<!i><#AA00FF>水晶信标基座"
-    behavior:
-      type: block_item
-      block: myspecial:crystal_beacon_base
