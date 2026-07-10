@@ -190,7 +190,7 @@ items:
       equipment:
         asset_id: "mymagic:mage_armor"
 
-  # -- 魔法宝箱 --
+  # -- 魔法宝箱(一次性开启) --
   mymagic:magic_chest:
     material: ender_chest
     custom_model_data: 4030
@@ -206,7 +206,7 @@ items:
         functions:
           - type: set_cooldown
             id: "mymagic:chest_cooldown"
-            time: 60s
+            time: 1s
           - type: run
             functions:
               - type: command
@@ -226,6 +226,10 @@ items:
                 fade_in: 10
                 stay: 30
                 fade_out: 10
+          # 宝箱开启后消耗自身(原配置不消耗+60s冷却=无限刷奥术水晶)
+          - type: clear_item
+            id: "mymagic:magic_chest"
+            count: 1
 
 # =============================================================================
 # 二、装备 - 法师套定义
