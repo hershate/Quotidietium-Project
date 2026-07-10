@@ -33,6 +33,17 @@ items:
       item_name: "<!i><#FF4500>火焰药箭"
       lore:
         - "<gray>命中后点燃目标"
+    events:
+      - on: attack
+        functions:
+          - type: damage
+            amount: 4.0
+          - type: particle
+            particle: minecraft:flame
+            count: 10
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
 
   # 1c. 冰冻药箭(减速+伤害)
   myarrow:frost_arrow:
@@ -58,6 +69,19 @@ items:
       item_name: "<!i><#AA00FF>传送药箭"
       lore:
         - "<gray>命中后传送目标"
+    events:
+      - on: attack
+        functions:
+          - type: teleport
+            x: "<arg:position.x> + 5"
+            y: "<arg:position.y>"
+            z: "<arg:position.z>"
+            pitch: "<arg:player.pitch>"
+            yaw: "<arg:player.yaw>"
+          - type: particle
+            particle: minecraft:portal
+            count: 20
+            speed: 0.5
 
   # 1e. 爆炸药箭(AOE伤害)
   myarrow:explosive_arrow:
@@ -67,6 +91,18 @@ items:
       item_name: "<!i><#FF0000>爆炸药箭"
       lore:
         - "<gray>命中后产生爆炸"
+    events:
+      - on: attack
+        functions:
+          - type: damage
+            amount: 8.0
+          - type: particle
+            particle: minecraft:explosion
+            count: 15
+            speed: 0.3
+          - type: play_sound
+            sound: minecraft:entity.generic.explode
+            pitch: 1.5
 
 # =============================================================================
 # 二、物品 - 特殊投射物
@@ -136,6 +172,7 @@ items:
       allowed_projectiles:
         - "myarrow:explosive_arrow"
         - "myarrow:flame_arrow"
+        - "myarrow:teleport_arrow"
 
 # =============================================================================
 # 四、配方
@@ -170,6 +207,26 @@ recipes:
     result:
       id: myarrow:frost_arrow
       count: 4
+
+  myarrow:teleport_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:ender_pearl"
+    result:
+      id: myarrow:teleport_arrow
+      count: 4
+
+  myarrow:explosive_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:tnt"
+    result:
+      id: myarrow:explosive_arrow
+      count: 2
 
   myarrow:magic_missile_recipe:
     type: smithing_transform
