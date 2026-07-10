@@ -33,14 +33,6 @@ items:
       lore:
         - "<gray>解除物品的灵魂绑定"
 
-  # 1c. 绑定保险石(死亡保留)
-  mysoul:bind_protect_stone:
-    material: prismarine_crystals
-    custom_model_data: 50003
-    data:
-      item_name: "<!i><#00CED1>绑定保险石"
-      lore:
-        - "<gray>绑定死亡保留概率"
 
 # =============================================================================
 # 二、物品 - 绑定装备
