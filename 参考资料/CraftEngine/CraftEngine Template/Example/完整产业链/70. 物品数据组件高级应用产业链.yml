@@ -24,14 +24,15 @@ items:
       item_name: "<!i><#FF8C00>矿工之锤"
       lore:
         - "<gray>仅可挖掘矿石"
-      can_break:
-        blocks:
-          - "minecraft:stone"
-          - "minecraft:deepslate"
-          - "#minecraft:coal_ores"
-          - "#minecraft:iron_ores"
-          - "#minecraft:gold_ores"
-          - "#minecraft:diamond_ores"
+      components:
+        minecraft:can_break:
+          blocks:
+            - "minecraft:stone"
+            - "minecraft:deepslate"
+            - "#minecraft:coal_ores"
+            - "#minecraft:iron_ores"
+            - "#minecraft:gold_ores"
+            - "#minecraft:diamond_ores"
       attribute_modifiers:
         - type: attack_damage
           amount: 6.0
@@ -43,15 +44,16 @@ items:
     custom_model_data: 59002
     data:
       item_name: "<!i><#55FF55>农民之锄"
-      can_break:
-        blocks:
-          - "minecraft:grass_block"
-          - "minecraft:dirt"
-          - "minecraft:farmland"
-      can_place_on:
-        blocks:
-          - "minecraft:dirt"
-          - "minecraft:grass_block"
+      components:
+        minecraft:can_break:
+          blocks:
+            - "minecraft:grass_block"
+            - "minecraft:dirt"
+            - "minecraft:farmland"
+        minecraft:can_place_on:
+          blocks:
+            - "minecraft:dirt"
+            - "minecraft:grass_block"
 
   # -- 二、盔甲纹饰 --
   mycomp:trimmed_helmet:
