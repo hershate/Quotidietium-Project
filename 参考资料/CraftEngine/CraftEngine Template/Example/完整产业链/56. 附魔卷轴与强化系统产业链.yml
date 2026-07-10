@@ -24,15 +24,6 @@ items:
           - type: message
             message: "<green>在锻造台与武器结合!"
 
-  # 1b. 保护卷轴
-  myench:protection_scroll:
-    material: paper
-    custom_model_data: 45002
-    data:
-      item_name: "<!i><#00CED1>保护卷轴"
-      lore:
-        - "<gray>对盔甲使用: 获得保护效果"
-
   # 1c. 随机附魔卷轴(随机获得一种附魔)
   myench:random_ench_scroll:
     material: paper
@@ -144,17 +135,6 @@ recipes:
         data:
           enchantment:
             minecraft:sharpness: 3
-
-  # 保护卷轴合成
-  myench:protection_scroll_recipe:
-    type: shapeless
-    category: misc
-    ingredients:
-      - "minecraft:paper"
-      - "minecraft:diamond_chestplate"
-    result:
-      id: myench:protection_scroll
-      count: 1
 
   # 强化石合成
   myench:enhance_stone_recipe:
