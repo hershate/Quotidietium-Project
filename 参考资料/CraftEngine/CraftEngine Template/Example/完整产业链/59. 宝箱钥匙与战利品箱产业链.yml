@@ -64,8 +64,9 @@ items:
         conditions:
           - type: all_of
             terms:
-              - type: match_item
+              - type: inventory_has_item
                 id: "mycrate:copper_key"
+                count: 1
               - type: "!on_cooldown"
                 id: "mycrate:common_cd"
         functions:
@@ -94,8 +95,9 @@ items:
         conditions:
           - type: all_of
             terms:
-              - type: match_item
+              - type: inventory_has_item
                 id: "mycrate:silver_key"
+                count: 1
               - type: "!on_cooldown"
                 id: "mycrate:rare_cd"
         functions:
@@ -133,8 +135,9 @@ items:
         conditions:
           - type: all_of
             terms:
-              - type: match_item
+              - type: inventory_has_item
                 id: "mycrate:golden_key"
+                count: 1
               - type: "!on_cooldown"
                 id: "mycrate:epic_cd"
         functions:
