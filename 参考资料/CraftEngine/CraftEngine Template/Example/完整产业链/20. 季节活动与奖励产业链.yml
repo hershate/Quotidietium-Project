@@ -88,12 +88,16 @@ items:
         functions:
           - type: set_cooldown
             id: "myevent:gift_cd"
-            time: 300s
+            time: 1s
           - type: command
             command: "give <arg:player.name> myevent:event_token 3"
           - type: particle
             particle: minecraft:heart
             count: 10
+          # 礼物开启后消耗自身(原配置不消耗+300s冷却=无限刷代币)
+          - type: clear_item
+            id: "myevent:christmas_gift"
+            count: 1
 
   # ----- 3. 限定物品 -----
   myevent:festival_firework:
