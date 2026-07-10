@@ -116,6 +116,9 @@ items:
       item_name: "<!i><#AA00FF>经验加成卷轴"
     events:
       - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myquest:exp_boost"
         functions:
           - type: set_cooldown
             id: "myquest:exp_boost"
