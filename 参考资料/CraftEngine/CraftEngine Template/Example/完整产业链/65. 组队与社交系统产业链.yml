@@ -46,17 +46,6 @@ items:
           - type: play_sound
             sound: minecraft:entity.experience_orb.pickup
 
-  # 1c. 结婚戒指(结婚系统)
-  mysocial:wedding_ring:
-    material: gold_nugget
-    custom_model_data: 54003
-    data:
-      item_name: "<!i><#FFD700>结婚戒指"
-      lore:
-        - "<gray>对玩家右键求婚"
-    settings:
-      glow_color: gold
-
 # =============================================================================
 # 二、物品 - 社交互动物品
 # =============================================================================
@@ -137,20 +126,6 @@ recipes:
     result:
       id: mysocial:friend_card
       count: 4
-
-  mysocial:wedding_ring_recipe:
-    type: shaped
-    category: misc
-    pattern:
-      - " A "
-      - "ABA"
-      - " A "
-    ingredients:
-      A: "minecraft:gold_nugget"
-      B: "minecraft:diamond"
-    result:
-      id: mysocial:wedding_ring
-      count: 1
 
   mysocial:thanks_card_recipe:
     type: shapeless
