@@ -77,6 +77,45 @@ items:
 # =============================================================================
 # 三、家具 - 展示装饰
 # =============================================================================
+  myart:easel_item:
+    material: stick
+    custom_model_data: 18010
+    data:
+      item_name: "<!i><#DEB887>画架"
+    behavior:
+      type: furniture_item
+      furniture: myart:easel
+
+  myart:pedestal_item:
+    material: stone
+    custom_model_data: 18011
+    data:
+      item_name: "<!i><#A9A9A9>展示台"
+    behavior:
+      type: furniture_item
+      furniture: myart:display_pedestal
+
+# =============================================================================
+# 五、图像 - Image配置（用于画作/图标展示）
+# =============================================================================
+images:
+  myart:gallery_icon:
+    height: 32
+    ascent: 16
+    file: "myart:font/gallery/icons.png"
+    chars:
+      - "01"
+      - "23"
+
+  myart:frame_ornament:
+    height: 64
+    ascent: 32
+    file: "myart:font/gallery/frame.png"
+    grid_size: 1,4
+
+# =============================================================================
+# 六、配方
+# =============================================================================
 furniture:
   # 3a. 画架（展示画作）
   myart:easel:
@@ -120,46 +159,6 @@ furniture:
 
 # =============================================================================
 # 四、物品 - 家具物品
-# =============================================================================
-items:
-  myart:easel_item:
-    material: stick
-    custom_model_data: 18010
-    data:
-      item_name: "<!i><#DEB887>画架"
-    behavior:
-      type: furniture_item
-      furniture: myart:easel
-
-  myart:pedestal_item:
-    material: stone
-    custom_model_data: 18011
-    data:
-      item_name: "<!i><#A9A9A9>展示台"
-    behavior:
-      type: furniture_item
-      furniture: myart:display_pedestal
-
-# =============================================================================
-# 五、图像 - Image配置（用于画作/图标展示）
-# =============================================================================
-images:
-  myart:gallery_icon:
-    height: 32
-    ascent: 16
-    file: "myart:font/gallery/icons.png"
-    chars:
-      - "01"
-      - "23"
-
-  myart:frame_ornament:
-    height: 64
-    ascent: 32
-    file: "myart:font/gallery/frame.png"
-    grid_size: 1,4
-
-# =============================================================================
-# 六、配方
 # =============================================================================
 recipes:
   myart:landscape_recipe:
