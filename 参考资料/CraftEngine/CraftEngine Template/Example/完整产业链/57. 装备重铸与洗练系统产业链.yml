@@ -22,18 +22,6 @@ items:
       tags:
         - "myreforge:refining_materials"
 
-  # 1b. 洗练石(重新随机属性)
-  myreforge:reroll_stone:
-    material: prismarine_crystals
-    custom_model_data: 46002
-    data:
-      item_name: "<!i><#00CED1>洗练石"
-      lore:
-        - "<gray>随机改变装备属性值"
-    settings:
-      tags:
-        - "myreforge:refining_materials"
-
   # 1c. 品质石(提升装备品质)
   myreforge:quality_stone:
     material: nether_star
@@ -130,22 +118,6 @@ recipes:
     result:
       id: myreforge:reforge_stone
       count: 3
-
-  # 洗练石合成
-  myreforge:reroll_stone_recipe:
-    type: shaped
-    category: misc
-    pattern:
-      - "ABA"
-      - "BCB"
-      - "ABA"
-    ingredients:
-      A: "minecraft:prismarine_shard"
-      B: "minecraft:lapis_lazuli"
-      C: "minecraft:diamond"
-    result:
-      id: myreforge:reroll_stone
-      count: 1
 
   # 品质石合成
   myreforge:quality_stone_recipe:
