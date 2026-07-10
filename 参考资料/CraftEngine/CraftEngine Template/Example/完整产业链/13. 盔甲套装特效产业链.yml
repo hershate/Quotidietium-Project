@@ -30,10 +30,7 @@ items:
       tags:
         - "myset:spirit_ingots"
 
-# =============================================================================
-# 二、装备 - 灵魂套装定义
-# =============================================================================
-  # 3a. 灵魂头盔
+  # -- 二、灵魂盔甲部件 --
   myset:spirit_helmet:
     material: diamond_helmet
     custom_model_data: 11010
@@ -53,7 +50,6 @@ items:
       equipment:
         asset_id: "myset:spirit_armor"
 
-  # 3b. 灵魂胸甲(受伤触发效果)
   myset:spirit_chestplate:
     material: diamond_chestplate
     custom_model_data: 11011
@@ -91,7 +87,6 @@ items:
                     count: 5
                     target: self
 
-  # 3c. 灵魂护腿(移动加速)
   myset:spirit_leggings:
     material: diamond_leggings
     custom_model_data: 11012
@@ -111,7 +106,6 @@ items:
       equipment:
         asset_id: "myset:spirit_armor"
 
-  # 3d. 灵魂靴子(加速效果)
   myset:spirit_boots:
     material: diamond_boots
     custom_model_data: 11013
@@ -131,9 +125,7 @@ items:
       equipment:
         asset_id: "myset:spirit_armor"
 
-# =============================================================================
-# 四、物品 - 套装光环(手持粒子效果)
-# =============================================================================
+  # -- 三、套装光环 --
   myset:spirit_totem:
     material: totem_of_undying
     custom_model_data: 11020
@@ -173,7 +165,7 @@ items:
             target: self
 
 # =============================================================================
-# 五、配方
+# 四、装备 - 灵魂套装定义
 # =============================================================================
 equipments:
   myset:spirit_armor:
@@ -182,7 +174,7 @@ equipments:
     humanoid_leggings: "myset:entity/equipment/humanoid_leggings/spirit"
 
 # =============================================================================
-# 三、物品 - 灵魂盔甲(全4件+事件)
+# 五、配方
 # =============================================================================
 recipes:
   myset:spirit_ingot_recipe:
