@@ -75,6 +75,17 @@ items:
 # =============================================================================
 # 三、家具 - 液面家具
 # =============================================================================
+  myliq:floating_lantern_item:
+    material: lantern
+    data:
+      item_name: "<!i><#FFD700>水上灯笼"
+    behavior:
+      type: liquid_collision_furniture_item
+      furniture: myliq:floating_lantern
+
+# =============================================================================
+# 四、配方
+# =============================================================================
 furniture:
   # 3a. 水上灯笼(液面家具)
   myliq:floating_lantern:
@@ -92,18 +103,6 @@ furniture:
             width: 0.4
             height: 0.2
 
-items:
-  myliq:floating_lantern_item:
-    material: lantern
-    data:
-      item_name: "<!i><#FFD700>水上灯笼"
-    behavior:
-      type: liquid_collision_furniture_item
-      furniture: myliq:floating_lantern
-
-# =============================================================================
-# 四、配方
-# =============================================================================
 recipes:
   myliq:duckweed_recipe:
     type: shapeless
