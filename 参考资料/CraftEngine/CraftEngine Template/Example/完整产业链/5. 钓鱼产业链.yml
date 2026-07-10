@@ -45,7 +45,6 @@ items:
 # =============================================================================
 # 二、物品 - 鱼类
 # =============================================================================
-items:
   # 2a. 彩虹鲑鱼
   myfish:rainbow_salmon:
     material: salmon
@@ -97,31 +96,6 @@ items:
 # =============================================================================
 # 三、配方 - 烹饪
 # =============================================================================
-recipes:
-  myfish:cooked_rainbow_salmon:
-    type: smelting
-    category: food
-    experience: 0.7
-    time: 200
-    ingredient: "myfish:rainbow_salmon"
-    result:
-      id: "myfish:cooked_rainbow_salmon"
-      count: 1
-
-  myfish:cooked_moonlight_cod:
-    type: smelting
-    category: food
-    experience: 0.5
-    time: 200
-    ingredient: "myfish:moonlight_cod"
-    result:
-      id: "myfish:cooked_moonlight_cod"
-      count: 1
-
-# =============================================================================
-# 四、物品 - 熟鱼
-# =============================================================================
-items:
   myfish:cooked_rainbow_salmon:
     material: cooked_salmon
     custom_model_data: 5020
@@ -170,3 +144,27 @@ vanilla_loots:
             - type: item
               item: "minecraft:enchanted_book"
               weight: 15
+recipes:
+  myfish:cooked_rainbow_salmon:
+    type: smelting
+    category: food
+    experience: 0.7
+    time: 200
+    ingredient: "myfish:rainbow_salmon"
+    result:
+      id: "myfish:cooked_rainbow_salmon"
+      count: 1
+
+  myfish:cooked_moonlight_cod:
+    type: smelting
+    category: food
+    experience: 0.5
+    time: 200
+    ingredient: "myfish:moonlight_cod"
+    result:
+      id: "myfish:cooked_moonlight_cod"
+      count: 1
+
+# =============================================================================
+# 四、物品 - 熟鱼
+# =============================================================================
