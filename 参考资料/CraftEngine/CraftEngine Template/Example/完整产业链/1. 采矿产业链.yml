@@ -104,6 +104,93 @@ items:
 # =============================================================================
 # 三、配方 - 冶炼 + 合成
 # =============================================================================
+  # 6a. 秘银头盔
+  mymining:mythril_helmet:
+    material: iron_helmet
+    custom_model_data: 2020
+    item_model: "mymining:mythril_helmet"
+    data:
+      item_name: "<!i><#FF8C00>秘银头盔"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: head
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6b. 秘银胸甲
+  mymining:mythril_chestplate:
+    material: iron_chestplate
+    custom_model_data: 2021
+    item_model: "mymining:mythril_chestplate"
+    data:
+      item_name: "<!i><#FF8C00>秘银胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 8.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: chest
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6c. 秘银护腿
+  mymining:mythril_leggings:
+    material: iron_leggings
+    custom_model_data: 2022
+    item_model: "mymining:mythril_leggings"
+    data:
+      item_name: "<!i><#FF8C00>秘银护腿"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          slot: legs
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: legs
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+  # 6d. 秘银靴子
+  mymining:mythril_boots:
+    material: iron_boots
+    custom_model_data: 2023
+    item_model: "mymining:mythril_boots"
+    data:
+      item_name: "<!i><#FF8C00>秘银靴子"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: feet
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: feet
+      max_damage: 400
+    settings:
+      equipment:
+        asset_id: "mymining:mythril_armor"
+
+# =============================================================================
+# 七、配方 - 盔甲合成
+# =============================================================================
 recipes:
   # 3a. 粗矿 → 锭 (熔炉)
   mymining:mythril_ingot_from_smelting:
@@ -318,101 +405,6 @@ recipes:
 # =============================================================================
 # 六、装备 - 全套盔甲
 # =============================================================================
-equipments:
-  mymining:mythril_armor:
-    type: component
-    humanoid: "mymining:entity/equipment/humanoid/mythril"
-    humanoid_leggings: "mymining:entity/equipment/humanoid_leggings/mythril"
-
-items:
-  # 6a. 秘银头盔
-  mymining:mythril_helmet:
-    material: iron_helmet
-    custom_model_data: 2020
-    item_model: "mymining:mythril_helmet"
-    data:
-      item_name: "<!i><#FF8C00>秘银头盔"
-      attribute_modifiers:
-        - type: armor
-          amount: 3.0
-          operation: add_value
-          slot: head
-        - type: armor_toughness
-          amount: 2.0
-          operation: add_value
-          slot: head
-      max_damage: 400
-    settings:
-      equipment:
-        asset_id: "mymining:mythril_armor"
-
-  # 6b. 秘银胸甲
-  mymining:mythril_chestplate:
-    material: iron_chestplate
-    custom_model_data: 2021
-    item_model: "mymining:mythril_chestplate"
-    data:
-      item_name: "<!i><#FF8C00>秘银胸甲"
-      attribute_modifiers:
-        - type: armor
-          amount: 8.0
-          operation: add_value
-          slot: chest
-        - type: armor_toughness
-          amount: 2.0
-          operation: add_value
-          slot: chest
-      max_damage: 400
-    settings:
-      equipment:
-        asset_id: "mymining:mythril_armor"
-
-  # 6c. 秘银护腿
-  mymining:mythril_leggings:
-    material: iron_leggings
-    custom_model_data: 2022
-    item_model: "mymining:mythril_leggings"
-    data:
-      item_name: "<!i><#FF8C00>秘银护腿"
-      attribute_modifiers:
-        - type: armor
-          amount: 6.0
-          operation: add_value
-          slot: legs
-        - type: armor_toughness
-          amount: 2.0
-          operation: add_value
-          slot: legs
-      max_damage: 400
-    settings:
-      equipment:
-        asset_id: "mymining:mythril_armor"
-
-  # 6d. 秘银靴子
-  mymining:mythril_boots:
-    material: iron_boots
-    custom_model_data: 2023
-    item_model: "mymining:mythril_boots"
-    data:
-      item_name: "<!i><#FF8C00>秘银靴子"
-      attribute_modifiers:
-        - type: armor
-          amount: 3.0
-          operation: add_value
-          slot: feet
-        - type: armor_toughness
-          amount: 2.0
-          operation: add_value
-          slot: feet
-      max_damage: 400
-    settings:
-      equipment:
-        asset_id: "mymining:mythril_armor"
-
-# =============================================================================
-# 七、配方 - 盔甲合成
-# =============================================================================
-recipes:
   mymining:mythril_helmet_recipe:
     type: shaped
     category: equipment
@@ -443,6 +435,12 @@ recipes:
 # =============================================================================
 # 八、战利品表模板 (复用)
 # =============================================================================
+equipments:
+  mymining:mythril_armor:
+    type: component
+    humanoid: "mymining:entity/equipment/humanoid/mythril"
+    humanoid_leggings: "mymining:entity/equipment/humanoid_leggings/mythril"
+
 templates:
   mymining:loot/deepslate_ore:
     loot:
