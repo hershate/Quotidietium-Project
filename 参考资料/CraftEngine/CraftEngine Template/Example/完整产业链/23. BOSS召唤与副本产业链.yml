@@ -16,34 +16,7 @@ blocks:
         texture: "myboss:block/summon_altar"
     settings:
       hardness: -1.0
-
-# =============================================================================
-# 二、物品 - 材料 + 祭坛 + 掉落 + 奖励箱
-# =============================================================================
-items:
-  # ----- 1. 召唤材料 -----
-  myboss:soul_shard:
-    material: amethyst_shard
-    custom_model_data: 20001
-    data:
-      item_name: "<!i><#AA00FF>灵魂碎片"
-
-  myboss:soul_stone:
-    material: nether_star
-    custom_model_data: 20002
-    data:
-      item_name: "<!i><#FF00FF>灵魂石"
-
-
-  # ----- 2. 召唤祭坛物品 -----
-  myboss:summon_altar_item:
-    material: beacon
-    custom_model_data: 20010
-    data:
-      item_name: "<!i><#AA00FF>召唤祭坛"
-    behavior:
-      type: block_item
-      block: myboss:summon_altar
+    # 召唤事件需配置在方块部分(玩家放置祭坛后,手持灵魂石右键祭坛触发)
     events:
       - on: right_click
         conditions:
@@ -79,6 +52,34 @@ items:
             subtitle: "<gray>远古BOSS已被唤醒!"
           - type: command
             command: "say BOSS出现在 <arg:position.x> <arg:position.y> <arg:position.z>!"
+
+# =============================================================================
+# 二、物品 - 材料 + 祭坛 + 掉落 + 奖励箱
+# =============================================================================
+items:
+  # ----- 1. 召唤材料 -----
+  myboss:soul_shard:
+    material: amethyst_shard
+    custom_model_data: 20001
+    data:
+      item_name: "<!i><#AA00FF>灵魂碎片"
+
+  myboss:soul_stone:
+    material: nether_star
+    custom_model_data: 20002
+    data:
+      item_name: "<!i><#FF00FF>灵魂石"
+
+
+  # ----- 2. 召唤祭坛物品 -----
+  myboss:summon_altar_item:
+    material: beacon
+    custom_model_data: 20010
+    data:
+      item_name: "<!i><#AA00FF>召唤祭坛"
+    behavior:
+      type: block_item
+      block: myboss:summon_altar
 
   # ----- 3. BOSS掉落物 -----
   myboss:boss_core:
