@@ -41,12 +41,6 @@ items:
           - type: command
             command: "effect give <arg:entity.uuid> minecraft:regeneration 5 2"
 
-  mypet:capture_ball:
-    material: snowball
-    custom_model_data: 25003
-    data:
-      item_name: "<!i><#FF4500>捕捉球"
-
   # ----- 2. 管理工具 -----
   mypet:animal_bell:
     material: bell
