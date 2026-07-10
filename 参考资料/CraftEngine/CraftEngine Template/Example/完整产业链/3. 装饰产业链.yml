@@ -242,6 +242,21 @@ items:
 # =============================================================================
 # 三、配方
 # =============================================================================
+  mydeco:magic_chair_item:
+    material: stick
+    data:
+      item_name: "<!i><#B8860B>幻彩椅子"
+    behavior:
+      type: furniture_item
+      furniture: mydeco:magic_chair
+
+  mydeco:magic_table_item:
+    material: stick
+    data:
+      item_name: "<!i>幻彩桌子"
+    behavior:
+      type: furniture_item
+      furniture: mydeco:magic_table
 recipes:
   mydeco:magic_planks_from_log:
     type: shapeless
@@ -328,19 +343,3 @@ furniture:
 # =============================================================================
 # 五、物品 - 家具物品
 # =============================================================================
-items:
-  mydeco:magic_chair_item:
-    material: stick
-    data:
-      item_name: "<!i><#B8860B>幻彩椅子"
-    behavior:
-      type: furniture_item
-      furniture: mydeco:magic_chair
-
-  mydeco:magic_table_item:
-    material: stick
-    data:
-      item_name: "<!i>幻彩桌子"
-    behavior:
-      type: furniture_item
-      furniture: mydeco:magic_table
