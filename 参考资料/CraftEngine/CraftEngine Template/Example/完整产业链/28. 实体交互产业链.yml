@@ -1,0 +1,186 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 实体交互产业链
+# =============================================================================
+# 展示从驯服工具→生物管理→掉落收集→宠物物品的完整配置
+# 命名空间: mypet (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 驯服/交互/管理/掉落/宠物
+# =============================================================================
+items:
+  # ----- 1. 驯服工具 -----
+  mypet:taming_amulet:
+    material: chain
+    custom_model_data: 25001
+    data:
+      item_name: "<!i><#FFD700>驯服项链"
+    events:
+      - on: right_click
+        conditions:
+          - type: match_entity
+            id: "minecraft:wolf"
+        functions:
+          - type: particle
+            particle: minecraft:heart
+            count: 10
+
+  mypet:healing_staff:
+    material: stick
+    custom_model_data: 25002
+    data:
+      item_name: "<!i><#00FF00>治疗之杖"
+    events:
+      - on: right_click
+        conditions:
+          - type: match_entity
+            id:
+              - "minecraft:wolf"
+              - "minecraft:cat"
+        functions:
+          - type: command
+            command: "effect give <arg:entity.uuid> minecraft:regeneration 5 2"
+
+  mypet:capture_ball:
+    material: snowball
+    custom_model_data: 25003
+    data:
+      item_name: "<!i><#FF4500>捕捉球"
+
+  # ----- 2. 管理工具 -----
+  mypet:animal_bell:
+    material: bell
+    custom_model_data: 25010
+    data:
+      item_name: "<!i><#FFD700>动物铃铛"
+    events:
+      - on: right_click
+        functions:
+          - type: play_sound
+            sound: minecraft:block.bell.use
+
+  mypet:mob_marker:
+    material: compass
+    custom_model_data: 25011
+    data:
+      item_name: "<!i><#FF69B4>生物标记器"
+    events:
+      - on: right_click
+        conditions:
+          - type: match_entity
+            id: "minecraft:.*"
+            regex: true
+        functions:
+          - type: particle
+            particle: minecraft:glow
+            count: 5
+
+  mypet:transform_wand:
+    material: stick
+    custom_model_data: 25012
+    data:
+      item_name: "<!i><#AA00FF>转换魔杖"
+    events:
+      - on: right_click
+        conditions:
+          - type: match_entity
+            id: "minecraft:zombie"
+        functions:
+          - type: remove_entity
+          - type: command
+            command: "summon minecraft:drowned <arg:position.x> <arg:position.y> <arg:position.z>"
+
+  # ----- 3. 掉落收集 -----
+  mypet:soul_catcher:
+    material: glass_bottle
+    custom_model_data: 25020
+    data:
+      item_name: "<!i><#4B0082>灵魂捕手"
+    events:
+      - on: attack
+        conditions:
+          - type: match_entity
+            id: "minecraft:phantom"
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.2
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> mypet:phantom_soul 1"
+
+  mypet:phantom_soul:
+    material: phantom_membrane
+    custom_model_data: 25021
+    data:
+      item_name: "<!i><#00CED1>幻翼之魂"
+
+  # ----- 4. 宠物物品 -----
+  mypet:pet_bell:
+    material: bell
+    custom_model_data: 25030
+    data:
+      item_name: "<!i><#FFD700>宠物铃铛"
+    events:
+      - on: right_click
+        functions:
+          - type: swing_hand
+          - type: play_sound
+            sound: minecraft:entity.arrow.shake
+
+  mypet:pet_treat:
+    material: cookie
+    custom_model_data: 25031
+    data:
+      item_name: "<!i><#FF69B4>宠物零食"
+      food:
+        nutrition: 1
+        saturation: 0.5
+
+# =============================================================================
+# 二、配方
+# =============================================================================
+recipes:
+  mypet:taming_amulet_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:lead"
+    result:
+      id: mypet:taming_amulet
+      count: 1
+
+  mypet:healing_staff_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "  A"
+      - " B "
+      - "B  "
+    ingredients:
+      A: "minecraft:golden_apple"
+      B: "minecraft:stick"
+    result:
+      id: mypet:healing_staff
+      count: 1
+
+  mypet:pet_treat_recipe:
+    type: shaped
+    category: food
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:wheat"
+      B: "minecraft:cookie"
+    result:
+      id: mypet:pet_treat
+      count: 4
