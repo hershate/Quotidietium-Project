@@ -49,6 +49,41 @@ items:
 # =============================================================================
 # 二、方块 - 粒子效果方块
 # =============================================================================
+  myfx:magic_flame_item:
+    material: torch
+    data:
+      item_name: "<!i><#FF4500>魔法火焰"
+    behavior:
+      type: block_item
+      block: myfx:magic_flame
+
+  myfx:color_beam_item:
+    material: beacon
+    data:
+      item_name: "<!i><#FF00FF>彩色光柱"
+    behavior:
+      type: block_item
+      block: myfx:color_beam
+
+  myfx:floating_orb_item:
+    material: end_rod
+    data:
+      item_name: "<!i><#AA00FF>浮空宝珠"
+    behavior:
+      type: block_item
+      block: myfx:floating_orb
+
+  myfx:floating_sign_item:
+    material: oak_sign
+    data:
+      item_name: "<!i>浮动标牌"
+    behavior:
+      type: block_item
+      block: myfx:floating_sign
+
+# =============================================================================
+# 四、配方
+# =============================================================================
 blocks:
   # 2a. 魔法火焰 (持续粒子)
   myfx:magic_flame:
@@ -123,42 +158,6 @@ blocks:
 
 # =============================================================================
 # 三、物品 - 粒子方块物品
-# =============================================================================
-items:
-  myfx:magic_flame_item:
-    material: torch
-    data:
-      item_name: "<!i><#FF4500>魔法火焰"
-    behavior:
-      type: block_item
-      block: myfx:magic_flame
-
-  myfx:color_beam_item:
-    material: beacon
-    data:
-      item_name: "<!i><#FF00FF>彩色光柱"
-    behavior:
-      type: block_item
-      block: myfx:color_beam
-
-  myfx:floating_orb_item:
-    material: end_rod
-    data:
-      item_name: "<!i><#AA00FF>浮空宝珠"
-    behavior:
-      type: block_item
-      block: myfx:floating_orb
-
-  myfx:floating_sign_item:
-    material: oak_sign
-    data:
-      item_name: "<!i>浮动标牌"
-    behavior:
-      type: block_item
-      block: myfx:floating_sign
-
-# =============================================================================
-# 四、配方
 # =============================================================================
 recipes:
   myfx:glow_dust_recipe:
