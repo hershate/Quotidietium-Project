@@ -2,14 +2,15 @@
 # CraftEngine 完整产业链示例 - 魔法装备产业链
 # =============================================================================
 # 展示从魔法宝石 → 魔法武器/法杖 → 特殊效果的完整端到端配置
+# 包含物品事件(粒子/音效/药水)、smithing_transform配方
 # 命名空间: mymagic (请替换为实际命名空间)
 # =============================================================================
 
 # =============================================================================
-# 一、物品 - 魔法材料
+# 一、物品 - 材料 + 武器 + 法袍 + 宝箱
 # =============================================================================
 items:
-  # 1a. 基础魔法宝石
+  # -- 魔法材料 --
   mymagic:arcane_crystal:
     material: diamond
     custom_model_data: 4001
@@ -23,7 +24,6 @@ items:
       tags:
         - "mymagic:gems"
 
-  # 1b. 火焰宝石
   mymagic:fire_gem:
     material: emerald
     custom_model_data: 4002
@@ -37,7 +37,6 @@ items:
       tags:
         - "mymagic:gems"
 
-  # 1c. 冰霜宝石
   mymagic:frost_gem:
     material: diamond
     custom_model_data: 4003
@@ -51,10 +50,7 @@ items:
       tags:
         - "mymagic:gems"
 
-# =============================================================================
-# 二、配方 - 宝石合成
-# =============================================================================
-  # 3a. 奥术法杖 (右键施法)
+  # -- 魔法武器 --
   mymagic:arcane_staff:
     material: stick
     custom_model_data: 4010
@@ -87,7 +83,6 @@ items:
           - type: play_sound
             sound: minecraft:entity.experience_orb.pickup
 
-  # 3b. 烈焰之刃 (附带火焰效果)
   mymagic:flame_blade:
     material: diamond_sword
     custom_model_data: 4011
@@ -120,7 +115,6 @@ items:
             offset_y: 0.3
             offset_z: 0.3
 
-  # 3c. 冰霜之弓 (减速箭矢)
   mymagic:frost_bow:
     material: bow
     custom_model_data: 4012
@@ -143,7 +137,7 @@ items:
             particle: minecraft:snowflake
             count: 3
 
-  # 3d. 奥术法袍 (装备+被动)
+  # -- 法袍 --
   mymagic:arcane_robe:
     material: diamond_chestplate
     custom_model_data: 4020
@@ -162,10 +156,38 @@ items:
           operation: add_value
           slot: chest
 
-# =============================================================================
-# 四、配方 - 武器合成
-# =============================================================================
-  # 5a. 魔法宝箱 (右键打开获得随机奖励)
+  # -- 法师套部件 --
+  mymagic:mage_hood:
+    material: diamond_helmet
+    custom_model_data: 4040
+    item_model: "mymagic:mage_hood"
+    data:
+      item_name: "<!i><#AA00FF>法师兜帽"
+      attribute_modifiers:
+        - type: armor
+          amount: 2.0
+          operation: add_value
+          slot: head
+    settings:
+      equipment:
+        asset_id: "mymagic:mage_armor"
+
+  mymagic:mage_boots:
+    material: diamond_boots
+    custom_model_data: 4041
+    item_model: "mymagic:mage_boots"
+    data:
+      item_name: "<!i><#AA00FF>法师之靴"
+      attribute_modifiers:
+        - type: armor
+          amount: 2.0
+          operation: add_value
+          slot: feet
+    settings:
+      equipment:
+        asset_id: "mymagic:mage_armor"
+
+  # -- 魔法宝箱 --
   mymagic:magic_chest:
     material: ender_chest
     custom_model_data: 4030
@@ -203,37 +225,17 @@ items:
                 fade_out: 10
 
 # =============================================================================
-# 六、装备 - 法师套
+# 二、装备 - 法师套定义
 # =============================================================================
-  mymagic:mage_hood:
-    material: diamond_helmet
-    custom_model_data: 4040
-    item_model: "mymagic:mage_hood"
-    data:
-      item_name: "<!i><#AA00FF>法师兜帽"
-      attribute_modifiers:
-        - type: armor
-          amount: 2.0
-          operation: add_value
-          slot: head
-    settings:
-      equipment:
-        asset_id: "mymagic:mage_armor"
+equipments:
+  mymagic:mage_armor:
+    type: component
+    humanoid: "mymagic:entity/equipment/humanoid/mage"
+    humanoid_leggings: "mymagic:entity/equipment/humanoid_leggings/mage"
 
-  mymagic:mage_boots:
-    material: diamond_boots
-    custom_model_data: 4041
-    item_model: "mymagic:mage_boots"
-    data:
-      item_name: "<!i><#AA00FF>法师之靴"
-      attribute_modifiers:
-        - type: armor
-          amount: 2.0
-          operation: add_value
-          slot: feet
-    settings:
-      equipment:
-        asset_id: "mymagic:mage_armor"
+# =============================================================================
+# 三、配方
+# =============================================================================
 recipes:
   mymagic:arcane_crystal_recipe:
     type: shaped
@@ -247,9 +249,6 @@ recipes:
       id: mymagic:arcane_crystal
       count: 1
 
-# =============================================================================
-# 三、物品 - 魔法武器
-# =============================================================================
   mymagic:arcane_staff_recipe:
     type: smithing_transform
     template_type: "mymagic:arcane_upgrade"
@@ -267,13 +266,3 @@ recipes:
     result:
       id: mymagic:flame_blade
       count: 1
-
-# =============================================================================
-# 五、事件 - 任务/奖励系统
-# =============================================================================
-equipments:
-  mymagic:mage_armor:
-    type: component
-    humanoid: "mymagic:entity/equipment/humanoid/mage"
-    humanoid_leggings: "mymagic:entity/equipment/humanoid_leggings/mage"
-
