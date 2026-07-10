@@ -10,16 +10,7 @@
 # 一、物品 - 任务道具
 # =============================================================================
 items:
-  # 1a. 任务卷轴(接受/查看任务)
-  myquest:quest_scroll:
-    material: paper
-    custom_model_data: 42001
-    data:
-      item_name: "<!i><#FFD700>任务卷轴"
-      lore:
-        - "<gray>右键查看当前任务进度"
-
-  # 1b. 任务物品(收集物)
+  # 1a. 任务物品(收集物)
   myquest:mystic_herb:
     material: grass
     custom_model_data: 42002
