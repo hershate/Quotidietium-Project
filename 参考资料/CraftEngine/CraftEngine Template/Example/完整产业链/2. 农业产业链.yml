@@ -151,43 +151,6 @@ items:
 # =============================================================================
 # 三、配方 - 加工
 # =============================================================================
-recipes:
-  # 3a. 小麦 → 面粉
-  myfarm:magic_flour_from_wheat:
-    type: shapeless
-    category: misc
-    ingredients:
-      - "myfarm:magic_wheat"
-    result:
-      id: myfarm:magic_flour
-      count: 2
-
-  # 3b. 浆果 + 面粉 → 魔法面包
-  myfarm:magic_bread:
-    type: shapeless
-    category: food
-    ingredients:
-      - "myfarm:magic_flour"
-      - "myfarm:magic_berries"
-    result:
-      id: myfarm:magic_bread
-      count: 1
-
-  # 3c. 烤魔法苹果
-  myfarm:baked_magic_apple:
-    type: smelting
-    category: food
-    experience: 0.5
-    time: 200
-    ingredient: "myfarm:magic_apple"
-    result:
-      id: myfarm:baked_magic_apple
-      count: 1
-
-# =============================================================================
-# 四、物品 - 成品食物
-# =============================================================================
-items:
   # 4a. 魔法面包 (基础食物 + 消耗组件)
   myfarm:magic_bread:
     material: bread
@@ -252,7 +215,6 @@ items:
 # =============================================================================
 # 五、物品 - 药水 (消耗品链)
 # =============================================================================
-items:
   # 5a. 魔法蜂蜜 (基础消耗品)
   myfarm:magic_honey:
     material: honey_bottle
@@ -355,6 +317,41 @@ items:
 # 六、配方 - 药水酿造
 # =============================================================================
 recipes:
+  # 3a. 小麦 → 面粉
+  myfarm:magic_flour_from_wheat:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "myfarm:magic_wheat"
+    result:
+      id: myfarm:magic_flour
+      count: 2
+
+  # 3b. 浆果 + 面粉 → 魔法面包
+  myfarm:magic_bread:
+    type: shapeless
+    category: food
+    ingredients:
+      - "myfarm:magic_flour"
+      - "myfarm:magic_berries"
+    result:
+      id: myfarm:magic_bread
+      count: 1
+
+  # 3c. 烤魔法苹果
+  myfarm:baked_magic_apple:
+    type: smelting
+    category: food
+    experience: 0.5
+    time: 200
+    ingredient: "myfarm:magic_apple"
+    result:
+      id: myfarm:baked_magic_apple
+      count: 1
+
+# =============================================================================
+# 四、物品 - 成品食物
+# =============================================================================
   myfarm:healing_potion_recipe:
     type: brewing
     ingredient: "myfarm:magic_berries"
