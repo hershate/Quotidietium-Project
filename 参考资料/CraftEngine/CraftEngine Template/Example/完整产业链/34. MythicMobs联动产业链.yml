@@ -46,7 +46,6 @@ items:
 # =============================================================================
 # 二、物品 - CraftEngine自定义物品(使用MM掉落物合成)
 # =============================================================================
-items:
   mymm:dragon_armor_chestplate:
     material: netherite_chestplate
     custom_model_data: 29001
@@ -80,44 +79,6 @@ items:
 # =============================================================================
 # 三、配方 - 使用MM物品作原料
 # =============================================================================
-recipes:
-  mymm:dragon_armor_chestplate_recipe:
-    type: shaped
-    category: equipment
-    pattern:
-      - "A A"
-      - "AAA"
-      - "AAA"
-    ingredients:
-      A: "mythicmobs:dragon_scale"
-    result:
-      id: mymm:dragon_armor_chestplate
-      count: 1
-
-  mymm:dragon_scale_sword_recipe:
-    type: smithing_transform
-    base: "minecraft:netherite_sword"
-    addition: "mythicmobs:dragon_scale"
-    result:
-      id: mymm:dragon_scale_sword
-      count: 1
-
-  mymm:king_crown_block:
-    type: shaped
-    category: building
-    pattern:
-      - "AAA"
-      - "A A"
-    ingredients:
-      A: "mythicmobs:kingscrown"
-    result:
-      id: "minecraft:gold_block"
-      count: 1
-
-# =============================================================================
-# 四、物品 - 召唤技能物品(cast_mythic_skill)
-# =============================================================================
-items:
   mymm:lightning_wand:
     material: stick
     custom_model_data: 29010
@@ -171,6 +132,42 @@ items:
 # 五、配方 - 技能物品
 # =============================================================================
 recipes:
+  mymm:dragon_armor_chestplate_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - "A A"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mythicmobs:dragon_scale"
+    result:
+      id: mymm:dragon_armor_chestplate
+      count: 1
+
+  mymm:dragon_scale_sword_recipe:
+    type: smithing_transform
+    base: "minecraft:netherite_sword"
+    addition: "mythicmobs:dragon_scale"
+    result:
+      id: mymm:dragon_scale_sword
+      count: 1
+
+  mymm:king_crown_block:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "A A"
+    ingredients:
+      A: "mythicmobs:kingscrown"
+    result:
+      id: "minecraft:gold_block"
+      count: 1
+
+# =============================================================================
+# 四、物品 - 召唤技能物品(cast_mythic_skill)
+# =============================================================================
   mymm:lightning_wand_recipe:
     type: smithing_transform
     base: "minecraft:stick"
