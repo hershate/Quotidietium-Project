@@ -118,6 +118,9 @@ items:
         pierce_level: 1
     events:
       - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myranged:throwing_knife_cd"
         functions:
           - type: set_cooldown
             id: "myranged:throwing_knife_cd"
