@@ -18,7 +18,13 @@ items:
       item_name: "<!i><#AA00FF>经验卷轴"
     events:
       - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myupg:exp_scroll_cd"
         functions:
+          - type: set_cooldown
+            id: "myupg:exp_scroll_cd"
+            time: 1s
           - type: set_exp
             count: 100
             add: true
@@ -26,6 +32,10 @@ items:
             message: "<green>你获得了 100 点经验值!"
           - type: play_sound
             sound: minecraft:entity.player.levelup
+          # 卷轴为一次性消耗品(原配置不消耗=无限刷经验)
+          - type: clear_item
+            id: "myupg:experience_scroll"
+            count: 1
 
   myupg:upgrade_crystal:
     material: amethyst_shard
