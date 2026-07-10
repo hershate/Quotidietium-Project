@@ -65,6 +65,56 @@ items:
 # =============================================================================
 # 二、配方 - 附魔书制作(后处理器)
 # =============================================================================
+  myenchant:enchant_merchant:
+    material: emerald
+    custom_model_data: 56010
+    data:
+      item_name: "<!i><#FFD700>附魔商店"
+    events:
+      - on: right_click
+        functions:
+          - type: merchant_trade
+            title: "附魔商店"
+            offers:
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 30
+                result:
+                  item: myenchant:sharpness_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 20
+                result:
+                  item: myenchant:protection_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 15
+                result:
+                  item: myenchant:efficiency_book
+                  count: 1
+              - cost_1:
+                  item: "minecraft:emerald"
+                  count: 10
+                result:
+                  item: myenchant:unbreaking_book
+                  count: 1
+
+# =============================================================================
+# 四、物品 - 附魔台替代(右键打开附魔GUI)
+# =============================================================================
+  myenchant:portable_enchant:
+    material: enchanting_table
+    custom_model_data: 56020
+    data:
+      item_name: "<!i><#AA00FF>便携附魔台"
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: enchantment
+            title: "便携附魔台"
 recipes:
   myenchant:sharpness_book_recipe:
     type: shapeless
@@ -130,55 +180,3 @@ recipes:
 # =============================================================================
 # 三、村民交易-附魔书商店
 # =============================================================================
-items:
-  myenchant:enchant_merchant:
-    material: emerald
-    custom_model_data: 56010
-    data:
-      item_name: "<!i><#FFD700>附魔商店"
-    events:
-      - on: right_click
-        functions:
-          - type: merchant_trade
-            title: "附魔商店"
-            offers:
-              - cost_1:
-                  item: "minecraft:emerald"
-                  count: 30
-                result:
-                  item: myenchant:sharpness_book
-                  count: 1
-              - cost_1:
-                  item: "minecraft:emerald"
-                  count: 20
-                result:
-                  item: myenchant:protection_book
-                  count: 1
-              - cost_1:
-                  item: "minecraft:emerald"
-                  count: 15
-                result:
-                  item: myenchant:efficiency_book
-                  count: 1
-              - cost_1:
-                  item: "minecraft:emerald"
-                  count: 10
-                result:
-                  item: myenchant:unbreaking_book
-                  count: 1
-
-# =============================================================================
-# 四、物品 - 附魔台替代(右键打开附魔GUI)
-# =============================================================================
-items:
-  myenchant:portable_enchant:
-    material: enchanting_table
-    custom_model_data: 56020
-    data:
-      item_name: "<!i><#AA00FF>便携附魔台"
-    events:
-      - on: right_click
-        functions:
-          - type: open_window
-            gui_type: enchantment
-            title: "便携附魔台"
