@@ -7,9 +7,12 @@
 # =============================================================================
 
 # =============================================================================
-# 一、物品 - 复合模型(composite)
+# 一、复合模型(composite) / 二、条件模型(condition)
+# 三、值调配模型(range_dispatch) / 四、枚举模型(select)
+# 五、特殊模型(special) / 六、legacy_model(旧版兼容)
 # =============================================================================
 items:
+  # -- 一、复合模型(composite) --
   mymodel:layered_sword:
     material: diamond_sword
     custom_model_data: 33001
@@ -23,11 +26,7 @@ items:
         - type: minecraft:model
           path: "mymodel:item/sword_glow"
 
-# =============================================================================
-# 二、物品 - 条件模型(condition)
-# =============================================================================
-items:
-  # 2a. broken条件(耐久将耗尽时)
+  # -- 二、条件模型(condition) --
   mymodel:ancient_sword:
     material: diamond_sword
     custom_model_data: 33002
@@ -44,7 +43,6 @@ items:
         type: minecraft:model
         path: "mymodel:item/ancient_sword_broken"
 
-  # 2b. using_item条件(使用中)
   mymodel:special_bow:
     material: bow
     custom_model_data: 33003
@@ -60,7 +58,6 @@ items:
         type: minecraft:model
         path: "mymodel:item/special_bow_pulling"
 
-  # 2c. selected条件(快捷栏选中)
   mymodel:glow_sword:
     material: iron_sword
     custom_model_data: 33004
@@ -76,11 +73,7 @@ items:
         type: minecraft:model
         path: "mymodel:item/glow_sword_selected"
 
-# =============================================================================
-# 三、物品 - 值调配模型(range_dispatch)
-# =============================================================================
-items:
-  # 3a. damage损伤程度(耐久变化)
+  # -- 三、值调配模型(range_dispatch) --
   mymodel:damage_sword:
     material: diamond_sword
     custom_model_data: 33010
@@ -104,7 +97,6 @@ items:
             type: minecraft:model
             path: "mymodel:item/damage_sword_damaged"
 
-  # 3b. cooldown冷却程度
   mymodel:cooldown_staff:
     material: stick
     custom_model_data: 33011
@@ -126,11 +118,7 @@ items:
             type: minecraft:model
             path: "mymodel:item/cooldown_staff_cooling"
 
-# =============================================================================
-# 四、物品 - 枚举模型(select)
-# =============================================================================
-items:
-  # 4a. display_context(渲染位置)
+  # -- 四、枚举模型(select) --
   mymodel:display_sword:
     material: diamond_sword
     custom_model_data: 33020
@@ -156,7 +144,6 @@ items:
         type: minecraft:model
         path: "mymodel:item/display_sword"
 
-  # 4b. charge_type(弩装填类型)
   mymodel:ammo_crossbow:
     material: crossbow
     custom_model_data: 33021
@@ -175,11 +162,7 @@ items:
             type: minecraft:model
             path: "mymodel:item/ammo_crossbow_rocket"
 
-# =============================================================================
-# 五、物品 - 特殊模型(special)
-# =============================================================================
-items:
-  # 5a. player_head(玩家头)
+  # -- 五、特殊模型(special) --
   mymodel:custom_head:
     material: player_head
     custom_model_data: 33030
@@ -191,7 +174,6 @@ items:
       model:
         type: minecraft:player_head
 
-  # 5b. shield(盾牌)
   mymodel:custom_shield:
     material: shield
     custom_model_data: 33031
@@ -203,10 +185,7 @@ items:
       model:
         type: minecraft:shield
 
-# =============================================================================
-# 六、物品 - legacy_model(旧版兼容)
-# =============================================================================
-items:
+  # -- 六、旧版兼容模型 --
   mymodel:legacy_sword:
     material: diamond_sword
     custom_model_data: 33040
