@@ -69,6 +69,9 @@ items:
         minecraft:unbreaking: 2
     events:
       - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymagic:arcane_blast"
         functions:
           - type: set_cooldown
             id: "mymagic:arcane_blast"
