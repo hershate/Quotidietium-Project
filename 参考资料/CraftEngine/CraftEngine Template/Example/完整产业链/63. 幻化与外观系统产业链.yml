@@ -32,15 +32,6 @@ items:
       tags:
         - "mycosmetic:dyes"
 
-  # 1c. 幻彩染料(随机颜色)
-  mycosmetic:magic_dye:
-    material: potion
-    custom_model_data: 52003
-    data:
-      item_name: "<!i><#FFD700>幻彩染料"
-      lore:
-        - "<gray>随机改变装备颜色"
-
 # =============================================================================
 # 二、物品 - 时装装备
 # =============================================================================
@@ -155,16 +146,6 @@ recipes:
       C: "minecraft:gold_ingot"
     result:
       id: mycosmetic:transmog_stone
-      count: 1
-
-  mycosmetic:magic_dye_recipe:
-    type: shapeless
-    category: misc
-    ingredients:
-      - "minecraft:potion"
-      - "mycosmetic:transmog_stone"
-    result:
-      id: mycosmetic:magic_dye
       count: 1
 
   mycosmetic:royal_crown_recipe:
