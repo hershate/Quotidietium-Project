@@ -22,7 +22,7 @@ items:
         - "mygacha:tokens"
 
   mygacha:premium_token:
-    material: sunfower
+    material: sunflower
     custom_model_data: 41002
     data:
       item_name: "<!i><#FF4500>高级抽奖代币"
@@ -99,61 +99,75 @@ items:
           - type: set_cooldown
             id: "mygacha:gacha_cd"
             time: 1s
+          # 先检查是否持有代币, 再消耗, 最后抽奖(无代币则提示)
           - type: if_else
             rules:
-              # UR 1%
               - conditions:
-                  - type: random
-                    value: 0.01
+                  - type: inventory_has_item
+                    id: "mygacha:gacha_token"
+                    count: 1
                 functions:
-                  - type: command
-                    command: "give <arg:player.name> mygacha:ur_reward 1"
-                  - type: message
-                    message: "<#AA00FF>传说! 你获得了限定奖品!"
-                  - type: particle
-                    particle: minecraft:dust_color_transition
-                    count: 50
-                    from: "170,0,255"
-                    to: "255,0,255"
-                    scale: 2.0
-                  - type: play_sound
-                    sound: minecraft:entity.wither.spawn
-                    volume: 2.0
-              # SSR 4%
-              - conditions:
-                  - type: random
-                    value: 0.04
-                functions:
-                  - type: command
-                    command: "give <arg:player.name> mygacha:ssr_reward 1"
-                  - type: message
-                    message: "<#FF4500>传说! 获得传说奖品!"
-                  - type: particle
-                    particle: minecraft:end_rod
-                    count: 30
-              # SR 10%
-              - conditions:
-                  - type: random
-                    value: 0.10
-                functions:
-                  - type: command
-                    command: "give <arg:player.name> mygacha:super_rare_reward 1"
-                  - type: message
-                    message: "<#FFD700>超稀有! 获得超稀有奖品!"
-              # R 25%
-              - conditions:
-                  - type: random
-                    value: 0.25
-                functions:
-                  - type: command
-                    command: "give <arg:player.name> mygacha:rare_reward 1"
-              # N 60%(默认)
+                  # 先消耗代币
+                  - type: clear_item
+                    id: "mygacha:gacha_token"
+                    count: 1
+                  # 再执行抽奖
+                  - type: if_else
+                    rules:
+                      # UR 1%
+                      - conditions:
+                          - type: random
+                            value: 0.01
+                        functions:
+                          - type: command
+                            command: "give <arg:player.name> mygacha:ur_reward 1"
+                          - type: message
+                            message: "<#AA00FF>传说! 你获得了限定奖品!"
+                          - type: particle
+                            particle: minecraft:dust_color_transition
+                            count: 50
+                            from: "170,0,255"
+                            to: "255,0,255"
+                            scale: 2.0
+                          - type: play_sound
+                            sound: minecraft:entity.wither.spawn
+                            volume: 2.0
+                      # SSR 4%
+                      - conditions:
+                          - type: random
+                            value: 0.04
+                        functions:
+                          - type: command
+                            command: "give <arg:player.name> mygacha:ssr_reward 1"
+                          - type: message
+                            message: "<#FF4500>传说! 获得传说奖品!"
+                          - type: particle
+                            particle: minecraft:end_rod
+                            count: 30
+                      # SR 10%
+                      - conditions:
+                          - type: random
+                            value: 0.10
+                        functions:
+                          - type: command
+                            command: "give <arg:player.name> mygacha:super_rare_reward 1"
+                          - type: message
+                            message: "<#FFD700>超稀有! 获得超稀有奖品!"
+                      # R 25%
+                      - conditions:
+                          - type: random
+                            value: 0.25
+                        functions:
+                          - type: command
+                            command: "give <arg:player.name> mygacha:rare_reward 1"
+                      # N 60%(默认)
+                      - functions:
+                          - type: command
+                            command: "give <arg:player.name> mygacha:common_reward 1"
+              # 无代币分支
               - functions:
-                  - type: command
-                    command: "give <arg:player.name> mygacha:common_reward 1"
-          - type: clear_item
-            id: "mygacha:gacha_token"
-            count: 1
+                  - type: message
+                    message: "<red>代币不足! 抽奖需要1枚抽奖代币"
 
 # =============================================================================
 # 四、十连抽(批量抽奖)
@@ -168,21 +182,35 @@ items:
     events:
       - on: right_click
         functions:
-          - type: run
-            delay: 0
-            functions:
-              - type: command
-                command: "give <arg:player.name> mygacha:common_reward 6"
-              - type: command
-                command: "give <arg:player.name> mygacha:rare_reward 3"
-              - type: command
-                command: "give <arg:player.name> mygacha:super_rare_reward 1"
-              - type: particle
-                particle: minecraft:firework
-                count: 30
-          - type: clear_item
-            id: "mygacha:gacha_token"
-            count: 10
+          # 先检查是否持有10枚代币, 再消耗, 最后抽奖
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: inventory_has_item
+                    id: "mygacha:gacha_token"
+                    count: 10
+                functions:
+                  # 先消耗10枚代币
+                  - type: clear_item
+                    id: "mygacha:gacha_token"
+                    count: 10
+                  # 再执行十连抽
+                  - type: run
+                    delay: 0
+                    functions:
+                      - type: command
+                        command: "give <arg:player.name> mygacha:common_reward 6"
+                      - type: command
+                        command: "give <arg:player.name> mygacha:rare_reward 3"
+                      - type: command
+                        command: "give <arg:player.name> mygacha:super_rare_reward 1"
+                      - type: particle
+                        particle: minecraft:firework
+                        count: 30
+              # 代币不足分支
+              - functions:
+                  - type: message
+                    message: "<red>代币不足! 十连抽需要10枚抽奖代币"
 
 # =============================================================================
 # 五、配方
