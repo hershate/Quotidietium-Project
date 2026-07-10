@@ -121,7 +121,13 @@ items:
       item_name: "<!i><#FF69B4>周年庆蛋糕"
     events:
       - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myevent:cake_cd"
         functions:
+          - type: set_cooldown
+            id: "myevent:cake_cd"
+            time: 1s
           - type: heal
             amount: 2.0
           - type: set_food
@@ -129,6 +135,10 @@ items:
             food: 2
           - type: message
             message: "<#FF69B4>感谢你与服务器共度周年!"
+          # 蛋糕为消耗性食物(原配置不消耗=无限回血回饱)
+          - type: clear_item
+            id: "myevent:anniversary_cake"
+            count: 1
 
   myevent:summer_hat:
     material: leather_helmet
