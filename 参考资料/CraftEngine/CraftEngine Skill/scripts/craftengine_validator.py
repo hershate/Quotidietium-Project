@@ -435,9 +435,11 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "strippable_block": {
+        "required": ["type", "stripped"],
         "fields": {
             "type": {"type": "enum", "values": ["strippable_block"], "required": True},
             "stripped": {"type": "string", "required": True},
+            "excluded_properties": {"type": "list", "required": False},
         }
     },
     "door_block": {
@@ -451,16 +453,24 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "trapdoor_block": {
         "fields": {
             "type": {"type": "enum", "values": ["trapdoor_block"], "required": True},
+            "can_open_with_hand": {"type": "boolean", "required": False},
+            "can_open_by_wind_charge": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "fence_block": {
         "fields": {
             "type": {"type": "enum", "values": ["fence_block"], "required": True},
+            "connectable_block_tag": {"type": "string", "required": False},
+            "can_leash": {"type": "boolean", "required": False},
         }
     },
     "fence_gate_block": {
         "fields": {
             "type": {"type": "enum", "values": ["fence_gate_block"], "required": True},
+            "can_open_with_hand": {"type": "boolean", "required": False},
+            "can_open_by_wind_charge": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "stairs_block": {
@@ -481,12 +491,14 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "toggleable_lamp_block": {
         "fields": {
             "type": {"type": "enum", "values": ["toggleable_lamp_block"], "required": True},
+            "can_open_with_hand": {"type": "boolean", "required": False},
         }
     },
     "seat_block": {
         "fields": {
             "type": {"type": "enum", "values": ["seat_block"], "required": True},
             "seat_height": {"type": "number", "required": False},
+            "seats": {"type": "list", "required": False},
         }
     },
     "simple_storage_block": {
@@ -550,12 +562,15 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "wall_torch_particle_block": {
         "fields": {
             "type": {"type": "enum", "values": ["wall_torch_particle_block"], "required": True},
+            "tick_interval": {"type": "int", "required": False},
+            "particles": {"type": "list", "required": False},
         }
     },
     "tint_source_block": {
         "fields": {
             "type": {"type": "enum", "values": ["tint_source_block"], "required": True},
-            "tint_color": {"type": "string", "required": False},
+            "drop_item": {"type": "boolean", "required": False},
+            "data_key": {"type": "string", "required": False},
         }
     },
     "concrete_powder_block": {
@@ -567,8 +582,15 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "drop_experience_block": {
         "fields": {
             "type": {"type": "enum", "values": ["drop_experience_block"], "required": True},
-            "min_exp": {"type": "int", "required": False},
-            "max_exp": {"type": "int", "required": False},
+            "amount": {"type": "string_or_number", "required": False},
+            "conditions": {"type": "mapping_or_list", "required": False},
+        }
+    },
+    "drop_exp_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["drop_exp_block"], "required": True},
+            "amount": {"type": "string_or_number", "required": False},
+            "conditions": {"type": "mapping_or_list", "required": False},
         }
     },
     "display_item_block": {
@@ -595,6 +617,8 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "simple_particle_block": {
         "fields": {
             "type": {"type": "enum", "values": ["simple_particle_block"], "required": True},
+            "tick_interval": {"type": "int", "required": False},
+            "particles": {"type": "list", "required": False},
         }
     },
     "leaves_block": {
@@ -625,8 +649,10 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "spreading_block": {
+        "required": ["type", "target_block"],
         "fields": {
             "type": {"type": "enum", "values": ["spreading_block"], "required": True},
+            "target_block": {"type": "string", "required": True},
         }
     },
     "decay_block": {
@@ -759,8 +785,11 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "budding_block": {
+        "required": ["type", "blocks"],
         "fields": {
             "type": {"type": "enum", "values": ["budding_block"], "required": True},
+            "growth_chance": {"type": "number", "required": False},
+            "blocks": {"type": "list_of_string", "required": True},
         }
     },
     "directional_attached_block": {
@@ -786,6 +815,7 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "chime_block": {
         "fields": {
             "type": {"type": "enum", "values": ["chime_block"], "required": True},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
 }
