@@ -50,6 +50,10 @@ VALID_ROOT_KEYS = {
     "config_factory", "item_updaters",
     "config_merges", "configured_feature", "translations",
     "namespace",  # 命名空间声明（如 namespace: my_mod）
+    # 数字格式示例模板中的示例名称根键
+    "example_constant", "example_uniform", "example_simple_number_format",
+    # 配置文件冲突示例中的根键
+    "resource-pack", "font_example_default_json", "font_example_custom_json",
     # 文本/数字/链式参数等参考模板中使用的特殊根键
     "custom",  # 自定义 MiniMessage 标签（文本格式模板）
     "functions", "broadcast_messages", "contextual_functions",  # 文本格式模板函数
@@ -209,6 +213,7 @@ ITEM_BEHAVIOR_SCHEMA = {
             "rules": {"type": "mapping", "required": False},
             "ignore_placer": {"type": "boolean", "required": False},
             "ignore_entities": {"type": "boolean", "required": False},
+            "events": {"type": "list", "required": False},  # 行为内联事件
         }
     },
     "compostable_item": {
@@ -248,6 +253,7 @@ ITEM_FIELDS = {
     "swap_animation_scale": {"type": "number", "required": False, "version": "1.21.11+", "default": 1.0},
     "use_remainder": {"type": "string", "required": False, "version": "1.21.2+"},
     "updater": {"type": "string_or_mapping", "required": False},
+    "lore": {"type": "list", "required": False},  # 物品根级快捷方式
     "category": {"type": "string_or_list", "required": False},
 }
 
@@ -279,6 +285,8 @@ ITEM_DATA_FIELDS = {
     "equippable": {"type": "mapping", "required": False, "version": "1.21.2+"},
     "pdc": {"type": "mapping", "required": False},
     "profile": {"type": "string", "required": False},
+    "block_model": {"type": "string", "required": False},
+    "item_tier_id": {"type": "string", "required": False},
     "painting_variant": {"type": "string", "required": False},
     "external": {"type": "mapping", "required": False},
     "nbt": {"type": "mapping", "required": False},
@@ -778,7 +786,7 @@ RECIPE_TYPES = {"shaped", "shapeless", "smelting", "blasting", "smoking",
                 "smithing_trim", "shaped_transform", "brewing"}
 
 RECIPE_CATEGORIES_SMELTING = ["food", "blocks", "misc"]
-RECIPE_CATEGORIES_CRAFTING = ["building", "redstone", "equipment", "misc"]
+RECIPE_CATEGORIES_CRAFTING = ["building", "redstone", "equipment", "misc", "food"]
 
 RECIPE_COMMON_FIELDS = {
     "type": {"type": "enum", "values": list(RECIPE_TYPES), "required": True},
@@ -1178,7 +1186,9 @@ class ConfigValidator:
         if base_key in ("providers", "functions", "broadcast_messages", "contextual_functions",
                         "player", "block", "world", "entity", "server", "target",
                         "position", "furniture", "identity", "item",
-                        "relational_example", "custom_nameplates_items", "viewer_papi_example"):
+                        "relational_example", "custom_nameplates_items", "viewer_papi_example",
+                        "example_constant", "example_uniform", "example_simple_number_format",
+                        "resource-pack", "font_example_default_json", "font_example_custom_json"):
             if not isinstance(value, (dict, list, type(None))):
                 self.add_error(path, "wrong_type", f"根键 '{key}' 的值类型不期望")
             return
@@ -1520,6 +1530,9 @@ class ConfigValidator:
                     self.add_error(field_path, "wrong_type", "transparent 应为布尔值")
             elif field_name == "entity_renderer":
                 self._validate_entity_renderer(field_value, field_path)
+            elif field_name == "properties":
+                # state 内联属性定义
+                self._validate_block_properties(field_value, field_path)
             elif field_name == "id":
                 if not isinstance(field_value, int):
                     self.add_error(field_path, "wrong_type", "id 应为整数")
