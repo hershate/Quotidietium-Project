@@ -38,7 +38,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 # 常量定义
 # =============================================================================
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 DEFAULT_MINECRAFT_VERSION = "1.21.2"
 
 VALID_ROOT_KEYS = {
@@ -46,14 +46,52 @@ VALID_ROOT_KEYS = {
     "categories", "loots", "vanilla_loots", "templates",
     "images", "sounds", "jukebox_songs", "paintings",
     "fonts", "lang", "i18n", "global_variables",
-    "emojis", "emoji", "config_factory", "item_updaters",
+    "emojis", "emoji", "image",  # singular forms
+    "config_factory", "item_updaters",
     "config_merges", "configured_feature", "translations",
+    "namespace",  # 命名空间声明（如 namespace: my_mod）
+    # 数字格式示例模板中的示例名称根键
+    "example_constant", "example_uniform", "example_simple_number_format",
+    # 配置文件冲突示例中的根键
+    "resource-pack", "font_example_default_json", "font_example_custom_json",
+    # 文本/数字/链式参数等参考模板中使用的特殊根键
+    "custom",  # 自定义 MiniMessage 标签（文本格式模板）
+    "functions", "broadcast_messages", "contextual_functions",  # 文本格式模板函数
+    "providers",  # 数字格式提供者
+    "translation",  # 翻译
+    # 链式参数模板中的参数名根键
+    "player", "block", "world", "entity", "server", "target",
+    "position", "furniture", "identity",  # 链式参数深层字段
+    # 文本格式模板示例根键
+    "relational_example", "custom_nameplates_items", "viewer_papi_example",
+    # 更新器模板（item 和 items 同时存在）
+    "item",
 }
 
 # Fields from the template system that can appear in ANY configuration block
 TEMPLATE_SYSTEM_FIELDS = {"template", "arguments", "overrides", "merges"}
 
 VERSION_PREFIX = re.compile(r'^\$\$')
+SECTION_IDENTIFIER = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*#[a-zA-Z0-9_]+$')
+VERSION_CONDITION = re.compile(r'^\$\$[><]?=?\d+\.\d+(\.\d+)?(~[<>]?\d+\.\d+(\.\d+)?)?$|^\$\$fallback$')
+SEPARATOR_DOUBLE_COLON = re.compile(r'::')
+
+# Custom YAML loader that supports CraftEngine extended type tags
+class CraftEngineLoader(yaml.FullLoader):
+    """Custom YAML loader supporting CraftEngine extended type tags (!!long, !!float, !!byte, etc.)"""
+
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:long', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:float', lambda l, n: float(l.construct_scalar(n)))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:byte', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:short', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:null', lambda l, n: None)
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:ByteArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:IntArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:LongArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:DoubleArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:IntList', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:LongList', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:DoubleList', lambda l, n: l.construct_scalar(n))
 
 # =============================================================================
 # 错误类型定义
@@ -152,6 +190,7 @@ ITEM_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["liquid_collision_block_item"], "required": True},
             "block": {"type": "string_or_mapping", "required": True},
+            "offset_y": {"type": "number", "required": False},
         }
     },
     "liquid_collision_furniture_item": {
@@ -160,6 +199,10 @@ ITEM_BEHAVIOR_SCHEMA = {
             "type": {"type": "enum", "values": ["liquid_collision_furniture_item"], "required": True},
             "furniture": {"type": "string_or_mapping", "required": True},
             "rules": {"type": "mapping", "required": False},
+            "ignore_placer": {"type": "boolean", "required": False},
+            "ignore_entities": {"type": "boolean", "required": False},
+            "source_only": {"type": "boolean", "required": False},
+            "liquid_type": {"type": "enum", "values": ["water", "lava"], "required": False},
         }
     },
     "furniture_item": {
@@ -170,12 +213,14 @@ ITEM_BEHAVIOR_SCHEMA = {
             "rules": {"type": "mapping", "required": False},
             "ignore_placer": {"type": "boolean", "required": False},
             "ignore_entities": {"type": "boolean", "required": False},
+            "events": {"type": "list", "required": False},  # 行为内联事件
         }
     },
     "compostable_item": {
         "required": ["type"],
         "fields": {
             "type": {"type": "enum", "values": ["compostable_item"], "required": True},
+            "chance": {"type": "number", "required": False},
         }
     },
     "range_mining_item": {
@@ -206,6 +251,10 @@ ITEM_FIELDS = {
     "oversized_in_gui": {"type": "boolean", "required": False, "version": "1.21.6+", "default": True},
     "hand_animation_on_swap": {"type": "boolean", "required": False, "default": True},
     "swap_animation_scale": {"type": "number", "required": False, "version": "1.21.11+", "default": 1.0},
+    "use_remainder": {"type": "string", "required": False, "version": "1.21.2+"},
+    "updater": {"type": "string_or_mapping", "required": False},
+    "lore": {"type": "list", "required": False},  # 物品根级快捷方式
+    "functions": {"type": "list", "required": False, "paid_only": True},  # 付费版函数
     "category": {"type": "string_or_list", "required": False},
 }
 
@@ -214,9 +263,11 @@ ITEM_DATA_FIELDS = {
     "custom_name": {"type": "string", "required": False},
     "lore": {"type": "list", "required": False},
     "overwritable_lore": {"type": "list", "required": False, "paid_only": True},
-    "insert_lore": {"type": "list_of_mapping", "required": False},
+    "insert_lore": {"type": "mapping_or_list", "required": False},
     "remove_lore": {"type": "string", "required": False},
     "overwritable_item_name": {"type": "string", "required": False, "paid_only": True},
+    "conditions": {"type": "list", "required": False},  # conditional 递归块内的条件
+    "data": {"type": "mapping", "required": False},  # conditional 递归块内的 data
     "unbreakable": {"type": "boolean", "required": False},
     "enchantment": {"type": "mapping", "required": False},
     "dyed_color": {"type": "string", "required": False},
@@ -235,10 +286,17 @@ ITEM_DATA_FIELDS = {
     "equippable": {"type": "mapping", "required": False, "version": "1.21.2+"},
     "pdc": {"type": "mapping", "required": False},
     "profile": {"type": "string", "required": False},
+    "settings": {"type": "string_or_mapping_or_none", "required": False},  # data 内嵌 settings
+    "consume_replacement": {"type": "string", "required": False},
+    "block_model": {"type": "string", "required": False},
+    "item_tier_id": {"type": "string", "required": False},
+    "crafted_with": {"type": "string_or_list", "required": False},  # 支持 ${arg} 模板变量
+    "effects": {"type": "string_or_list", "required": False},  # 支持 ${arg} 模板变量
+    "hitbox_settings": {"type": "string_or_mapping", "required": False},  # 支持 ${arg}
     "painting_variant": {"type": "string", "required": False},
     "external": {"type": "mapping", "required": False},
     "nbt": {"type": "mapping", "required": False},
-    "components": {"type": "mapping", "required": False, "version": "1.20.5+"},
+    "components": {"type": "mapping_or_none", "required": False, "version": "1.20.5+"},
     "remove_components": {"type": "list_of_string", "required": False, "version": "1.20.5+"},
 }
 
@@ -340,7 +398,8 @@ BLOCK_BEHAVIOR_TYPES = {
     "crop_block", "stem_block", "attached_stem_block", "bush_block", "sapling_block",
     "vertical_crop_block", "falling_block", "concrete_powder_block", "bouncing_block",
     "strippable_block", "sturdy_base_block", "budding_block", "snowy_block",
-    "drop_experience_block", "display_item_block", "item_frame_block",
+    "drop_experience_block", "drop_exp_block",  # drop_exp_block 是丢经验方块的简写别名
+    "display_item_block", "item_frame_block",
     "simple_particle_block", "wall_torch_particle_block", "tint_source_block",
     "directional_attached_block", "face_attached_horizontal_directional_block",
     "hangable_block", "hanging_block", "liquid_flowable_block", "near_liquid_block",
@@ -356,8 +415,13 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "crop_block": {
         "fields": {
             "type": {"type": "enum", "values": ["crop_block"], "required": True},
-            "light_level": {"type": "int", "required": False},
-            "growth_rate": {"type": "number", "required": False},
+            "grow_speed": {"type": "number", "required": False},
+            "light_requirement": {"type": "int", "required": False},
+            "max_light_requirement": {"type": "int", "required": False},
+            "spawn_light_requirement": {"type": "int", "required": False},
+            "max_spawn_light_requirement": {"type": "int", "required": False},
+            "is_bone_meal_target": {"type": "boolean", "required": False},
+            "bone_meal_age_bonus": {"type": "mapping", "required": False},
         }
     },
     "falling_block": {
@@ -449,6 +513,33 @@ BLOCK_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["bush_block"], "required": True},
             "max_stack": {"type": "int", "required": False},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "wall_torch_particle_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["wall_torch_particle_block"], "required": True},
+        }
+    },
+    "tint_source_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["tint_source_block"], "required": True},
+            "tint_color": {"type": "string", "required": False},
+        }
+    },
+    "directional_attached_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["directional_attached_block"], "required": True},
+        }
+    },
+    "near_liquid_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["near_liquid_block"], "required": True},
+        }
+    },
+    "on_liquid_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["on_liquid_block"], "required": True},
         }
     },
     "concrete_powder_block": {
@@ -515,6 +606,45 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "grass_block": {
         "fields": {
             "type": {"type": "enum", "values": ["grass_block"], "required": True},
+        }
+    },
+    "surface_spreading_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["surface_spreading_block"], "required": True},
+            "spread_chance": {"type": "number", "required": False},
+        }
+    },
+    "face_attached_horizontal_directional_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["face_attached_horizontal_directional_block"], "required": True},
+        }
+    },
+    "button_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["button_block"], "required": True},
+            "press_time": {"type": "int", "required": False, "default": 20},
+        }
+    },
+    "pressure_plate_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["pressure_plate_block"], "required": True},
+        }
+    },
+    "vertical_crop_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["vertical_crop_block"], "required": True},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "stem_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["stem_block"], "required": True},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "attached_stem_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["attached_stem_block"], "required": True},
         }
     },
     "hanging_block": {
@@ -662,7 +792,7 @@ RECIPE_TYPES = {"shaped", "shapeless", "smelting", "blasting", "smoking",
                 "smithing_trim", "shaped_transform", "brewing"}
 
 RECIPE_CATEGORIES_SMELTING = ["food", "blocks", "misc"]
-RECIPE_CATEGORIES_CRAFTING = ["building", "redstone", "equipment", "misc"]
+RECIPE_CATEGORIES_CRAFTING = ["building", "redstone", "equipment", "misc", "food"]
 
 RECIPE_COMMON_FIELDS = {
     "type": {"type": "enum", "values": list(RECIPE_TYPES), "required": True},
@@ -870,6 +1000,41 @@ class ConfigValidator:
                   severity: str = "error", expected: str = None, actual: str = None):
         self.errors.append(ValidationError(path, error_type, message, severity, expected, actual))
 
+    def _validate_version_condition(self, key: str, path: str):
+        """校验版本条件 $$ 格式"""
+        if VERSION_PREFIX.match(key):
+            if not VERSION_CONDITION.match(key):
+                self.add_error(path, "invalid_syntax",
+                               f"版本条件 '{key}' 格式无效，期望格式: $$1.21.2, $$>=1.21.2, $$1.20.1~1.21.4, $$fallback",
+                               severity="warning")
+            return True
+        return False
+
+    def _check_section_identifier(self, section_id: str) -> tuple:
+        """检查并拆分节标识符，返回 (base_key, identifier) 或 (section_id, None)"""
+        if "#" in section_id:
+            parts = section_id.split("#", 1)
+            return parts[0], parts[1]
+        return section_id, None
+
+    def _validate_section_identifiers(self, data: dict):
+        """校验所有节标识符的唯一性"""
+        seen_identifiers = {}  # base_key -> set of identifiers
+        for root_key in data:
+            if VERSION_PREFIX.match(str(root_key)):
+                continue
+            if "#" in str(root_key):
+                base_key, identifier = self._check_section_identifier(root_key)
+                if base_key in seen_identifiers:
+                    if identifier in seen_identifiers[base_key]:
+                        self.add_error(f"(root).{root_key}", "duplicate_identifier",
+                                       f"节标识符 '{identifier}' 在根键 '{base_key}' 中重复",
+                                       severity="warning")
+                    else:
+                        seen_identifiers[base_key].add(identifier)
+                else:
+                    seen_identifiers[base_key] = {identifier}
+
     def _check_version(self, version_req: Optional[str]) -> bool:
         """检查版本要求是否满足"""
         if version_req is None or version_req == "any":
@@ -908,9 +1073,12 @@ class ConfigValidator:
             "list_of_string": lambda v: isinstance(v, list) and all(isinstance(x, str) for x in v),
             "list_of_mapping": lambda v: isinstance(v, list) and all(isinstance(x, dict) for x in v),
             "string_or_mapping": lambda v: isinstance(v, (str, dict)),
+            "string_or_mapping_or_none": lambda v: isinstance(v, (str, dict, type(None))),
             "string_or_list": lambda v: isinstance(v, (str, list)),
             "boolean_or_mapping": lambda v: isinstance(v, (bool, dict)),
             "boolean_or_string": lambda v: isinstance(v, (bool, str)),
+            "mapping_or_list": lambda v: isinstance(v, (dict, list)),
+            "mapping_or_none": lambda v: isinstance(v, (dict, type(None))),
             "number_or_string": lambda v: isinstance(v, (int, float, str)),
             "string_or_number": lambda v: isinstance(v, (str, int, float)),
             "any": lambda v: True,
@@ -947,17 +1115,23 @@ class ConfigValidator:
             return self._get_results()
 
         try:
-            data = yaml.safe_load(content)
+            data = yaml.load(content, Loader=CraftEngineLoader)
         except yaml.YAMLError as e:
             self.add_error("(yaml)", "yaml_parse_error", f"YAML 解析错误: {e}")
             return self._get_results()
 
         if not isinstance(data, dict):
+            if data is None:
+                # 空文件（仅注释），跳过校验
+                return self._get_results()
             self.add_error("(root)", "invalid_root", "配置文件根节点必须是一个映射 (dict)")
             return self._get_results()
 
         # 第一遍: 收集所有定义 (用于交叉引用校验)
         self._collect_definitions(data)
+
+        # 第一遍: 校验高级语法
+        self._validate_section_identifiers(data)
 
         # 第二遍: 校验每个配置块
         for root_key, root_value in data.items():
@@ -981,37 +1155,54 @@ class ConfigValidator:
                 for item_id in root_value.keys():
                     if VERSION_PREFIX.match(str(item_id)):
                         continue
-                    clean_id = str(item_id).split("#")[0]  # 去掉区块标识符
+                    clean_id, _ = self._check_section_identifier(str(item_id))
                     if root_key == "items":
-                        self.defined_items.add(clean_id + ":" + item_id if ":" in str(item_id) else item_id)
+                        self.defined_items.add(clean_id)
                     elif root_key == "blocks":
-                        self.defined_blocks.add(str(item_id))
+                        self.defined_blocks.add(clean_id)
                     elif root_key == "furniture":
-                        self.defined_furniture.add(str(item_id))
+                        self.defined_furniture.add(clean_id)
                     elif root_key == "recipes":
-                        self.defined_recipes.add(str(item_id))
+                        self.defined_recipes.add(clean_id)
                     elif root_key == "categories":
-                        self.defined_categories.add(str(item_id))
+                        self.defined_categories.add(clean_id)
                     elif root_key == "templates":
-                        self.defined_templates.add(str(item_id))
+                        self.defined_templates.add(clean_id)
 
     def _validate_root_key(self, key: str, value: Any, base_path: str):
         """校验根键"""
         path = f"{base_path}{key}"
 
-        if key not in VALID_ROOT_KEYS:
-            # 检查是否是 config_factory 或区块标识符格式
-            if "#" in key:
-                base_key = key.split("#")[0]
-                if base_key in VALID_ROOT_KEYS:
-                    # 区块标识符是合法的
-                    pass
-                else:
-                    self.add_error(path, "unknown_root_key", f"未知的根键 '{key}'")
-                    return
-            else:
-                self.add_error(path, "unknown_root_key", f"未知的根键 '{key}'")
+        # 校验版本条件键格式
+        if self._validate_version_condition(key, path):
+            return
+
+        # 检查节标识符
+        base_key, _ = self._check_section_identifier(key)
+
+        if base_key not in VALID_ROOT_KEYS:
+            # 数字格式/文本格式示例模板中的示例名和标签名（以 example_/tag_ 开头）
+            if base_key.startswith(("example_", "tag_")):
                 return
+            self.add_error(path, "unknown_root_key", f"未知的根键 '{base_key}' (原键: '{key}')")
+            return
+
+        # 简单声明型根键（如 namespace: my_mod）允许非 dict 值
+        if base_key in ("namespace",):
+            if not isinstance(value, str):
+                self.add_error(path, "wrong_type", f"根键 '{key}' 的值应为字符串 (namespace 声明)")
+            return
+
+        # 允许多种值类型的根键（模板参考文件，值可以是列表、None 等）
+        if base_key in ("providers", "functions", "broadcast_messages", "contextual_functions",
+                        "player", "block", "world", "entity", "server", "target",
+                        "position", "furniture", "identity", "item",
+                        "relational_example", "custom_nameplates_items", "viewer_papi_example",
+                        "example_constant", "example_uniform", "example_simple_number_format",
+                        "resource-pack", "font_example_default_json", "font_example_custom_json"):
+            if not isinstance(value, (dict, list, type(None))):
+                self.add_error(path, "wrong_type", f"根键 '{key}' 的值类型不期望")
+            return
 
         if not isinstance(value, dict):
             self.add_error(path, "wrong_type", f"根键 '{key}' 的值应为映射 (dict)")
@@ -1033,12 +1224,12 @@ class ConfigValidator:
             "global_variables": self._validate_global_variables,
         }
 
-        validator = validators.get(key)
+        validator = validators.get(base_key)
         if validator:
             for item_id, item_value in value.items():
                 if VERSION_PREFIX.match(str(item_id)):
                     continue
-                clean_id = str(item_id).split("#")[0]
+                clean_id, _ = self._check_section_identifier(str(item_id))
                 validator(clean_id, item_value, f"{path}.")
 
     # =========================================================================
@@ -1071,7 +1262,13 @@ class ConfigValidator:
             if field_name == "data":
                 self._validate_item_data(field_value, field_path)
             elif field_name == "client_bound_data":
-                self._validate_item_data(field_value, field_path, is_client_bound=True)
+                if field_value is None:
+                    self.add_error(field_path, "paid_only", "字段 'client_bound_data' 为付费版专属（值为空占位符）",
+                                   severity="warning")
+                elif isinstance(field_value, dict):
+                    self._validate_item_data(field_value, field_path, is_client_bound=True)
+                else:
+                    self.add_error(field_path, "wrong_type", "client_bound_data 应为映射或空")
             elif field_name == "settings":
                 self._validate_item_settings(field_value, field_path)
             elif field_name == "behavior" or field_name == "behaviors":
@@ -1082,7 +1279,8 @@ class ConfigValidator:
                 self._validate_events(field_value, field_path, "item")
             elif schema:
                 if schema.get("paid_only"):
-                    self.add_error(field_path, "paid_only", f"字段 '{field_name}' 为付费版专属")
+                    self.add_error(field_path, "paid_only", f"字段 '{field_name}' 为付费版专属",
+                                   severity="warning")
                 if not self._check_type(field_value, schema["type"], field_path):
                     self.add_error(field_path, "wrong_type", f"字段 '{field_name}' 类型错误",
                                    expected=schema["type"], actual=type(field_value).__name__)
@@ -1114,10 +1312,41 @@ class ConfigValidator:
             if VERSION_PREFIX.match(field_name):
                 continue
 
+            # 处理 data 内的节标识符: conditional#1, conditional#2 等
+            base_field, identifier = self._check_section_identifier(field_name)
+            if identifier:
+                # 有节标识符，根据基础字段名处理
+                if base_field == "conditional":
+                    # conditional#1/#2 是递归条件数据块
+                    if is_client_bound:
+                        self._validate_item_data(field_value, field_path, is_client_bound=True)
+                    else:
+                        self.add_error(field_path, "paid_only",
+                                       f"字段 '{field_name}' (conditional) 仅在 client_bound_data 下可用",
+                                       severity="warning")
+                else:
+                    schema = ITEM_DATA_FIELDS.get(base_field)
+                    if not schema:
+                        self.add_error(field_path, "unknown_field",
+                                       f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
+                continue
+
+            # 跳过 Minecraft 原生组件命名空间键
+            if ":" in field_name and not field_name.startswith("$"):
+                # minecraft:consumable, minecraft:food 等 Minecraft 原生组件
+                continue
+
+            # 在 conditional/client_bound_data 递归中，data 字段是递归的数据块
+            if field_name == "data" and is_client_bound:
+                if isinstance(field_value, dict):
+                    self._validate_item_data(field_value, field_path, is_client_bound)
+                continue
+
             schema = ITEM_DATA_FIELDS.get(field_name)
             if field_name == "conditional":
                 if not is_client_bound:
-                    self.add_error(field_path, "paid_only", "'conditional' 仅在 client_bound_data 下可用，且为付费版专属，severity")
+                    self.add_error(field_path, "paid_only", "'conditional' 仅在 client_bound_data 下可用，且为付费版专属",
+                                   severity="warning")
                 self._validate_item_data(field_value, field_path, is_client_bound)
                 continue
 
@@ -1247,11 +1476,21 @@ class ConfigValidator:
             self.add_error(path, "wrong_type", f"方块 '{block_id}' 的值应为映射")
             return
 
-        # 检查必填: state 或 states
+        # 检查: state 或 states（建议有，但某些行为型方块可以不显式定义）
         has_state = "state" in value
         has_states = "states" in value
+        has_properties = "properties" in value
         if not has_state and not has_states:
-            self.add_error(path, "missing_field", "方块缺少 'state' 或 'states' 字段 (必填)")
+            if has_properties:
+                # 使用 properties 的方块需要 behavior 配合
+                if "behavior" not in value and "behaviors" not in value:
+                    self.add_error(path, "missing_field",
+                                   "方块有 'properties' 但缺少 'behavior' (properties 需要 behavior 配合)")
+            else:
+                # 没有 state/states/properties 的纯行为方块，降级为警告
+                self.add_error(path, "missing_field",
+                               "方块缺少 'state' 或 'states' 字段 (行为型方块可忽略此警告)",
+                               severity="warning")
 
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
@@ -1271,6 +1510,10 @@ class ConfigValidator:
                 self._validate_loot_table(field_value, field_path)
             elif field_name == "events":
                 self._validate_events(field_value, field_path, "block")
+            elif field_name == "properties":
+                self._validate_block_properties(field_value, field_path)
+            elif field_name == "namespace":
+                pass  # 命名空间声明，直接接受
             else:
                 self.add_error(field_path, "unknown_field", f"方块字段 '{field_name}' 在 Wiki 中未找到")
 
@@ -1303,6 +1546,12 @@ class ConfigValidator:
                     self.add_error(field_path, "wrong_type", "transparent 应为布尔值")
             elif field_name == "entity_renderer":
                 self._validate_entity_renderer(field_value, field_path)
+            elif field_name == "entity_culling":
+                # 状态级实体剔除（同家具变体）
+                pass
+            elif field_name == "properties":
+                # state 内联属性定义
+                self._validate_block_properties(field_value, field_path)
             elif field_name == "id":
                 if not isinstance(field_value, int):
                     self.add_error(field_path, "wrong_type", "id 应为整数")
@@ -1329,10 +1578,17 @@ class ConfigValidator:
         for prop_name, prop_value in value.items():
             prop_path = f"{path}.{prop_name}"
             if not isinstance(prop_value, dict):
-                self.add_error(prop_path, "wrong_type", f"属性 '{prop_name}' 应为映射")
+                # 简写格式: open: false 等价于 open: { type: boolean, default: false }
+                # 接受 boolean/string/int 类型的简写值
+                if isinstance(prop_value, (bool, str, int, float)):
+                    continue
+                self.add_error(prop_path, "wrong_type", f"属性 '{prop_name}' 应为映射或标量简写值")
                 continue
             if "type" not in prop_value:
-                self.add_error(prop_path, "missing_field", f"属性 '{prop_name}' 缺少 'type' 字段")
+                # 空映射或只有默认值的属性（如 open: {}），使用默认类型 int 或无类型
+                if prop_value:
+                    self.add_error(prop_path, "missing_field", f"属性 '{prop_name}' 缺少 'type' 字段",
+                                   severity="warning")
                 continue
             ptype = prop_value["type"]
             if ptype not in PROPERTY_TYPES:
@@ -1432,8 +1688,6 @@ class ConfigValidator:
                 self._validate_loot_table(field_value, field_path)
             elif field_name == "events":
                 self._validate_events(field_value, field_path, "furniture")
-            elif field_name == "settings":
-                self._validate_furniture_settings(field_value, field_path)
             else:
                 self.add_error(field_path, "unknown_field", f"家具字段 '{field_name}' 在 Wiki 中未找到")
 
@@ -1563,7 +1817,8 @@ class ConfigValidator:
             if "id" not in result:
                 self.add_error(f"{path}.result", "missing_field", "result 缺少 'id' 字段")
             if "visual_result" in value:
-                self.add_error(f"{path}.visual_result", "paid_only", "visual_result 为付费版专属")
+                self.add_error(f"{path}.visual_result", "paid_only", "visual_result 为付费版专属",
+                               severity="warning")
 
     # =========================================================================
     # 装备校验
@@ -1634,6 +1889,21 @@ class ConfigValidator:
         path = f"{base_path}{loot_id}"
         if not isinstance(value, dict):
             self.add_error(path, "wrong_type", "vanilla_loots 应为映射")
+            return
+
+        # 校验 vanilla_loots 必填字段
+        if "type" not in value:
+            self.add_error(path, "missing_field", "vanilla_loots 缺少 'type' 字段 (必填)")
+        elif value["type"] not in ("block", "entity", "chest", "fishing", "gift"):
+            self.add_error(f"{path}.type", "invalid_enum",
+                           f"vanilla_loots type '{value.get('type')}' 无效",
+                           expected="{block, entity, chest, fishing, gift}")
+
+        if "target" not in value:
+            self.add_error(path, "missing_field", "vanilla_loots 缺少 'target' 字段 (必填)")
+
+        if "loot" in value:
+            self._validate_loot_table(value["loot"], f"{path}.loot")
 
     # =========================================================================
     # 模板校验
@@ -1771,8 +2041,12 @@ class ConfigValidator:
     def _validate_global_variables(self, var_id: str, value: Any, base_path: str):
         """校验全局变量"""
         path = f"{base_path}{var_id}"
-        if not isinstance(value, dict):
-            self.add_error(path, "wrong_type", "global_variables 应为映射")
+        if isinstance(value, dict):
+            # dict 格式的全局变量，校验内部字段
+            for field_name, field_value in value.items():
+                schema = GLOBAL_VARIABLE_FIELDS.get(field_name)
+                if schema and not self._check_type(field_value, schema["type"], f"{path}.{field_name}"):
+                    self.add_error(f"{path}.{field_name}", "wrong_type", f"全局变量字段 '{field_name}' 类型错误")
 
 
 # =============================================================================

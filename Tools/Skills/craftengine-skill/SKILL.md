@@ -1,6 +1,6 @@
 ---
 name: craftengine-skill
-version: 2.0.0
+version: 3.0.0
 description: >-
   Generate CraftEngine plugin YAML configuration templates based strictly on the
   CraftEngine Wiki and CraftEngine Template content. Analyzes user needs,
@@ -13,7 +13,10 @@ description: >-
   "CraftEngine方块", "CraftEngine家具", "CraftEngine配方", "CraftEngine装备",
   "CE config", "craftengine template", "生成CE物品", "生成CE方块",
   "生成CE家具", "craftengine配置", "写CE配置", "CraftEngine自定义",
-  "craftengine item", "craftengine block", "craftengine furniture".
+  "craftengine item", "craftengine block", "craftengine furniture",
+  "CraftEngine高级配置", "CraftEngine农作物", "CraftEngine食物",
+  "CraftEngine工具", "CraftEngine字体", "CraftEngine原版战利品",
+  "CraftEngine世界生成", "CraftEngine配置合并", "CraftEngine翻译".
 context: fork
 agent: general-purpose
 allowed-tools: Read Write Glob Grep Bash WebFetch
@@ -54,14 +57,19 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
    - `equipment` — 装备盔甲（组件型/纹饰型）
    - `category` — 物品分类
    - `loot_table` — 战利品表
+   - `vanilla_loot` — 原版战利品覆盖（覆盖 Minecraft 原生方块/实体的战利品）
    - `jukebox_song` — 唱片机曲目
    - `painting` — 画
    - `image` — 图像
    - `emoji` — 表情
    - `sound` — 音效
-   - `template` — 模板系统
+   - `font` / `fonts` — 字体
+   - `template` — 模板系统（含配置工厂）
    - `global_variable` — 全局变量
-   - `lang` / `i18n` — 语言/翻译
+   - `lang` / `i18n` / `translations` — 语言/翻译
+   - `config_merges` — 配置合并
+   - `configured_feature` — 世界生成配置
+   - `advanced` — 高级配置特性（节标识符 `#`、节分隔符 `::`、版本条件 `$$`、YAML 类型标签、子包）
 
 2. **核心功能**：用户希望这个配置实现什么功能？
    - 例如：可放置的方块、可交互的家具、带特效的武器、可种植的作物等
@@ -109,19 +117,24 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 - 装备盔甲 → `references/CraftEngine Wiki/configuration/equipment.md`
 - 分类 → `references/CraftEngine Wiki/configuration/category.md`
 - 战利品表 → `references/CraftEngine Wiki/reference/loot_table.md`
+- 原版战利品覆盖 → `references/CraftEngine Wiki/configuration/vanilla_loot.md`
 - 模板系统 → `references/CraftEngine Wiki/reference/template.md`
 - 事件系统（46 种函数） → `references/CraftEngine Wiki/reference/events.md`
-- 条件系统（27 种条件） → `references/CraftEngine Wiki/reference/conditions.md`
+- 条件系统（28 种条件） → `references/CraftEngine Wiki/reference/conditions.md`
 - 文本格式（MiniMessage + 附加标签） → `references/CraftEngine Wiki/reference/text_format.md`
 - 数字格式（11 种） → `references/CraftEngine Wiki/reference/number_format.md`
 - 链式参数 → `references/CraftEngine Wiki/reference/text_format/chain_arguments.md`
 - 全局变量 → `references/CraftEngine Wiki/configuration/global_variable.md`
-- 语言/翻译 → `references/CraftEngine Wiki/configuration/lang.md` + `references/CraftEngine Wiki/configuration/i18n.md`
+- 语言/翻译 → `references/CraftEngine Wiki/configuration/lang.md` + `references/CraftEngine Wiki/configuration/i18n.md` + `configuration/translations.md`（如存在）
 - 图像/表情 → `references/CraftEngine Wiki/configuration/image.md` + `references/CraftEngine Wiki/configuration/emoji.md`
 - 唱片/音效 → `references/CraftEngine Wiki/configuration/jukebox_song.md` + `references/CraftEngine Wiki/configuration/sound.md`
 - 画 → `references/CraftEngine Wiki/configuration/painting.md`
 - 字体 → `references/CraftEngine Wiki/configuration/font.md`
 - 文件冲突 → `references/CraftEngine Wiki/reference/file_conflict.md`
+- 世界生成配置 → `references/CraftEngine Wiki/configuration/configured_feature.md`（如存在）
+- 命令参考 → `references/CraftEngine Wiki/reference/commands.md`
+- 高级配置特性（节标识符/节分隔符/版本条件/YAML类型标签） → `references/CraftEngine Wiki/configuration.md`（configuration.md 顶层文档）
+- 兼容性（反Xray/ASP/Axiom/BlueMap/数据包/外部物品来源/MM/PAPI/QuickShop/Skript/Leveler/WorldPainter） → `references/CraftEngine Wiki/compatibility/` 对应子页面
 
 #### Template 查阅规则
 
@@ -162,6 +175,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 - 装备类：
   - `盔甲套装.yml` — 组件型/纹饰型/3D 头盔
 - 其他：
+  - `高级配置特性.yml` — 节标识符 `#`、节分隔符 `::`、版本条件 `$$`、扩展值类型、子包
   - `分类配置.yml` — 分类菜单
   - `战利品表.yml` — 战利品表
   - `模板系统.yml` — template/config_factory
@@ -187,6 +201,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 - `装备/1. 盔甲套装.yml`
 - `事件与条件/1. 事件函数完整示例.yml` + `2. 条件完整示例.yml`
 - `其他配置/1. 图像与表情.yml` 到 `7. 文件冲突与字体与更新器.yml`
+- `完整产业链/` — **完整产业链示例目录**，包含 30+ 个跨配置类型的综合示例（如 `6. 红石与机械产业链.yml`、`8. 存储与物流产业链.yml`、`10. 经济与交易产业链.yml`、`11. 音乐与音效产业链.yml`、`12. 世界生成与树木产业链.yml`、`15. 模板系统高级应用.yml`、`16. 农耕扩展产业链.yml`、`18. 便携工具产业链.yml`、`19. 酿造与饮品产业链.yml`、`22. 自定义工作台产业链.yml`、`24. 诅咒物品与进化产业链.yml`、`27. 容器与背包产业链.yml`、`30. 装备进阶升阶产业链.yml`、`31. 生物战利品专业化产业链.yml`、`32. 家具套装产业链.yml`、`35. 字体与表情产业链.yml`、`36. 物品更新升级产业链.yml`、`37. 分类菜单与UI组织产业链.yml`、`42. 物品模型高级展示产业链.yml`、`44. 座椅与社交家具产业链.yml`、`45. 定向放置与悬挂产业链.yml`、`47. 可剥离方块与木材加工产业链.yml`、`50. 语言与国际化产业链.yml`、`58. 物品品质与稀有度系统产业链.yml` 等），适合需要跨配置类型的综合参考场景
 
 使用 `Read` 工具读取对应的 Wiki 页面和 Template 文件，将关键配置结构加载到上下文中。
 
@@ -357,6 +372,95 @@ recipes:
       count: 1
 ```
 
+**原版战利品覆盖 (vanilla_loots) 生成规范：**
+```yaml
+vanilla_loots:
+  namespace:loot_id:
+    type: block / entity            # 覆盖目标类型（来源: Wiki vanilla_loot.md）
+    target: "minecraft:grass"        # 或 target: [...] 方块状态列表
+    override: false                  # 是否覆盖原版战利品（可选）
+    loot:                            # 战利品配置（同 loot_table.md 语法）
+      - ...
+```
+
+#### 高级配置特性
+
+当用户需要高级配置特性时，使用以下特殊语法（来源: `高级配置特性.yml` / Wiki `configuration.md`）：
+
+**1. 节标识符 (Section Identifiers) `#`**
+用于在同一文件中出现多个同类型配置节：
+```yaml
+items#0:
+  namespace:first_group:
+    material: paper
+items#1:
+  namespace:second_group:
+    material: stick
+```
+标识符可以是任意字符串：`items#main`、`blocks#extra`、`recipes#a` 等。
+
+**2. 节分隔符 (Section Separators) `::`**
+将深层嵌套折叠为单行，提高可读性：
+```yaml
+items:
+  namespace:item:
+    data::item_name: "<!i>示例物品"         # 等价于 data: → item_name:
+    data::food::nutrition: 5                # 等价于 data: → food: → nutrition:
+    data::components::minecraft:max_damage: 128
+```
+
+**3. 版本条件配置 (Version Conditions) `$$`**
+根据服务器版本自动选择值或合并配置块：
+```yaml
+items:
+  namespace:version_item:
+    material: paper
+    data:
+      item_name:
+        $$>=1.21.2: "<!i>新版名称"          # 1.21.2+ 使用
+        $$1.20.1~1.21.1: "&6旧版名称"       # 1.20.1~1.21.1 使用
+        $$fallback: "&7默认名称"             # 回退值
+```
+格式支持：
+- 固定版本：`$$1.21.4`
+- 版本范围：`$$1.20.1~1.21.4`
+- 版本比较：`$$>=1.21.4`、`$$<1.21.8`
+- 回退值：`$$fallback: <value>`
+
+**4. 版本条件合并 (Version Merge)**
+```yaml
+items:
+  namespace:item:
+    material: paper
+    data:
+      item_name: "<!i>基础名称"
+    $$>=1.21.2:                              # 仅在 1.21.2+ 合并以下内容
+      data:
+        food:
+          nutrition: 4
+          saturation: 2.5
+```
+
+**5. 扩展值类型 (Extended Value Types / YAML Tags)**
+确保数值被正确解析（来源: `高级配置特性.yml`）：
+```yaml
+data:
+  components:
+    minecraft:custom_data: !!long 12345678901234
+```
+可用标签：`!!long`、`!!float`、`!!byte`、`!!short`、`!!ByteArray`、`!!IntArray`、`!!LongArray`、`!!DoubleArray`、`!!IntList`、`!!LongList`、`!!DoubleList`
+
+**6. 子包 (Subpacks)**
+在 `pack.yml` 中配置，允许根据版本条件启用/禁用资源包子包：
+```yaml
+# plugins/CraftEngine/pack.yml
+subpacks:
+  $$>=1.21.4:
+    modern_pack: true          # 1.21.4+ 启用
+  legacy_pack: true            # 始终启用
+  experimental_pack: false     # 默认禁用
+```
+
 #### 关键约束
 
 - **绝对不要使用 Wiki 中没有提到的字段、参数或功能。** 如果你不确定某字段是否存在，查找 Wiki 确认。Wiki 中找不到的，不使用。
@@ -366,6 +470,11 @@ recipes:
 - **使用 "<!i>" 前缀** 确保物品名称在 1.20.4 及以下版本正确显示（来源：Wiki data.md item_name 节）。
 - **使用 MiniMessage 格式** 进行文本格式化（来源：Wiki reference/text_format.md）。
 - **可选字段注释掉** 而非删除，方便用户按需启用。
+- **使用 `#<标识符>` 节标识符** 时，确保每个标识符唯一，且仅用于区分同类型的多个配置节。
+- **使用 `::` 节分隔符** 时，确认嵌套路径正确，避免因路径歧义导致配置无效。
+- **使用 `$$` 版本条件** 时，始终提供 `$$fallback` 回退值以兼容未覆盖的版本。
+- **使用 YAML 类型标签**（`!!long`、`!!float` 等）时，确保目标字段确实需要该类型，避免过度使用。
+- **高级配置特性**（节标识符、节分隔符、版本条件、YAML 标签、子包）仅在用户需求涉及时才使用，不可默认加入基础配置中。
 
 ### Step 5: 使用 Python 脚本校验
 
@@ -412,6 +521,9 @@ python scripts/craftengine_validator.py <config.yml>
 | **付费版标注** | 标注付费版专属功能（client_bound_data、conditional 等） |
 | **交叉引用** | 检查引用的分类 ID 是否存在 |
 | **物品行为规则** | rotation（8 种）、alignment（5 种）枚举校验 |
+| **高级语法校验** | 检查 `#` 节标识符唯一性、`::` 分隔符路径合法性、`$$` 版本条件格式正确性 |
+| **YAML 类型标签** | 校验 `!!long`、`!!float` 等类型标签的使用是否正确 |
+| **原版战利品覆盖** | 校验 `vanilla_loots` 的 type/target/override 字段 |
 
 #### 5c. 读取校验结果
 
@@ -471,6 +583,8 @@ python scripts/craftengine_validator.py <config.yml>
    - `furniture:` → `plugins/CraftEngine/furniture/<id>.yml`
    - `recipes:` → `plugins/CraftEngine/recipes/<id>.yml`
    - `equipments:` → `plugins/CraftEngine/equipments/<id>.yml`
+   - `vanilla_loots:` → `plugins/CraftEngine/vanilla_loots/<id>.yml`
+   - `fonts:` → `plugins/CraftEngine/fonts/<id>.yml`
    - 以此类推，子目录名与 YAML 根键名一致
 2. **检查目录是否存在** — 如果目标目录不存在，先向用户确认是否创建
 3. **写入文件** — 使用 `Write` 工具保存配置，包含完整的文件头注释（Wiki 参考路径、Template 参考路径、使用说明）
@@ -505,6 +619,12 @@ python scripts/craftengine_validator.py <config.yml>
 - **Never** 使用 `is:` 键（CraftEngine 不使用此键）
 - **Never** 假设 Template 文件中的占位符 namespace（如 `my:`、`custom:`）是正确的 — 提示用户替换
 - **Never** 在 YAML 中使用 Tab 缩进 — 只使用 2 空格缩进
+- **Always** 使用 `#` 节标识符时，确保标识符在同一文件中唯一
+- **Always** 使用 `::` 节分隔符时，验证嵌套路径的精确性，避免路径歧义
+- **Always** 使用 `$$` 版本条件时，提供 `$$fallback` 回退值覆盖未匹配的版本
+- **Always** 生成基础配置时保持简单（不使用高级特性），仅在用户需求涉及时才添加节标识符、版本条件、YAML 类型标签等高级语法
+- **Never** 在不需要高级特性的基础配置中使用 `#`、`::` 或 `$$` 语法
+- **Never** 将 `高级配置特性` 作为默认配置模板使用 — 仅在用户明确需求或配置复杂度确实需要时采用
 
 ## Examples
 
@@ -636,7 +756,12 @@ items:
 - **付费版功能**：`client_bound_data`、`client_bound_material`、`visual_result`、`functions`、`conditions`（配方级）、`conditional`（条件数据）等为付费版专属，生成时需要标注。
 - **auto_state 组**：方块状态使用 `auto_state` 时，组名必须来自 Wiki states.md 列的表格（如 `solid`、`note_block`、`leaves` 等）。
 - **YAML 格式**：CraftEngine 支持 `.yml` 和 `.yaml` 扩展名，配置文件应使用 UTF-8 编码。
-- **区块标识符**：当单个 YAML 文件中出现多个同一根键的配置块时，使用 `items#0:`、`items#1:` 格式（来源：Wiki configuration.md）。
-- **Template 优势**：CraftEngine 的模板系统（`templates` + `arguments`）可以大幅减少重复配置，适合批量生成类似物品。
+- **区块标识符**：当单个 YAML 文件中出现多个同一根键的配置块时，使用 `items#0:`、`items#1:` 格式（来源：Wiki configuration.md / `高级配置特性.yml`）。
+- **节分隔符 `::`**：将深层嵌套折叠为单行，如 `data::item_name:` 等价于 `data: → item_name:`（来源：`高级配置特性.yml` / Wiki configuration.md）。
+- **版本条件 `$$`**：使用 `$$>=1.21.2` 等前缀实现版本感知配置，需提供 `$$fallback` 回退值（来源：`高级配置特性.yml` / Wiki configuration.md）。
+- **YAML 类型标签**：`!!long`、`!!float`、`!!byte` 等确保数值被精确解析，适用于 NBT 组件等需要精确类型的场景（来源：`高级配置特性.yml`）。
+- **子包 (Subpacks)**：在 `pack.yml` 中配置，结合版本条件启用/禁用资源包子包（来源：`高级配置特性.yml`）。
+- **Template 优势**：CraftEngine 的模板系统（`templates` + `arguments`）可以大幅减少重复配置，适合批量生成类似物品。同时 `高级配置特性.yml` 提供的节分隔符、版本条件等可进一步优化配置结构。
+- **完整产业链示例**：`references/CraftEngine Template/Example/完整产业链/` 目录包含 30+ 个跨配置类型的综合示例，适合用户需要了解多个配置如何协作时参考。
 - **文件存放位置**：生成的配置文件应根据根键放入 CraftEngine 的对应子目录（如 `items:` → `items/` 目录，`blocks:` → `blocks/` 目录，`recipes:` → `recipes/` 目录等）。
 - **输出方式选择**：两种输出方式各有适用场景。"对话中返回"适合快速查看和复制配置片段；"输出到文件"适合生成完整配置后直接使用。如果用户不确定选择哪个，推荐"输出到文件"以便后续管理。
