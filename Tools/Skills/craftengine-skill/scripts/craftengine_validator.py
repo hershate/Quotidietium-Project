@@ -428,8 +428,10 @@ BLOCK_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["falling_block"], "required": True},
             "hurt_entities": {"type": "boolean", "required": False},
-            "hurt_amount": {"type": "int", "required": False},
+            "hurt_amount": {"type": "number", "required": False},
+            "max_hurt": {"type": "number", "required": False},
             "landing_sound": {"type": "string", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "strippable_block": {
@@ -1651,6 +1653,24 @@ class ConfigValidator:
         if bt not in BLOCK_BEHAVIOR_TYPES:
             self.add_error(f"{path}.type", "invalid_enum", f"方块行为类型 '{bt}' 无效",
                            expected=f"{{{', '.join(sorted(BLOCK_BEHAVIOR_TYPES))}}}")
+            return
+
+        # 校验 schema 中已定义的字段类型/枚举。
+        # 注意：BLOCK_BEHAVIOR_SCHEMA 尚不完整（部分行为字段未录入），因此仅校验
+        # 已定义字段，不对未知字段报错，避免对 Wiki 已支持但 schema 未录入的字段误报。
+        schema = BLOCK_BEHAVIOR_SCHEMA.get(bt)
+        if schema:
+            for field_name, field_value in value.items():
+                if field_name == "type":
+                    continue
+                field_schema = schema["fields"].get(field_name)
+                if field_schema:
+                    field_path = f"{path}.{field_name}"
+                    if not self._check_type(field_value, field_schema["type"], field_path):
+                        self.add_error(field_path, "wrong_type", f"行为 '{bt}' 的字段 '{field_name}' 类型错误",
+                                       expected=field_schema["type"], actual=type(field_value).__name__)
+                    if field_schema.get("values") and isinstance(field_value, str):
+                        self._check_enum(field_value, field_schema["values"], field_path)
 
     def _validate_entity_renderer(self, value: Any, path: str):
         """校验实体渲染器"""
