@@ -520,9 +520,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "bouncing_block": {
         "fields": {
             "type": {"type": "enum", "values": ["bouncing_block"], "required": True},
-            "bounce_percent": {"type": "number", "required": False, "default": 1.0},
+            "bounce_height": {"type": "number", "required": False},
             "fall_damage_multiplier": {"type": "number", "required": False},
-            "sync_to_client": {"type": "boolean", "required": False},
+            "sync_player_position": {"type": "boolean", "required": False},
         }
     },
     "sapling_block": {
@@ -574,13 +574,22 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "display_item_block": {
         "fields": {
             "type": {"type": "enum", "values": ["display_item_block"], "required": True},
+            "position": {"type": "string", "required": False},
+            "has_signal": {"type": "boolean", "required": False},
+            "data_key": {"type": "string", "required": False},
+            "tint_source": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "item_frame_block": {
         "fields": {
             "type": {"type": "enum", "values": ["item_frame_block"], "required": True},
-            "glowing": {"type": "boolean", "required": False},
+            "position": {"type": "string", "required": False},
+            "glow": {"type": "boolean", "required": False},
             "invisible": {"type": "boolean", "required": False},
+            "render_map_item": {"type": "boolean", "required": False},
+            "data_key": {"type": "string", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "simple_particle_block": {
@@ -639,7 +648,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "surface_spreading_block": {
         "fields": {
             "type": {"type": "enum", "values": ["surface_spreading_block"], "required": True},
-            "spread_chance": {"type": "number", "required": False},
+            "light_requirement": {"type": "int", "required": False},
+            "max_light_requirement": {"type": "int", "required": False},
+            "base_block": {"type": "string", "required": False},
         }
     },
     "face_attached_horizontal_directional_block": {
@@ -661,6 +672,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "pressure_plate_block": {
         "fields": {
             "type": {"type": "enum", "values": ["pressure_plate_block"], "required": True},
+            "sensitivity": {"type": "enum", "values": ["all", "mob"], "required": False},
+            "pressed_time": {"type": "int", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "vertical_crop_block": {
@@ -752,6 +766,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "directional_attached_block": {
         "fields": {
             "type": {"type": "enum", "values": ["directional_attached_block"], "required": True},
+            "blacklist": {"type": "boolean", "required": False},
+            "attached_blocks": {"type": "list_of_string", "required": False},
+            "attached_block_tags": {"type": "list_of_string", "required": False},
         }
     },
     "double_high_block": {
