@@ -869,9 +869,9 @@ FURNITURE_HITBOX_TYPES = {"interaction", "shulker", "happy_ghast", "custom"}
 FURNITURE_HITBOX_COMMON = {
     "type": {"type": "enum", "values": list(FURNITURE_HITBOX_TYPES), "required": True},
     "position": {"type": "string", "required": False, "default": "0,0,0"},
-    "scale": {"type": "number", "required": False, "default": 1},
+    "scale": {"type": "number_or_string", "required": False, "default": 1},
     "can_use_item_on": {"type": "boolean", "required": False, "default": True},
-    "can_be_hit_by_projctile": {"type": "boolean", "required": False, "default": True},
+    "can_be_hit_by_projectile": {"type": "boolean", "required": False, "default": True},
     "blocks_building": {"type": "boolean", "required": False, "default": True},
     "interactive": {"type": "boolean", "required": False},
     "invisible": {"type": "boolean", "required": False},
@@ -1886,6 +1886,17 @@ class ConfigValidator:
         if htype and htype not in FURNITURE_HITBOX_TYPES:
             self.add_error(f"{path}.type", "invalid_enum", f"判定箱类型 '{htype}' 无效",
                            expected=f"{{{', '.join(FURNITURE_HITBOX_TYPES)}}}")
+
+        # 校验 schema 中已定义的字段类型/枚举（未知字段跳过）
+        for field_name, field_value in value.items():
+            field_schema = FURNITURE_HITBOX_COMMON.get(field_name)
+            if field_schema:
+                field_path = f"{path}.{field_name}"
+                if not self._check_type(field_value, field_schema["type"], field_path):
+                    self.add_error(field_path, "wrong_type", f"判定箱字段 '{field_name}' 类型错误",
+                                   expected=field_schema["type"], actual=type(field_value).__name__)
+                if field_schema.get("values") and isinstance(field_value, str):
+                    self._check_enum(field_value, field_schema["values"], field_path)
 
         if htype == "shulker" and "direction" in value:
             self._check_enum(value["direction"], ["up", "down", "north", "west", "east", "south"], f"{path}.direction")
