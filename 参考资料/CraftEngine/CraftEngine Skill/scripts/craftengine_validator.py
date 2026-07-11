@@ -1176,7 +1176,9 @@ class ConfigValidator:
 
         # 允许多种值类型的根键（模板参考文件，值可以是列表、None 等）
         if base_key in ("providers", "functions", "broadcast_messages", "contextual_functions",
-                        "player", "block", "world", "entity", "server", "target", "position"):
+                        "player", "block", "world", "entity", "server", "target",
+                        "position", "furniture", "identity", "item",
+                        "relational_example", "custom_nameplates_items", "viewer_papi_example"):
             if not isinstance(value, (dict, list, type(None))):
                 self.add_error(path, "wrong_type", f"根键 '{key}' 的值类型不期望")
             return
@@ -1256,7 +1258,8 @@ class ConfigValidator:
                 self._validate_events(field_value, field_path, "item")
             elif schema:
                 if schema.get("paid_only"):
-                    self.add_error(field_path, "paid_only", f"字段 '{field_name}' 为付费版专属")
+                    self.add_error(field_path, "paid_only", f"字段 '{field_name}' 为付费版专属",
+                                   severity="warning")
                 if not self._check_type(field_value, schema["type"], field_path):
                     self.add_error(field_path, "wrong_type", f"字段 '{field_name}' 类型错误",
                                    expected=schema["type"], actual=type(field_value).__name__)
@@ -1782,7 +1785,8 @@ class ConfigValidator:
             if "id" not in result:
                 self.add_error(f"{path}.result", "missing_field", "result 缺少 'id' 字段")
             if "visual_result" in value:
-                self.add_error(f"{path}.visual_result", "paid_only", "visual_result 为付费版专属")
+                self.add_error(f"{path}.visual_result", "paid_only", "visual_result 为付费版专属",
+                               severity="warning")
 
     # =========================================================================
     # 装备校验
