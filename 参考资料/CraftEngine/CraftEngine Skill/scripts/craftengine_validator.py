@@ -46,9 +46,15 @@ VALID_ROOT_KEYS = {
     "categories", "loots", "vanilla_loots", "templates",
     "images", "sounds", "jukebox_songs", "paintings",
     "fonts", "lang", "i18n", "global_variables",
-    "emojis", "emoji", "config_factory", "item_updaters",
+    "emojis", "emoji", "image",  # singular forms
+    "config_factory", "item_updaters",
     "config_merges", "configured_feature", "translations",
     "namespace",  # 命名空间声明（如 namespace: my_mod）
+    # 文本/数字/链式参数等参考模板中使用的特殊根键
+    "custom",  # 自定义 MiniMessage 标签（文本格式模板）
+    "functions", "broadcast_messages", "contextual_functions",  # 文本格式模板函数
+    "providers",  # 数字格式提供者
+    "translation",  # 翻译
 }
 
 # Fields from the template system that can appear in ANY configuration block
@@ -227,6 +233,7 @@ ITEM_FIELDS = {
     "oversized_in_gui": {"type": "boolean", "required": False, "version": "1.21.6+", "default": True},
     "hand_animation_on_swap": {"type": "boolean", "required": False, "default": True},
     "swap_animation_scale": {"type": "number", "required": False, "version": "1.21.11+", "default": 1.0},
+    "use_remainder": {"type": "string", "required": False, "version": "1.21.2+"},
     "category": {"type": "string_or_list", "required": False},
 }
 
@@ -1496,7 +1503,10 @@ class ConfigValidator:
                 self.add_error(prop_path, "wrong_type", f"属性 '{prop_name}' 应为映射")
                 continue
             if "type" not in prop_value:
-                self.add_error(prop_path, "missing_field", f"属性 '{prop_name}' 缺少 'type' 字段")
+                # 空映射或只有默认值的属性（如 open: {}），使用默认类型 int 或无类型
+                if prop_value:
+                    self.add_error(prop_path, "missing_field", f"属性 '{prop_name}' 缺少 'type' 字段",
+                                   severity="warning")
                 continue
             ptype = prop_value["type"]
             if ptype not in PROPERTY_TYPES:
@@ -1948,8 +1958,12 @@ class ConfigValidator:
     def _validate_global_variables(self, var_id: str, value: Any, base_path: str):
         """校验全局变量"""
         path = f"{base_path}{var_id}"
-        if not isinstance(value, dict):
-            self.add_error(path, "wrong_type", "global_variables 应为映射")
+        if isinstance(value, dict):
+            # dict 格式的全局变量，校验内部字段
+            for field_name, field_value in value.items():
+                schema = GLOBAL_VARIABLE_FIELDS.get(field_name)
+                if schema and not self._check_type(field_value, schema["type"], f"{path}.{field_name}"):
+                    self.add_error(f"{path}.{field_name}", "wrong_type", f"全局变量字段 '{field_name}' 类型错误")
 
 
 # =============================================================================
