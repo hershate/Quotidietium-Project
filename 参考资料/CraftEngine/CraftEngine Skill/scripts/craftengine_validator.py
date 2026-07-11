@@ -55,6 +55,10 @@ VALID_ROOT_KEYS = {
     "functions", "broadcast_messages", "contextual_functions",  # 文本格式模板函数
     "providers",  # 数字格式提供者
     "translation",  # 翻译
+    # 链式参数模板中的参数名根键
+    "player", "block", "world", "entity", "server", "target",
+    # 更新器模板（item 和 items 同时存在）
+    "item",
 }
 
 # Fields from the template system that can appear in ANY configuration block
@@ -179,6 +183,7 @@ ITEM_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["liquid_collision_block_item"], "required": True},
             "block": {"type": "string_or_mapping", "required": True},
+            "offset_y": {"type": "number", "required": False},
         }
     },
     "liquid_collision_furniture_item": {
@@ -187,6 +192,8 @@ ITEM_BEHAVIOR_SCHEMA = {
             "type": {"type": "enum", "values": ["liquid_collision_furniture_item"], "required": True},
             "furniture": {"type": "string_or_mapping", "required": True},
             "rules": {"type": "mapping", "required": False},
+            "ignore_placer": {"type": "boolean", "required": False},
+            "ignore_entities": {"type": "boolean", "required": False},
         }
     },
     "furniture_item": {
@@ -368,7 +375,8 @@ BLOCK_BEHAVIOR_TYPES = {
     "crop_block", "stem_block", "attached_stem_block", "bush_block", "sapling_block",
     "vertical_crop_block", "falling_block", "concrete_powder_block", "bouncing_block",
     "strippable_block", "sturdy_base_block", "budding_block", "snowy_block",
-    "drop_experience_block", "display_item_block", "item_frame_block",
+    "drop_experience_block", "drop_exp_block",  # drop_exp_block 是丢经验方块的简写别名
+    "display_item_block", "item_frame_block",
     "simple_particle_block", "wall_torch_particle_block", "tint_source_block",
     "directional_attached_block", "face_attached_horizontal_directional_block",
     "hangable_block", "hanging_block", "liquid_flowable_block", "near_liquid_block",
@@ -1264,10 +1272,20 @@ class ConfigValidator:
             # 处理 data 内的节标识符: conditional#1, conditional#2 等
             base_field, identifier = self._check_section_identifier(field_name)
             if identifier:
-                # 有节标识符，检查基础字段名
-                schema = ITEM_DATA_FIELDS.get(base_field)
-                if not schema:
-                    self.add_error(field_path, "unknown_field", f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
+                # 有节标识符，根据基础字段名处理
+                if base_field == "conditional":
+                    # conditional#1/#2 是递归条件数据块
+                    if is_client_bound:
+                        self._validate_item_data(field_value, field_path, is_client_bound=True)
+                    else:
+                        self.add_error(field_path, "paid_only",
+                                       f"字段 '{field_name}' (conditional) 仅在 client_bound_data 下可用",
+                                       severity="warning")
+                else:
+                    schema = ITEM_DATA_FIELDS.get(base_field)
+                    if not schema:
+                        self.add_error(field_path, "unknown_field",
+                                       f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
                 continue
 
             schema = ITEM_DATA_FIELDS.get(field_name)
@@ -1500,7 +1518,11 @@ class ConfigValidator:
         for prop_name, prop_value in value.items():
             prop_path = f"{path}.{prop_name}"
             if not isinstance(prop_value, dict):
-                self.add_error(prop_path, "wrong_type", f"属性 '{prop_name}' 应为映射")
+                # 简写格式: open: false 等价于 open: { type: boolean, default: false }
+                # 接受 boolean/string/int 类型的简写值
+                if isinstance(prop_value, (bool, str, int, float)):
+                    continue
+                self.add_error(prop_path, "wrong_type", f"属性 '{prop_name}' 应为映射或标量简写值")
                 continue
             if "type" not in prop_value:
                 # 空映射或只有默认值的属性（如 open: {}），使用默认类型 int 或无类型
