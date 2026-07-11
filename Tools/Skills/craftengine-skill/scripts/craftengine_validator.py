@@ -1476,20 +1476,24 @@ class ConfigValidator:
             self.add_error(path, "wrong_type", f"方块 '{block_id}' 的值应为映射")
             return
 
-        # 检查: state 或 states（建议有，但某些行为型方块可以不显式定义）
+        # 检查: state 或 states（Wiki block.md 称其为唯一必填项，但 behaviors.md 与
+        # crop_block.md 等示例均展示仅含 behavior、无 state 的纯行为方块 -> 合法）
         has_state = "state" in value
         has_states = "states" in value
         has_properties = "properties" in value
+        has_behavior = "behavior" in value or "behaviors" in value
         if not has_state and not has_states:
-            if has_properties:
-                # 使用 properties 的方块需要 behavior 配合
-                if "behavior" not in value and "behaviors" not in value:
-                    self.add_error(path, "missing_field",
-                                   "方块有 'properties' 但缺少 'behavior' (properties 需要 behavior 配合)")
-            else:
-                # 没有 state/states/properties 的纯行为方块，降级为警告
+            if has_behavior:
+                # 纯行为型方块（含或不含块级 properties）-- Wiki 行为示例均无 state，视为合法
+                pass
+            elif has_properties:
+                # 仅有块级 properties 但无 behavior/state/states -- 缺少行为或状态定义
                 self.add_error(path, "missing_field",
-                               "方块缺少 'state' 或 'states' 字段 (行为型方块可忽略此警告)",
+                               "方块有 'properties' 但缺少 'behavior'/'state'/'states' (properties 应置于 states 下或配合 behavior)")
+            else:
+                # 既无 state/states，也无 behavior/properties -- 真正缺失必要定义
+                self.add_error(path, "missing_field",
+                               "方块缺少 'state'、'states' 或 'behavior' 字段",
                                severity="warning")
 
         for field_name, field_value in value.items():
