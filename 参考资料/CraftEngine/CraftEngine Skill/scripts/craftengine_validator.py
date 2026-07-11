@@ -235,7 +235,7 @@ ITEM_DATA_FIELDS = {
     "custom_name": {"type": "string", "required": False},
     "lore": {"type": "list", "required": False},
     "overwritable_lore": {"type": "list", "required": False, "paid_only": True},
-    "insert_lore": {"type": "list", "required": False},
+    "insert_lore": {"type": "mapping_or_list", "required": False},
     "remove_lore": {"type": "string", "required": False},
     "overwritable_item_name": {"type": "string", "required": False, "paid_only": True},
     "unbreakable": {"type": "boolean", "required": False},
@@ -1038,6 +1038,7 @@ class ConfigValidator:
             "string_or_list": lambda v: isinstance(v, (str, list)),
             "boolean_or_mapping": lambda v: isinstance(v, (bool, dict)),
             "boolean_or_string": lambda v: isinstance(v, (bool, str)),
+            "mapping_or_list": lambda v: isinstance(v, (dict, list)),
             "number_or_string": lambda v: isinstance(v, (int, float, str)),
             "string_or_number": lambda v: isinstance(v, (str, int, float)),
             "any": lambda v: True,
@@ -1138,6 +1139,12 @@ class ConfigValidator:
 
         if base_key not in VALID_ROOT_KEYS:
             self.add_error(path, "unknown_root_key", f"未知的根键 '{base_key}' (原键: '{key}')")
+            return
+
+        # 简单声明型根键（如 namespace: my_mod）允许非 dict 值
+        if base_key in ("namespace",):
+            if not isinstance(value, str):
+                self.add_error(path, "wrong_type", f"根键 '{key}' 的值应为字符串 (namespace 声明)")
             return
 
         if not isinstance(value, dict):
@@ -1390,14 +1397,21 @@ class ConfigValidator:
             self.add_error(path, "wrong_type", f"方块 '{block_id}' 的值应为映射")
             return
 
-        # 检查必填: state 或 states（或带有 properties 的行为型方块）
+        # 检查: state 或 states（建议有，但某些行为型方块可以不显式定义）
         has_state = "state" in value
         has_states = "states" in value
         has_properties = "properties" in value
-        has_behavior = "behavior" in value or "behaviors" in value
         if not has_state and not has_states:
-            if not (has_properties and has_behavior):
-                self.add_error(path, "missing_field", "方块缺少 'state' 或 'states' 字段 (或 properties + behavior 组合)")
+            if has_properties:
+                # 使用 properties 的方块需要 behavior 配合
+                if "behavior" not in value and "behaviors" not in value:
+                    self.add_error(path, "missing_field",
+                                   "方块有 'properties' 但缺少 'behavior' (properties 需要 behavior 配合)")
+            else:
+                # 没有 state/states/properties 的纯行为方块，降级为警告
+                self.add_error(path, "missing_field",
+                               "方块缺少 'state' 或 'states' 字段 (行为型方块可忽略此警告)",
+                               severity="warning")
 
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
