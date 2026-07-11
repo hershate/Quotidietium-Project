@@ -286,17 +286,17 @@ ITEM_DATA_FIELDS = {
     "equippable": {"type": "mapping", "required": False, "version": "1.21.2+"},
     "pdc": {"type": "mapping", "required": False},
     "profile": {"type": "string", "required": False},
-    "settings": {"type": "mapping", "required": False},  # data 内嵌 settings（部分模板用法）
+    "settings": {"type": "string_or_mapping", "required": False},  # data 内嵌 settings（支持 ${arg}）
     "consume_replacement": {"type": "string", "required": False},
     "block_model": {"type": "string", "required": False},
     "item_tier_id": {"type": "string", "required": False},
-    "crafted_with": {"type": "list_of_string", "required": False},
-    "effects": {"type": "list", "required": False},
-    "hitbox_settings": {"type": "mapping", "required": False},
+    "crafted_with": {"type": "string_or_list", "required": False},  # 支持 ${arg} 模板变量
+    "effects": {"type": "string_or_list", "required": False},  # 支持 ${arg} 模板变量
+    "hitbox_settings": {"type": "string_or_mapping", "required": False},  # 支持 ${arg}
     "painting_variant": {"type": "string", "required": False},
     "external": {"type": "mapping", "required": False},
     "nbt": {"type": "mapping", "required": False},
-    "components": {"type": "mapping", "required": False, "version": "1.20.5+"},
+    "components": {"type": "mapping_or_none", "required": False, "version": "1.20.5+"},
     "remove_components": {"type": "list_of_string", "required": False, "version": "1.20.5+"},
 }
 
@@ -1077,6 +1077,7 @@ class ConfigValidator:
             "boolean_or_mapping": lambda v: isinstance(v, (bool, dict)),
             "boolean_or_string": lambda v: isinstance(v, (bool, str)),
             "mapping_or_list": lambda v: isinstance(v, (dict, list)),
+            "mapping_or_none": lambda v: isinstance(v, (dict, type(None))),
             "number_or_string": lambda v: isinstance(v, (int, float, str)),
             "string_or_number": lambda v: isinstance(v, (str, int, float)),
             "any": lambda v: True,
