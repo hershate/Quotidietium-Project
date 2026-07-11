@@ -443,6 +443,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "door_block": {
         "fields": {
             "type": {"type": "enum", "values": ["door_block"], "required": True},
+            "can_open_with_hand": {"type": "boolean", "required": False},
+            "can_open_by_wind_charge": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "trapdoor_block": {
@@ -491,11 +494,27 @@ BLOCK_BEHAVIOR_SCHEMA = {
             "type": {"type": "enum", "values": ["simple_storage_block"], "required": True},
             "title": {"type": "string", "required": False},
             "rows": {"type": "int", "required": False},
+            "has_signal": {"type": "boolean", "required": False},
+            "allow_input": {"type": "boolean", "required": False},
+            "allow_output": {"type": "boolean", "required": False},
+            "data_key": {"type": "string", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "drawer_block": {
         "fields": {
             "type": {"type": "enum", "values": ["drawer_block"], "required": True},
+            "max_stacks": {"type": "int", "required": False},
+            "has_signal": {"type": "boolean", "required": False},
+            "allow_input": {"type": "boolean", "required": False},
+            "allow_output": {"type": "boolean", "required": False},
+            "item_position": {"type": "string_or_number", "required": False},
+            "text_position": {"type": "string_or_number", "required": False},
+            "item_scale": {"type": "string_or_number", "required": False},
+            "text_scale": {"type": "string_or_number", "required": False},
+            "data_key": {"type": "string", "required": False},
+            "compatible_mode": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "bouncing_block": {
@@ -634,7 +653,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "button_block": {
         "fields": {
             "type": {"type": "enum", "values": ["button_block"], "required": True},
-            "press_time": {"type": "int", "required": False, "default": 20},
+            "ticks_to_stay_pressed": {"type": "int", "required": False},
+            "can_be_activated_by_arrows": {"type": "boolean", "required": False},
+            "sounds": {"type": "mapping", "required": False},
         }
     },
     "pressure_plate_block": {
