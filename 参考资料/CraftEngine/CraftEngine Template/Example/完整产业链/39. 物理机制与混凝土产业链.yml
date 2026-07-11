@@ -82,7 +82,7 @@ blocks:
         bounce_height: 2.0
         fall_damage_multiplier: 0.0
         sync_player_position: true
-      - type: lamp_block
+      - type: toggleable_lamp_block
         can_open_with_hand: true
     settings:
       bounce_restitution: 1.0
