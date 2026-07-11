@@ -1240,10 +1240,20 @@ class ConfigValidator:
             if VERSION_PREFIX.match(field_name):
                 continue
 
+            # 处理 data 内的节标识符: conditional#1, conditional#2 等
+            base_field, identifier = self._check_section_identifier(field_name)
+            if identifier:
+                # 有节标识符，检查基础字段名
+                schema = ITEM_DATA_FIELDS.get(base_field)
+                if not schema:
+                    self.add_error(field_path, "unknown_field", f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
+                continue
+
             schema = ITEM_DATA_FIELDS.get(field_name)
             if field_name == "conditional":
                 if not is_client_bound:
-                    self.add_error(field_path, "paid_only", "'conditional' 仅在 client_bound_data 下可用，且为付费版专属，severity")
+                    self.add_error(field_path, "paid_only", "'conditional' 仅在 client_bound_data 下可用，且为付费版专属",
+                                   severity="warning")
                 self._validate_item_data(field_value, field_path, is_client_bound)
                 continue
 
