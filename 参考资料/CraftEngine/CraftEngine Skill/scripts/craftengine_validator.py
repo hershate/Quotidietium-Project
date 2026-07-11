@@ -194,6 +194,8 @@ ITEM_BEHAVIOR_SCHEMA = {
             "rules": {"type": "mapping", "required": False},
             "ignore_placer": {"type": "boolean", "required": False},
             "ignore_entities": {"type": "boolean", "required": False},
+            "source_only": {"type": "boolean", "required": False},
+            "liquid_type": {"type": "enum", "values": ["water", "lava"], "required": False},
         }
     },
     "furniture_item": {
@@ -210,6 +212,7 @@ ITEM_BEHAVIOR_SCHEMA = {
         "required": ["type"],
         "fields": {
             "type": {"type": "enum", "values": ["compostable_item"], "required": True},
+            "chance": {"type": "number", "required": False},
         }
     },
     "range_mining_item": {
@@ -241,6 +244,7 @@ ITEM_FIELDS = {
     "hand_animation_on_swap": {"type": "boolean", "required": False, "default": True},
     "swap_animation_scale": {"type": "number", "required": False, "version": "1.21.11+", "default": 1.0},
     "use_remainder": {"type": "string", "required": False, "version": "1.21.2+"},
+    "updater": {"type": "string_or_mapping", "required": False},
     "category": {"type": "string_or_list", "required": False},
 }
 
@@ -252,6 +256,7 @@ ITEM_DATA_FIELDS = {
     "insert_lore": {"type": "mapping_or_list", "required": False},
     "remove_lore": {"type": "string", "required": False},
     "overwritable_item_name": {"type": "string", "required": False, "paid_only": True},
+    "conditions": {"type": "list", "required": False},  # conditional 递归块内的条件
     "unbreakable": {"type": "boolean", "required": False},
     "enchantment": {"type": "mapping", "required": False},
     "dyed_color": {"type": "string", "required": False},
@@ -1096,6 +1101,9 @@ class ConfigValidator:
             return self._get_results()
 
         if not isinstance(data, dict):
+            if data is None:
+                # 空文件（仅注释），跳过校验
+                return self._get_results()
             self.add_error("(root)", "invalid_root", "配置文件根节点必须是一个映射 (dict)")
             return self._get_results()
 
@@ -1160,6 +1168,13 @@ class ConfigValidator:
         if base_key in ("namespace",):
             if not isinstance(value, str):
                 self.add_error(path, "wrong_type", f"根键 '{key}' 的值应为字符串 (namespace 声明)")
+            return
+
+        # 允许多种值类型的根键（模板参考文件，值可以是列表、None 等）
+        if base_key in ("providers", "functions", "broadcast_messages", "contextual_functions",
+                        "player", "block", "world", "entity", "server", "target", "position"):
+            if not isinstance(value, (dict, list, type(None))):
+                self.add_error(path, "wrong_type", f"根键 '{key}' 的值类型不期望")
             return
 
         if not isinstance(value, dict):
