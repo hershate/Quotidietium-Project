@@ -507,15 +507,25 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "sapling_block": {
+        "required": ["type", "feature"],
         "fields": {
             "type": {"type": "enum", "values": ["sapling_block"], "required": True},
+            "feature": {"type": "string", "required": True},
+            "light_requirement": {"type": "int", "required": False},
+            "max_light_requirement": {"type": "int", "required": False},
+            "grow_speed": {"type": "number", "required": False},
+            "bone_meal_success_chance": {"type": "number", "required": False},
         }
     },
     "bush_block": {
         "fields": {
             "type": {"type": "enum", "values": ["bush_block"], "required": True},
-            "max_stack": {"type": "int", "required": False},
-            "grow_speed": {"type": "number", "required": False},
+            "blacklist": {"type": "boolean", "required": False},
+            "stackable": {"type": "boolean", "required": False},
+            "max_height": {"type": "int", "required": False},
+            "delay": {"type": "int", "required": False},
+            "bottom_blocks": {"type": "list_of_string", "required": False},
+            "bottom_block_tags": {"type": "list_of_string", "required": False},
         }
     },
     "wall_torch_particle_block": {
@@ -636,17 +646,29 @@ BLOCK_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["vertical_crop_block"], "required": True},
             "grow_speed": {"type": "number", "required": False},
+            "max_height": {"type": "int", "required": False},
+            "direction": {"type": "enum", "values": ["up", "down"], "required": False},
         }
     },
     "stem_block": {
+        "required": ["type", "fruit", "attached_stem"],
         "fields": {
             "type": {"type": "enum", "values": ["stem_block"], "required": True},
+            "fruit": {"type": "string", "required": True},
+            "attached_stem": {"type": "string", "required": True},
+            "light_requirement": {"type": "int", "required": False},
+            "max_light_requirement": {"type": "int", "required": False},
+            "fruit_bottom_blocks": {"type": "list_of_string", "required": False},
+            "fruit_bottom_block_tags": {"type": "list_of_string", "required": False},
             "grow_speed": {"type": "number", "required": False},
         }
     },
     "attached_stem_block": {
+        "required": ["type", "fruit", "stem"],
         "fields": {
             "type": {"type": "enum", "values": ["attached_stem_block"], "required": True},
+            "fruit": {"type": "string", "required": True},
+            "stem": {"type": "string", "required": True},
         }
     },
     "hanging_block": {
@@ -1660,6 +1682,9 @@ class ConfigValidator:
         # 已定义字段，不对未知字段报错，避免对 Wiki 已支持但 schema 未录入的字段误报。
         schema = BLOCK_BEHAVIOR_SCHEMA.get(bt)
         if schema:
+            for req in schema.get("required", []):
+                if req not in value:
+                    self.add_error(path, "missing_field", f"行为 '{bt}' 缺少必填字段 '{req}'")
             for field_name, field_value in value.items():
                 if field_name == "type":
                     continue
