@@ -46,11 +46,11 @@ craftengine-skill/
 
 ## Workflow 说明
 
-1. **需求分析** — 解析用户需求，确定配置类型和核心功能
-2. **查阅参考资料** — 读取 Skill 内置的 Wiki 和 Template 对应页面
+1. **需求分析** — 解析用户需求，确定配置类型和核心功能（支持 20+ 种配置类型）
+2. **查阅参考资料** — 读取 Skill 内置的 Wiki（145+ 页面）和 Template（76+ 文件，含完整产业链示例）
 3. **确认不确定项** — 向用户询问缺失信息（含输出方式选择）
-4. **生成配置模板** — 严格依据 Wiki 内容生成 YAML 配置
-5. **校验** — 运行 `scripts/craftengine_validator.py` 执行全维度自动化校验（YAML 语法、字段存在性、类型、枚举值、行为类型、版本感知等）
+4. **生成配置模板** — 严格依据 Wiki 内容生成 YAML 配置，需要时支持高级配置特性（节标识符 `#`、节分隔符 `::`、版本条件 `$$`、YAML 类型标签、子包）
+5. **校验** — 运行 `scripts/craftengine_validator.py` 执行全维度自动化校验（YAML 语法、字段存在性、类型、枚举值、行为类型、版本感知、高级语法等）
 6. **交付** — 按用户选择的输出方式交付（对话返回 / 保存文件）
 
 ## 支持的全部配置类型
@@ -64,13 +64,18 @@ craftengine-skill/
 | `equipment` | 装备盔甲（组件型 1.21.2+ / 纹饰型 1.20+） | 2 |
 | `category` | 物品分类菜单（多级嵌套） | 1 |
 | `loot_table` | 战利品表（条目/函数/公式） | 1 |
+| `vanilla_loot` | 原版战利品覆盖（覆盖 Minecraft 原生方块/实体战利品） | 1 |
 | `jukebox_song` | 唱片机曲目 | 1 |
 | `painting` | 画 | 1 |
 | `image` / `emoji` | 图像/表情 | 2 |
 | `sound` | 音效 | 1 |
+| `font` / `fonts` | 字体 | 1 |
 | `template` | 模板系统（含配置工厂） | 1 |
-| `lang` / `i18n` | 语言/翻译 | 2 |
+| `lang` / `i18n` / `translations` | 语言/翻译 | 3 |
 | `global_variable` | 全局变量 | 1 |
+| `config_merges` | 配置合并 | 1 |
+| `configured_feature` | 世界生成配置 | 1 |
+| `advanced` | 高级配置特性（节标识符/节分隔符/版本条件/YAML类型标签/子包） | 1 |
 
 ## 核心原则
 
