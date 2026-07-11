@@ -57,6 +57,9 @@ VALID_ROOT_KEYS = {
     "translation",  # 翻译
     # 链式参数模板中的参数名根键
     "player", "block", "world", "entity", "server", "target",
+    "position", "furniture", "identity",  # 链式参数深层字段
+    # 文本格式模板示例根键
+    "relational_example", "custom_nameplates_items", "viewer_papi_example",
     # 更新器模板（item 和 items 同时存在）
     "item",
 }
@@ -257,6 +260,7 @@ ITEM_DATA_FIELDS = {
     "remove_lore": {"type": "string", "required": False},
     "overwritable_item_name": {"type": "string", "required": False, "paid_only": True},
     "conditions": {"type": "list", "required": False},  # conditional 递归块内的条件
+    "data": {"type": "mapping", "required": False},  # conditional 递归块内的 data
     "unbreakable": {"type": "boolean", "required": False},
     "enchantment": {"type": "mapping", "required": False},
     "dyed_color": {"type": "string", "required": False},
@@ -1301,6 +1305,12 @@ class ConfigValidator:
                     if not schema:
                         self.add_error(field_path, "unknown_field",
                                        f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
+                continue
+
+            # 在 conditional/client_bound_data 递归中，data 字段是递归的数据块
+            if field_name == "data" and is_client_bound:
+                if isinstance(field_value, dict):
+                    self._validate_item_data(field_value, field_path, is_client_bound)
                 continue
 
             schema = ITEM_DATA_FIELDS.get(field_name)
