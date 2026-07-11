@@ -1501,6 +1501,8 @@ class ConfigValidator:
 
             if VERSION_PREFIX.match(field_name):
                 continue
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
+                continue
 
             if field_name == "state":
                 self._validate_block_state(field_value, field_path)
@@ -1682,6 +1684,9 @@ class ConfigValidator:
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
 
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
+                continue
+
             if field_name == "settings":
                 self._validate_furniture_settings(field_value, field_path)
             elif field_name == "variants":
@@ -1849,6 +1854,8 @@ class ConfigValidator:
             return
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
+            if field_name in TEMPLATE_SYSTEM_FIELDS:
+                continue
             schema = CATEGORY_FIELDS.get(field_name)
             if schema:
                 if not self._check_type(field_value, schema["type"], field_path):
