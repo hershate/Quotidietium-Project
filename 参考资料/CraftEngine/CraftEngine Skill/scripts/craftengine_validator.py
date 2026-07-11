@@ -1066,8 +1066,9 @@ ARGUMENT_EXTENDED_TYPES = {"condition", "when", "to_upper_case", "to_lower_case"
 
 JUKEBOX_SONG_FIELDS = {
     "sound": {"type": "string", "required": False},
+    "length": {"type": "number", "required": False},
+    "description": {"type": "string", "required": False},
     "comparator_output": {"type": "int", "required": False},
-    "duration": {"type": "int", "required": False},
     "range": {"type": "int", "required": False},
 }
 
@@ -1076,9 +1077,10 @@ JUKEBOX_SONG_FIELDS = {
 PAINTING_FIELDS = {
     "width": {"type": "int", "required": False},
     "height": {"type": "int", "required": False},
+    "asset_id": {"type": "string", "required": False},
     "title": {"type": "string", "required": False},
     "author": {"type": "string", "required": False},
-    "admin_tab": {"type": "boolean", "required": False},
+    "show_in_op_tab": {"type": "boolean", "required": False},
 }
 
 # --- 12. 全局变量 (global_variables) Schema ---
@@ -2185,11 +2187,39 @@ class ConfigValidator:
 
     def _validate_jukebox_songs(self, song_id: str, value: Any, base_path: str):
         """校验唱片机曲目"""
-        pass  # 结构简单，基本类型校验即可
+        path = f"{base_path}{song_id}"
+        if value is None:
+            return  # 空配置（仅注册 ID，全部使用默认值）
+        if not isinstance(value, dict):
+            self.add_error(path, "wrong_type", "jukebox_songs 应为映射")
+            return
+        for field_name, field_value in value.items():
+            field_path = f"{path}.{field_name}"
+            schema = JUKEBOX_SONG_FIELDS.get(field_name)
+            if schema:
+                if not self._check_type(field_value, schema["type"], field_path):
+                    self.add_error(field_path, "wrong_type", f"jukebox_songs 字段 '{field_name}' 类型错误",
+                                   expected=schema["type"], actual=type(field_value).__name__)
+            else:
+                self.add_error(field_path, "unknown_field", f"jukebox_songs 字段 '{field_name}' 在 Wiki 中未找到")
 
     def _validate_paintings(self, paint_id: str, value: Any, base_path: str):
         """校验画"""
-        pass
+        path = f"{base_path}{paint_id}"
+        if value is None:
+            return  # 空配置（仅注册 ID，全部使用默认值 -- Wiki 所有字段均可选）
+        if not isinstance(value, dict):
+            self.add_error(path, "wrong_type", "paintings 应为映射")
+            return
+        for field_name, field_value in value.items():
+            field_path = f"{path}.{field_name}"
+            schema = PAINTING_FIELDS.get(field_name)
+            if schema:
+                if not self._check_type(field_value, schema["type"], field_path):
+                    self.add_error(field_path, "wrong_type", f"paintings 字段 '{field_name}' 类型错误",
+                                   expected=schema["type"], actual=type(field_value).__name__)
+            else:
+                self.add_error(field_path, "unknown_field", f"paintings 字段 '{field_name}' 在 Wiki 中未找到")
 
     def _validate_global_variables(self, var_id: str, value: Any, base_path: str):
         """校验全局变量"""
