@@ -607,8 +607,12 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "change_over_time_block": {
+        "required": ["type", "next_block"],
         "fields": {
             "type": {"type": "enum", "values": ["change_over_time_block"], "required": True},
+            "change_speed": {"type": "number", "required": False},
+            "next_block": {"type": "string", "required": True},
+            "excluded_properties": {"type": "list", "required": False},
         }
     },
     "spreading_block": {
@@ -619,11 +623,17 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "decay_block": {
         "fields": {
             "type": {"type": "enum", "values": ["decay_block"], "required": True},
+            "decay_into": {"type": "string", "required": False},
+            "delay": {"type": "string_or_number", "required": False},
+            "chance": {"type": "number", "required": False},
+            "required_light": {"type": "int", "required": False},
         }
     },
     "grass_block": {
+        "required": ["type", "feature"],
         "fields": {
             "type": {"type": "enum", "values": ["grass_block"], "required": True},
+            "feature": {"type": "string", "required": True},
         }
     },
     "surface_spreading_block": {
@@ -685,6 +695,12 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "hanging_block": {
         "fields": {
             "type": {"type": "enum", "values": ["hanging_block"], "required": True},
+            "blacklist": {"type": "boolean", "required": False},
+            "stackable": {"type": "boolean", "required": False},
+            "max_height": {"type": "int", "required": False},
+            "delay": {"type": "int", "required": False},
+            "above_blocks": {"type": "list_of_string", "required": False},
+            "above_block_tags": {"type": "list_of_string", "required": False},
         }
     },
     "hangable_block": {
@@ -701,6 +717,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "near_liquid_block": {
         "fields": {
             "type": {"type": "enum", "values": ["near_liquid_block"], "required": True},
+            "liquid_type": {"type": "string_or_list", "required": False},
+            "stackable": {"type": "boolean", "required": False},
+            "positions": {"type": "list_of_string", "required": False},
         }
     },
     "on_liquid_block": {
@@ -718,6 +737,11 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "sturdy_base_block": {
         "fields": {
             "type": {"type": "enum", "values": ["sturdy_base_block"], "required": True},
+            "direction": {"type": "string", "required": False},
+            "support_types": {"type": "list_of_string", "required": False},
+            "stackable": {"type": "boolean", "required": False},
+            "max_height": {"type": "int", "required": False},
+            "delay": {"type": "int", "required": False},
         }
     },
     "budding_block": {
