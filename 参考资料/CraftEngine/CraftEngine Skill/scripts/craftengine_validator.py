@@ -254,6 +254,7 @@ ITEM_FIELDS = {
     "use_remainder": {"type": "string", "required": False, "version": "1.21.2+"},
     "updater": {"type": "string_or_mapping", "required": False},
     "lore": {"type": "list", "required": False},  # 物品根级快捷方式
+    "functions": {"type": "list", "required": False, "paid_only": True},  # 付费版函数
     "category": {"type": "string_or_list", "required": False},
 }
 
@@ -285,8 +286,13 @@ ITEM_DATA_FIELDS = {
     "equippable": {"type": "mapping", "required": False, "version": "1.21.2+"},
     "pdc": {"type": "mapping", "required": False},
     "profile": {"type": "string", "required": False},
+    "settings": {"type": "mapping", "required": False},  # data 内嵌 settings（部分模板用法）
+    "consume_replacement": {"type": "string", "required": False},
     "block_model": {"type": "string", "required": False},
     "item_tier_id": {"type": "string", "required": False},
+    "crafted_with": {"type": "list_of_string", "required": False},
+    "effects": {"type": "list", "required": False},
+    "hitbox_settings": {"type": "mapping", "required": False},
     "painting_variant": {"type": "string", "required": False},
     "external": {"type": "mapping", "required": False},
     "nbt": {"type": "mapping", "required": False},
@@ -1173,6 +1179,9 @@ class ConfigValidator:
         base_key, _ = self._check_section_identifier(key)
 
         if base_key not in VALID_ROOT_KEYS:
+            # 数字格式/文本格式示例模板中的示例名和标签名（以 example_/tag_ 开头）
+            if base_key.startswith(("example_", "tag_")):
+                return
             self.add_error(path, "unknown_root_key", f"未知的根键 '{base_key}' (原键: '{key}')")
             return
 
@@ -1318,6 +1327,11 @@ class ConfigValidator:
                     if not schema:
                         self.add_error(field_path, "unknown_field",
                                        f"data 字段 '{field_name}' (基础名 '{base_field}') 在 Wiki 中未找到")
+                continue
+
+            # 跳过 Minecraft 原生组件命名空间键
+            if ":" in field_name and not field_name.startswith("$"):
+                # minecraft:consumable, minecraft:food 等 Minecraft 原生组件
                 continue
 
             # 在 conditional/client_bound_data 递归中，data 字段是递归的数据块
@@ -1530,6 +1544,9 @@ class ConfigValidator:
                     self.add_error(field_path, "wrong_type", "transparent 应为布尔值")
             elif field_name == "entity_renderer":
                 self._validate_entity_renderer(field_value, field_path)
+            elif field_name == "entity_culling":
+                # 状态级实体剔除（同家具变体）
+                pass
             elif field_name == "properties":
                 # state 内联属性定义
                 self._validate_block_properties(field_value, field_path)
