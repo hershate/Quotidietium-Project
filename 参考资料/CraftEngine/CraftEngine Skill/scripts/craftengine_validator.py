@@ -48,6 +48,7 @@ VALID_ROOT_KEYS = {
     "fonts", "lang", "i18n", "global_variables",
     "emojis", "emoji", "config_factory", "item_updaters",
     "config_merges", "configured_feature", "translations",
+    "namespace",  # 命名空间声明（如 namespace: my_mod）
 }
 
 # Fields from the template system that can appear in ANY configuration block
@@ -234,7 +235,7 @@ ITEM_DATA_FIELDS = {
     "custom_name": {"type": "string", "required": False},
     "lore": {"type": "list", "required": False},
     "overwritable_lore": {"type": "list", "required": False, "paid_only": True},
-    "insert_lore": {"type": "list_of_mapping", "required": False},
+    "insert_lore": {"type": "list", "required": False},
     "remove_lore": {"type": "string", "required": False},
     "overwritable_item_name": {"type": "string", "required": False, "paid_only": True},
     "unbreakable": {"type": "boolean", "required": False},
@@ -1197,7 +1198,13 @@ class ConfigValidator:
             if field_name == "data":
                 self._validate_item_data(field_value, field_path)
             elif field_name == "client_bound_data":
-                self._validate_item_data(field_value, field_path, is_client_bound=True)
+                if field_value is None:
+                    self.add_error(field_path, "paid_only", "字段 'client_bound_data' 为付费版专属（值为空占位符）",
+                                   severity="warning")
+                elif isinstance(field_value, dict):
+                    self._validate_item_data(field_value, field_path, is_client_bound=True)
+                else:
+                    self.add_error(field_path, "wrong_type", "client_bound_data 应为映射或空")
             elif field_name == "settings":
                 self._validate_item_settings(field_value, field_path)
             elif field_name == "behavior" or field_name == "behaviors":
@@ -1383,11 +1390,14 @@ class ConfigValidator:
             self.add_error(path, "wrong_type", f"方块 '{block_id}' 的值应为映射")
             return
 
-        # 检查必填: state 或 states
+        # 检查必填: state 或 states（或带有 properties 的行为型方块）
         has_state = "state" in value
         has_states = "states" in value
+        has_properties = "properties" in value
+        has_behavior = "behavior" in value or "behaviors" in value
         if not has_state and not has_states:
-            self.add_error(path, "missing_field", "方块缺少 'state' 或 'states' 字段 (必填)")
+            if not (has_properties and has_behavior):
+                self.add_error(path, "missing_field", "方块缺少 'state' 或 'states' 字段 (或 properties + behavior 组合)")
 
         for field_name, field_value in value.items():
             field_path = f"{path}.{field_name}"
@@ -1407,6 +1417,10 @@ class ConfigValidator:
                 self._validate_loot_table(field_value, field_path)
             elif field_name == "events":
                 self._validate_events(field_value, field_path, "block")
+            elif field_name == "properties":
+                self._validate_block_properties(field_value, field_path)
+            elif field_name == "namespace":
+                pass  # 命名空间声明，直接接受
             else:
                 self.add_error(field_path, "unknown_field", f"方块字段 '{field_name}' 在 Wiki 中未找到")
 
