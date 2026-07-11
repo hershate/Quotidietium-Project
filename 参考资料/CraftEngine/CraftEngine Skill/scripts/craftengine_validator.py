@@ -38,7 +38,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 # 常量定义
 # =============================================================================
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 DEFAULT_MINECRAFT_VERSION = "1.21.2"
 
 VALID_ROOT_KEYS = {
@@ -54,6 +54,26 @@ VALID_ROOT_KEYS = {
 TEMPLATE_SYSTEM_FIELDS = {"template", "arguments", "overrides", "merges"}
 
 VERSION_PREFIX = re.compile(r'^\$\$')
+SECTION_IDENTIFIER = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*#[a-zA-Z0-9_]+$')
+VERSION_CONDITION = re.compile(r'^\$\$[><]?=?\d+\.\d+(\.\d+)?(~[<>]?\d+\.\d+(\.\d+)?)?$|^\$\$fallback$')
+SEPARATOR_DOUBLE_COLON = re.compile(r'::')
+
+# Custom YAML loader that supports CraftEngine extended type tags
+class CraftEngineLoader(yaml.FullLoader):
+    """Custom YAML loader supporting CraftEngine extended type tags (!!long, !!float, !!byte, etc.)"""
+
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:long', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:float', lambda l, n: float(l.construct_scalar(n)))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:byte', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:short', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:null', lambda l, n: None)
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:ByteArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:IntArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:LongArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:DoubleArray', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:IntList', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:LongList', lambda l, n: l.construct_scalar(n))
+CraftEngineLoader.add_constructor('tag:yaml.org,2002:DoubleList', lambda l, n: l.construct_scalar(n))
 
 # =============================================================================
 # 错误类型定义
@@ -356,8 +376,13 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "crop_block": {
         "fields": {
             "type": {"type": "enum", "values": ["crop_block"], "required": True},
-            "light_level": {"type": "int", "required": False},
-            "growth_rate": {"type": "number", "required": False},
+            "grow_speed": {"type": "number", "required": False},
+            "light_requirement": {"type": "int", "required": False},
+            "max_light_requirement": {"type": "int", "required": False},
+            "spawn_light_requirement": {"type": "int", "required": False},
+            "max_spawn_light_requirement": {"type": "int", "required": False},
+            "is_bone_meal_target": {"type": "boolean", "required": False},
+            "bone_meal_age_bonus": {"type": "mapping", "required": False},
         }
     },
     "falling_block": {
@@ -449,6 +474,33 @@ BLOCK_BEHAVIOR_SCHEMA = {
         "fields": {
             "type": {"type": "enum", "values": ["bush_block"], "required": True},
             "max_stack": {"type": "int", "required": False},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "wall_torch_particle_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["wall_torch_particle_block"], "required": True},
+        }
+    },
+    "tint_source_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["tint_source_block"], "required": True},
+            "tint_color": {"type": "string", "required": False},
+        }
+    },
+    "directional_attached_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["directional_attached_block"], "required": True},
+        }
+    },
+    "near_liquid_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["near_liquid_block"], "required": True},
+        }
+    },
+    "on_liquid_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["on_liquid_block"], "required": True},
         }
     },
     "concrete_powder_block": {
@@ -515,6 +567,45 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "grass_block": {
         "fields": {
             "type": {"type": "enum", "values": ["grass_block"], "required": True},
+        }
+    },
+    "surface_spreading_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["surface_spreading_block"], "required": True},
+            "spread_chance": {"type": "number", "required": False},
+        }
+    },
+    "face_attached_horizontal_directional_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["face_attached_horizontal_directional_block"], "required": True},
+        }
+    },
+    "button_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["button_block"], "required": True},
+            "press_time": {"type": "int", "required": False, "default": 20},
+        }
+    },
+    "pressure_plate_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["pressure_plate_block"], "required": True},
+        }
+    },
+    "vertical_crop_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["vertical_crop_block"], "required": True},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "stem_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["stem_block"], "required": True},
+            "grow_speed": {"type": "number", "required": False},
+        }
+    },
+    "attached_stem_block": {
+        "fields": {
+            "type": {"type": "enum", "values": ["attached_stem_block"], "required": True},
         }
     },
     "hanging_block": {
@@ -870,6 +961,41 @@ class ConfigValidator:
                   severity: str = "error", expected: str = None, actual: str = None):
         self.errors.append(ValidationError(path, error_type, message, severity, expected, actual))
 
+    def _validate_version_condition(self, key: str, path: str):
+        """校验版本条件 $$ 格式"""
+        if VERSION_PREFIX.match(key):
+            if not VERSION_CONDITION.match(key):
+                self.add_error(path, "invalid_syntax",
+                               f"版本条件 '{key}' 格式无效，期望格式: $$1.21.2, $$>=1.21.2, $$1.20.1~1.21.4, $$fallback",
+                               severity="warning")
+            return True
+        return False
+
+    def _check_section_identifier(self, section_id: str) -> tuple:
+        """检查并拆分节标识符，返回 (base_key, identifier) 或 (section_id, None)"""
+        if "#" in section_id:
+            parts = section_id.split("#", 1)
+            return parts[0], parts[1]
+        return section_id, None
+
+    def _validate_section_identifiers(self, data: dict):
+        """校验所有节标识符的唯一性"""
+        seen_identifiers = {}  # base_key -> set of identifiers
+        for root_key in data:
+            if VERSION_PREFIX.match(str(root_key)):
+                continue
+            if "#" in str(root_key):
+                base_key, identifier = self._check_section_identifier(root_key)
+                if base_key in seen_identifiers:
+                    if identifier in seen_identifiers[base_key]:
+                        self.add_error(f"(root).{root_key}", "duplicate_identifier",
+                                       f"节标识符 '{identifier}' 在根键 '{base_key}' 中重复",
+                                       severity="warning")
+                    else:
+                        seen_identifiers[base_key].add(identifier)
+                else:
+                    seen_identifiers[base_key] = {identifier}
+
     def _check_version(self, version_req: Optional[str]) -> bool:
         """检查版本要求是否满足"""
         if version_req is None or version_req == "any":
@@ -947,7 +1073,7 @@ class ConfigValidator:
             return self._get_results()
 
         try:
-            data = yaml.safe_load(content)
+            data = yaml.load(content, Loader=CraftEngineLoader)
         except yaml.YAMLError as e:
             self.add_error("(yaml)", "yaml_parse_error", f"YAML 解析错误: {e}")
             return self._get_results()
@@ -958,6 +1084,9 @@ class ConfigValidator:
 
         # 第一遍: 收集所有定义 (用于交叉引用校验)
         self._collect_definitions(data)
+
+        # 第一遍: 校验高级语法
+        self._validate_section_identifiers(data)
 
         # 第二遍: 校验每个配置块
         for root_key, root_value in data.items():
@@ -981,37 +1110,34 @@ class ConfigValidator:
                 for item_id in root_value.keys():
                     if VERSION_PREFIX.match(str(item_id)):
                         continue
-                    clean_id = str(item_id).split("#")[0]  # 去掉区块标识符
+                    clean_id, _ = self._check_section_identifier(str(item_id))
                     if root_key == "items":
-                        self.defined_items.add(clean_id + ":" + item_id if ":" in str(item_id) else item_id)
+                        self.defined_items.add(clean_id)
                     elif root_key == "blocks":
-                        self.defined_blocks.add(str(item_id))
+                        self.defined_blocks.add(clean_id)
                     elif root_key == "furniture":
-                        self.defined_furniture.add(str(item_id))
+                        self.defined_furniture.add(clean_id)
                     elif root_key == "recipes":
-                        self.defined_recipes.add(str(item_id))
+                        self.defined_recipes.add(clean_id)
                     elif root_key == "categories":
-                        self.defined_categories.add(str(item_id))
+                        self.defined_categories.add(clean_id)
                     elif root_key == "templates":
-                        self.defined_templates.add(str(item_id))
+                        self.defined_templates.add(clean_id)
 
     def _validate_root_key(self, key: str, value: Any, base_path: str):
         """校验根键"""
         path = f"{base_path}{key}"
 
-        if key not in VALID_ROOT_KEYS:
-            # 检查是否是 config_factory 或区块标识符格式
-            if "#" in key:
-                base_key = key.split("#")[0]
-                if base_key in VALID_ROOT_KEYS:
-                    # 区块标识符是合法的
-                    pass
-                else:
-                    self.add_error(path, "unknown_root_key", f"未知的根键 '{key}'")
-                    return
-            else:
-                self.add_error(path, "unknown_root_key", f"未知的根键 '{key}'")
-                return
+        # 校验版本条件键格式
+        if self._validate_version_condition(key, path):
+            return
+
+        # 检查节标识符
+        base_key, _ = self._check_section_identifier(key)
+
+        if base_key not in VALID_ROOT_KEYS:
+            self.add_error(path, "unknown_root_key", f"未知的根键 '{base_key}' (原键: '{key}')")
+            return
 
         if not isinstance(value, dict):
             self.add_error(path, "wrong_type", f"根键 '{key}' 的值应为映射 (dict)")
@@ -1033,12 +1159,12 @@ class ConfigValidator:
             "global_variables": self._validate_global_variables,
         }
 
-        validator = validators.get(key)
+        validator = validators.get(base_key)
         if validator:
             for item_id, item_value in value.items():
                 if VERSION_PREFIX.match(str(item_id)):
                     continue
-                clean_id = str(item_id).split("#")[0]
+                clean_id, _ = self._check_section_identifier(str(item_id))
                 validator(clean_id, item_value, f"{path}.")
 
     # =========================================================================
@@ -1432,8 +1558,6 @@ class ConfigValidator:
                 self._validate_loot_table(field_value, field_path)
             elif field_name == "events":
                 self._validate_events(field_value, field_path, "furniture")
-            elif field_name == "settings":
-                self._validate_furniture_settings(field_value, field_path)
             else:
                 self.add_error(field_path, "unknown_field", f"家具字段 '{field_name}' 在 Wiki 中未找到")
 
@@ -1634,6 +1758,21 @@ class ConfigValidator:
         path = f"{base_path}{loot_id}"
         if not isinstance(value, dict):
             self.add_error(path, "wrong_type", "vanilla_loots 应为映射")
+            return
+
+        # 校验 vanilla_loots 必填字段
+        if "type" not in value:
+            self.add_error(path, "missing_field", "vanilla_loots 缺少 'type' 字段 (必填)")
+        elif value["type"] not in ("block", "entity", "chest", "fishing", "gift"):
+            self.add_error(f"{path}.type", "invalid_enum",
+                           f"vanilla_loots type '{value.get('type')}' 无效",
+                           expected="{block, entity, chest, fishing, gift}")
+
+        if "target" not in value:
+            self.add_error(path, "missing_field", "vanilla_loots 缺少 'target' 字段 (必填)")
+
+        if "loot" in value:
+            self._validate_loot_table(value["loot"], f"{path}.loot")
 
     # =========================================================================
     # 模板校验
