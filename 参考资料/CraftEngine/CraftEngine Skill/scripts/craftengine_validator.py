@@ -286,7 +286,7 @@ ITEM_DATA_FIELDS = {
     "equippable": {"type": "mapping", "required": False, "version": "1.21.2+"},
     "pdc": {"type": "mapping", "required": False},
     "profile": {"type": "string", "required": False},
-    "settings": {"type": "string_or_mapping", "required": False},  # data 内嵌 settings（支持 ${arg}）
+    "settings": {"type": "string_or_mapping_or_none", "required": False},  # data 内嵌 settings
     "consume_replacement": {"type": "string", "required": False},
     "block_model": {"type": "string", "required": False},
     "item_tier_id": {"type": "string", "required": False},
@@ -1073,6 +1073,7 @@ class ConfigValidator:
             "list_of_string": lambda v: isinstance(v, list) and all(isinstance(x, str) for x in v),
             "list_of_mapping": lambda v: isinstance(v, list) and all(isinstance(x, dict) for x in v),
             "string_or_mapping": lambda v: isinstance(v, (str, dict)),
+            "string_or_mapping_or_none": lambda v: isinstance(v, (str, dict, type(None))),
             "string_or_list": lambda v: isinstance(v, (str, list)),
             "boolean_or_mapping": lambda v: isinstance(v, (bool, dict)),
             "boolean_or_string": lambda v: isinstance(v, (bool, str)),
