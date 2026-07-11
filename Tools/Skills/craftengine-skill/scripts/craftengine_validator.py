@@ -558,21 +558,6 @@ BLOCK_BEHAVIOR_SCHEMA = {
             "tint_color": {"type": "string", "required": False},
         }
     },
-    "directional_attached_block": {
-        "fields": {
-            "type": {"type": "enum", "values": ["directional_attached_block"], "required": True},
-        }
-    },
-    "near_liquid_block": {
-        "fields": {
-            "type": {"type": "enum", "values": ["near_liquid_block"], "required": True},
-        }
-    },
-    "on_liquid_block": {
-        "fields": {
-            "type": {"type": "enum", "values": ["on_liquid_block"], "required": True},
-        }
-    },
     "concrete_powder_block": {
         "fields": {
             "type": {"type": "enum", "values": ["concrete_powder_block"], "required": True},
@@ -614,9 +599,11 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "stackable_block": {
+        "required": ["type", "items"],
         "fields": {
             "type": {"type": "enum", "values": ["stackable_block"], "required": True},
-            "max_stack": {"type": "int", "required": False},
+            "property": {"type": "string", "required": False},
+            "items": {"type": "list_of_string", "required": True},
         }
     },
     "change_over_time_block": {
@@ -648,6 +635,9 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "face_attached_horizontal_directional_block": {
         "fields": {
             "type": {"type": "enum", "values": ["face_attached_horizontal_directional_block"], "required": True},
+            "blacklist": {"type": "boolean", "required": False},
+            "attached_blocks": {"type": "list_of_string", "required": False},
+            "attached_block_tags": {"type": "list_of_string", "required": False},
         }
     },
     "button_block": {
@@ -705,6 +695,7 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "liquid_flowable_block": {
         "fields": {
             "type": {"type": "enum", "values": ["liquid_flowable_block"], "required": True},
+            "drop_item": {"type": "boolean", "required": False},
         }
     },
     "near_liquid_block": {
@@ -715,6 +706,8 @@ BLOCK_BEHAVIOR_SCHEMA = {
     "on_liquid_block": {
         "fields": {
             "type": {"type": "enum", "values": ["on_liquid_block"], "required": True},
+            "liquid_type": {"type": "list_of_string", "required": False},
+            "stackable": {"type": "boolean", "required": False},
         }
     },
     "snowy_block": {
@@ -743,9 +736,10 @@ BLOCK_BEHAVIOR_SCHEMA = {
         }
     },
     "multi_high_block": {
+        "required": ["type", "property"],
         "fields": {
             "type": {"type": "enum", "values": ["multi_high_block"], "required": True},
-            "height": {"type": "int", "required": False},
+            "property": {"type": "string", "required": True},
         }
     },
     "chime_block": {
