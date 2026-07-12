@@ -125,7 +125,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 - 数字格式（11 种） → `references/CraftEngine Wiki/reference/number_format.md`
 - 链式参数 → `references/CraftEngine Wiki/reference/text_format/chain_arguments.md`
 - 全局变量 → `references/CraftEngine Wiki/configuration/global_variable.md`
-- 语言/翻译 → `references/CraftEngine Wiki/configuration/lang.md` + `references/CraftEngine Wiki/configuration/i18n.md` + `configuration/translations.md`（如存在）
+- 语言/翻译 → `references/CraftEngine Wiki/configuration/lang.md` + `references/CraftEngine Wiki/configuration/i18n.md` + `references/CraftEngine Wiki/configuration/translations.md`（如存在）
 - 图像/表情 → `references/CraftEngine Wiki/configuration/image.md` + `references/CraftEngine Wiki/configuration/emoji.md`
 - 唱片/音效 → `references/CraftEngine Wiki/configuration/jukebox_song.md` + `references/CraftEngine Wiki/configuration/sound.md`
 - 画 → `references/CraftEngine Wiki/configuration/painting.md`
@@ -201,7 +201,7 @@ allowed-tools: Read Write Glob Grep Bash WebFetch
 - `装备/1. 盔甲套装.yml`
 - `事件与条件/1. 事件函数完整示例.yml` + `2. 条件完整示例.yml`
 - `其他配置/1. 图像与表情.yml` 到 `7. 文件冲突与字体与更新器.yml`
-- `完整产业链/` — **完整产业链示例目录**，包含 30+ 个跨配置类型的综合示例（如 `6. 红石与机械产业链.yml`、`8. 存储与物流产业链.yml`、`10. 经济与交易产业链.yml`、`11. 音乐与音效产业链.yml`、`12. 世界生成与树木产业链.yml`、`15. 模板系统高级应用.yml`、`16. 农耕扩展产业链.yml`、`18. 便携工具产业链.yml`、`19. 酿造与饮品产业链.yml`、`22. 自定义工作台产业链.yml`、`24. 诅咒物品与进化产业链.yml`、`27. 容器与背包产业链.yml`、`30. 装备进阶升阶产业链.yml`、`31. 生物战利品专业化产业链.yml`、`32. 家具套装产业链.yml`、`35. 字体与表情产业链.yml`、`36. 物品更新升级产业链.yml`、`37. 分类菜单与UI组织产业链.yml`、`42. 物品模型高级展示产业链.yml`、`44. 座椅与社交家具产业链.yml`、`45. 定向放置与悬挂产业链.yml`、`47. 可剥离方块与木材加工产业链.yml`、`50. 语言与国际化产业链.yml`、`58. 物品品质与稀有度系统产业链.yml` 等），适合需要跨配置类型的综合参考场景
+- `完整产业链/` — **完整产业链示例目录**，包含 70+ 个跨配置类型的综合示例（如 `6. 红石与机械产业链.yml`、`8. 存储与物流产业链.yml`、`10. 经济与交易产业链.yml`、`11. 音乐与音效产业链.yml`、`12. 世界生成与树木产业链.yml`、`15. 模板系统高级应用.yml`、`16. 农耕扩展产业链.yml`、`18. 便携工具产业链.yml`、`19. 酿造与饮品产业链.yml`、`22. 自定义工作台产业链.yml`、`24. 诅咒物品与进化产业链.yml`、`27. 容器与背包产业链.yml`、`30. 装备进阶升阶产业链.yml`、`31. 生物战利品专业化产业链.yml`、`32. 家具套装产业链.yml`、`35. 字体与表情产业链.yml`、`36. 物品更新升级产业链.yml`、`37. 分类菜单与UI组织产业链.yml`、`42. 物品模型高级展示产业链.yml`、`44. 座椅与社交家具产业链.yml`、`45. 定向放置与悬挂产业链.yml`、`47. 可剥离方块与木材加工产业链.yml`、`50. 语言与国际化产业链.yml`、`58. 物品品质与稀有度系统产业链.yml` 等），适合需要跨配置类型的综合参考场景
 
 使用 `Read` 工具读取对应的 Wiki 页面和 Template 文件，将关键配置结构加载到上下文中。
 
@@ -762,6 +762,6 @@ items:
 - **YAML 类型标签**：`!!long`、`!!float`、`!!byte` 等确保数值被精确解析，适用于 NBT 组件等需要精确类型的场景（来源：`高级配置特性.yml`）。
 - **子包 (Subpacks)**：在 `pack.yml` 中配置，结合版本条件启用/禁用资源包子包（来源：`高级配置特性.yml`）。
 - **Template 优势**：CraftEngine 的模板系统（`templates` + `arguments`）可以大幅减少重复配置，适合批量生成类似物品。同时 `高级配置特性.yml` 提供的节分隔符、版本条件等可进一步优化配置结构。
-- **完整产业链示例**：`references/CraftEngine Template/Example/完整产业链/` 目录包含 30+ 个跨配置类型的综合示例，适合用户需要了解多个配置如何协作时参考。
+- **完整产业链示例**：`references/CraftEngine Template/Example/完整产业链/` 目录包含 70+ 个跨配置类型的综合示例，适合用户需要了解多个配置如何协作时参考。
 - **文件存放位置**：生成的配置文件应根据根键放入 CraftEngine 的对应子目录（如 `items:` → `items/` 目录，`blocks:` → `blocks/` 目录，`recipes:` → `recipes/` 目录等）。
 - **输出方式选择**：两种输出方式各有适用场景。"对话中返回"适合快速查看和复制配置片段；"输出到文件"适合生成完整配置后直接使用。如果用户不确定选择哪个，推荐"输出到文件"以便后续管理。
