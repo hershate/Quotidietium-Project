@@ -2063,6 +2063,11 @@ class ConfigValidator:
         if "target" not in value:
             self.add_error(path, "missing_field", "vanilla_loots 缺少 'target' 字段 (必填)")
 
+        # override 字段（可选，布尔值，控制是否覆盖原版战利品）
+        if "override" in value and not isinstance(value["override"], bool):
+            self.add_error(f"{path}.override", "wrong_type", "override 应为布尔值",
+                           expected="boolean", actual=type(value["override"]).__name__)
+
         if "loot" in value:
             self._validate_loot_table(value["loot"], f"{path}.loot")
 
