@@ -852,7 +852,7 @@ FURNITURE_ELEMENT_COMMON_FIELDS = {
     "shadow_radius": {"type": "number", "required": False},
     "shadow_strength": {"type": "number", "required": False},
     "apply_dyed_color": {"type": "boolean", "required": False, "default": True},
-    "tint_source": {"type": "list_of_string", "required": False},
+    "tint_source": {"type": "any", "required": False},  # 列表(家具元素)/字符串/映射(实体渲染器) 多种形式
     "small": {"type": "boolean", "required": False},
     "sight_trace": {"type": "boolean", "required": False},
     "line_width": {"type": "int", "required": False},
@@ -1797,10 +1797,16 @@ class ConfigValidator:
         """校验单个实体渲染器元素"""
         if not isinstance(value, dict):
             return
-        # 常见字段检查与 furniture element 类似
-        for f in ("type", "item", "text", "translation", "position", "scale", "rotation", "billboard"):
-            if f in value and f == "billboard" and isinstance(value[f], str):
-                self._check_enum(value[f], ["fixed", "vertical", "horizontal", "center"], f"{path}.{f}")
+        # 实体渲染器与家具元素共用展示实体 schema（type 可省略：含 text -> text_display，含 item -> item_display）
+        for field_name, field_value in value.items():
+            field_schema = FURNITURE_ELEMENT_COMMON_FIELDS.get(field_name)
+            if field_schema:
+                field_path = f"{path}.{field_name}"
+                if not self._check_type(field_value, field_schema["type"], field_path):
+                    self.add_error(field_path, "wrong_type", f"渲染元素字段 '{field_name}' 类型错误",
+                                   expected=field_schema["type"], actual=type(field_value).__name__)
+                if field_schema.get("values") and isinstance(field_value, str):
+                    self._check_enum(field_value, field_schema["values"], field_path)
 
     # =========================================================================
     # 家具校验
