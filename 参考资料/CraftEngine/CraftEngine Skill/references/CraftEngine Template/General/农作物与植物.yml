@@ -200,3 +200,37 @@ blocks:
       max_height: 6                # << CHANGE THIS
       grow_speed: 1.0              # << CHANGE THIS 每随机刻必定 +1
       direction: up
+
+  # ==========================================================================
+  # 7. 【组合示例】多行为混合方块
+  #    结合不同方块行为创造全新的混合行为
+  # ==========================================================================
+
+  # --- 7a. 液面方块 + 农作物方块 = 水面生长的作物 ---
+  my_ns:water_lily_crop:                           # << CHANGE THIS
+    behaviors:
+      - type: on_liquid_block
+        liquid_type:                               # << CHANGE THIS 允许的液体类型
+          - water
+        stackable: false
+      - type: crop_block
+        grow_speed: 0.25                           # << CHANGE THIS
+        light_requirement: 9
+        max_light_requirement: 15
+        is_bone_meal_target: true
+
+  # --- 7b. 灯方块 + 可下落方块 = 会掉落的光源 ---
+  my_ns:falling_lamp:                              # << CHANGE THIS
+    behaviors:
+      - type: lamp_block                           # 红石控制亮灭
+      - type: falling_block                        # 受重力影响下落
+        hurt_amount: 2.0                           # << CHANGE THIS 下落砸人伤害
+        max_hurt: 10                               # << CHANGE THIS 最大伤害
+
+  # --- 7c. 可悬挂方块 + 发光家具 = 悬挂灯具 ---
+  #   (方块行为 + 家具行为混合, 需配合家具配置使用)
+  my_ns:hanging_lantern_block:                     # << CHANGE THIS
+    behaviors:
+      - type: hangable_block                       # 可悬挂在地面或天花板
+      - type: toggleable_lamp_block                # 红石翻转 + 手动交互
+        can_open_with_hand: true

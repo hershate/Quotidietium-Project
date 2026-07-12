@@ -1,0 +1,369 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 农业产业链
+# =============================================================================
+# 展示从农作物 → 食材 → 成品食物 → 药水的完整端到端配置
+# 命名空间: myfarm (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 农作物
+# =============================================================================
+blocks:
+  # 1a. 魔法小麦作物
+  myfarm:magic_wheat_crop:
+    state:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~7
+    behavior:
+      type: crop_block
+      grow_speed: 0.25
+      light_requirement: 9
+      max_light_requirement: 15
+      is_bone_meal_target: true
+      bone_meal_age_bonus:
+        type: uniform
+        min: 1
+        max: 3
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm:magic_wheat_seeds"
+              weight: 2
+            - type: item
+              item: "myfarm:magic_wheat"
+              weight: 1
+              functions:
+                - type: set_count
+                  count: 0~1
+
+  # 1b. 魔力浆果灌木
+  myfarm:magic_berry_bush:
+    state:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~3
+    behavior:
+      type: bush_block
+      blacklist: true
+      bottom_block_tags:
+        - minecraft:dirt
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm:magic_berries"
+              functions:
+                - type: set_count
+                  count: 1~3
+
+  # 1c. 魔力苹果树苗
+  myfarm:magic_apple_sapling:
+    state:
+      properties:
+        stage:
+          type: int
+          default: 0
+          range: 0~2
+    behavior:
+      type: sapling_block
+      feature: "myfarm:magic_apple_tree"
+      grow_speed: 0.143
+      bone_meal_success_chance: 0.45
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm:magic_apple_sapling"
+
+# =============================================================================
+# 二、物品 - 农产品
+# =============================================================================
+items:
+  # 2a. 魔法小麦种子
+  myfarm:magic_wheat_seeds:
+    material: wheat_seeds
+    custom_model_data: 3001
+    data:
+      item_name: "<!i><#FFD700>魔法小麦种子"
+    behavior:
+      type: block_item
+      block: myfarm:magic_wheat_crop
+    settings:
+      compost_probability: 0.3
+
+  # 2b. 魔法小麦
+  myfarm:magic_wheat:
+    material: wheat
+    custom_model_data: 3002
+    data:
+      item_name: "<!i><#FFD700>魔法小麦"
+      lore:
+        - "<gray>蕴含自然魔力的麦穗"
+    settings:
+      tags:
+        - "myfarm:magic_crops"
+
+  # 2c. 魔法面粉
+  myfarm:magic_flour:
+    material: sugar
+    custom_model_data: 3003
+    data:
+      item_name: "<!i><#FFD700>魔法面粉"
+      lore:
+        - "<gray>用魔法小麦磨制的面粉"
+
+  # 2d. 魔力浆果
+  myfarm:magic_berries:
+    material: sweet_berries
+    custom_model_data: 3004
+    data:
+      item_name: "<!i><#FF69B4>魔力浆果"
+      lore:
+        - "<gray>闪烁着粉色光芒的浆果"
+    settings:
+      food:
+        nutrition: 2
+        saturation: 1.0
+      compost_probability: 0.3
+
+  # 2e. 魔法苹果
+  myfarm:magic_apple:
+    material: apple
+    custom_model_data: 3005
+    data:
+      item_name: "<!i><#FF4500>魔法苹果"
+      lore:
+        - "<gray>注入了魔力的红苹果"
+      food:
+        nutrition: 4
+        saturation: 2.4
+        can_always_eat: false
+
+# =============================================================================
+# 三、配方 - 加工
+# =============================================================================
+  # 4a. 魔法面包 (基础食物 + 消耗组件)
+  myfarm:magic_bread:
+    material: bread
+    custom_model_data: 3010
+    data:
+      item_name: "<!i><#FFD700>魔法面包"
+      lore:
+        - "<gray>恢复大量饱食度"
+      food:
+        nutrition: 8
+        saturation: 6.0
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.6
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+
+  # 4b. 烤魔法苹果 (带状态效果)
+  myfarm:baked_magic_apple:
+    material: golden_apple
+    custom_model_data: 3011
+    data:
+      item_name: "<!i><#FF4500>烤魔法苹果"
+      lore:
+        - "<gray>食用后获得生命恢复"
+      food:
+        nutrition: 6
+        saturation: 4.8
+        can_always_eat: true
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: eat
+          sound: minecraft:entity.generic.eat
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:regeneration
+                  duration: 100
+                  amplifier: 0
+                - id: minecraft:saturation
+                  duration: 100
+                  amplifier: 0
+
+  # 4c. 魔力浆果派 (高级食物)
+  myfarm:magic_berry_pie:
+    material: pumpkin_pie
+    custom_model_data: 3012
+    data:
+      item_name: "<!i><#FF69B4>魔力浆果派"
+      lore:
+        - "<gray>魔法浆果制成的甜点"
+      food:
+        nutrition: 6
+        saturation: 7.2
+      settings:
+      consume_replacement: minecraft:bowl
+
+# =============================================================================
+# 四、物品 - 药水 (消耗品链)
+# =============================================================================
+  # 5a. 魔法蜂蜜 (基础消耗品)
+  myfarm:magic_honey:
+    material: honey_bottle
+    custom_model_data: 3020
+    data:
+      item_name: "<!i><#FFD700>魔法蜂蜜"
+      lore:
+        - "<gray>甜美且充满魔力"
+      food:
+        nutrition: 6
+        saturation: 2.0
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+    settings:
+      consume_replacement: minecraft:glass_bottle
+
+  # 5b. 治愈药水 (多重效果)
+  myfarm:healing_potion:
+    material: potion
+    custom_model_data: 3021
+    data:
+      item_name: "<!i><#FF69B4>治愈药水"
+      lore:
+        - "<gray>恢复生命并清除负面效果"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.6
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:regeneration
+                  duration: 200
+                  amplifier: 1
+                - id: minecraft:absorption
+                  duration: 1200
+                  amplifier: 0
+            - type: minecraft:remove_effects
+              effects:
+                - minecraft:wither
+                - minecraft:poison
+    settings:
+      consume_replacement: minecraft:glass_bottle
+
+  # 5c. 狂战士酿造 (带冷却和副作用)
+  myfarm:berserker_brew:
+    material: potion
+    custom_model_data: 3022
+    data:
+      item_name: "<!i><#FF0000>狂战士酿造"
+      lore:
+        - "<red>获得力量但承受伤害"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:strength
+                  duration: 600
+                  amplifier: 1
+                - id: minecraft:damage_resistance
+                  duration: 600
+                  amplifier: 0
+                - id: minecraft:weakness
+                  duration: 300
+                  amplifier: 0
+    settings:
+      consume_replacement: minecraft:glass_bottle
+
+  # 5d. 经验药剂
+  myfarm:experience_elixir:
+    material: experience_bottle
+    custom_model_data: 3023
+    data:
+      item_name: "<!i><#AA00FF>经验药剂"
+      lore:
+        - "<gray>饮用后获得大量经验"
+    events:
+      - on: consume
+        functions:
+          - type: set_exp
+            count: 50
+            add: true
+          - type: play_sound
+            sound: minecraft:entity.player.levelup
+          - type: message
+            message: "<green>你获得了 50 点经验值！"
+
+# =============================================================================
+# 五、配方 - 药水酿造
+# =============================================================================
+recipes:
+  # 3a. 小麦 → 面粉
+  myfarm:magic_flour_from_wheat:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "myfarm:magic_wheat"
+    result:
+      id: myfarm:magic_flour
+      count: 2
+
+  # 3b. 浆果 + 面粉 → 魔法面包
+  myfarm:magic_bread:
+    type: shapeless
+    category: food
+    ingredients:
+      - "myfarm:magic_flour"
+      - "myfarm:magic_berries"
+    result:
+      id: myfarm:magic_bread
+      count: 1
+
+  # 3c. 烤魔法苹果
+  myfarm:baked_magic_apple:
+    type: smelting
+    category: food
+    experience: 0.5
+    time: 200
+    ingredient: "myfarm:magic_apple"
+    result:
+      id: myfarm:baked_magic_apple
+      count: 1
+
+# =============================================================================
+# 六、配方 - 成品食物
+# =============================================================================
+  myfarm:healing_potion_recipe:
+    type: brewing
+    ingredient: "myfarm:magic_berries"
+    container: "minecraft:potion"
+    result:
+      id: myfarm:healing_potion
+      count: 1
+
+  myfarm:berserker_brew_recipe:
+    type: brewing
+    ingredient: "myfarm:magic_wheat"
+    container: "minecraft:potion"
+    result:
+      id: myfarm:berserker_brew
+      count: 1

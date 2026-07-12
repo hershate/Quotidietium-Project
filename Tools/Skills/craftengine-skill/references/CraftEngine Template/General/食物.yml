@@ -83,15 +83,15 @@ items:
           sound: minecraft:entity.generic.eat
           has_consume_particles: true
           on_consume_effects:
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:speed           # << CHANGE THIS 状态效果 ID
+                - id: minecraft:speed           # << CHANGE THIS 状态效果 ID
                   duration: 600                      # << CHANGE THIS 持续刻数 (20刻=1秒)
                   amplifier: 1                       # << CHANGE THIS 等级 (0=I级)
                   ambient: false                     # 是否使用环境效果渲染 (减少粒子)
                   show_particles: true               # 是否显示效果粒子
                   show_icon: true                    # 是否显示效果图标
-                - effect: minecraft:regeneration
+                - id: minecraft:regeneration
                   duration: 200
                   amplifier: 2
                   ambient: false
@@ -119,15 +119,15 @@ items:
           sound: minecraft:entity.generic.eat
           has_consume_particles: false
           on_consume_effects:
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:absorption
+                - id: minecraft:absorption
                   duration: 1200
                   amplifier: 3
                   ambient: true
                   show_particles: false
                   show_icon: true
-                - effect: minecraft:saturation
+                - id: minecraft:saturation
                   duration: 1
                   amplifier: 0
                   ambient: false
@@ -162,9 +162,9 @@ items:
             sound: minecraft:entity.generic.drink
             has_consume_particles: true
             on_consume_effects:
-              - type: apply_effects
+              - type: minecraft:apply_effects
                 effects:
-                  - effect: minecraft:slow_falling
+                  - id: minecraft:slow_falling
                     duration: 1200
                     amplifier: 0
                     ambient: false
@@ -191,9 +191,9 @@ items:
           sound: minecraft:entity.generic.drink
           has_consume_particles: false
           on_consume_effects:
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:luck
+                - id: minecraft:luck
                   duration: 3600
                   amplifier: 1
                   ambient: false

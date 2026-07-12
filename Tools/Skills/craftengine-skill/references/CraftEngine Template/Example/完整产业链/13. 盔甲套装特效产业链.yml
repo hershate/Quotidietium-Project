@@ -1,0 +1,250 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 盔甲套装特效产业链
+# =============================================================================
+# 展示从基础材料→全套装具→套装特效→粒子光环的完整端到端配置
+# 命名空间: myset (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 套装材料
+# =============================================================================
+items:
+  myset:spirit_fragment:
+    material: prismarine_shard
+    custom_model_data: 11001
+    data:
+      item_name: "<!i><#00CED1>灵魂碎片"
+      lore:
+        - "<gray>蕴藏着古老的灵魂能量"
+    settings:
+      glow_color: aqua
+
+  myset:spirit_ingot:
+    material: netherite_scrap
+    custom_model_data: 11002
+    data:
+      item_name: "<!i><#00CED1>灵魂锭"
+      lore:
+        - "<gray>由灵魂碎片锻造而成"
+    settings:
+      tags:
+        - "myset:spirit_ingots"
+
+  # -- 二、灵魂盔甲部件 --
+  myset:spirit_helmet:
+    material: diamond_helmet
+    custom_model_data: 11010
+    data:
+      item_name: "<!i><#00CED1>灵魂头盔"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: head
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: head
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset:spirit_armor"
+
+  myset:spirit_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 11011
+    data:
+      item_name: "<!i><#00CED1>灵魂胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 8.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: chest
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset:spirit_armor"
+    events:
+      - on: attack
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:regeneration
+                    duration: 60
+                    amplifier: 0
+                    target: self
+                  - type: particle
+                    particle: minecraft:heart
+                    count: 5
+                    target: self
+
+  myset:spirit_leggings:
+    material: diamond_leggings
+    custom_model_data: 11012
+    data:
+      item_name: "<!i><#00CED1>灵魂护腿"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          slot: legs
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: legs
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset:spirit_armor"
+
+  myset:spirit_boots:
+    material: diamond_boots
+    custom_model_data: 11013
+    data:
+      item_name: "<!i><#00CED1>灵魂靴子"
+      attribute_modifiers:
+        - type: armor
+          amount: 3.0
+          operation: add_value
+          slot: feet
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: feet
+      max_damage: 500
+    settings:
+      equipment:
+        asset_id: "myset:spirit_armor"
+
+  # -- 三、套装光环 --
+  myset:spirit_totem:
+    material: totem_of_undying
+    custom_model_data: 11020
+    data:
+      item_name: "<!i><#00CED1>灵魂图腾"
+      lore:
+        - "<gray>右键释放灵魂能量"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myset:spirit_burst"
+        functions:
+          - type: set_cooldown
+            id: "myset:spirit_burst"
+            time: 30s
+          - type: particle
+            particle: minecraft:dust_color_transition
+            x: "<arg:player.x>"
+            y: "<arg:player.y>"
+            z: "<arg:player.z>"
+            count: 50
+            offset_x: 2.0
+            offset_y: 1.0
+            offset_z: 2.0
+            speed: 0.5
+            from: "0,255,255"
+            to: "0,206,209"
+            scale: 1.5
+          - type: play_sound
+            sound: minecraft:entity.experience_orb.pickup
+            volume: 2.0
+          - type: potion_effect
+            potion_effect: minecraft:regeneration
+            duration: 100
+            amplifier: 1
+            target: self
+
+# =============================================================================
+# 二、装备 - 灵魂套装定义
+# =============================================================================
+equipments:
+  myset:spirit_armor:
+    type: component
+    humanoid: "myset:entity/equipment/humanoid/spirit"
+    humanoid_leggings: "myset:entity/equipment/humanoid_leggings/spirit"
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myset:spirit_ingot_recipe:
+    type: smelting
+    category: misc
+    experience: 2.0
+    time: 300
+    ingredient: "myset:spirit_fragment"
+    result:
+      id: myset:spirit_ingot
+      count: 1
+
+  myset:spirit_helmet_recipe:
+    type: shaped
+    category: equipment
+    group: spirit_armor
+    pattern:
+      - "AAA"
+      - "A A"
+    ingredients:
+      A: "myset:spirit_ingot"
+    result:
+      id: myset:spirit_helmet
+      count: 1
+
+  myset:spirit_chestplate_recipe:
+    type: shaped
+    category: equipment
+    group: spirit_armor
+    pattern:
+      - "A A"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "myset:spirit_ingot"
+    result:
+      id: myset:spirit_chestplate
+      count: 1
+
+  myset:spirit_leggings_recipe:
+    type: shaped
+    category: equipment
+    group: spirit_armor
+    pattern:
+      - "AAA"
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "myset:spirit_ingot"
+    result:
+      id: myset:spirit_leggings
+      count: 1
+
+  myset:spirit_boots_recipe:
+    type: shaped
+    category: equipment
+    group: spirit_armor
+    pattern:
+      - "A A"
+      - "A A"
+    ingredients:
+      A: "myset:spirit_ingot"
+    result:
+      id: myset:spirit_boots
+      count: 1
+
+  myset:spirit_totem_recipe:
+    type: smithing_transform
+    base: "minecraft:totem_of_undying"
+    addition: "myset:spirit_ingot"
+    result:
+      id: myset:spirit_totem
+      count: 1

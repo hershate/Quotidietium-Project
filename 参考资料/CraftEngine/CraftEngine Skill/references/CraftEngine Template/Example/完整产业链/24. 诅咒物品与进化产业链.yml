@@ -1,0 +1,199 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 诅咒物品与进化产业链
+# =============================================================================
+# 展示从诅咒武器→负面效果→进化升级的完整端到端配置
+# 命名空间: mycurse (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 诅咒/负面装备 + 进化道具 + 进化产物
+# =============================================================================
+items:
+  # ----- 1. 诅咒装备(带负面效果) -----
+  mycurse:cursed_blade:
+    material: iron_sword
+    custom_model_data: 21001
+    data:
+      item_name: "<!i><#4B0082>诅咒之剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+    events:
+      - on: attack
+        functions:
+          - type: damage
+            target: self
+            amount: 1.0
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:weakness
+                    duration: 60
+                    amplifier: 0
+                    target: self
+
+  mycurse:vampire_ring:
+    material: golden_sword
+    custom_model_data: 21002
+    data:
+      item_name: "<!i><#DC143C>吸血戒指"
+    events:
+      - on: attack
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.3
+                functions:
+                  - type: heal
+                    amount: 1.0
+                    target: self
+                  - type: particle
+                    particle: minecraft:heart
+                    count: 3
+                    target: self
+
+  mycurse:heavy_armor:
+    material: iron_chestplate
+    custom_model_data: 21003
+    data:
+      item_name: "<!i><#808080>沉重护甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 12.0
+          operation: add_value
+          slot: chest
+    events:
+      - on: attack
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.5
+                functions:
+                  - type: potion_effect
+                    potion_effect: minecraft:slowness
+                    duration: 60
+                    amplifier: 0
+                    target: self
+
+  # ----- 2. 进化道具 -----
+  mycurse:purification_stone:
+    material: prismarine_crystals
+    custom_model_data: 21010
+    data:
+      item_name: "<!i><#FFFFFF>净化之石"
+
+  mycurse:evolution_core:
+    material: nether_star
+    custom_model_data: 21011
+    data:
+      item_name: "<!i><#FFD700>进化核心"
+    settings:
+      glow_color: gold
+
+  mycurse:infusion_scroll:
+    material: paper
+    custom_model_data: 21012
+    data:
+      item_name: "<!i><#AA00FF>经验灌注卷轴"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mycurse:infusion_cd"
+        functions:
+          - type: set_cooldown
+            id: "mycurse:infusion_cd"
+            time: 3600s
+          - type: set_exp
+            count: 50
+            add: true
+          - type: play_sound
+            sound: minecraft:entity.player.levelup
+          - type: particle
+            particle: minecraft:enchant
+            count: 30
+
+  # ----- 3. 进化产物 -----
+  mycurse:purified_blade:
+    material: diamond_sword
+    custom_model_data: 21020
+    data:
+      item_name: "<!i><#FFD700>净化之刃"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value
+          slot: mainhand
+      enchantment:
+        minecraft:sharpness: 4
+
+  mycurse:evolved_armor:
+    material: netherite_chestplate
+    custom_model_data: 21021
+    data:
+      item_name: "<!i><#FF4500>进化胸甲"
+      attribute_modifiers:
+        - type: armor
+          amount: 10.0
+          operation: add_value
+          slot: chest
+      max_damage: 1000
+
+# =============================================================================
+# 二、配方
+# =============================================================================
+recipes:
+  mycurse:purified_blade_recipe:
+    type: smithing_transform
+    base: "mycurse:cursed_blade"
+    addition: "mycurse:purification_stone"
+    result:
+      id: mycurse:purified_blade
+      count: 1
+
+  mycurse:evolution_core_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ADA"
+      - "BCB"
+      - "ADA"
+    ingredients:
+      A: "minecraft:diamond_block"
+      B: "minecraft:gold_block"
+      C: "minecraft:nether_star"
+      D: "mycurse:purification_stone"
+    result:
+      id: mycurse:evolution_core
+      count: 1
+
+  mycurse:purification_stone_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:prismarine_crystals"
+      - "minecraft:lapis_lazuli"
+      - "minecraft:experience_bottle"
+    result:
+      id: mycurse:purification_stone
+      count: 2
+
+  mycurse:infusion_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "mycurse:purification_stone"
+    result:
+      id: mycurse:infusion_scroll
+      count: 1

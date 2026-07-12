@@ -1,0 +1,215 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 宠物养成与进化产业链
+# =============================================================================
+# 展示宠物蛋→孵化→喂养→进化的完整宠物养成系统
+# 包含多阶段事件、合成进化、粒子特效、条件检测
+# 命名空间: mypet2 (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 宠物蛋(基础)
+# =============================================================================
+items:
+  mypet2:dragon_egg_item:
+    material: dragon_egg
+    custom_model_data: 43001
+    data:
+      item_name: "<!i><#FF4500>幼龙蛋"
+      lore:
+        - "<gray>喂养后孵化"
+    settings:
+      glow_color: red
+
+  mypet2:phoenix_egg:
+    material: dragon_egg
+    custom_model_data: 43002
+    data:
+      item_name: "<!i><#FFD700>凤凰蛋"
+      lore:
+        - "<gray>需要在熔岩中孵化"
+    settings:
+      glow_color: gold
+
+# =============================================================================
+# 二、物品 - 宠物食物
+# =============================================================================
+  mypet2:dragon_food:
+    material: blaze_powder
+    custom_model_data: 43010
+    data:
+      item_name: "<!i><#FF4500>龙饲料"
+      lore:
+        - "<gray>用于喂养幼龙"
+    settings:
+      tags:
+        - "mypet2:dragon_foods"
+
+  mypet2:phoenix_food:
+    material: blaze_powder
+    custom_model_data: 43011
+    data:
+      item_name: "<!i><#FFD700>凤凰饲料"
+      lore:
+        - "<gray>蕴含火焰能量"
+
+  mypet2:evolution_stone:
+    material: prismarine_crystals
+    custom_model_data: 43012
+    data:
+      item_name: "<!i><#AA00FF>进化石"
+      lore:
+        - "<gray>让宠物进化到下一形态"
+    settings:
+      glow_color: light_purple
+
+# =============================================================================
+# 三、物品 - 宠物(各阶段)
+# =============================================================================
+  # 3a. 幼龙(第一阶段)
+  mypet2:baby_dragon:
+    material: stick
+    custom_model_data: 43020
+    data:
+      item_name: "<!i><#FF4500>幼龙(阶段1)"
+      lore:
+        - "<gray>需要喂养10次进化"
+
+  # 3b. 少年龙(第二阶段)
+  mypet2:young_dragon:
+    material: stick
+    custom_model_data: 43021
+    data:
+      item_name: "<!i><#FF6347>少年龙(阶段2)"
+      lore:
+        - "<gray>需要喂养20次进化"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 2.0
+          operation: add_value
+          slot: any
+
+  # 3c. 成年龙(第三阶段)
+  mypet2:adult_dragon:
+    material: stick
+    custom_model_data: 43022
+    data:
+      item_name: "<!i><#DC143C>成年龙(阶段3)"
+      lore:
+        - "<gray>需要进化石完成最终进化"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 5.0
+          operation: add_value
+          slot: any
+        - type: armor
+          amount: 2.0
+          operation: add_value
+          slot: any
+
+  # 3d. 神龙(最终形态)
+  mypet2:elder_dragon:
+    material: stick
+    custom_model_data: 43023
+    data:
+      item_name: "<!i><#FFD700>神龙(最终形态)"
+      lore:
+        - "<gray>传说中的远古神龙"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: any
+        - type: armor
+          amount: 5.0
+          operation: add_value
+          slot: any
+        - type: luck
+          amount: 1.0
+          operation: add_value
+          slot: any
+
+# =============================================================================
+# 四、配方 - 宠物进化
+# =============================================================================
+recipes:
+  # 蛋→幼龙(孵化)
+  mypet2:dragon_hatching:
+    type: smelting
+    category: misc
+    experience: 1.0
+    time: 600
+    ingredient: "mypet2:dragon_egg_item"
+    result:
+      id: mypet2:baby_dragon
+      count: 1
+
+  # 幼龙→少年龙(10食物)
+  mypet2:dragon_growth_1:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mypet2:dragon_food"
+      B: "mypet2:baby_dragon"
+    result:
+      id: mypet2:young_dragon
+      count: 1
+
+  # 少年龙→成年龙(20食物)
+  mypet2:dragon_growth_2:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mypet2:dragon_food"
+      B: "mypet2:young_dragon"
+    result:
+      id: mypet2:adult_dragon
+      count: 1
+
+  # 成年龙→神龙(进化石)
+  mypet2:dragon_evolution:
+    type: smithing_transform
+    base: "mypet2:adult_dragon"
+    addition: "mypet2:evolution_stone"
+    result:
+      id: mypet2:elder_dragon
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FFD700>神龙(最终形态)"
+
+# =============================================================================
+# 五、配方 - 材料
+# =============================================================================
+  mypet2:evolution_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:diamond"
+      B: "minecraft:emerald"
+      C: "minecraft:nether_star"
+    result:
+      id: mypet2:evolution_stone
+      count: 1
+
+  mypet2:dragon_food_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:blaze_powder"
+      - "minecraft:beef"
+    result:
+      id: mypet2:dragon_food
+      count: 2

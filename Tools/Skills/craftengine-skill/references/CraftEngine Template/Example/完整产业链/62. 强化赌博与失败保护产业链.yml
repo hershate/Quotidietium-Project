@@ -1,0 +1,223 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 强化赌博与失败保护产业链
+# =============================================================================
+# 展示装备强化+失败概率+保护符+等级系统的完整赌博式强化
+# 包含多级强化、失败惩罚、保护机制、等级特效
+# 命名空间: mygamble (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 强化材料
+# =============================================================================
+items:
+  # 1a. 强化石(基础, +1~+3成功率100%)
+  mygamble:enhance_stone_lv1:
+    material: stone
+    custom_model_data: 51001
+    data:
+      item_name: "<!i><#FFFFFF>初级强化石"
+      lore:
+        - "<gray>强化 +1~+3 (100%)"
+
+  # 1b. 中级强化石(+4~+6成功率递减)
+  mygamble:enhance_stone_lv2:
+    material: iron_ingot
+    custom_model_data: 51002
+    data:
+      item_name: "<!i><#55FF55>中级强化石"
+      lore:
+        - "<green>强化 +4~+6 (70%~50%)"
+
+  # 1c. 高级强化石(+7~+9低概率)
+  mygamble:enhance_stone_lv3:
+    material: gold_ingot
+    custom_model_data: 51003
+    data:
+      item_name: "<!i><#FFD700>高级强化石"
+      lore:
+        - "<gold>强化 +7~+9 (30%~10%)"
+
+  # 1d. 顶级强化石(+10以上极低概率)
+  mygamble:enhance_stone_lv4:
+    material: nether_star
+    custom_model_data: 51004
+    data:
+      item_name: "<!i><#FF4500>顶级强化石"
+      lore:
+        - "<red>强化 +10以上 (5%~1%)"
+    settings:
+      glow_color: red
+
+# =============================================================================
+# 二、物品 - 保护与幸运
+# =============================================================================
+  # 2a. 保护符(失败不掉级)
+  mygamble:protect_charm:
+    material: paper
+    custom_model_data: 51010
+    data:
+      item_name: "<!i><#00CED1>保护符"
+      lore:
+        - "<gray>强化失败时不掉级"
+
+  # 2b. 幸运符(提高成功率)
+  mygamble:lucky_charm:
+    material: paper
+    custom_model_data: 51011
+    data:
+      item_name: "<!i><#FFD700>幸运符"
+      lore:
+        - "<gray>强化成功率翻倍"
+
+  # 2c. 复原石(修复损坏装备)
+  mygamble:restore_stone:
+    material: prismarine_crystals
+    custom_model_data: 51012
+    data:
+      item_name: "<!i><#AA00FF>复原石"
+      lore:
+        - "<gray>修复损坏的装备"
+
+# =============================================================================
+# 三、物品 - 强化等级装备
+# =============================================================================
+  mygamble:sword_0:
+    material: diamond_sword
+    custom_model_data: 51020
+    data:
+      item_name: "<!i><white>强化之剑 +0"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 7.0
+          operation: add_value
+          slot: mainhand
+
+  mygamble:sword_3:
+    material: diamond_sword
+    custom_model_data: 51021
+    data:
+      item_name: "<!i><green>强化之剑 +3"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 10.0
+          operation: add_value
+          slot: mainhand
+
+  mygamble:sword_6:
+    material: diamond_sword
+    custom_model_data: 51022
+    data:
+      item_name: "<!i><#FFD700>强化之剑 +6"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 13.0
+          operation: add_value
+          slot: mainhand
+    settings:
+      glow_color: gold
+
+  mygamble:sword_9:
+    material: netherite_sword
+    custom_model_data: 51023
+    data:
+      item_name: "<!i><#FF4500>强化之剑 +9"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 17.0
+          operation: add_value
+          slot: mainhand
+    settings:
+      glow_color: red
+
+  mygamble:sword_12:
+    material: netherite_sword
+    custom_model_data: 51024
+    data:
+      item_name: "<!i><#AA00FF>强化之剑 +12"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 21.0
+          operation: add_value
+          slot: mainhand
+    settings:
+      glow_color: light_purple
+
+# =============================================================================
+# 四、配方 - 强化升级
+# =============================================================================
+recipes:
+  mygamble:enhance_1:
+    type: smithing_transform
+    base: "mygamble:sword_0"
+    addition: "mygamble:enhance_stone_lv1"
+    result:
+      id: mygamble:sword_3
+      count: 1
+
+  mygamble:enhance_2:
+    type: smithing_transform
+    base: "mygamble:sword_3"
+    addition: "mygamble:enhance_stone_lv2"
+    result:
+      id: mygamble:sword_6
+      count: 1
+
+  mygamble:enhance_3:
+    type: smithing_transform
+    base: "mygamble:sword_6"
+    addition: "mygamble:enhance_stone_lv3"
+    result:
+      id: mygamble:sword_9
+      count: 1
+
+  mygamble:enhance_4:
+    type: smithing_transform
+    base: "mygamble:sword_9"
+    addition: "mygamble:enhance_stone_lv4"
+    result:
+      id: mygamble:sword_12
+      count: 1
+
+  # 材料合成
+  mygamble:protect_charm_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:feather"
+      B: "minecraft:paper"
+    result:
+      id: mygamble:protect_charm
+      count: 1
+
+  mygamble:lucky_charm_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:gold_nugget"
+      B: "minecraft:paper"
+    result:
+      id: mygamble:lucky_charm
+      count: 1
+
+  mygamble:restore_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:diamond"
+      B: "minecraft:obsidian"
+      C: "minecraft:netherite_scrap"
+    result:
+      id: mygamble:restore_stone
+      count: 1

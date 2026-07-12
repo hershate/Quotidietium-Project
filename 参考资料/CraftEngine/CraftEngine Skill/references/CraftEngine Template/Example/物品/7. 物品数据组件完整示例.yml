@@ -10,7 +10,7 @@
 items:
   mynamespace:example_artifact:
     # << CHANGE THIS: 物品基础材质 (block_state 需使用方块材质, trim 需使用盔甲材质)
-    material: minecraft:diamond
+    material: diamond
 
     data:
       # ==================================================================

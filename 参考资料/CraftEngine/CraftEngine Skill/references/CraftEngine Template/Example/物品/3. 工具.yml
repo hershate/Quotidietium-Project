@@ -36,7 +36,7 @@ items:
   # ===========================================================================
   myquest:mythic_pickaxe:                                       # << CHANGE THIS
     material: netherite_pickaxe                                  # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -88,7 +88,7 @@ items:
   # ===========================================================================
   myquest:woodsmans_axe:                                        # << CHANGE THIS
     material: diamond_axe                                        # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -140,7 +140,7 @@ items:
   # ===========================================================================
   myquest:excavator_shovel:                                      # << CHANGE THIS
     material: diamond_shovel                                      # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -181,7 +181,7 @@ items:
   # ===========================================================================
   myquest:magic_hoe:                                            # << CHANGE THIS
     material: netherite_hoe                                      # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -190,6 +190,7 @@ items:
           - 1,0,0
           - -1,0,0
     settings:
+      fuel_time: 200                                            # << CHANGE THIS 作为燃料时的燃烧时间(刻)
       tags:
         - "myquest:hoes"                                         # << CHANGE THIS
         - "minecraft:mineable/hoe"
@@ -212,7 +213,7 @@ items:
   # ===========================================================================
   myquest:warp_hammer:                                          # << CHANGE THIS
     material: mace                                                # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -270,7 +271,7 @@ items:
   # ---------------------------------------------------------------------------
   myquest:magic_crossbow:                                        # << CHANGE THIS
     material: crossbow                                            # << CHANGE THIS
-    conditions: []
+
     settings:
       tags:
         - "myquest:ranged_weapons"                               # << CHANGE THIS
@@ -330,7 +331,7 @@ items:
   # ---------------------------------------------------------------------------
   myquest:thunder_trident:                                       # << CHANGE THIS
     material: trident                                             # << CHANGE THIS
-    conditions: []
+
     settings:
       tags:
         - "myquest:ranged_weapons"                               # << CHANGE THIS

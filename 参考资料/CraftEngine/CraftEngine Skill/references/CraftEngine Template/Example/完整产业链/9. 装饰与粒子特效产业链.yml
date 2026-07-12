@@ -1,0 +1,207 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 装饰与粒子特效产业链
+# =============================================================================
+# 展示从粒子效果→发光物品→视觉特效的完整端到端配置
+# 命名空间: myfx (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 发光与视觉装饰
+# =============================================================================
+items:
+  # 1a. 荧光粉 (发光染料材料)
+  myfx:glow_dust:
+    material: glowstone_dust
+    custom_model_data: 8001
+    data:
+      item_name: "<!i><#FFFF00>荧光粉"
+      lore:
+        - "<gray>用于制作发光物品"
+    settings:
+      glow_color: yellow
+      dye_color: "255,255,0"
+      tags:
+        - "myfx:dye_materials"
+
+  # 1b. 彩虹宝石 (变色发光)
+  myfx:rainbow_gem:
+    material: prismarine_shard
+    custom_model_data: 8002
+    data:
+      item_name: "<!i><rainbow>彩虹宝石"
+      lore:
+        - "<gray>散发出七彩光芒"
+    settings:
+      glow_color: white
+
+  # 1c. 火焰冠冕 (发光帽子，需CustomNameplates)
+  myfx:flame_crown:
+    material: golden_helmet
+    custom_model_data: 8010
+    data:
+      item_name: "<!i><#FF4500>火焰冠冕"
+      lore:
+        - "<gray>头顶燃烧着永恒烈焰"
+    settings:
+      glow_color: red
+      hat_height: 1.5
+
+# =============================================================================
+# 二、方块 - 粒子效果方块
+# =============================================================================
+  myfx:magic_flame_item:
+    material: torch
+    data:
+      item_name: "<!i><#FF4500>魔法火焰"
+    behavior:
+      type: block_item
+      block: myfx:magic_flame
+
+  myfx:color_beam_item:
+    material: beacon
+    data:
+      item_name: "<!i><#FF00FF>彩色光柱"
+    behavior:
+      type: block_item
+      block: myfx:color_beam
+
+  myfx:floating_orb_item:
+    material: end_rod
+    data:
+      item_name: "<!i><#AA00FF>浮空宝珠"
+    behavior:
+      type: block_item
+      block: myfx:floating_orb
+
+  myfx:floating_sign_item:
+    material: oak_sign
+    data:
+      item_name: "<!i>浮动标牌"
+    behavior:
+      type: block_item
+      block: myfx:floating_sign
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+blocks:
+  # 2a. 魔法火焰 (持续粒子)
+  myfx:magic_flame:
+    behavior:
+      type: simple_particle_block
+      tick_interval: 5
+      particles:
+        - particle: minecraft:flame
+          x: 0.5
+          y: 0.8
+          z: 0.5
+          count: 1
+          offset_x: 0.1
+          offset_y: 0.1
+          offset_z: 0.1
+          speed: 0.01
+        - particle: minecraft:smoke
+          x: 0.5
+          y: 1.0
+          z: 0.5
+          count: 1
+          offset_x: 0.05
+          speed: 0.1
+
+  # 2b. 彩色光柱 (dust_color_transition)
+  myfx:color_beam:
+    behavior:
+      type: simple_particle_block
+      tick_interval: 2
+      particles:
+        - particle: minecraft:dust_color_transition
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          count: 3
+          offset_x: 0.2
+          offset_y: 0.5
+          offset_z: 0.2
+          speed: 0.05
+          from: "255,0,255"
+          to: "0,255,255"
+          scale: 2.0
+
+  # 2c. 浮空物品 (item_display entity renderer)
+  myfx:floating_orb:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: "myfx:rainbow_gem"
+        translation: 0,0.5,0
+        scale: 0.5,0.5,0.5
+        rotation: 0,45,0,0
+
+  # 2d. 浮动文本 (text_display entity renderer)
+  myfx:floating_sign:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: text_display
+        text: "<rainbow>欢迎!</rainbow>"
+        translation: 0,1.0,0
+        scale: 1.5,1.5,1.5
+        billboard: center
+        has_shadow: true
+
+# =============================================================================
+# 三、物品 - 粒子方块物品
+# =============================================================================
+recipes:
+  myfx:glow_dust_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:glowstone_dust"
+      - "minecraft:yellow_dye"
+    result:
+      id: myfx:glow_dust
+      count: 2
+
+  myfx:rainbow_gem_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:red_dye"
+      B: "minecraft:blue_dye"
+      C: "minecraft:prismarine_shard"
+    result:
+      id: myfx:rainbow_gem
+      count: 1
+
+  myfx:magic_flame_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "A"
+      - "B"
+    ingredients:
+      A: "myfx:glow_dust"
+      B: "minecraft:torch"
+    result:
+      id: myfx:magic_flame_item
+      count: 4
+
+  myfx:color_beam_recipe:
+    type: smithing_transform
+    base: "minecraft:end_rod"
+    addition: "myfx:rainbow_gem"
+    result:
+      id: myfx:color_beam_item
+      count: 1

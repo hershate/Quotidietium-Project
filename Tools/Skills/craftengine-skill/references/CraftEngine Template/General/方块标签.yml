@@ -59,9 +59,10 @@ blocks:
         - "minecraft:beacon_base_blocks"
 
   # 可攀爬方块 (minecraft:climbable) — 如自定义藤蔓
+  # 注意: 可攀爬标签仅影响客户端攀爬逻辑
   custom:example_vine:
     state:
-      auto_state: vine
+      auto_state: cave_vine
       model:
         texture: "minecraft:block/custom/vine"
     settings:
@@ -69,10 +70,12 @@ blocks:
         - "minecraft:climbable"
 
   # 在原版基础上，可用以下标签:
-  # minecraft:mineable/hoe         — 锄挖掘更快
-  # minecraft:sword_efficient      — 剑挖掘更快
-  # minecraft:fall_damage_resetting  — 重置摔落伤害
-  # minecraft:soul_fire_base_blocks  — 上方火焰变为灵魂火
-  # minecraft:infiniburn_overworld   — 主世界无限燃烧
+  # minecraft:mineable/hoe              — 锄挖掘更快
+  # minecraft:sword_efficient           — 剑挖掘更快
+  # minecraft:fall_damage_resetting     — 重置摔落伤害
+  # minecraft:soul_fire_base_blocks     — 上方火焰变为灵魂火
+  # minecraft:infiniburn_overworld      — 主世界无限燃烧
+  # minecraft:infiniburn_nether         — 下界无限燃烧
+  # minecraft:infiniburn_end            — 末地无限燃烧
   # minecraft:enchantment_power_provider — 提供附魔等级
-  # minecraft:replaceable_by_trees  — 树木生长时可替换
+  # minecraft:replaceable_by_trees      — 树木生长时可替换

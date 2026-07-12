@@ -129,7 +129,7 @@ items:
     data:
       item_name: "<!i>红色染料"
     settings:
-      dye_color: 255, 0, 0
+      dye_color: "255,0,0"
 
   # ==================== 烟火颜色 ====================
   quartzietium:firework_colorant:
@@ -137,7 +137,7 @@ items:
     data:
       item_name: "<!i>焰火着色粉"
     settings:
-      firework_color: 0, 255, 0
+      firework_color: "0,255,0"
 
   # ==================== 消耗替代品 ====================
   quartzietium:magic_potion:
@@ -163,11 +163,12 @@ items:
         - lava
         - fire
         - fire_tick
-        - explosion
+        - block_explosion
+        - entity_explosion
 
   # ==================== 死亡保留 ====================
   quartzietium:soul_bound_ring:
-    material: golden_ring
+    material: gold_ingot
     data:
       item_name: "<!i>魂绑定指环"
     settings:

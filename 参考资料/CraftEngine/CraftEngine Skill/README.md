@@ -18,7 +18,7 @@ craftengine-skill/
 │   └── craftengine_validator.py          # Python 配置校验脚本（基于 Wiki Schema）
 ├── references/
 │   ├── CraftEngine Wiki/                 # 本地 Wiki 副本（145 个 .md 文件）
-│   └── CraftEngine Template/             # 本地 Template 副本（76 个 .yml/.md 文件）
+│   └── CraftEngine Template/             # 本地 Template 副本（148 个 .yml/.md 文件）
 └── ...                                   # (预留) 其他辅助文件
 ```
 
@@ -47,7 +47,7 @@ craftengine-skill/
 ## Workflow 说明
 
 1. **需求分析** — 解析用户需求，确定配置类型和核心功能（支持 20+ 种配置类型）
-2. **查阅参考资料** — 读取 Skill 内置的 Wiki（145+ 页面）和 Template（76+ 文件，含完整产业链示例）
+2. **查阅参考资料** — 读取 Skill 内置的 Wiki（145+ 页面）和 Template（148 文件，含完整产业链示例）
 3. **确认不确定项** — 向用户询问缺失信息（含输出方式选择）
 4. **生成配置模板** — 严格依据 Wiki 内容生成 YAML 配置，需要时支持高级配置特性（节标识符 `#`、节分隔符 `::`、版本条件 `$$`、YAML 类型标签、子包）
 5. **校验** — 运行 `scripts/craftengine_validator.py` 执行全维度自动化校验（YAML 语法、字段存在性、类型、枚举值、行为类型、版本感知、高级语法等）

@@ -35,9 +35,9 @@ blocks:
         text: "<gold>公告板"                                     # << CHANGE THIS
         translation: 0,1.5,0                                     # << CHANGE THIS
         scale: 1.0,1.0,1.0
-        billboard: CENTER                                        # << CHANGE THIS: CENTER/FIXED/VERTICAL/HORIZONTAL
-        background_color: "#40000000"                            # << CHANGE THIS
-        see_through: false
+        billboard: center                                        # << CHANGE THIS: fixed/vertical/horizontal/center
+        background_color: 64,0,0,0                              # << CHANGE THIS ARGB 格式 (A,R,G,B), 默认 64,0,0,0
+        is_see_through: false
 
   # ===========================================================================
   # 3. 物品实体 (item) — 掉落物形式

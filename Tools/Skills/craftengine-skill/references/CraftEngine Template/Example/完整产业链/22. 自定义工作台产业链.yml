@@ -1,0 +1,203 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 自定义工作台产业链
+# =============================================================================
+# 展示从家具工作台→合成GUI→配方绑定的完整端到端配置
+# 包含furniture+open_window+recipe+condition系统
+# 命名空间: mybench (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、家具 - 工作台
+# =============================================================================
+furniture:
+  mybench:smith_bench:
+    settings:
+      item: mybench:smith_bench_item
+      sounds:
+        break: minecraft:block.anvil.break
+        place: minecraft:block.anvil.place
+        hit: minecraft:block.anvil.hit
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: mybench:smith_bench_item
+            translation: 0.5,0.3,0.5
+        hitboxes:
+          - type: shulker
+            position: 0.5,0.3,0.5
+            scale: 0.8
+
+  mybench:magic_workbench:
+    settings:
+      item: mybench:magic_bench_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: mybench:magic_bench_item
+            translation: 0.5,0.5,0.5
+
+# =============================================================================
+# 二、物品 - 所有物品(家具/工具/产物)
+# =============================================================================
+items:
+  # ----- 家具物品 -----
+  mybench:smith_bench_item:
+    material: anvil
+    custom_model_data: 19001
+    data:
+      item_name: "<!i><#DEB887>铁匠工作台"
+    behavior:
+      type: furniture_item
+      furniture: mybench:smith_bench
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: smithing
+            title: "铁匠工作台"
+
+  mybench:magic_bench_item:
+    material: enchanting_table
+    custom_model_data: 19002
+    data:
+      item_name: "<!i><#AA00FF>魔法合成台"
+    behavior:
+      type: furniture_item
+      furniture: mybench:magic_workbench
+    events:
+      - on: right_click
+        functions:
+          - type: open_window
+            gui_type: enchantment
+            title: "魔法附魔台"
+
+  # ----- 工具 -----
+  mybench:smith_hammer:
+    material: iron_pickaxe
+    custom_model_data: 19010
+    data:
+      item_name: "<!i><#DEB887>锻造锤"
+      max_damage: 500
+
+  mybench:magic_graver:
+    material: golden_pickaxe
+    custom_model_data: 19011
+    data:
+      item_name: "<!i><#AA00FF>魔法刻刀"
+
+  mybench:recipe_book:
+    material: book
+    custom_model_data: 19012
+    data:
+      item_name: "<!i><#FFD700>合成手册"
+
+  # ----- 产物 -----
+  mybench:reinforced_sword:
+    material: diamond_sword
+    custom_model_data: 19020
+    data:
+      item_name: "<!i><#8B008B>强化黑曜石剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 9.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 800
+      unbreakable: true
+
+# =============================================================================
+# 三、配方 - 合成(含条件和后处理器)
+# =============================================================================
+recipes:
+  mybench:smith_hammer_recipe:
+    type: smithing_transform
+    base: "minecraft:iron_pickaxe"
+    addition: "minecraft:iron_block"
+    result:
+      id: mybench:smith_hammer
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#DEB887>锻造锤"
+
+  mybench:magic_graver_recipe:
+    type: smithing_transform
+    base: "minecraft:golden_pickaxe"
+    addition: "minecraft:lapis_lazuli"
+    result:
+      id: mybench:magic_graver
+      count: 1
+    conditions:
+      - type: permission
+        permission: "mybench.recipe.magic_graver"
+
+  mybench:smith_bench_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "BCB"
+      - "BBB"
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "#minecraft:planks"
+      C: "minecraft:anvil"
+    result:
+      id: mybench:smith_bench_item
+      count: 1
+
+  mybench:magic_bench_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "ADA"
+      - "BEB"
+      - "CCC"
+    ingredients:
+      A: "minecraft:gold_ingot"
+      B: "minecraft:diamond"
+      C: "#minecraft:planks"
+      D: "minecraft:enchanting_table"
+      E: "minecraft:book"
+    result:
+      id: mybench:magic_bench_item
+      count: 1
+    conditions:
+      - type: permission
+        permission: "mybench.recipe.magic_bench"
+    unlock_on_ingredient_obtained: true
+
+  mybench:recipe_book_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:book"
+      - "minecraft:feather"
+    result:
+      id: mybench:recipe_book
+      count: 1
+
+  mybench:reinforced_sword_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - " A "
+      - "ABA"
+      - " C "
+    ingredients:
+      A:
+        items: "minecraft:obsidian"
+        count: 4
+      B: "minecraft:diamond_sword"
+      C: "minecraft:blaze_rod"
+    result:
+      id: mybench:reinforced_sword
+      count: 1
+      post_processors:
+        - type: apply_data
+          data:
+            lore:
+              - "<gold>黑曜石强化"

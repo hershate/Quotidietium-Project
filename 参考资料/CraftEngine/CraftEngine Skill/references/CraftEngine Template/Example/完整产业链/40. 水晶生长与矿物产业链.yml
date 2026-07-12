@@ -1,0 +1,159 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 水晶生长与矿物产业链
+# =============================================================================
+# 展示budding_block母岩→水晶生长→完整矿物采集体系
+# 包含sturdy_base_block支撑、drop_experience_block经验掉落
+# 命名空间: mycrys (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 母岩+水晶
+# =============================================================================
+blocks:
+  # 1a. 魔法母岩(紫水晶式催生水晶)
+  mycrys:budding_magic_crystal:
+    behavior:
+      type: budding_block
+      growth_chance: 0.2
+      blocks:
+        - mycrys:small_magic_bud
+        - mycrys:medium_magic_bud
+        - mycrys:large_magic_bud
+        - mycrys:magic_crystal_cluster
+    settings:
+      hardness: 1.5
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1b~1d. 水晶芽(3阶段)
+  mycrys:small_magic_bud:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycrys:block/small_magic_bud"
+    settings:
+      hardness: 0.5
+
+  mycrys:medium_magic_bud:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycrys:block/medium_magic_bud"
+    settings:
+      hardness: 0.5
+
+  mycrys:large_magic_bud:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycrys:block/large_magic_bud"
+    settings:
+      hardness: 0.5
+
+  # 1e. 魔法水晶簇(成熟可采集)
+  mycrys:magic_crystal_cluster:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycrys:block/magic_crystal_cluster"
+    settings:
+      hardness: 1.0
+      luminance: 8
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "mycrys:magic_crystal_shard"
+              functions:
+                - type: set_count
+                  count: 2~4
+
+# =============================================================================
+# 二、方块 - 支撑+经验方块
+# =============================================================================
+  # 2a. 稳固基底(sturdy_base_block)
+  mycrys:crystal_pillar_base:
+    behavior:
+      type: sturdy_base_block
+      direction: down
+      support_types:
+        - full
+    settings:
+      hardness: 2.0
+
+  # 2b. 经验水晶矿(drop_experience_block)
+  mycrys:exp_crystal_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycrys:block/exp_crystal_ore"
+    behavior:
+      - type: drop_experience_block
+        amount: 3~7
+      - type: lamp_block
+    settings:
+      hardness: 2.0
+      luminance: 7
+      tags:
+        - minecraft:mineable/pickaxe
+
+# =============================================================================
+# 三、物品
+# =============================================================================
+items:
+  mycrys:budding_magic_crystal_item:
+    material: amethyst_block
+    data:
+      item_name: "<!i><#AA00FF>魔法母岩"
+    behavior:
+      type: block_item
+      block: mycrys:budding_magic_crystal
+
+  mycrys:magic_crystal_shard:
+    material: amethyst_shard
+    custom_model_data: 32001
+    data:
+      item_name: "<!i><#AA00FF>魔法水晶碎片"
+    settings:
+      glow_color: light_purple
+
+  mycrys:magic_crystal:
+    material: amethyst_shard
+    custom_model_data: 32002
+    data:
+      item_name: "<!i><#DDA0DD>魔法水晶"
+      lore:
+        - "<gray>由4个碎片合成"
+
+  mycrys:exp_crystal_ore_item:
+    material: amethyst_block
+    data:
+      item_name: "<!i><#AA00FF>经验水晶矿"
+    behavior:
+      type: block_item
+      block: mycrys:exp_crystal_ore
+
+  mycrys:crystal_pillar_base_item:
+    material: stone
+    data:
+      item_name: "<!i><#A9A9A9>水晶基柱"
+    behavior:
+      type: block_item
+      block: mycrys:crystal_pillar_base
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mycrys:magic_crystal_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mycrys:magic_crystal_shard"
+    result:
+      id: mycrys:magic_crystal
+      count: 1

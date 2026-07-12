@@ -38,7 +38,7 @@ recipes:
   # --------------------------------------------------------------------------
   custom:topaz_shovel:
     type: shaped
-    category: tools                                        # << CHANGE THIS (building/redstone/equipment/misc)
+    category: equipment                                    # << CHANGE THIS (building/redstone/equipment/misc)
     group: topaz_tools                                     # << CHANGE THIS
     unlock_on_ingredient_obtained: true                    # << CHANGE THIS
     pattern:

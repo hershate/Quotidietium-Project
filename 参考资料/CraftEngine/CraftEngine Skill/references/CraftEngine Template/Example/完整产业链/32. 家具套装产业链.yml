@@ -1,0 +1,256 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 家具套装产业链
+# =============================================================================
+# 展示从单个家具→组合家具→套装家具的完整端到端配置
+# 包含多种元素类型(item_display/text_display/armor_stand)
+# 和多种判定箱类型(interaction/shulker/happy_ghast/custom)
+# 命名空间: myroom (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、家具 - 客厅套装
+# =============================================================================
+furniture:
+  # 1a. 沙发(sofa+元素组合)
+  myroom:sofa:
+    settings:
+      item: myroom:sofa_item
+      sounds:
+        break: minecraft:block.wool.break
+        place: minecraft:block.wool.place
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myroom:sofa_item
+            translation: 0.5,0.3,0.5
+            scale: 1.0,0.8,1.0
+        hitboxes:
+          - type: shulker
+            position: 0.5,0.2,0.5
+            scale: 0.9,0.4,0.9
+            seats:
+              - "0.3,0.5,0.5"
+              - "0.7,0.5,0.5"
+
+  # 1b. 茶几(桌子)
+  myroom:coffee_table:
+    settings:
+      item: myroom:coffee_table_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myroom:coffee_table_item
+            translation: 0.5,0.3,0.5
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.1,0.5
+            width: 0.8
+            height: 0.2
+
+  # 1c. 台灯(lamp)
+  myroom:table_lamp:
+    settings:
+      item: myroom:table_lamp_item
+    behavior:
+      type: glowing_furniture
+      lights:
+        - position: 0.5,0.8,0.5
+          level: 15
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myroom:table_lamp_item
+            translation: 0.5,0.5,0.5
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.3,0.5
+            width: 0.3
+            height: 0.6
+
+  # 1d. 地毯(text_display+armor_stand)
+  myroom:rug:
+    settings:
+      item: myroom:rug_item
+    variants:
+      ground:
+        elements:
+          - type: armor_stand
+            item: myroom:rug_item
+            position: 0.5,-0.4,0.5
+            small: true
+        hitboxes:
+          - type: interaction
+            position: 0.5,0,0.5
+            width: 0.9
+            height: 0.05
+
+  # 1e. 壁挂钟(text_display)
+  myroom:wall_clock:
+    settings:
+      item: myroom:wall_clock_item
+    variants:
+      wall:
+        elements:
+          - type: item_display
+            item: myroom:wall_clock_item
+            translation: 0.5,0.5,0.1
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.5,0
+            width: 0.4
+            height: 0.4
+
+  # 1f. 展示柜(玻璃柜+展示)
+  myroom:display_cabinet:
+    settings:
+      item: myroom:cabinet_item
+    behavior:
+      type: display_item_furniture
+      variants:
+        ground:
+          item_position: 0,0.5,0
+          hitboxes:
+            - type: shulker
+              position: 0.5,0.5,0.5
+              scale: 0.8,0.9,0.6
+
+  # 1g. 告示牌(text_display元素)
+  myroom:room_sign:
+    settings:
+      item: myroom:sign_item
+    variants:
+      wall:
+        elements:
+          - type: text_display
+            text: "<gold>欢迎!"
+            translation: 0.5,0.5,0
+            scale: 1.5
+            billboard: center
+            has_shadow: true
+
+# =============================================================================
+# 二、物品 - 家具物品
+# =============================================================================
+items:
+  myroom:sofa_item:
+    material: leather
+    custom_model_data: 28001
+    data:
+      item_name: "<!i><#DEB887>布艺沙发"
+    behavior:
+      type: furniture_item
+      furniture: myroom:sofa
+
+  myroom:coffee_table_item:
+    material: stick
+    custom_model_data: 28002
+    data:
+      item_name: "<!i><#8B4513>茶几"
+    behavior:
+      type: furniture_item
+      furniture: myroom:coffee_table
+
+  myroom:table_lamp_item:
+    material: stick
+    custom_model_data: 28003
+    data:
+      item_name: "<!i><#FFD700>台灯"
+    behavior:
+      type: furniture_item
+      furniture: myroom:table_lamp
+
+  myroom:rug_item:
+    material: leather
+    custom_model_data: 28004
+    data:
+      item_name: "<!i><#FF69B4>地毯"
+    behavior:
+      type: furniture_item
+      furniture: myroom:rug
+
+  myroom:wall_clock_item:
+    material: stick
+    custom_model_data: 28005
+    data:
+      item_name: "<!i><#DEB887>壁挂钟"
+    behavior:
+      type: furniture_item
+      furniture: myroom:wall_clock
+
+  myroom:cabinet_item:
+    material: barrel
+    custom_model_data: 28006
+    data:
+      item_name: "<!i><#8B4513>展示柜"
+    behavior:
+      type: furniture_item
+      furniture: myroom:display_cabinet
+
+  myroom:sign_item:
+    material: stick
+    custom_model_data: 28007
+    data:
+      item_name: "<!i><#FFD700>房间告示牌"
+    behavior:
+      type: furniture_item
+      furniture: myroom:room_sign
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myroom:sofa_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "BBB"
+    ingredients:
+      A: "minecraft:wool"
+      B: "#minecraft:planks"
+    result:
+      id: myroom:sofa_item
+      count: 1
+
+  myroom:coffee_table_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - " B "
+      - " B "
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:stick"
+    result:
+      id: myroom:coffee_table_item
+      count: 1
+
+  myroom:table_lamp_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - " B "
+      - " B "
+    ingredients:
+      A: "minecraft:torch"
+      B: "minecraft:stick"
+    result:
+      id: myroom:table_lamp_item
+      count: 1
+
+  myroom:rug_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "minecraft:wool"
+    result:
+      id: myroom:rug_item
+      count: 1

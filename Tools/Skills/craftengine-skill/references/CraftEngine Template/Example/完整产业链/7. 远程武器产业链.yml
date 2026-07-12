@@ -1,0 +1,221 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 远程武器产业链
+# =============================================================================
+# 展示从弹药→弓/弩/投掷武器→特殊效果的完整端到端配置
+# 命名空间: myranged (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 弹药 + 弓 + 弩 + 投掷武器 + 配件
+# =============================================================================
+items:
+  # ----- 1. 弹药 -----
+  myranged:basic_arrow:
+    material: arrow
+    custom_model_data: 6001
+    data:
+      item_name: "<!i><#FF8C00>基础弹药"
+      lore:
+        - "<gray>可用于自定义弩"
+
+  myranged:flame_arrow:
+    material: arrow
+    custom_model_data: 6002
+    data:
+      item_name: "<!i><#FF4500>火焰弹药"
+      lore:
+        - "<gray>命中后点燃目标"
+
+  myranged:frost_arrow:
+    material: arrow
+    custom_model_data: 6003
+    data:
+      item_name: "<!i><#00BFFF>冰霜弹药"
+      lore:
+        - "<gray>命中后减速目标"
+
+  # ----- 2. 复合弓 (condition模型) -----
+  myranged:compound_bow:
+    material: bow
+    custom_model_data: 6010
+    data:
+      item_name: "<!i><#FF8C00>复合弓"
+      lore:
+        - "<gray>高精度远程武器"
+      max_damage: 500
+      enchantment:
+        minecraft:power: 3
+        minecraft:unbreaking: 2
+    model:
+      type: minecraft:condition
+      property: "minecraft:using_item"
+      on_false:
+        type: minecraft:model
+        path: "myranged:item/compound_bow"
+      on_true:
+        type: minecraft:model
+        path: "myranged:item/compound_bow_pulling_0"
+    settings:
+      allowed_projectiles:
+        - "myranged:basic_arrow"
+        - "myranged:flame_arrow"
+        - "myranged:frost_arrow"
+
+  # ----- 3. 连发弩 (range_dispatch模型) -----
+  myranged:repeating_crossbow:
+    material: crossbow
+    custom_model_data: 6011
+    data:
+      item_name: "<!i><#FF8C00>连发弩"
+      lore:
+        - "<gray>可装填多发弹药"
+      max_damage: 400
+      enchantment:
+        minecraft:quick_charge: 2
+        minecraft:multishot: 1
+    model:
+      type: minecraft:range_dispatch
+      property: "minecraft:crossbow/pull"
+      fallback:
+        type: minecraft:model
+        path: "myranged:item/repeating_crossbow_standby"
+      entries:
+        - threshold: 0.58
+          model:
+            type: minecraft:model
+            path: "myranged:item/repeating_crossbow_pulling_0"
+        - threshold: 1.0
+          model:
+            type: minecraft:model
+            path: "myranged:item/repeating_crossbow_pulling_1"
+    settings:
+      allowed_projectiles:
+        - "myranged:basic_arrow"
+        - "myranged:flame_arrow"
+
+  # ----- 4. 投掷飞刀 (projectile弹射物) -----
+  myranged:throwing_knife:
+    material: arrow
+    custom_model_data: 6020
+    data:
+      item_name: "<!i><#FF8C00>飞刀"
+      lore:
+        - "<gray>右键投掷，可回收"
+    settings:
+      projectile:
+        display:
+          item: "myranged:throwing_knife"
+          scale: 0.8
+        sounds:
+          throw: "minecraft:entity.arrow.shoot"
+          hit_entity: "minecraft:entity.arrow.hit"
+          hit_block: "minecraft:entity.arrow.hit"
+        pickupable: true
+        remove_on_hit: false
+        gravity: true
+        velocity: 2.5
+        damage: 6.0
+        pierce_level: 1
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myranged:throwing_knife_cd"
+        functions:
+          - type: set_cooldown
+            id: "myranged:throwing_knife_cd"
+            time: 1s
+
+  # ----- 5. 火焰标枪 (不可回收重投掷武器) -----
+  myranged:flame_javelin:
+    material: arrow
+    custom_model_data: 6021
+    data:
+      item_name: "<!i><#FF4500>火焰标枪"
+      lore:
+        - "<gray>投掷后点燃目标"
+    settings:
+      projectile:
+        display:
+          item: "myranged:flame_javelin"
+        sounds:
+          throw: "minecraft:entity.trident.throw"
+          hit_entity: "minecraft:entity.trident.hit"
+        pickupable: true
+        gravity: false
+        velocity: 3.0
+        damage: 10.0
+        pierce_level: 3
+      tags:
+        - "myranged:throwable"
+
+# =============================================================================
+# 二、配方
+# =============================================================================
+recipes:
+  myranged:compound_bow_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - " AB"
+      - "A B"
+      - " AB"
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:string"
+    result:
+      id: myranged:compound_bow
+      count: 1
+
+  myranged:repeating_crossbow_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - "ABA"
+      - "CDC"
+      - " E "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:tripwire_hook"
+      C: "minecraft:stick"
+      D: "minecraft:crossbow"
+      E: "minecraft:string"
+    result:
+      id: myranged:repeating_crossbow
+      count: 1
+
+  myranged:basic_arrow_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - "A"
+      - "B"
+      - "C"
+    ingredients:
+      A: "minecraft:iron_nugget"
+      B: "minecraft:stick"
+      C: "minecraft:feather"
+    result:
+      id: myranged:basic_arrow
+      count: 8
+
+  myranged:throwing_knife_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - " A"
+      - "B "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:stick"
+    result:
+      id: myranged:throwing_knife
+      count: 2
+
+  myranged:flame_javelin_recipe:
+    type: smithing_transform
+    base: "myranged:throwing_knife"
+    addition: "minecraft:blaze_powder"
+    result:
+      id: myranged:flame_javelin
+      count: 1

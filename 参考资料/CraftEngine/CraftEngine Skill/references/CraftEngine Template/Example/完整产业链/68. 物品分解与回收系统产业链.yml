@@ -1,0 +1,173 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物品分解与回收系统产业链
+# =============================================================================
+# 展示装备分解→材料回收→再生利用的完整回收系统
+# 包含烧炼回收、拆解、合成循环、随机产物
+# 命名空间: mysalvage (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 分解工具
+# =============================================================================
+items:
+  # 1a. 分解锤(拆解装备)
+  mysalvage:salvage_hammer:
+    material: iron_pickaxe
+    custom_model_data: 57001
+    data:
+      item_name: "<!i><#FF8C00>分解锤"
+      lore:
+        - "<gray>将装备分解为基础材料"
+      max_damage: 100
+
+# =============================================================================
+# 二、物品 - 回收材料
+# =============================================================================
+  mysalvage:metal_scrap:
+    material: iron_nugget
+    custom_model_data: 57010
+    data:
+      item_name: "<!i><#B87333>金属碎片"
+    settings:
+      tags:
+        - "mysalvage:scrap"
+      fuel_time: 200
+
+  mysalvage:magic_dust:
+    material: glowstone_dust
+    custom_model_data: 57011
+    data:
+      item_name: "<!i><#FFD700>魔法粉尘"
+    settings:
+      tags:
+        - "mysalvage:scrap"
+
+  mysalvage:enchant_essence:
+    material: experience_bottle
+    custom_model_data: 57012
+    data:
+      item_name: "<!i><#AA00FF>附魔精华"
+    settings:
+      tags:
+        - "mysalvage:scrap"
+
+  mysalvage:wood_shavings:
+    material: stick
+    custom_model_data: 57013
+    data:
+      item_name: "<!i><#DEB887>木屑"
+    settings:
+      fuel_time: 100
+
+# =============================================================================
+# 三、配方 - 分解/回收
+# =============================================================================
+recipes:
+  # 铁剑→金属碎片+木屑
+  mysalvage:iron_sword_breakdown:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:iron_sword"
+      - "mysalvage:salvage_hammer"
+    result:
+      id: mysalvage:metal_scrap
+      count: 3
+
+  # 钻石剑→金属碎片+魔法粉尘
+  mysalvage:diamond_sword_breakdown:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:diamond_sword"
+      - "mysalvage:salvage_hammer"
+    result:
+      id: mysalvage:magic_dust
+      count: 2
+
+  # 附魔装备→附魔精华
+  mysalvage:enchanted_breakdown:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:enchanted_book"
+      - "mysalvage:salvage_hammer"
+    result:
+      id: mysalvage:enchant_essence
+      count: 1
+
+  # 木剑→木屑
+  mysalvage:wooden_sword_breakdown:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:wooden_sword"
+      - "mysalvage:salvage_hammer"
+    result:
+      id: mysalvage:wood_shavings
+      count: 2
+
+  # 回收产物→新物品
+  mysalvage:metal_recycle:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mysalvage:metal_scrap"
+    result:
+      id: "minecraft:iron_ingot"
+      count: 1
+
+  mysalvage:dust_recycle:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mysalvage:magic_dust"
+    result:
+      id: "minecraft:diamond"
+      count: 1
+
+  mysalvage:essence_recycle:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "AAA"
+      - "AAA"
+    ingredients:
+      A: "mysalvage:enchant_essence"
+    result:
+      id: "minecraft:experience_bottle"
+      count: 3
+
+  mysalvage:salvage_hammer_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " AA"
+      - " BA"
+      - "B  "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:stick"
+    result:
+      id: mysalvage:salvage_hammer
+      count: 1
+
+  # 烧炼回收(熔炉)
+  mysalvage:smelt_recycle:
+    type: smelting
+    category: misc
+    experience: 0.5
+    time: 200
+    ingredient: "mysalvage:metal_scrap"
+    result:
+      id: "minecraft:iron_nugget"
+      count: 3

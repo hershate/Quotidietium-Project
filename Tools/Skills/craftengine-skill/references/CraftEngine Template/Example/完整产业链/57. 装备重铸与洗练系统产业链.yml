@@ -1,0 +1,176 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 装备重铸与洗练系统产业链
+# =============================================================================
+# 展示装备重铸→属性洗练→品质重置的完整系统
+# 包含物品事件、概率、随机属性、条件检测
+# 命名空间: myreforge (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 重铸材料
+# =============================================================================
+items:
+  # 1a. 重铸石(重置装备属性)
+  myreforge:reforge_stone:
+    material: flint
+    custom_model_data: 46001
+    data:
+      item_name: "<!i><#FF8C00>重铸石"
+      lore:
+        - "<gray>重置装备的属性值"
+    settings:
+      tags:
+        - "myreforge:refining_materials"
+
+  # 1c. 品质石(提升装备品质)
+  myreforge:quality_stone:
+    material: nether_star
+    custom_model_data: 46003
+    data:
+      item_name: "<!i><#AA00FF>品质石"
+      lore:
+        - "<gray>提升装备品质等级"
+    settings:
+      glow_color: light_purple
+
+  # 1d. 保护石(防止重铸失败)
+  myreforge:protect_stone:
+    material: ender_eye
+    custom_model_data: 46004
+    data:
+      item_name: "<!i><#FFD700>保护石"
+      lore:
+        - "<gray>重铸失败时保留原有属性"
+
+# =============================================================================
+# 二、物品 - 可重铸装备(基础+高级)
+# =============================================================================
+  myreforge:reforgeable_sword:
+    material: diamond_sword
+    custom_model_data: 46010
+    data:
+      item_name: "<!i><#FF8C00>可重铸之剑"
+      lore:
+        - "<gray>可使用重铸石重置属性"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 7.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+
+  myreforge:reforged_sword:
+    material: diamond_sword
+    custom_model_data: 46011
+    data:
+      item_name: "<!i><#FFD700>重铸之剑"
+      lore:
+        - "<#FFD700>★已重铸★"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 9.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.8
+          operation: add_value
+          slot: mainhand
+      max_damage: 700
+    settings:
+      glow_color: gold
+
+  myreforge:refined_sword:
+    material: netherite_sword
+    custom_model_data: 46012
+    data:
+      item_name: "<!i><#FF4500>精炼之剑"
+      lore:
+        - "<#FF4500>★★★已精炼★★★"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 12.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 2.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 1000
+    settings:
+      glow_color: red
+
+# =============================================================================
+# 三、配方 - 重铸/洗练/品质提升
+# =============================================================================
+recipes:
+  # 重铸石合成
+  myreforge:reforge_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:cobblestone"
+      B: "minecraft:flint"
+      C: "minecraft:lava_bucket"
+    result:
+      id: myreforge:reforge_stone
+      count: 3
+
+  # 品质石合成
+  myreforge:quality_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "ABA"
+      - " A "
+    ingredients:
+      A: "minecraft:diamond_block"
+      B: "myreforge:reforge_stone"
+    result:
+      id: myreforge:quality_stone
+      count: 1
+
+  # 保护石合成
+  myreforge:protect_stone_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:ender_pearl"
+      - "myreforge:reforge_stone"
+    result:
+      id: myreforge:protect_stone
+      count: 1
+
+  # 基础→重铸
+  myreforge:reforge_sword_recipe:
+    type: smithing_transform
+    base: "myreforge:reforgeable_sword"
+    addition: "myreforge:reforge_stone"
+    result:
+      id: myreforge:reforged_sword
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FFD700>重铸之剑"
+          lore:
+            - "<#FFD700>★已重铸★"
+
+  # 重铸→精炼
+  myreforge:refine_sword_recipe:
+    type: smithing_transform
+    base: "myreforge:reforged_sword"
+    addition: "myreforge:quality_stone"
+    result:
+      id: myreforge:refined_sword
+      count: 1
+    transform_processors:
+      - type: apply_data
+        data:
+          item_name: "<!i><#FF4500>精炼之剑"
+          lore:
+            - "<#FF4500>★★★已精炼★★★"

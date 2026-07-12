@@ -1,0 +1,175 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 草方块与植被生成产业链
+# =============================================================================
+# 展示grass_block+surface_spreading+sapling的完整地表生态系统
+# 命名空间: mygrass (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 地表生态系统
+# =============================================================================
+blocks:
+  # 1a. 魔法草方块(grass_block+surface_spreading)
+  mygrass:magic_grass:
+    behaviors:
+      - type: surface_spreading_block
+        light_requirement: 9
+        base_block: minecraft:dirt
+      - type: grass_block
+        feature: "mygrass:magic_grass_feature"
+    settings:
+      hardness: 0.6
+      tags:
+        - minecraft:mineable/shovel
+        - minecraft:dirt
+
+  # 1b. 魔法泥土(grass_block被覆盖/退化)
+  mygrass:magic_dirt:
+    behaviors:
+      - type: grass_block
+        feature: "mygrass:magic_grass_feature"
+
+  # 1c. 魔法菌丝(mycelium式)
+  mygrass:magic_mycelium:
+    behaviors:
+      - type: surface_spreading_block
+        light_requirement: 7
+        max_light_requirement: 15
+        base_block: minecraft:dirt
+      - type: grass_block
+        feature: "mygrass:magic_mycelium_feature"
+
+  # 1d. 魔法树叶(leaves_block)
+  mygrass:magic_leaves:
+    states:
+      properties:
+        distance:
+          type: int
+          default: 7
+          range: 1~7
+        persistent:
+          type: boolean
+          default: true
+        waterlogged:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: leaves
+          model:
+            texture: "mygrass:block/magic_leaves"
+        waterlogged:
+          auto_state: waterlogged_leaves
+          model:
+            texture: "mygrass:block/magic_leaves"
+      variants:
+        waterlogged=false: { appearance: default }
+        waterlogged=true:
+          appearance: waterlogged
+          settings:
+            fluid_state: water
+    behavior:
+      type: leaves_block
+    settings:
+      hardness: 0.2
+      tags:
+        - minecraft:mineable/hoe
+        - minecraft:leaves
+
+  # 1e. 魔法树苗(sapling_block)
+  mygrass:magic_sapling:
+    state:
+      properties:
+        stage:
+          type: int
+          default: 0
+          range: 0~2
+    behavior:
+      type: sapling_block
+      feature: "mygrass:magic_tree"
+      grow_speed: 0.143
+      bone_meal_success_chance: 0.45
+
+# =============================================================================
+# 二、方块 - 地表覆盖物
+# =============================================================================
+  # 2a. 魔法灌木(bush_block)
+  mygrass:magic_bush:
+    state:
+      properties:
+        age:
+          type: int
+          default: 0
+          range: 0~3
+    behavior:
+      type: bush_block
+      blacklist: false
+      bottom_block_tags:
+        - minecraft:dirt
+      stackable: false
+
+  # 2b. 双层高花(double_high_block)
+  mygrass:magic_tall_flower:
+    behavior:
+      type: double_high_block
+    settings:
+      hardness: 0.0
+      push_reaction: DESTROY
+
+# =============================================================================
+# 三、物品 - 方块物品
+# =============================================================================
+items:
+  mygrass:magic_grass_item:
+    material: grass_block
+    data:
+      item_name: "<!i><#228B22>魔法草方块"
+    behavior:
+      type: block_item
+      block: mygrass:magic_grass
+
+  mygrass:magic_dirt_item:
+    material: dirt
+    data:
+      item_name: "<!i>魔法泥土"
+    behavior:
+      type: block_item
+      block: mygrass:magic_dirt
+
+  mygrass:magic_sapling_item:
+    material: oak_sapling
+    data:
+      item_name: "<!i><#228B22>魔法树苗"
+    behavior:
+      type: block_item
+      block: mygrass:magic_sapling
+
+  mygrass:magic_leaves_item:
+    material: oak_leaves
+    data:
+      item_name: "<!i><#228B22>魔法树叶"
+    behavior:
+      type: block_item
+      block: mygrass:magic_leaves
+
+  mygrass:magic_bush_item:
+    material: dead_bush
+    data:
+      item_name: "<!i><#228B22>魔法灌木"
+    behavior:
+      type: block_item
+      block: mygrass:magic_bush
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mygrass:magic_dirt_to_grass:
+    type: shapeless
+    category: building
+    ingredients:
+      - "mygrass:magic_dirt_item"
+      - "minecraft:wheat_seeds"
+    result:
+      id: mygrass:magic_grass_item
+      count: 1

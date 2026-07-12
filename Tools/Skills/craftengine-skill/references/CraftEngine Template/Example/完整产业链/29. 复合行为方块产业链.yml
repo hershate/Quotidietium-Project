@@ -1,0 +1,205 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 复合行为方块产业链
+# =============================================================================
+# 展示3+种行为组合的复合方块，展示高级行为混合模式
+# 命名空间: mycombo (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 随时间变化+光照+掉落经验
+# =============================================================================
+blocks:
+  # 1a. 发光矿石(灯+掉落经验+衰变)
+  mycombo:glowing_ore:
+    states:
+      properties:
+        lit:
+          type: boolean
+          default: false
+        age:
+          type: int
+          default: 0
+          range: 0~3
+      appearances:
+        default:
+          auto_state: note_block
+          model:
+            texture: "mycombo:block/glowing_ore_off"
+      variants:
+        lit=true:
+          settings:
+            luminance: 12
+    behaviors:
+      - type: lamp_block
+      - type: drop_experience_block
+        amount: 2~5
+      - type: decay_block
+        decay_into: mycombo:depleted_ore
+        chance: 0.01
+        required_light: 0
+    settings:
+      hardness: 3.0
+      tags:
+        - minecraft:mineable/pickaxe
+
+  # 1b. 废弃矿石(衰变后)
+  mycombo:depleted_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycombo:block/depleted_ore"
+    settings:
+      hardness: 1.0
+
+# =============================================================================
+# 二、方块 - 蔓延+光照+表面扩散
+# =============================================================================
+  # 2a. 魔法苔藓(表面扩散+覆雪+粒子)
+  mycombo:magic_moss:
+    behaviors:
+      - type: surface_spreading_block
+        light_requirement: 7
+        base_block: minecraft:stone
+      - type: snowy_block
+    settings:
+      hardness: 0.2
+      tags:
+        - minecraft:mineable/hoe
+
+  # 2b. 堕落腐化(扩散+粒子+衰变)
+  mycombo:corruption_block:
+    behaviors:
+      - type: spreading_block
+        target_block: minecraft:grass_block
+      - type: decay_block
+        decay_into: minecraft:air
+        delay: 6000
+        chance: 0.1
+    settings:
+      hardness: 0.5
+
+# =============================================================================
+# 三、方块 - 垂直作物+液体+悬挂
+# =============================================================================
+  # 3a. 水下藤蔓(垂直向下+液面+悬挂)
+  mycombo:underwater_vine:
+    behaviors:
+      - type: vertical_crop_block
+        direction: down
+        max_height: 5
+        grow_speed: 0.25
+      - type: on_liquid_block
+        liquid_type:
+          - water
+      - type: hanging_block
+        stackable: true
+        delay: 1
+
+  # 3b. 魔法莲花(液面+农作物+光照)
+  mycombo:magic_lotus:
+    behaviors:
+      - type: on_liquid_block
+        liquid_type:
+          - water
+        stackable: false
+      - type: crop_block
+        grow_speed: 0.125
+        light_requirement: 7
+        is_bone_meal_target: true
+      - type: lamp_block
+
+# =============================================================================
+# 四、方块 - 混凝土粉末+下落+灯(复合)
+# =============================================================================
+  # 4a. 发光沙(下落+灯+混凝土粉末)
+  mycombo:glowing_sand:
+    behaviors:
+      - type: falling_block
+        hurt_amount: 1.0
+      - type: concrete_powder_block
+        solid_block: mycombo:glowing_sand_solid
+      - type: lamp_block
+    settings:
+      hardness: 0.5
+
+  # 4b. 凝固发光沙
+  mycombo:glowing_sand_solid:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mycombo:block/glowing_sand_solid"
+    behaviors:
+      - type: lamp_block
+    settings:
+      luminance: 15
+      hardness: 0.8
+
+# =============================================================================
+# 五、方块 - 弹跳+灯+掉落经验(娱乐)
+# =============================================================================
+  # 5a. 奖励弹跳板
+  mycombo:bouncy_reward:
+    behaviors:
+      - type: bouncing_block
+        bounce_height: 2.0
+        fall_damage_multiplier: 0.0
+        sync_player_position: true
+      - type: lamp_block
+      - type: drop_experience_block
+        amount: 1
+    settings:
+      luminance: 10
+      bounce_restitution: 1.0
+      hardness: 0.5
+
+# =============================================================================
+# 六、物品 - 方块物品
+# =============================================================================
+items:
+  mycombo:glowing_ore_item:
+    material: diamond_ore
+    data:
+      item_name: "<!i><#FFD700>发光矿石"
+    behavior:
+      type: block_item
+      block: mycombo:glowing_ore
+
+  mycombo:magic_moss_item:
+    material: moss_block
+    data:
+      item_name: "<!i><#228B22>魔法苔藓"
+    behavior:
+      type: block_item
+      block: mycombo:magic_moss
+
+  mycombo:underwater_vine_item:
+    material: vine
+    data:
+      item_name: "<!i><#00CED1>水下藤蔓"
+    behavior:
+      type: block_item
+      block: mycombo:underwater_vine
+
+  mycombo:magic_lotus_item:
+    material: lily_pad
+    data:
+      item_name: "<!i><#FF69B4>魔法莲花"
+    behavior:
+      type: block_item
+      block: mycombo:magic_lotus
+
+  mycombo:glowing_sand_item:
+    material: sand
+    data:
+      item_name: "<!i><#FFD700>发光沙"
+    behavior:
+      type: block_item
+      block: mycombo:glowing_sand
+
+  mycombo:bouncy_reward_item:
+    material: slime_block
+    data:
+      item_name: "<!i><#90EE90>奖励弹跳板"
+    behavior:
+      type: block_item
+      block: mycombo:bouncy_reward

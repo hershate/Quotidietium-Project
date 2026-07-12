@@ -22,7 +22,7 @@ items:
   # ===========================================================================
   your_namespace:pickaxe:                                    # << CHANGE THIS
     material: diamond_pickaxe                                 # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -55,7 +55,7 @@ items:
   # ===========================================================================
   your_namespace:axe:                                         # << CHANGE THIS
     material: diamond_axe                                     # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -82,7 +82,7 @@ items:
   # ===========================================================================
   your_namespace:shovel:                                      # << CHANGE THIS
     material: diamond_shovel                                  # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -113,7 +113,7 @@ items:
   # ===========================================================================
   your_namespace:hoe:                                         # << CHANGE THIS
     material: diamond_hoe                                     # << CHANGE THIS
-    conditions: []
+
     behavior:
       - type: range_mining_item
         range:
@@ -135,7 +135,7 @@ items:
   # ===========================================================================
   your_namespace:trident:                                     # << CHANGE THIS
     material: trident                                         # << CHANGE THIS
-    conditions: []
+
     settings:
       tags:
         - "your_namespace:weapons"                            # << CHANGE THIS

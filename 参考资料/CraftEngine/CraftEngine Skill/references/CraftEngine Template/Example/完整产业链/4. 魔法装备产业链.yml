@@ -1,0 +1,275 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 魔法装备产业链
+# =============================================================================
+# 展示从魔法宝石 → 魔法武器/法杖 → 特殊效果的完整端到端配置
+# 包含物品事件(粒子/音效/药水)、smithing_transform配方
+# 命名空间: mymagic (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 材料 + 武器 + 法袍 + 宝箱
+# =============================================================================
+items:
+  # -- 魔法材料 --
+  mymagic:arcane_crystal:
+    material: diamond
+    custom_model_data: 4001
+    item_model: "mymagic:arcane_crystal"
+    data:
+      item_name: "<!i><#AA00FF>奥术水晶"
+      lore:
+        - "<gray>纯净的魔法能量结晶"
+    settings:
+      glow_color: light_purple
+      tags:
+        - "mymagic:gems"
+
+  mymagic:fire_gem:
+    material: emerald
+    custom_model_data: 4002
+    item_model: "mymagic:fire_gem"
+    data:
+      item_name: "<!i><#FF4500>火焰宝石"
+      lore:
+        - "<gray>蕴含烈焰之力"
+    settings:
+      glow_color: red
+      tags:
+        - "mymagic:gems"
+
+  mymagic:frost_gem:
+    material: diamond
+    custom_model_data: 4003
+    item_model: "mymagic:frost_gem"
+    data:
+      item_name: "<!i><#00BFFF>冰霜宝石"
+      lore:
+        - "<gray>凝结极寒之息"
+    settings:
+      glow_color: aqua
+      tags:
+        - "mymagic:gems"
+
+  # -- 魔法武器 --
+  mymagic:arcane_staff:
+    material: stick
+    custom_model_data: 4010
+    item_model: "mymagic:arcane_staff"
+    data:
+      item_name: "<!i><#AA00FF>奥术法杖"
+      lore:
+        - "<gray>基础魔法武器"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 4.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 250
+      enchantment:
+        minecraft:unbreaking: 2
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymagic:arcane_blast"
+        functions:
+          - type: set_cooldown
+            id: "mymagic:arcane_blast"
+            time: 3s
+          - type: particle
+            particle: minecraft:end_rod
+            count: 10
+            offset_x: 0.5
+            offset_y: 0.5
+            offset_z: 0.5
+            speed: 0.1
+          - type: play_sound
+            sound: minecraft:entity.experience_orb.pickup
+
+  mymagic:flame_blade:
+    material: diamond_sword
+    custom_model_data: 4011
+    item_model: "mymagic:flame_blade"
+    data:
+      item_name: "<!i><#FF4500>烈焰之刃"
+      lore:
+        - "<red>攻击附带燃烧效果"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 1.6
+          operation: add_value
+          slot: mainhand
+      max_damage: 500
+      enchantment:
+        minecraft:fire_aspect: 2
+      hide_tooltip:
+        - enchantments
+    events:
+      - on: attack
+        functions:
+          - type: particle
+            particle: minecraft:flame
+            count: 5
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
+
+  mymagic:frost_bow:
+    material: bow
+    custom_model_data: 4012
+    item_model: "mymagic:frost_bow"
+    data:
+      item_name: "<!i><#00BFFF>冰霜之弓"
+      lore:
+        - "<aqua>箭矢附加缓慢效果"
+      enchantment:
+        minecraft:power: 4
+    events:
+      - on: attack
+        functions:
+          - type: potion_effect
+            potion_effect: minecraft:slowness
+            duration: 100
+            amplifier: 1
+            target: self
+          - type: particle
+            particle: minecraft:snowflake
+            count: 3
+
+  # -- 法袍 --
+  mymagic:arcane_robe:
+    material: diamond_chestplate
+    custom_model_data: 4020
+    item_model: "mymagic:arcane_robe"
+    data:
+      item_name: "<!i><#AA00FF>奥术法袍"
+      lore:
+        - "<gray>减少魔法冷却时间"
+      attribute_modifiers:
+        - type: armor
+          amount: 6.0
+          operation: add_value
+          slot: chest
+        - type: armor_toughness
+          amount: 2.0
+          operation: add_value
+          slot: chest
+
+  # -- 法师套部件 --
+  mymagic:mage_hood:
+    material: diamond_helmet
+    custom_model_data: 4040
+    item_model: "mymagic:mage_hood"
+    data:
+      item_name: "<!i><#AA00FF>法师兜帽"
+      attribute_modifiers:
+        - type: armor
+          amount: 2.0
+          operation: add_value
+          slot: head
+    settings:
+      equipment:
+        asset_id: "mymagic:mage_armor"
+
+  mymagic:mage_boots:
+    material: diamond_boots
+    custom_model_data: 4041
+    item_model: "mymagic:mage_boots"
+    data:
+      item_name: "<!i><#AA00FF>法师之靴"
+      attribute_modifiers:
+        - type: armor
+          amount: 2.0
+          operation: add_value
+          slot: feet
+    settings:
+      equipment:
+        asset_id: "mymagic:mage_armor"
+
+  # -- 魔法宝箱(一次性开启) --
+  mymagic:magic_chest:
+    material: ender_chest
+    custom_model_data: 4030
+    data:
+      item_name: "<!i><#FFD700>魔法宝箱"
+      lore:
+        - "<gray>右键打开获得随机奖励"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymagic:chest_cooldown"
+        functions:
+          - type: set_cooldown
+            id: "mymagic:chest_cooldown"
+            time: 1s
+          - type: run
+            functions:
+              - type: command
+                command: "give <arg:player.name> mymagic:arcane_crystal 1"
+              - type: particle
+                particle: minecraft:end_rod
+                count: 20
+                offset_x: 0.5
+                offset_y: 1.0
+                offset_z: 0.5
+                speed: 0.2
+              - type: play_sound
+                sound: minecraft:block.ender_chest.open
+              - type: title
+                title: "<#FFD700>魔法奖励!"
+                subtitle: "<gray>你获得了奥术水晶"
+                fade_in: 10
+                stay: 30
+                fade_out: 10
+          # 宝箱开启后消耗自身(原配置不消耗+60s冷却=无限刷奥术水晶)
+          - type: clear_item
+            id: "mymagic:magic_chest"
+            count: 1
+
+# =============================================================================
+# 二、装备 - 法师套定义
+# =============================================================================
+equipments:
+  mymagic:mage_armor:
+    type: component
+    humanoid: "mymagic:entity/equipment/humanoid/mage"
+    humanoid_leggings: "mymagic:entity/equipment/humanoid_leggings/mage"
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mymagic:arcane_crystal_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "mymagic:arcane_shard"
+    result:
+      id: mymagic:arcane_crystal
+      count: 1
+
+  mymagic:arcane_staff_recipe:
+    type: smithing_transform
+    template_type: "mymagic:arcane_upgrade"
+    base: "minecraft:stick"
+    addition: "mymagic:arcane_crystal"
+    merge_components: true
+    result:
+      id: mymagic:arcane_staff
+      count: 1
+
+  mymagic:flame_blade_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_sword"
+    addition: "mymagic:fire_gem"
+    result:
+      id: mymagic:flame_blade
+      count: 1

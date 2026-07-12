@@ -1,0 +1,138 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 分类菜单与UI组织产业链
+# =============================================================================
+# 展示从物品分类→菜单层级→条件显示的完整分类系统
+# 命名空间: mycate (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品
+# =============================================================================
+items:
+  mycate:mythril_sword:
+    material: diamond_sword
+    data:
+      item_name: "<!i><#FF8C00>秘银剑"
+    category: mycate:weapons
+
+  mycate:mythril_pickaxe:
+    material: diamond_pickaxe
+    data:
+      item_name: "<!i><#FF8C00>秘银镐"
+    category:
+      - mycate:weapons
+      - mycate:tools
+
+  mycate:mythril_helmet:
+    material: diamond_helmet
+    data:
+      item_name: "<!i><#FF8C00>秘银头盔"
+    category: mycate:armor
+
+  mycate:mythril_chestplate:
+    material: diamond_chestplate
+    data:
+      item_name: "<!i><#FF8C00>秘银胸甲"
+    category: mycate:armor
+
+  mycate:mythril_ingot:
+    material: iron_ingot
+    data:
+      item_name: "<!i>秘银锭"
+    category: mycate:materials
+
+# =============================================================================
+# 二、分类(根+子+三级嵌套+权限+自动)
+# =============================================================================
+categories:
+  # ----- 根分类 -----
+  mycate:weapons:
+    priority: 1
+    name: "<!i><#FF4500>武器"
+    icon: mycate:mythril_sword
+    list:
+      - mycate:mythril_sword
+      - mycate:mythril_pickaxe
+
+  mycate:tools:
+    priority: 2
+    name: "<!i><#FF8C00>工具"
+    icon: mycate:mythril_pickaxe
+    list:
+      - mycate:mythril_pickaxe
+
+  mycate:armor:
+    priority: 3
+    name: "<!i><#00CED1>盔甲"
+    icon: mycate:mythril_chestplate
+    list:
+      - mycate:mythril_helmet
+      - mycate:mythril_chestplate
+
+  mycate:materials:
+    priority: 4
+    name: "<!i><#FFD700>材料"
+    icon: mycate:mythril_ingot
+    list:
+      - mycate:mythril_ingot
+
+  # ----- 父分类(引用子分类) -----
+  mycate:equipment:
+    priority: 0
+    name: "<!i><#FFD700>装备大全"
+    icon: mycate:mythril_sword
+    list:
+      - "#mycate:weapons"
+      - "#mycate:tools"
+      - "#mycate:armor"
+
+  # ----- 权限限制分类 -----
+  mycate:admin_only:
+    priority: 99
+    name: "<!i><#FF0000>管理员物品"
+    icon: mycate:mythril_sword
+    conditions:
+      - type: permission
+        permission: "mycate.admin"
+    list:
+      - mycate:mythril_sword
+
+  # ----- 自动汇总 -----
+  mycate:all_items:
+    priority: 50
+    name: "<!i><gray>全部物品"
+    icon: mycate:mythril_ingot
+    all_items: true
+
+  # ----- 三级嵌套 -----
+  mycate:collection:
+    priority: 10
+    name: "<!i><#FFD700>收藏集"
+    icon: mycate:mythril_ingot
+    list:
+      - "#mycate:precious"
+      - "#mycate:rare"
+
+  mycate:precious:
+    hidden: true
+    name: "<!i><#FF4500>珍贵物品"
+    icon: mycate:mythril_sword
+    list:
+      - "#mycate:mythril_set"
+
+  mycate:rare:
+    hidden: true
+    name: "<!i><#AA00FF>稀有物品"
+    icon: mycate:mythril_helmet
+    list:
+      - mycate:mythril_chestplate
+
+  mycate:mythril_set:
+    hidden: true
+    name: "<!i><#FF8C00>秘银套装"
+    icon: mycate:mythril_sword
+    list:
+      - mycate:mythril_sword
+      - mycate:mythril_pickaxe
+      - mycate:mythril_helmet
+      - mycate:mythril_chestplate

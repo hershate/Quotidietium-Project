@@ -1,0 +1,201 @@
+# =============================================================================
+# CraftEngine 高级配置特性 — 完整参考模板
+# =============================================================================
+# Wiki 参考路径 (本地):
+#   参考资料/CraftEngine/CraftEngine Wiki/configuration.md
+#
+# 使用说明:
+#   1. 将 your_namespace 替换为你的实际命名空间
+#   2. 搜索 "<< CHANGE THIS" 标记并替换为实际值
+#   3. 这些是配置文件结构层面的高级特性，适用于组织大型配置
+# =============================================================================
+
+# =============================================================================
+# 一、Section Identifiers (节标识符)
+# =============================================================================
+# 使用 #<identifier> 后缀允许同一文件中出现多个同类型配置节。
+# 这在合并来自多个来源的配置时特别有用。
+# =============================================================================
+
+# 示例: 同一文件中包含两个独立的 items 配置块
+items#0:
+  your_namespace:first_item:            # << CHANGE THIS
+    material: paper
+    data:
+      item_name: "<!i>第一组物品"
+
+blocks:
+  your_namespace:example_block:         # << CHANGE THIS
+    state:
+      auto_state: solid
+      model:
+        texture: "your_namespace:block/example"
+
+items#1:
+  your_namespace:second_item:           # << CHANGE THIS
+    material: stick
+    data:
+      item_name: "<!i>第二组物品"
+
+# 注: 标识符可以是任意字符串，仅用于区分同类型的多个节
+# blocks#a, blocks#b, items#main, items#extra 等
+
+# =============================================================================
+# 二、Section Separators (节分隔符)
+# =============================================================================
+# 使用 :: 双冒号将嵌套键折叠为单行，提高可读性。
+# 这在深层嵌套的配置中特别有用。
+# =============================================================================
+
+# 标准写法 (层级嵌套):
+# items:
+#   your_namespace:example_item:
+#     data:
+#       item_name: "<!i>示例"
+
+# 等价简写 (使用 :: 折叠):
+items:
+  your_namespace:example_item:          # << CHANGE THIS
+    data::item_name: "<!i>示例物品"     # 等价于 data: → item_name:
+
+  your_namespace:another_item:          # << CHANGE THIS
+    data::food::nutrition: 5            # 等价于 data: → food: → nutrition:
+    data::food::saturation: 3.5         # 等价于 data: → food: → saturation:
+    settings::fuel_time: 200            # 等价于 settings: → fuel_time:
+
+# 更多 :: 示例:
+#   data::components::minecraft:max_damage: 128
+#   data::lore:    # 列表类型同样适用
+#     - "第一行"
+
+# =============================================================================
+# 三、Version-Based Configuration (版本条件配置)
+# =============================================================================
+# 支持三种版本格式:
+#   1. 固定版本:   $$1.21.4
+#   2. 版本范围:   $$1.20.1~1.21.4
+#   3. 版本比较:   $$>=1.21.4, $$<1.21.8
+#   4. 回退值:     $$fallback: <value>
+# =============================================================================
+
+items:
+  your_namespace:version_aware_item:    # << CHANGE THIS
+    material: paper
+
+    # --- 方式 A: 版本条件选择值 ---
+    # 根据服务器版本自动选择对应的值
+    data:
+      item_name:
+        $$>=1.21.2: "<!i>新版物品名称"      # << CHANGE THIS: 1.21.2+
+        $$1.20.1~1.21.1: "&6旧版物品名称"   # << CHANGE THIS: 1.20.1-1.21.1
+        $$fallback: "&7默认物品名称"        # << CHANGE THIS: 回退值
+
+    # --- 方式 B: 版本条件合并配置块 ---
+    # $$>=1.21.2 后的映射会被合并到父级配置中
+    data:
+      item_name: "<!i>基础名称"
+
+    $$>=1.21.2:                            # 仅在 1.21.2+ 时合并以下内容
+      data:
+        food:                               # 添加食物组件 (1.20.5+)
+          nutrition: 4
+          saturation: 2.5
+          can_always_eat: false
+        equippable:                         # 添加可穿戴组件 (1.21.2+)
+          slot: head
+          asset_id: "minecraft:leather"
+
+    $$>=1.21.5:                            # 仅在 1.21.5+ 时添加
+      data:
+        item_model: "your_namespace:version_aware_item"
+
+# =============================================================================
+# 四、Extended Value Types (扩展值类型 / YAML 标签)
+# =============================================================================
+# CraftEngine 支持显式 YAML 类型标签，确保数值被正确解析。
+# 这对于需要精确数值类型的场景 (如 NBT 数据) 非常重要。
+# =============================================================================
+
+items:
+  your_namespace:typed_values_item:      # << CHANGE THIS
+    material: stick
+    data:
+      item_name: "<!i>类型演示物品"
+
+      # 显式指定数值类型:
+      components:
+        # !!long — 64位长整型
+        minecraft:custom_data: !!long 12345678901234
+
+      # 更多可用的 YAML 标签:
+      # !!long 1234             — 长整型 (Long)
+      # !!float 12.34           — 单精度浮点 (Float)
+      # !!byte 1                — 字节 (Byte)
+      # !!short 123             — 短整型 (Short)
+
+      # 数组类型:
+      # !!ByteArray [1,2,3,4]         — 字节数组
+      # !!IntArray [1,2,3,4]          — 整型数组
+      # !!LongArray [1,2,3,4]         — 长整型数组
+      # !!DoubleArray [1.1,2.2,3.3,4.4] — 双精度数组
+
+      # 列表类型 (保留元素类型):
+      # !!IntList [1,2,3]             — 整型列表
+      # !!LongList [1,2,3]            — 长整型列表
+      # !!DoubleList [1.1,2.2,3.3]     — 双精度列表
+
+# =============================================================================
+# 五、Subpacks (子包)
+# =============================================================================
+# 在 pack.yml 中配置，允许根据版本条件启用/禁用不同的资源包子包。
+# 每个子包拥有独立的 configuration/ 和 resourcepack/ 目录。
+# =============================================================================
+
+# 文件位置: plugins/CraftEngine/pack.yml
+# 以下为 pack.yml 的完整示例:
+
+# subpacks:
+#   # 版本条件控制子包启用
+#   $$>=1.21.4:
+#     modern_pack: true            # 1.21.4+ 启用 modern_pack 子包
+#
+#   # 无条件启用的子包
+#   legacy_pack: true              # 始终启用 legacy_pack 子包
+#
+#   # 默认禁用的子包
+#   experimental_pack: false       # 默认禁用 experimental_pack 子包
+#
+# # 子包目录结构:
+# # plugins/CraftEngine/
+# #   pack.yml
+# #   configuration/          ← 基础配置目录
+# #   resourcepack/           ← 基础资源包目录
+# #   modern_pack/
+# #     configuration/        ← modern_pack 专属配置
+# #     resourcepack/         ← modern_pack 专属资源
+# #   legacy_pack/
+# #     configuration/
+# #     resourcepack/
+
+# =============================================================================
+# 速查附录
+# =============================================================================
+#
+# Section Identifiers: 在节名后添加 #<标识符>
+#   items#0: ...     blocks#main: ...    recipes#extra: ...
+#
+# Section Separators: 用 :: 替代嵌套
+#   key::subkey::nested: value  等价于  key: { subkey: { nested: value } }
+#
+# Version Conditions:
+#   $$1.21.4           固定版本匹配
+#   $$1.20.1~1.21.4    版本范围匹配
+#   $$>=1.21.4         版本比较 (>= 或 <)
+#   $$fallback         无匹配时的回退值
+#
+# YAML Tags:
+#   !!long, !!float, !!byte, !!short
+#   !!ByteArray, !!IntArray, !!LongArray, !!DoubleArray
+#   !!IntList, !!LongList, !!DoubleList
+#
+# Subpacks: 在 pack.yml 中配置，按版本条件启用/禁用子包

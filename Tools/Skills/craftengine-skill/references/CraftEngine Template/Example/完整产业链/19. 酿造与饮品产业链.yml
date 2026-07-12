@@ -1,0 +1,247 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 酿造与饮品产业链
+# =============================================================================
+# 展示从基础酿造→酒精饮品→高级药水的完整端到端配置
+# 包含brewing配方、consumable组件、多重效果
+# 命名空间: mybrew (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 原料 + 容器 + 成品
+# =============================================================================
+items:
+  # ----- 1. 酿造原料 -----
+  mybrew:hops:
+    material: wheat
+    custom_model_data: 16001
+    data:
+      item_name: "<!i><#7CFC00>啤酒花"
+    settings:
+      compost_probability: 0.3
+
+  mybrew:yeast:
+    material: sugar
+    custom_model_data: 16002
+    data:
+      item_name: "<!i><#FFF8DC>酵母"
+
+  mybrew:herbs:
+    material: grass
+    custom_model_data: 16003
+    data:
+      item_name: "<!i><#228B22>魔法草药"
+
+  mybrew:night_bloom:
+    material: cornflower
+    custom_model_data: 16004
+    data:
+      item_name: "<!i><#4169E1>夜光花"
+
+  mybrew:ember_flower:
+    material: red_tulip
+    custom_model_data: 16005
+    data:
+      item_name: "<!i><#FF4500>熔焰花"
+
+  # ----- 2. 酿造容器 -----
+  mybrew:wooden_mug:
+    material: bowl
+    custom_model_data: 16010
+    data:
+      item_name: "<!i><#DEB887>木杯"
+
+  mybrew:glass_goblet:
+    material: glass_bottle
+    custom_model_data: 16011
+    data:
+      item_name: "<!i><#E6E6FA>玻璃高脚杯"
+
+  # ----- 3. 成品饮品(带consumable组件) -----
+  mybrew:ale:
+    material: potion
+    custom_model_data: 16020
+    data:
+      item_name: "<!i><#FF8C00>麦芽啤酒"
+      food:
+        nutrition: 2
+        saturation: 1.0
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: false
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:speed
+                  duration: 200
+                  amplifier: 0
+                - id: minecraft:slowness
+                  duration: 100
+                  amplifier: 0
+    settings:
+      consume_replacement: mybrew:wooden_mug
+
+  mybrew:moonlight_brew:
+    material: potion
+    custom_model_data: 16021
+    data:
+      item_name: "<!i><#E6E6FA>月光酒"
+      components:
+        minecraft:consumable:
+          consume_seconds: 2.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:night_vision
+                  duration: 1200
+                  amplifier: 0
+                - id: minecraft:jump_boost
+                  duration: 600
+                  amplifier: 1
+                - id: minecraft:glowing
+                  duration: 200
+                  amplifier: 0
+    settings:
+      consume_replacement: mybrew:glass_goblet
+
+  mybrew:fire_whiskey:
+    material: potion
+    custom_model_data: 16022
+    data:
+      item_name: "<!i><#FF4500>烈焰威士忌"
+      components:
+        minecraft:consumable:
+          consume_seconds: 1.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:strength
+                  duration: 400
+                  amplifier: 2
+                - id: minecraft:haste
+                  duration: 400
+                  amplifier: 1
+                - id: minecraft:weakness
+                  duration: 600
+                  amplifier: 1
+    settings:
+      consume_replacement: mybrew:wooden_mug
+
+  mybrew:herbal_tea:
+    material: potion
+    custom_model_data: 16023
+    data:
+      item_name: "<!i><#90EE90>治愈花茶"
+      food:
+        nutrition: 1
+        saturation: 0.5
+      components:
+        minecraft:consumable:
+          consume_seconds: 3.0
+          animation: drink
+          sound: minecraft:entity.generic.drink
+          has_consume_particles: true
+          on_consume_effects:
+            - type: minecraft:apply_effects
+              effects:
+                - id: minecraft:regeneration
+                  duration: 200
+                  amplifier: 1
+                - id: minecraft:saturation
+                  duration: 50
+                  amplifier: 0
+    settings:
+      consume_replacement: mybrew:glass_goblet
+
+# =============================================================================
+# 二、配方 - 酿造(brewing 1.20.2+) + 原料合成
+# =============================================================================
+recipes:
+  # ----- 酿造配方 -----
+  mybrew:ale_recipe:
+    type: brewing
+    ingredient: "mybrew:hops"
+    container: "mybrew:wooden_mug"
+    result:
+      id: mybrew:ale
+      count: 1
+
+  mybrew:moonlight_brew_recipe:
+    type: brewing
+    ingredient: "mybrew:night_bloom"
+    container: "mybrew:glass_goblet"
+    result:
+      id: mybrew:moonlight_brew
+      count: 1
+
+  mybrew:fire_whiskey_recipe:
+    type: brewing
+    ingredient: "mybrew:ember_flower"
+    container: "mybrew:wooden_mug"
+    result:
+      id: mybrew:fire_whiskey
+      count: 1
+
+  mybrew:herbal_tea_recipe:
+    type: brewing
+    ingredient: "mybrew:herbs"
+    container: "mybrew:glass_goblet"
+    result:
+      id: mybrew:herbal_tea
+      count: 1
+
+  # ----- 原料合成配方 -----
+  mybrew:hops_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+    ingredients:
+      A: "minecraft:wheat"
+    result:
+      id: mybrew:hops
+      count: 2
+
+  mybrew:yeast_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:sugar"
+      - "minecraft:wheat"
+    result:
+      id: mybrew:yeast
+      count: 1
+
+  mybrew:wooden_mug_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "A A"
+      - "AAA"
+    ingredients:
+      A: "#minecraft:planks"
+    result:
+      id: mybrew:wooden_mug
+      count: 1
+
+  mybrew:glass_goblet_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - "B B"
+      - " B "
+    ingredients:
+      A: "minecraft:glass_pane"
+      B: "minecraft:glass"
+    result:
+      id: mybrew:glass_goblet
+      count: 1

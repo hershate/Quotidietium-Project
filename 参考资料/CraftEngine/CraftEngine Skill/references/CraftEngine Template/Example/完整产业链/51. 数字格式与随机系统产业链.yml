@@ -1,0 +1,159 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 数字格式与随机系统产业链
+# =============================================================================
+# 展示11种数字格式在掉落/配方/事件中的完整应用
+# 命名空间: mynum (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、数字格式定义
+# =============================================================================
+# 所有11种数字格式类型: constant/uniform/expression/binomial/weighted
+# gaussian/skew_normal/log_normal/triangle/beta/exponential
+# =============================================================================
+
+# =============================================================================
+# 二、方块 - 掉落中使用数字格式
+# =============================================================================
+blocks:
+  mynum:random_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mynum:block/random_ore"
+    loot:
+      pools:
+        - rolls:
+            type: uniform
+            min: 1
+            max: 3
+          entries:
+            - type: item
+              item: "mynum:random_gem"
+              weight: 1
+              functions:
+                - type: set_count
+                  count:
+                    type: gaussian
+                    min: 1
+                    max: 10
+                    mean: 5
+                    std_dev: 2
+            - type: item
+              item: "mynum:rare_gem"
+              weight: 1
+              functions:
+                - type: set_count
+                  count:
+                    type: weighted
+                    weights:
+                      "1": 70
+                      "3": 25
+                      "5": 5
+
+# =============================================================================
+# 三、物品 - 随机数量掉落
+# =============================================================================
+items:
+  mynum:random_gem:
+    material: diamond
+    custom_model_data: 40001
+    data:
+      item_name: "<!i><#FF8C00>随机宝石"
+
+  mynum:rare_gem:
+    material: emerald
+    custom_model_data: 40002
+    data:
+      item_name: "<!i><#FF4500>稀有宝石"
+
+# =============================================================================
+# 四、物品 - 事件中使用数字格式
+# =============================================================================
+  mynum:random_staff:
+    material: stick
+    custom_model_data: 40010
+    data:
+      item_name: "<!i><#AA00FF>随机法杖"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mynum:staff_cd"
+        functions:
+          - type: set_cooldown
+            id: "mynum:staff_cd"
+            time: 5s
+          - type: set_exp
+            count:
+              type: binomial
+              extra: 5
+              probability: 0.5
+            add: true
+          - type: heal
+            amount:
+              type: triangle
+              min: 1.0
+              max: 5.0
+              mode: 3.0
+
+# =============================================================================
+# 五、配方 - 随机数量输出
+# =============================================================================
+  mynum:lucky_coin:
+    material: sunflower
+    custom_model_data: 40020
+    data:
+      item_name: "<!i><#FFD700>幸运币"
+    events:
+      - on: right_click
+        conditions:
+          - type: random
+            value: 0.3
+        functions:
+          - type: drop_loot
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      item: "mynum:random_gem"
+                      functions:
+                        - type: set_count
+                          count:
+                            type: log_normal
+                            min: 1
+                            max: 20
+                            mean: 5
+                            std_dev: 3
+recipes:
+  mynum:random_gem_recipe:
+    type: smelting
+    category: misc
+    experience:
+      type: uniform
+      min: 0.5
+      max: 2.0
+    time: 100
+    ingredient: "mynum:random_ore"
+    result:
+      id: mynum:random_gem
+      count: 1
+
+  mynum:rare_gem_combine:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mynum:random_gem"
+      B: "minecraft:netherite_scrap"
+    result:
+      id: mynum:rare_gem
+      count: 1
+
+# =============================================================================
+# 六、函数中使用数字格式
+# =============================================================================

@@ -91,24 +91,24 @@ items:
           # on_consume_effects — 消耗后触发的效果列表
           on_consume_effects:
             # 效果 1: 施加速度 II 和生命恢复 III
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:speed          # << CHANGE THIS 效果 ID
+                - id: minecraft:speed          # << CHANGE THIS 效果 ID
                   duration: 600                     # << CHANGE THIS 持续刻数 (20刻=1秒)
                   amplifier: 1                      # << CHANGE THIS 等级 (0=I级, 1=II级)
                   ambient: false                    # 是否使用环境效果渲染 (减少粒子)
                   show_particles: true              # 是否显示效果粒子
                   show_icon: true                   # 是否显示效果图标
-                - effect: minecraft:regeneration
+                - id: minecraft:regeneration
                   duration: 200                     # << CHANGE THIS (10秒)
                   amplifier: 2                      # << CHANGE THIS (III级)
                   ambient: false
                   show_particles: true
                   show_icon: true
             # 效果 2: 施加伤害吸收 IV
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:absorption
+                - id: minecraft:absorption
                   duration: 1200                    # << CHANGE THIS (60秒)
                   amplifier: 3                      # << CHANGE THIS (IV级)
                   ambient: false
@@ -141,24 +141,24 @@ items:
           has_consume_particles: false     # << CHANGE THIS 不显示粒子
           on_consume_effects:
             # 效果 1: 伤害吸收 IV
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:absorption
+                - id: minecraft:absorption
                   duration: 2400                    # << CHANGE THIS (120秒)
                   amplifier: 3                      # << CHANGE THIS (IV级)
                   ambient: true                     # 环境效果渲染 (粒子较少)
                   show_particles: false
                   show_icon: true
-                - effect: minecraft:resistance
+                - id: minecraft:resistance
                   duration: 2400                    # << CHANGE THIS
                   amplifier: 1                      # << CHANGE THIS (II级)
                   ambient: true
                   show_particles: false
                   show_icon: true
             # 效果 2: 瞬间饱和
-            - type: apply_effects
+            - type: minecraft:apply_effects
               effects:
-                - effect: minecraft:saturation
+                - id: minecraft:saturation
                   duration: 1
                   amplifier: 0
                   ambient: false

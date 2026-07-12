@@ -1,0 +1,127 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 堆肥与有机材料产业链
+# =============================================================================
+# 展示compostable_item堆肥+有机材料循环完整配置
+# 命名空间: mycompost (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 可堆肥物品
+# =============================================================================
+items:
+  # 1a. 有机废料(普通堆肥)
+  mycompost:organic_waste:
+    material: wheat
+    custom_model_data: 37001
+    data:
+      item_name: "<!i><#DEB887>有机废料"
+    settings:
+      compost_probability: 0.5
+      tags:
+        - "mycompost:compostable"
+
+  # 1b. 魔法肥料(高堆肥率)
+  mycompost:magic_compost:
+    material: wheat
+    custom_model_data: 37002
+    data:
+      item_name: "<!i><#FFD700>魔法堆肥"
+    settings:
+      compost_probability: 1.0
+      fuel_time: 400
+      tags:
+        - "mycompost:compostable"
+
+  # 1c. 堆肥行为物品
+  mycompost:rotten_vegetable:
+    material: beetroot
+    custom_model_data: 37003
+    data:
+      item_name: "<!i><#8B4513>腐烂蔬菜"
+    settings:
+      compost_probability: 0.65
+
+  # 1d. 叶子废料(低堆肥率)
+  mycompost:leaf_waste:
+    material: grass
+    custom_model_data: 37004
+    data:
+      item_name: "<!i><#228B22>叶子废料"
+    settings:
+      compost_probability: 0.3
+
+# =============================================================================
+# 二、物品 - 堆肥桶行为物品带compostable_item
+# =============================================================================
+  mycompost:compost_bucket:
+    material: bucket
+    custom_model_data: 37010
+    data:
+      item_name: "<!i><#DEB887>堆肥桶"
+      lore:
+        - "<gray>可放入有机废料"
+    behavior:
+      type: compostable_item
+    settings:
+      compost_probability: 0.0
+
+# =============================================================================
+# 三、物品 - 由堆肥产生的产物
+# =============================================================================
+  mycompost:organic_fertilizer:
+    material: bone_meal
+    custom_model_data: 37020
+    data:
+      item_name: "<!i><#FFD700>有机肥料"
+      lore:
+        - "<gray>由有机废料堆肥制成"
+    settings:
+      compost_probability: 0.0
+
+  mycompost:rich_soil:
+    material: dirt
+    custom_model_data: 37021
+    data:
+      item_name: "<!i><#8B4513>肥沃土壤"
+      lore:
+        - "<gray>富含有机质的土壤"
+
+# =============================================================================
+# 四、配方 - 堆肥循环
+# =============================================================================
+recipes:
+  mycompost:organic_fertilizer_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "mycompost:organic_waste"
+      - "mycompost:organic_waste"
+      - "mycompost:organic_waste"
+    result:
+      id: mycompost:organic_fertilizer
+      count: 1
+
+  mycompost:rich_soil_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mycompost:organic_waste"
+      B: "minecraft:dirt"
+    result:
+      id: mycompost:rich_soil
+      count: 1
+
+  mycompost:magic_compost_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "mycompost:organic_fertilizer"
+      - "mycompost:leaf_waste"
+      - "minecraft:bone_meal"
+    result:
+      id: mycompost:magic_compost
+      count: 2

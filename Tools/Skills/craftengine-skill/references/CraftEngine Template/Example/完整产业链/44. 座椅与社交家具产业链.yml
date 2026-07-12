@@ -1,0 +1,168 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 座椅与社交家具产业链
+# =============================================================================
+# 展示seat_block+sofa_block+多座位+家具座椅完整配置
+# 命名空间: myseat (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 座椅类
+# =============================================================================
+blocks:
+  myseat:wooden_chair:
+    behavior:
+      type: seat_block
+      seats:
+        - "0.5,0.5,0.5"
+
+  myseat:love_seat:
+    behavior:
+      type: seat_block
+      seats:
+        - "0.3,0.5,0.5"
+        - "0.7,0.5,0.5"
+
+  myseat:comfy_sofa:
+    behavior:
+      type: sofa_block
+
+  myseat:bar_stool:
+    behavior:
+      type: seat_block
+      seats:
+        - "0.5,0.8,0.5"
+
+# =============================================================================
+# 二、家具 - 座椅类
+# =============================================================================
+furniture:
+  myseat:armchair:
+    settings:
+      item: myseat:armchair_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myseat:armchair_item
+            translation: 0.5,0.3,0.5
+        hitboxes:
+          - type: shulker
+            position: 0.5,0.3,0.5
+            scale: 0.8,0.6,0.8
+            seats:
+              - "0.5,0.6,0.5"
+
+  myseat:park_bench:
+    settings:
+      item: myseat:bench_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myseat:bench_item
+            translation: 0.5,0.2,0.5
+            scale: 1.0,0.6,0.6
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.3,0.5
+            width: 0.9
+            height: 0.4
+            seats:
+              - "0.2,0.5,0.5"
+              - "0.5,0.5,0.5"
+              - "0.8,0.5,0.5"
+
+  myseat:swing:
+    settings:
+      item: myseat:swing_item
+    variants:
+      ceiling:
+        elements:
+          - type: item_display
+            item: myseat:swing_item
+            translation: 0.5,0.5,0.5
+        hitboxes:
+          - type: shulker
+            position: 0.5,0.3,0.5
+            scale: 0.6,0.2,0.6
+            seats:
+              - "0.5,0.4,0.5"
+
+# =============================================================================
+# 三、物品 - 方块+家具物品
+# =============================================================================
+items:
+  myseat:wooden_chair_item:
+    material: stick
+    custom_model_data: 35010
+    data:
+      item_name: "<!i><#DEB887>木椅"
+    behavior:
+      type: block_item
+      block: myseat:wooden_chair
+
+  myseat:comfy_sofa_item:
+    material: leather
+    custom_model_data: 35011
+    data:
+      item_name: "<!i><#DEB887>舒适沙发"
+    behavior:
+      type: block_item
+      block: myseat:comfy_sofa
+
+  myseat:armchair_item:
+    material: leather
+    custom_model_data: 35001
+    data:
+      item_name: "<!i><#8B4513>扶手椅"
+    behavior:
+      type: furniture_item
+      furniture: myseat:armchair
+
+  myseat:bench_item:
+    material: stick
+    custom_model_data: 35002
+    data:
+      item_name: "<!i><#DEB887>公园长椅"
+    behavior:
+      type: furniture_item
+      furniture: myseat:park_bench
+
+  myseat:swing_item:
+    material: stick
+    custom_model_data: 35003
+    data:
+      item_name: "<!i><#DEB887>秋千"
+    behavior:
+      type: furniture_item
+      furniture: myseat:swing
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myseat:armchair_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "B B"
+    ingredients:
+      A: "minecraft:wool"
+      B: "#minecraft:planks"
+    result:
+      id: myseat:armchair_item
+      count: 1
+
+  myseat:park_bench_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "B B"
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:stick"
+    result:
+      id: myseat:bench_item
+      count: 1

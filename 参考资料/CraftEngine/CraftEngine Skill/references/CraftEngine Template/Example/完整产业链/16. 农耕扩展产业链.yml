@@ -1,0 +1,225 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 农耕扩展产业链
+# =============================================================================
+# 展示从肥料→加速生长→特殊作物的完整农耕端到端配置
+# 包含垂直作物、茎果、灌木等多种高级生长机制
+# 命名空间: myfarm2 (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 所有作物方块
+# =============================================================================
+blocks:
+  # 1a. 魔法甘蔗 (向上垂直生长)
+  myfarm2:magic_sugarcane:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm2:magic_sugarcane_item"
+    behaviors:
+      - type: vertical_crop_block
+        max_height: 5
+        grow_speed: 0.333
+        direction: up
+      - type: near_liquid_block
+        liquid_type:
+          - water
+
+  # 1b. 魔法藤蔓 (向下垂直生长+悬挂)
+  myfarm2:magic_vines:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm2:magic_vines_item"
+    behaviors:
+      - type: vertical_crop_block
+        max_height: 4
+        grow_speed: 0.25
+        direction: down
+      - type: hanging_block
+        stackable: true
+        delay: 1
+
+  # 1c. 魔法瓜茎 (stem_block, 仿西瓜/南瓜)
+  myfarm2:magic_melon_stem:
+    behavior:
+      type: stem_block
+      fruit: myfarm2:magic_melon
+      attached_stem: myfarm2:attached_magic_melon_stem
+      fruit_bottom_blocks:
+        - minecraft:farmland
+      fruit_bottom_block_tags:
+        - minecraft:dirt
+
+  # 1d. 附着魔法瓜茎
+  myfarm2:attached_magic_melon_stem:
+    behavior:
+      type: attached_stem_block
+      fruit: myfarm2:magic_melon
+      stem: myfarm2:magic_melon_stem
+
+  # 1e. 魔法瓜 (果实方块)
+  myfarm2:magic_melon:
+    state:
+      auto_state: note_block
+      model:
+        texture: "myfarm2:block/magic_melon"
+    settings:
+      hardness: 1.0
+
+  # 1f. 魔法辣椒灌木 (bush_block)
+  myfarm2:magic_pepper_bush:
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: "myfarm2:magic_pepper"
+              functions:
+                - type: set_count
+                  count: 1~3
+    behavior:
+      type: bush_block
+      blacklist: false
+      bottom_block_tags:
+        - minecraft:dirt
+        - minecraft:farmland
+
+# =============================================================================
+# 二、物品 - 工具+作物+种子
+# =============================================================================
+items:
+  # ----- 肥料与工具 -----
+  myfarm2:basic_fertilizer:
+    material: bone_meal
+    custom_model_data: 13001
+    data:
+      item_name: "<!i><#DEB887>基础肥料"
+    settings:
+      compost_probability: 0.8
+
+  myfarm2:rich_fertilizer:
+    material: bone_meal
+    custom_model_data: 13002
+    data:
+      item_name: "<!i><#FFD700>富饶肥料"
+    settings:
+      compost_probability: 1.0
+
+  myfarm2:magic_watering_can:
+    material: bucket
+    custom_model_data: 13010
+    data:
+      item_name: "<!i><#00CED1>魔法喷壶"
+      max_damage: 100
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "myfarm2:watering_cd"
+        functions:
+          - type: set_cooldown
+            id: "myfarm2:watering_cd"
+            time: 5s
+          - type: command
+            command: "particle minecraft:falling_water <arg:player.x> <arg:player.y> <arg:player.z> 2 1 2 0 50"
+          - type: play_sound
+            sound: minecraft:block.water.ambient
+          - type: damage_item
+            amount: 1
+
+  # ----- 农作物 -----
+  myfarm2:magic_sugarcane_item:
+    material: sugar_cane
+    custom_model_data: 13020
+    data:
+      item_name: "<!i><#9370DB>魔法甘蔗"
+    behavior:
+      type: block_item
+      block: myfarm2:magic_sugarcane
+
+  myfarm2:magic_vines_item:
+    material: vine
+    custom_model_data: 13021
+    data:
+      item_name: "<!i><#228B22>魔法藤蔓"
+    behavior:
+      type: block_item
+      block: myfarm2:magic_vines
+
+  myfarm2:magic_melon_item:
+    material: melon_slice
+    custom_model_data: 13022
+    data:
+      item_name: "<!i><#FFD700>魔法瓜片"
+      food:
+        nutrition: 3
+        saturation: 2.0
+
+  myfarm2:magic_pepper:
+    material: beetroot
+    custom_model_data: 13023
+    data:
+      item_name: "<!i><#FF4500>魔法辣椒"
+      food:
+        nutrition: 1
+        saturation: 0.5
+    settings:
+      compost_probability: 0.3
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myfarm2:basic_fertilizer_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:bone_meal"
+      - "minecraft:wheat"
+    result:
+      id: myfarm2:basic_fertilizer
+      count: 2
+
+  myfarm2:rich_fertilizer_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "myfarm2:basic_fertilizer"
+      B: "minecraft:gold_nugget"
+    result:
+      id: myfarm2:rich_fertilizer
+      count: 1
+
+  myfarm2:magic_watering_can_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "  A"
+      - "B B"
+      - " B "
+    ingredients:
+      A: "minecraft:iron_ingot"
+      B: "minecraft:iron_nugget"
+    result:
+      id: myfarm2:magic_watering_can
+      count: 1
+
+  myfarm2:magic_sugarcane_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AA"
+    ingredients:
+      A: "myfarm2:magic_sugarcane_item"
+    result:
+      id: "minecraft:sugar"
+      count: 2

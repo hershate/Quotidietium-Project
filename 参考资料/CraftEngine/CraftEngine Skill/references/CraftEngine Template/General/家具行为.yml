@@ -40,10 +40,15 @@ furniture:
         wall:
           # << CHANGE THIS
           item_position: 0,0.5,0.3
-          # << CHANGE THIS (示例: 定义两个碰撞箱)
+          # << CHANGE THIS (示例: 定义两个交互判定箱)
+          # 判定箱格式遵循家具变体的结构化格式 (见 variants.md)
           hitboxes:
-            - 0.2,0.1,0.4,0.8,0.3,0.6
-            - -0.1,0.3,0.4,0.3,0.5,0.6
+            - type: interaction
+              position: 0.5,0.2,0.7
+              scale: 0.6,0.2,0.2
+            - type: interaction
+              position: 0.1,0.4,0.7
+              scale: 0.4,0.2,0.2
 
 # =============================================================================
 # [2] 发光家具 - glowing_furniture (统一配置)

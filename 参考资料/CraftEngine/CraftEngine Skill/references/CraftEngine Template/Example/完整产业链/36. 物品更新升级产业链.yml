@@ -1,0 +1,134 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物品更新升级产业链
+# =============================================================================
+# 展示物品版本更新系统: 从旧版本物品→逐步更新→最新版本的完整流程
+# 包含apply_data/transmute/reset三种更新器类型
+# 命名空间: myupd (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 基础版本(定义+更新器)
+# =============================================================================
+items:
+  # 1a. 远古剑(v1初始版本→v2→v3逐步更新)
+  myupd:ancient_blade:
+    material: wooden_sword
+    custom_model_data: 31001
+    data:
+      item_name: "<!i><#8B4513>远古之剑"
+      lore:
+        - "<gray>一把古老的剑"
+      max_damage: 100
+    updater:
+      # v1: 升级为石剑，改名称
+      1:
+        type: transmute
+        material: stone_sword
+      # v2: 增加属性+描述
+      2:
+        type: apply_data
+        data:
+          item_name: "<!i><#FF8C00>强化远古剑"
+          lore:
+            - "<gray>经过初步强化"
+          max_damage: 250
+          attribute_modifiers:
+            - type: attack_damage
+              amount: 5.0
+              operation: add_value
+              slot: mainhand
+      # v3: transmute+apply_data组合
+      3:
+        - type: transmute
+          material: iron_sword
+        - type: apply_data
+          data:
+            item_name: "<!i><#FFD700>远古重铸剑"
+            lore:
+              - "<gray>已重铸强化"
+            max_damage: 500
+            enchantment:
+              minecraft:sharpness: 2
+
+  # 1b. 远古胸甲(v1→v2→reset到最新)
+  myupd:ancient_chestplate:
+    material: leather_chestplate
+    custom_model_data: 31002
+    data:
+      item_name: "<!i>远古胸甲"
+      max_damage: 200
+    updater:
+      1:
+        type: transmute
+        material: iron_chestplate
+      2:
+        type: apply_data
+        data:
+          item_name: "<!i><#FF8C00>强化远古胸甲"
+          attribute_modifiers:
+            - type: armor
+              amount: 6.0
+              operation: add_value
+              slot: chest
+      3:
+        type: reset
+        keep_components:
+          - minecraft:enchantments
+          - minecraft:trim
+        keep_tags:
+          - Enchantments
+
+  # 1c. 完整物品(最新定义，更新器目标)
+  myupd:refined_ancient_blade:
+    material: diamond_sword
+    custom_model_data: 31010
+    data:
+      item_name: "<!i><#FF4500>远古精炼剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 800
+      enchantment:
+        minecraft:sharpness: 3
+        minecraft:unbreaking: 2
+
+  # 1d. 远古头盔(带条件更新)
+  myupd:ancient_helmet:
+    material: leather_helmet
+    custom_model_data: 31003
+    data:
+      item_name: "<!i>远古头盔"
+    updater:
+      1:
+        type: apply_data
+        data:
+          item_name: "<!i><#FF8C00>恢复的远古头盔"
+          max_damage: 300
+          attribute_modifiers:
+            - type: armor
+              amount: 2.0
+              operation: add_value
+              slot: head
+      2:
+        type: transmute
+        material: iron_helmet
+      3:
+        - type: transmute
+          material: diamond_helmet
+        - type: apply_data
+          data:
+            item_name: "<!i><#FFD700>古代英雄头盔"
+            lore:
+              - "<gold>从远古苏醒的强大头盔"
+            max_damage: 500
+            attribute_modifiers:
+              - type: armor
+                amount: 3.0
+                operation: add_value
+                slot: head
+              - type: armor_toughness
+                amount: 2.0
+                operation: add_value
+                slot: head

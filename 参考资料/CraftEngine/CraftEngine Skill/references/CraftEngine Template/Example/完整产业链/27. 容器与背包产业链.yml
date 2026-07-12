@@ -1,0 +1,187 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 容器与背包产业链
+# =============================================================================
+# 展示从背包→存储饰品→药水袋→存储家具的完整配置
+# 命名空间: mybag (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、家具 - 存储家具
+# =============================================================================
+furniture:
+  mybag:storage_crate:
+    settings:
+      item: mybag:storage_crate_item
+    behavior:
+      type: simple_storage_furniture
+      title: "储物箱"
+      rows: 6
+
+  mybag:potion_rack:
+    settings:
+      item: mybag:potion_rack_item
+    behavior:
+      type: display_item_furniture
+      variants:
+        ground:
+          item_position: 0,0.5,0
+          hitboxes: []
+
+# =============================================================================
+# 二、物品 - 背包 + 存储饰品 + 药水袋 + 家具物品
+# =============================================================================
+items:
+  # ----- 1. 背包系列 -----
+  mybag:leather_pouch:
+    material: leather
+    custom_model_data: 24001
+    data:
+      item_name: "<!i><#DEB887>皮革背包"
+
+  mybag:travel_backpack:
+    material: chest
+    custom_model_data: 24002
+    data:
+      item_name: "<!i><#8B4513>旅行背包"
+
+  mybag:potion_belt:
+    material: leather
+    custom_model_data: 24003
+    data:
+      item_name: "<!i><#00CED1>药剂腰带"
+
+  mybag:tool_belt:
+    material: leather
+    custom_model_data: 24004
+    data:
+      item_name: "<!i><#FF8C00>工具腰带"
+
+  # ----- 2. 存储饰品 -----
+  mybag:soul_pouch:
+    material: black_dye
+    custom_model_data: 24010
+    data:
+      item_name: "<!i><#4B0082>灵魂绑定袋"
+    settings:
+      keep_on_death_chance: 1.0
+
+  mybag:enchanted_backpack:
+    material: chest
+    custom_model_data: 24011
+    data:
+      item_name: "<!i><#AA00FF>附魔背包"
+
+  mybag:miner_pack:
+    material: chest
+    custom_model_data: 24012
+    data:
+      item_name: "<!i><#FF8C00>矿工背包"
+
+  # ----- 3. 药水袋(右键恢复) -----
+  mybag:health_potion_bag:
+    material: red_dye
+    custom_model_data: 24020
+    data:
+      item_name: "<!i><#FF0000>急救包"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mybag:heal_cd"
+        functions:
+          - type: set_cooldown
+            id: "mybag:heal_cd"
+            time: 10s
+          - type: heal
+            amount: 4.0
+          - type: particle
+            particle: minecraft:heart
+            count: 8
+
+  # ----- 4. 家具物品 -----
+  mybag:storage_crate_item:
+    material: barrel
+    custom_model_data: 24030
+    data:
+      item_name: "<!i><#DEB887>储物箱"
+    behavior:
+      type: furniture_item
+      furniture: mybag:storage_crate
+
+  mybag:potion_rack_item:
+    material: tripwire_hook
+    custom_model_data: 24031
+    data:
+      item_name: "<!i><#8B4513>药水架"
+    behavior:
+      type: furniture_item
+      furniture: mybag:potion_rack
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mybag:leather_pouch_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:leather"
+      B: "minecraft:string"
+    result:
+      id: mybag:leather_pouch
+      count: 1
+
+  mybag:travel_backpack_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "minecraft:leather"
+      B: "mybag:leather_pouch"
+    result:
+      id: mybag:travel_backpack
+      count: 1
+
+  mybag:soul_pouch_recipe:
+    type: smithing_transform
+    base: "mybag:leather_pouch"
+    addition: "minecraft:ender_pearl"
+    result:
+      id: mybag:soul_pouch
+      count: 1
+
+  mybag:health_potion_bag_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:red_dye"
+      B: "minecraft:leather"
+      C: "minecraft:glistering_melon_slice"
+    result:
+      id: mybag:health_potion_bag
+      count: 1
+
+  mybag:storage_crate_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "#minecraft:planks"
+      B: "minecraft:barrel"
+    result:
+      id: mybag:storage_crate_item
+      count: 1

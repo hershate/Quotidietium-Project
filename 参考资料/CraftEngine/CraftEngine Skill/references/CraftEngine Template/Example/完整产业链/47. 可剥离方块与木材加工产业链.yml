@@ -1,0 +1,161 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 可剥离方块与木材加工产业链
+# =============================================================================
+# 展示strippable_block+多轴向原木+木板完整加工链
+# 命名空间: mystrip (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 原木(轴+可剥离)+木板
+# =============================================================================
+blocks:
+  mystrip:mystic_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "mystrip:block/mystic_log_top"
+                side: "mystrip:block/mystic_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mystrip:block/mystic_log_top"
+                side: "mystrip:block/mystic_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mystrip:block/mystic_log_top"
+                side: "mystrip:block/mystic_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    behavior:
+      type: strippable_block
+      stripped: mystrip:stripped_mystic_log
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+
+  mystrip:stripped_mystic_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "mystrip:block/stripped_mystic_log_top"
+                side: "mystrip:block/stripped_mystic_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mystrip:block/stripped_mystic_log_top"
+                side: "mystrip:block/stripped_mystic_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "mystrip:block/stripped_mystic_log_top"
+                side: "mystrip:block/stripped_mystic_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+
+  mystrip:mystic_planks:
+    state:
+      auto_state: note_block
+      model:
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "mystrip:block/mystic_planks"
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:planks
+
+# =============================================================================
+# 二、物品 - 方块物品
+# =============================================================================
+items:
+  mystrip:mystic_log_item:
+    material: stick
+    data:
+      item_name: "<!i>神秘原木"
+    behavior:
+      type: block_item
+      block: mystrip:mystic_log
+    settings:
+      fuel_time: 300
+
+  mystrip:stripped_mystic_log_item:
+    material: stick
+    data:
+      item_name: "<!i>去皮神秘原木"
+    behavior:
+      type: block_item
+      block: mystrip:stripped_mystic_log
+    settings:
+      fuel_time: 200
+
+  mystrip:mystic_planks_item:
+    material: stick
+    data:
+      item_name: "<!i>神秘木板"
+    behavior:
+      type: block_item
+      block: mystrip:mystic_planks
+    settings:
+      fuel_time: 300
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  mystrip:mystic_planks_recipe:
+    type: shapeless
+    category: building
+    ingredients:
+      - "#mystrip:mystic_logs"
+    result:
+      id: mystrip:mystic_planks_item
+      count: 4

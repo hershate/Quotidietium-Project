@@ -1,0 +1,219 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 药箭与特殊弹射物产业链
+# =============================================================================
+# 展示自定义药箭→特殊弹射物→投射物武器的完整系统
+# 包含tipped_arrow、projectile、potion_effect、自定义音效
+# 命名空间: myarrow (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 药箭系列
+# =============================================================================
+items:
+  # 1a. 治愈药箭(命中恢复)
+  myarrow:healing_arrow:
+    material: tipped_arrow
+    custom_model_data: 60001
+    data:
+      item_name: "<!i><#55FF55>治愈药箭"
+      lore:
+        - "<gray>命中后恢复生命"
+    events:
+      - on: attack
+        functions:
+          - type: heal
+            amount: 2.0
+            target: self
+
+  # 1b. 火焰药箭(点燃目标)
+  myarrow:flame_arrow:
+    material: tipped_arrow
+    custom_model_data: 60002
+    data:
+      item_name: "<!i><#FF4500>火焰药箭"
+      lore:
+        - "<gray>命中后点燃目标"
+    events:
+      - on: attack
+        functions:
+          - type: damage
+            amount: 4.0
+          - type: particle
+            particle: minecraft:flame
+            count: 10
+            offset_x: 0.3
+            offset_y: 0.3
+            offset_z: 0.3
+
+  # 1c. 冰冻药箭(减速+伤害)
+  myarrow:frost_arrow:
+    material: tipped_arrow
+    custom_model_data: 60003
+    data:
+      item_name: "<!i><#00BFFF>冰冻药箭"
+      lore:
+        - "<gray>命中后减速目标"
+    events:
+      - on: attack
+        functions:
+          - type: potion_effect
+            potion_effect: minecraft:slowness
+            duration: 100
+            amplifier: 1
+
+  # 1d. 传送药箭(传送目标)
+  myarrow:teleport_arrow:
+    material: tipped_arrow
+    custom_model_data: 60004
+    data:
+      item_name: "<!i><#AA00FF>传送药箭"
+      lore:
+        - "<gray>命中后传送目标"
+    events:
+      - on: attack
+        functions:
+          - type: teleport
+            x: "<arg:position.x> + 5"
+            y: "<arg:position.y>"
+            z: "<arg:position.z>"
+            pitch: "<arg:player.pitch>"
+            yaw: "<arg:player.yaw>"
+          - type: particle
+            particle: minecraft:portal
+            count: 20
+            speed: 0.5
+
+# =============================================================================
+# 二、物品 - 特殊投射物
+# =============================================================================
+  # 2a. 魔法飞弹(弹射物)
+  myarrow:magic_missile:
+    material: arrow
+    custom_model_data: 60010
+    data:
+      item_name: "<!i><#AA00FF>魔法飞弹"
+    settings:
+      projectile:
+        display:
+          item: "myarrow:magic_missile"
+          scale: 0.5
+        sounds:
+          throw: "minecraft:entity.ender_pearl.throw"
+          hit_entity: "minecraft:entity.firework_rocket.blast"
+        pickupable: false
+        gravity: false
+        velocity: 3.0
+        damage: 8.0
+        pierce_level: 2
+
+  # 2b. 治疗飞弹
+  myarrow:healing_missile:
+    material: arrow
+    custom_model_data: 60011
+    data:
+      item_name: "<!i><#55FF55>治疗飞弹"
+    settings:
+      projectile:
+        display:
+          item: "myarrow:healing_missile"
+        pickupable: false
+        gravity: true
+        velocity: 1.5
+        damage: 0.0
+    events:
+      - on: attack
+        functions:
+          - type: heal
+            amount: 4.0
+            target: self
+
+# =============================================================================
+# 三、物品 - 特殊弓弩(允许特殊弹药)
+# =============================================================================
+  myarrow:magic_bow:
+    material: bow
+    custom_model_data: 60020
+    data:
+      item_name: "<!i><#AA00FF>魔法弓"
+      max_damage: 500
+    settings:
+      allowed_projectiles:
+        - "myarrow:magic_missile"
+        - "myarrow:healing_missile"
+        - "minecraft:arrow"
+
+  myarrow:crossbow_launcher:
+    material: crossbow
+    custom_model_data: 60021
+    data:
+      item_name: "<!i><#FF4500>发射器"
+    settings:
+      allowed_projectiles:
+        - "myarrow:flame_arrow"
+        - "myarrow:teleport_arrow"
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myarrow:healing_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:glistering_melon_slice"
+    result:
+      id: myarrow:healing_arrow
+      count: 4
+
+  myarrow:flame_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:blaze_powder"
+    result:
+      id: myarrow:flame_arrow
+      count: 4
+
+  myarrow:frost_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:blue_ice"
+    result:
+      id: myarrow:frost_arrow
+      count: 4
+
+  myarrow:teleport_arrow_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:arrow"
+      - "minecraft:ender_pearl"
+    result:
+      id: myarrow:teleport_arrow
+      count: 4
+
+  myarrow:magic_missile_recipe:
+    type: smithing_transform
+    base: "minecraft:arrow"
+    addition: "minecraft:ender_eye"
+    result:
+      id: myarrow:magic_missile
+      count: 8
+
+  myarrow:magic_bow_recipe:
+    type: shaped
+    category: equipment
+    pattern:
+      - " AB"
+      - "A B"
+      - " AB"
+    ingredients:
+      A: "minecraft:diamond"
+      B: "minecraft:string"
+    result:
+      id: myarrow:magic_bow
+      count: 1

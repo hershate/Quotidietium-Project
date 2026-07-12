@@ -1,0 +1,108 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 文本格式与全局变量产业链
+# =============================================================================
+# 展示MiniMessage标签+全局变量+占位符的完整文本系统
+# 命名空间: mytext (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、全局变量 - 文本模板
+# =============================================================================
+global_variables:
+  mytext:server_prefix: "<!i><#FF8C00>[服务器]</#FF8C00> "
+  mytext:warning_tag: "<!i><#FF0000>[警告]</#FF0000> "
+  mytext:success_tag: "<!i><#00FF00>[成功]</#00FF00> "
+  mytext:coin_icon: "<!shadow><image:mytext:coin_icon>"
+  mytext:rarity_common: "<!i><#FFFFFF>[普通]</#FFFFFF>"
+  mytext:rarity_rare: "<!i><#FFD700>[稀有]</#FFD700>"
+  mytext:rarity_epic: "<!i><#AA00FF>[史诗]</#AA00FF>"
+  mytext:rarity_legendary: "<!i><#FF4500>[传说]</#FF4500>"
+
+# =============================================================================
+# 二、图像 - 文本标签引用
+# =============================================================================
+images:
+  mytext:coin_icon:
+    height: 10
+    ascent: 9
+    file: "mytext:font/image/coin.png"
+    char: '뀀'
+
+# =============================================================================
+# 三、物品 - 文本格式各类标签展示
+# =============================================================================
+items:
+  # 3a. shift标签(偏移)
+  mytext:shift_demo:
+    material: paper
+    data:
+      item_name: "<!i><shift:-50><#FF8C00>偏移文本演示"
+
+  # 3b. papi标签(占位符+默认值)
+  mytext:papi_demo:
+    material: diamond
+    data:
+      item_name: "<!i><#FF8C00><papi:player_name>的宝剑"
+      lore:
+        - "<gray>等级: <papi:player_level:0>"
+        - "<gray>血量: <papi:player_health_percent:100>%"
+
+  # 3c. image标签(图片)
+  mytext:image_demo:
+    material: paper
+    data:
+      item_name: "<!i><white><image:mytext:coin_icon> <#FF8C00>金币展示"
+
+  # 3d. expr标签(数学运算)
+  mytext:expr_demo:
+    material: paper
+    data:
+      item_name: "<!i><#FF8C00>伤害计算: <expr:0.##:'<papi:player_level:0> * 1.5'>"
+
+  # 3e. global标签(全局变量)
+  mytext:global_demo:
+    material: diamond
+    data:
+      item_name: "<global:mytext:server_prefix><#FF8C00>传说之剑"
+      lore:
+        - "<global:mytext:rarity_legendary> 一把传说中的武器"
+        - "<global:mytext:coin_icon> 价值连城"
+
+  # 3f. 综合演示(组合所有标签)
+  mytext:comprehensive_item:
+    material: netherite_sword
+    data:
+      item_name: "<!i><global:mytext:rarity_legendary> <shift:-30><#FF4500>终极神器"
+      lore:
+        - "<global:mytext:coin_icon> <#FFD700>价格: <expr:0:'10000 * <papi:player_level:1>'> 金币"
+        - "<gray>持有者: <papi:player_name>"
+        - "<gray>服务器: <global:mytext:server_prefix>"
+
+# =============================================================================
+# 四、消息 - 广播中文本格式
+# =============================================================================
+# 在函数中使用的文本格式示例
+  mytext:broadcast_stick:
+    material: stick
+    data:
+      item_name: "<!i>广播测试棒"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            target: all
+            message: "<global:mytext:server_prefix> <#FF8C00>玩家 <papi:player_name> 使用了广播棒!"
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  mytext:global_demo_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:diamond"
+      - "minecraft:paper"
+    result:
+      id: mytext:global_demo
+      count: 1

@@ -1,0 +1,168 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 装备进阶升阶产业链
+# =============================================================================
+# 展示武器从T1(基础)→T2(进阶)→T3(高级)→T4(史诗)→T5(传说)进阶体系
+# 包含smithing_transform升级链+属性递增+transform_processors保留魔咒
+# 命名空间: mytier (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 5阶武器(T1~T5)
+# =============================================================================
+items:
+  # ----- T1 基础 -----
+  mytier:iron_rapier:
+    material: iron_sword
+    custom_model_data: 26001
+    data:
+      item_name: "<!i><#FFFFFF>铁质细剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 5.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 250
+
+  # ----- T2 进阶 -----
+  mytier:steel_rapier:
+    material: iron_sword
+    custom_model_data: 26002
+    data:
+      item_name: "<!i><#B0C4DE>钢化细剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 7.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 400
+      enchantment:
+        minecraft:unbreaking: 1
+
+  # ----- T3 高级 -----
+  mytier:wind_rapier:
+    material: diamond_sword
+    custom_model_data: 26003
+    data:
+      item_name: "<!i><#00CED1>疾风细剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 9.0
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: 2.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 600
+      enchantment:
+        minecraft:sharpness: 2
+        minecraft:unbreaking: 2
+
+  # ----- T4 史诗 -----
+  mytier:flame_rapier:
+    material: diamond_sword
+    custom_model_data: 26004
+    data:
+      item_name: "<!i><#FF4500>烈焰细剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 12.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 800
+      enchantment:
+        minecraft:sharpness: 4
+        minecraft:fire_aspect: 2
+    settings:
+      glow_color: red
+
+  # ----- T5 传说 -----
+  mytier:legend_rapier:
+    material: netherite_sword
+    custom_model_data: 26005
+    data:
+      item_name: "<!i><#FFD700>传说细剑"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 15.0
+          operation: add_value
+          slot: mainhand
+      max_damage: 1200
+      enchantment:
+        minecraft:sharpness: 5
+        minecraft:looting: 3
+    settings:
+      glow_color: gold
+
+# =============================================================================
+# 二、配方 - 4步进阶锻造链+模板
+# =============================================================================
+recipes:
+  # T1→T2
+  mytier:steel_rapier_upgrade:
+    type: smithing_transform
+    base: "mytier:iron_rapier"
+    addition: "minecraft:iron_block"
+    result:
+      id: mytier:steel_rapier
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+
+  # T2→T3
+  mytier:wind_rapier_upgrade:
+    type: smithing_transform
+    base: "mytier:steel_rapier"
+    addition: "minecraft:diamond"
+    result:
+      id: mytier:wind_rapier
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: keep_components
+        components:
+          - minecraft:enchantments
+
+  # T3→T4
+  mytier:flame_rapier_upgrade:
+    type: smithing_transform
+    base: "mytier:wind_rapier"
+    addition: "minecraft:blaze_rod"
+    result:
+      id: mytier:flame_rapier
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: apply_data
+        data:
+          item_name: "<!i><#FF4500>烈焰细剑"
+
+  # T4→T5
+  mytier:legend_rapier_upgrade:
+    type: smithing_transform
+    base: "mytier:flame_rapier"
+    addition: "minecraft:netherite_ingot"
+    result:
+      id: mytier:legend_rapier
+      count: 1
+    transform_processors:
+      - type: merge_enchantments
+      - type: keep_components
+        components:
+          - minecraft:enchantments
+
+  # 锻造模板配方
+  mytier:smith_template_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:diamond"
+      B: "minecraft:iron_ingot"
+      C: "minecraft:paper"
+    result:
+      id: "mytier:smith_template"
+      count: 1

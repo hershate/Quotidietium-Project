@@ -1,0 +1,184 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 拍卖行与交易市场产业链
+# =============================================================================
+# 展示拍卖行→交易系统→货币兑换→市场经济的完整交易体系
+# 包含merchant_trade交易、货币系统、冷却、分类
+# 命名空间: mymarket (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 货币体系
+# =============================================================================
+items:
+  mymarket:copper_coin:
+    material: sunflower
+    custom_model_data: 53001
+    data:
+      item_name: "<!i><#B87333>铜币"
+    settings:
+      tags:
+        - "mymarket:currency"
+
+  mymarket:silver_coin:
+    material: sunflower
+    custom_model_data: 53002
+    data:
+      item_name: "<!i><#C0C0C0>银币"
+    settings:
+      tags:
+        - "mymarket:currency"
+
+  mymarket:gold_coin:
+    material: sunflower
+    custom_model_data: 53003
+    data:
+      item_name: "<!i><#FFD700>金币"
+    settings:
+      tags:
+        - "mymarket:currency"
+
+# =============================================================================
+# 二、物品 - 交易相关
+# =============================================================================
+  mymarket:trade_station:
+    material: crafting_table
+    custom_model_data: 53010
+    data:
+      item_name: "<!i><#FFD700>交易站"
+    events:
+      - on: right_click
+        functions:
+          - type: merchant_trade
+            title: "市场交易站"
+            offers:
+              - cost_1:
+                  item: mymarket:silver_coin
+                  count: 10
+                result:
+                  item: "minecraft:diamond"
+                  count: 1
+              - cost_1:
+                  item: mymarket:silver_coin
+                  count: 5
+                result:
+                  item: "minecraft:iron_ingot"
+                  count: 16
+              - cost_1:
+                  item: mymarket:gold_coin
+                  count: 1
+                result:
+                  item: mymarket:silver_coin
+                  count: 100
+
+  mymarket:market_stall:
+    material: chest
+    custom_model_data: 53011
+    data:
+      item_name: "<!i><#FFD700>市场摊位"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mymarket:stall_cd"
+        functions:
+          - type: set_cooldown
+            id: "mymarket:stall_cd"
+            time: 2s
+          - type: message
+            message: "<gold>=== 市场 ==="
+          - type: message
+            message: "<gray>1. 出售物品 - /market sell"
+          - type: message
+            message: "<gray>2. 浏览物品 - /market browse"
+          - type: message
+            message: "<gray>3. 我的订单 - /market my"
+
+# =============================================================================
+# 三、物品 - 兑换券
+# =============================================================================
+  mymarket:item_voucher:
+    material: paper
+    custom_model_data: 53020
+    data:
+      item_name: "<!i><#FFD700>物品兑换券"
+      lore:
+        - "<gray>可在市场兑换指定物品"
+
+  mymarket:coin_pouch:
+    material: leather
+    custom_model_data: 53021
+    data:
+      item_name: "<!i><#FFD700>钱袋"
+      lore:
+        - "<gray>存储货币"
+
+# =============================================================================
+# 四、分类 - 市场分类
+# =============================================================================
+categories:
+  mymarket:currency_exchange:
+    priority: 1
+    name: "<!i><#FFD700>货币兑换"
+    icon: mymarket:gold_coin
+    list:
+      - mymarket:copper_coin
+      - mymarket:silver_coin
+      - mymarket:gold_coin
+
+  mymarket:trade_goods:
+    priority: 2
+    name: "<!i><#DEB887>交易商品"
+    icon: mymarket:trade_station
+    list:
+      - mymarket:trade_station
+      - mymarket:item_voucher
+
+# =============================================================================
+# 五、配方
+# =============================================================================
+recipes:
+  mymarket:copper_coin_recipe:
+    type: smelting
+    category: misc
+    experience: 0.1
+    time: 100
+    ingredient: "minecraft:copper_ingot"
+    result:
+      id: mymarket:copper_coin
+      count: 8
+
+  mymarket:silver_coin_recipe:
+    type: smelting
+    category: misc
+    experience: 0.2
+    time: 200
+    ingredient: "minecraft:iron_ingot"
+    result:
+      id: mymarket:silver_coin
+      count: 4
+
+  mymarket:gold_coin_recipe:
+    type: smelting
+    category: misc
+    experience: 0.5
+    time: 300
+    ingredient: "minecraft:gold_ingot"
+    result:
+      id: mymarket:gold_coin
+      count: 2
+
+  mymarket:trade_station_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AAA"
+      - "BCB"
+      - "DDD"
+    ingredients:
+      A: "minecraft:gold_ingot"
+      B: "minecraft:emerald"
+      C: "minecraft:crafting_table"
+      D: "#minecraft:planks"
+    result:
+      id: mymarket:trade_station
+      count: 1

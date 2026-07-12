@@ -1,0 +1,160 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 流体与颜色提供产业链
+# =============================================================================
+# 展示liquid_flowable_block+ tint_source_block 完整配置
+# + fence/fence_gate/stairs/slab基础建筑方块链
+# 命名空间: myfluid (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 流体推动(liquid_flowable_block)
+# =============================================================================
+blocks:
+  # 1a. 可被流体冲走的轻质方块
+  myfluid:light_rock:
+    behavior:
+      type: liquid_flowable_block
+      drop_item: true
+    settings:
+      hardness: 0.3
+
+  # 1b. 叶堆(可被冲走+不掉落)
+  myfluid:leaf_pile:
+    behavior:
+      type: liquid_flowable_block
+      drop_item: false
+    settings:
+      hardness: 0.1
+
+# =============================================================================
+# 二、方块 - 颜色提供器(tint_source_block)
+# =============================================================================
+  # 2a. 染色基座(存储颜色供渲染器使用)
+  myfluid:dye_pedestal:
+    behavior:
+      type: tint_source_block
+      drop_item: true
+
+  # 2b. 染色灯(tint_source+lamp复合)
+  myfluid:dye_lamp:
+    behaviors:
+      - type: tint_source_block
+        drop_item: true
+      - type: lamp_block
+
+  # 2c. 颜色展示座(搭配entity_renderer)
+  myfluid:color_pillar:
+    state:
+      auto_state:
+        type: sugar_cane
+        id: transparent
+      transparent: true
+      entity_renderer:
+        type: item_display
+        item: "myfluid:color_gem"
+        translation: 0,0.5,0
+        scale: 0.5
+        tint_source:
+          type: default
+          components:
+            - minecraft:dyed_color
+    behavior:
+      type: tint_source_block
+      drop_item: false
+
+# =============================================================================
+# 三、物品
+# =============================================================================
+items:
+  myfluid:light_rock_item:
+    material: stone
+    data:
+      item_name: "<!i><#A9A9A9>轻质石块"
+    behavior:
+      type: block_item
+      block: myfluid:light_rock
+
+  myfluid:leaf_pile_item:
+    material: grass
+    data:
+      item_name: "<!i><#228B22>叶堆"
+    behavior:
+      type: block_item
+      block: myfluid:leaf_pile
+
+  myfluid:dye_pedestal_item:
+    material: stone
+    data:
+      item_name: "<!i><#DEB887>染色基座"
+    behavior:
+      type: block_item
+      block: myfluid:dye_pedestal
+
+  myfluid:color_gem:
+    material: diamond
+    custom_model_data: 38001
+    data:
+      item_name: "<!i><!i><#FF8C00>变色宝石"
+      dyed_color: "255,140,0"
+    settings:
+      dyeable: true
+      dye_color: "255,140,0"
+
+  myfluid:dye_lamp_item:
+    material: redstone_lamp
+    data:
+      item_name: "<!i><#DEB887>染色灯"
+    behavior:
+      type: block_item
+      block: myfluid:dye_lamp
+
+  myfluid:color_pillar_item:
+    material: end_rod
+    data:
+      item_name: "<!i><#AA00FF>颜色展示座"
+    behavior:
+      type: block_item
+      block: myfluid:color_pillar
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  myfluid:light_rock_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "AA"
+      - "AA"
+    ingredients:
+      A: "minecraft:cobblestone"
+    result:
+      id: myfluid:light_rock_item
+      count: 4
+
+  myfluid:dye_pedestal_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - " B "
+      - " B "
+    ingredients:
+      A: "minecraft:glass_pane"
+      B: "minecraft:stone"
+    result:
+      id: myfluid:dye_pedestal_item
+      count: 1
+
+  myfluid:color_pillar_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "A"
+      - "B"
+    ingredients:
+      A: "myfluid:dye_pedestal_item"
+      B: "minecraft:end_rod"
+    result:
+      id: myfluid:color_pillar_item
+      count: 1

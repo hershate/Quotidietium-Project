@@ -1,0 +1,143 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 字体与表情产业链
+# =============================================================================
+# 展示自定义字体→图像配置→表情系统的完整端到端配置
+# 命名空间: myfont (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、图像 - 表情/图标用精灵图
+# =============================================================================
+images:
+  # 1a. 服务器图标集(多字符精灵图)
+  myfont:server_icons:
+    height: 10
+    ascent: 9
+    file: "myfont:font/image/server_icons.png"
+    chars:
+      - '아늑'
+      - '한공'
+
+  # 1b. 等级图标(单字符)
+  myfont:rank_icon:
+    height: 16
+    ascent: 8
+    file: "myfont:font/image/rank.png"
+    char: '간'
+    font: minecraft:default
+
+  # 1c. 精灵图自动网格
+  myfont:emoji_set:
+    height: 10
+    ascent: 9
+    file: "myfont:font/image/emojis.png"
+    grid_size: 4,4
+
+  # 1d. 引用别名
+  myfont:smile_emoji:
+    ref: "myfont:emoji_set:0:0"
+
+  myfont:heart_emoji:
+    ref: "myfont:emoji_set:0:1"
+    row: 0
+    column: 1
+
+# =============================================================================
+# 二、表情 - 聊天表情系统
+# =============================================================================
+emoji:
+  # 2a. 基础表情
+  myfont:smile:
+    permission: "emoji.smile"
+    content: "<white><arg:emoji></white>"
+    image: "myfont:smile_emoji"
+    keywords:
+      - ":smile:"
+
+  myfont:heart:
+    permission: "emoji.heart"
+    content: "<white><arg:emoji></white>"
+    image: "myfont:heart_emoji"
+    keywords:
+      - ":heart:"
+
+  # 2b. 带Hover提示的复杂表情
+  myfont:info:
+    permission: "emoji.info"
+    content: >-
+      <hover:show_text:'<l10n:emoji.info.tip:"<arg:keyword>":"<arg:emoji>">'>
+      <!shadow><white><arg:emoji></white></!shadow>
+      </hover>
+    image: "myfont:server_icons:0:0"
+    keywords:
+      - ":info:"
+
+  # 2c. 多场景表情(content_overrides)
+  myfont:adaptive:
+    permission: "emoji.adaptive"
+    image: "myfont:server_icons:0:1"
+    keywords:
+      - ":adaptive:"
+    content: <!shadow><white><arg:emoji></white></!shadow>
+    content_overrides:
+      chat: >-
+        <hover:show_text:'<l10n:emoji.tip:"<arg:keyword>":"<arg:emoji>">'>
+        <!shadow><white><arg:emoji></white></!shadow>
+        </hover>
+      book: <!shadow><white><arg:emoji></white></!shadow>
+      anvil: <!i><!shadow><white><arg:emoji></white></!shadow></!i>
+      sign: <white><arg:emoji></white>
+
+  # 2d. 多行格式表情
+  myfont:coordinates:
+    permission: "emoji.coordinates"
+    content:
+      - <hover:show_text:'使用<yellow>"<arg:keyword>"</yellow>来发送表情"<arg:emoji>"'>
+      - <!shadow><white><arg:emoji></white></!shadow>
+      - "<bold>坐标: <papi:player_x>,<papi:player_y>,<papi:player_z></bold>"
+      - </hover>
+    image: "myfont:rank_icon"
+    keywords:
+      - ":pos:"
+
+# =============================================================================
+# 三、物品 - 使用图像/表情的物品
+# =============================================================================
+items:
+  myfont:icon_sword:
+    material: diamond_sword
+    custom_model_data: 30001
+    data:
+      item_name: "<!i><gold>传说之剑 <image:myfont:heart_emoji>"
+      lore:
+        - "<gray>使用图像标签的示例物品"
+        - "<!i><white><image:myfont:server_icons:0:0> 服务器图标"
+        - "<!i><white>表情测试: <global:myfont:smile>"
+
+# =============================================================================
+# 四、全局变量 - 文本格式复用
+# =============================================================================
+global_variables:
+  myfont:smile: "<!shadow><white><image:myfont:smile_emoji></white></!shadow>"
+  myfont:heart_tag: "<!shadow><white><image:myfont:heart_emoji></white></!shadow>"
+
+# =============================================================================
+# 五、字体 - TTF配置参考
+# =============================================================================
+# providers (置于 assets/<namespace>/font/default.json):
+#   - type: ttf
+#     file: "myfont:custom_font.ttf"
+#     oversample: 10
+#     size: 11
+#
+# 资源包目录结构:
+# assets/
+#   myfont/
+#     font/
+#       default.json  ← TTF providers写入此文件
+#       image/
+#         server_icons.png
+#         rank.png
+#         emojis.png
+#     textures/
+#       font/         ← 位图PNG放置目录

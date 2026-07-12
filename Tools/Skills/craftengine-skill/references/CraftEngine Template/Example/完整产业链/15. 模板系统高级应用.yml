@@ -1,0 +1,202 @@
+# =============================================================================
+# CraftEngine 模板系统高级应用示例
+# =============================================================================
+# 展示模板系统的高级用法: 参数化模板/多模板组合/配置工厂
+# 命名空间: myshow (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、参数化模板定义
+# =============================================================================
+templates:
+  # 1a. 基础工具模板
+  myshow:basic_tool:
+    material: "${base_material}"
+    data:
+      item_name: "<!i><#FF8C00>${tool_name}"
+      max_damage: "${max_damage:-250}"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: "${attack_damage:-1.0}"
+          operation: add_value
+          slot: mainhand
+        - type: attack_speed
+          amount: "${attack_speed:-1.0}"
+          operation: add_value
+          slot: mainhand
+    settings:
+      tags:
+        - "myshow:${tool_tag:-tools}"
+
+  # 1b. 盔甲模板(含默认值)
+  myshow:basic_armor:
+    material: "${base_material}"
+    data:
+      item_name: "<!i><#${armor_color:-FF8C00}>${armor_name}"
+      max_damage: "${max_damage:-400}"
+      attribute_modifiers:
+        - type: armor
+          amount: "${armor_value:-2.0}"
+          operation: add_value
+          slot: "${slot}"
+        - type: armor_toughness
+          amount: "${toughness:-1.0}"
+          operation: add_value
+          slot: "${slot}"
+
+  # 1c. 食物模板(含参数化效果)
+  myshow:magic_food:
+    material: "${base_material}"
+    data:
+      item_name: "<!i><#FFD700>${food_name}"
+      food:
+        nutrition: "${nutrition:-4}"
+        saturation: "${saturation:-2.0}"
+        can_always_eat: "${can_always:-false}"
+
+  # 1d. 耐久度辅助(用于多模板组合)
+  myshow:durability_helper:
+    data:
+      unbreakable: "${unbreakable:-false}"
+      enchantment:
+        minecraft:unbreaking: "${unbreaking_level:-2}"
+
+  # 1e. 分层装备模板(多模板组合演示)
+  myshow:tiered_equipment:
+    template:
+      - myshow:basic_tool
+      - myshow:durability_helper
+    arguments:
+      tool_name: "${tier} ${type}"
+      base_material: "${material}"
+    overrides:
+      material: "${material}"
+
+# =============================================================================
+# 二、物品 - 模板调用 + 工厂生成 + 合并/覆写
+# =============================================================================
+items:
+  # ----- 2a. 简单模板调用 -----
+  myshow:copper_sword:
+    template: myshow:basic_tool
+    arguments:
+      base_material: copper_sword
+      tool_name: "铜剑"
+      attack_damage: 5.0
+      attack_speed: 1.6
+      max_damage: 200
+
+  myshow:copper_pickaxe:
+    template: myshow:basic_tool
+    arguments:
+      base_material: copper_pickaxe
+      tool_name: "铜镐"
+      attack_damage: 3.0
+      tool_tag: "copper_tools"
+
+  # ----- 2b. 多模板组合 -----
+  myshow:copper_helmet:
+    template:
+      - myshow:basic_armor
+      - myshow:durability_helper
+    arguments:
+      base_material: copper_helmet
+      armor_name: "铜头盔"
+      armor_value: 2.0
+      slot: head
+      armor_color: "B87333"
+
+  # ----- 2c. 食物模板 -----
+  myshow:magic_cookie:
+    template: myshow:magic_food
+    arguments:
+      base_material: cookie
+      food_name: "魔法饼干"
+      nutrition: 2
+      saturation: 1.5
+      can_always: true
+
+  # ----- 2d. 合并(merges) - 深度合并 -----
+  myshow:enchanted_copper_sword:
+    template: myshow:basic_tool
+    arguments:
+      base_material: copper_sword
+      tool_name: "附魔铜剑"
+      attack_damage: 5.0
+      attack_speed: 1.6
+    merges:
+      data:
+        enchantment:
+          minecraft:sharpness: 2
+          minecraft:unbreaking: 1
+
+  # ----- 2e. 覆写(overrides) - 完全替换 -----
+  myshow:golden_copper_sword:
+    template: myshow:basic_tool
+    arguments:
+      base_material: copper_sword
+      tool_name: "镀金铜剑"
+      attack_damage: 5.0
+      attack_speed: 1.6
+    overrides:
+      material: golden_sword
+
+# =============================================================================
+# 三、配置工厂(批量生成工具和盔甲)
+# =============================================================================
+config_factory#myshow_tools:
+  blueprint:
+    items:
+      "myshow:${tier}_${type}":
+        template: myshow:tiered_equipment
+        arguments:
+          tier: "${tier}"
+          type: "${type}"
+          material: "${tier}_${type}"
+  instances:
+    - tier: stone
+      type: sword
+    - tier: stone
+      type: pickaxe
+    - tier: stone
+      type: axe
+    - tier: iron
+      type: sword
+    - tier: iron
+      type: pickaxe
+    - tier: iron
+      type: axe
+
+config_factory#myshow_armor_sets:
+  blueprint:
+    equipments:
+      "myshow:${tier}_armor":
+        type: component
+        humanoid: "myshow:entity/equipment/humanoid/${tier}"
+        humanoid_leggings: "myshow:entity/equipment/humanoid_leggings/${tier}"
+    items:
+      "myshow:${tier}_helmet":
+        template:
+          - myshow:basic_armor
+          - myshow:durability_helper
+        arguments:
+          base_material: "${tier}_helmet"
+          armor_name: "${name}头盔"
+          armor_value: "${helmet_armor:-3}"
+          slot: head
+      "myshow:${tier}_chestplate":
+        template:
+          - myshow:basic_armor
+          - myshow:durability_helper
+        arguments:
+          base_material: "${tier}_chestplate"
+          armor_name: "${name}胸甲"
+          armor_value: "${chestplate_armor:-8}"
+          slot: chest
+  instances:
+    - tier: iron
+      name: "铁"
+    - tier: diamond
+      name: "钻石"
+      helmet_armor: 3
+      chestplate_armor: 8

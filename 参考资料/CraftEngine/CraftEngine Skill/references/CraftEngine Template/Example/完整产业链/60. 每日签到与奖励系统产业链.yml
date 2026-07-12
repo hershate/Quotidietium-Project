@@ -1,0 +1,179 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 每日签到与奖励系统产业链
+# =============================================================================
+# 展示每日签到→累计奖励→月卡特权→每日任务的完整签到系统
+# 包含冷却检测、条件分支、分层奖励、事件组合
+# 命名空间: mydaily (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 签到/奖励工具
+# =============================================================================
+items:
+  # 1a. 签到卡(右键签到,每日一次)
+  mydaily:daily_card:
+    material: paper
+    custom_model_data: 49001
+    data:
+      item_name: "<!i><#FFD700>每日签到卡"
+      lore:
+        - "<gray>右键进行每日签到"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mydaily:signin_cd"
+        functions:
+          - type: set_cooldown
+            id: "mydaily:signin_cd"
+            time: 86400s
+          - type: run
+            functions:
+              - type: command
+                command: "give <arg:player.name> mydaily:daily_reward_basic 1"
+              - type: set_exp
+                count: 10
+                add: true
+              - type: message
+                message: "<green>签到成功! 获得基础奖励和10经验值!"
+          - type: play_sound
+            sound: minecraft:entity.player.levelup
+
+  # 1b. 连续签到奖励(累计)
+  mydaily:streak_reward:
+    material: paper
+    custom_model_data: 49002
+    data:
+      item_name: "<!i><#FFD700>连续签到奖励"
+      lore:
+        - "<gray>连续签到7天可获得额外奖励"
+
+# =============================================================================
+# 二、物品 - 日/周/月奖励
+# =============================================================================
+  # 2a. 每日基础奖励
+  mydaily:daily_reward_basic:
+    material: gold_nugget
+    custom_model_data: 49010
+    data:
+      item_name: "<!i><#FFD700>每日奖励"
+      lore:
+        - "<gray>每日签到基础奖励"
+
+  # 2b. 每周奖励(连续签到7天)
+  mydaily:weekly_reward_box:
+    material: chest
+    custom_model_data: 49011
+    data:
+      item_name: "<!i><#FFD700>每周奖励箱"
+      lore:
+        - "<gray>连续签到一周奖励"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.5
+                functions:
+                  - type: command
+                    command: "give <arg:player.name> minecraft:diamond 2"
+              - functions:
+                  - type: command
+                    command: "give <arg:player.name> minecraft:diamond 1"
+          - type: clear_item
+            id: "mydaily:weekly_reward_box"
+            count: 1
+
+  # 2c. 月卡(30天特权)
+  mydaily:monthly_card:
+    material: paper
+    custom_model_data: 49012
+    data:
+      item_name: "<!i><#AA00FF>月卡"
+      lore:
+        - "<gray>30天每日额外奖励"
+
+# =============================================================================
+# 三、物品 - 任务凭证
+# =============================================================================
+  # 3a. 任务完成凭证
+  mydaily:quest_complete_token:
+    material: sunflower
+    custom_model_data: 49021
+    data:
+      item_name: "<!i><#00FF00>任务完成凭证"
+      lore:
+        - "<gray>完成每日任务的证明"
+    events:
+      - on: right_click
+        conditions:
+          - type: "!on_cooldown"
+            id: "mydaily:quest_reward_cd"
+        functions:
+          - type: set_cooldown
+            id: "mydaily:quest_reward_cd"
+            time: 86400s
+          - type: command
+            command: "give <arg:player.name> mydaily:daily_reward_basic 3"
+          - type: clear_item
+            id: "mydaily:quest_complete_token"
+            count: 1
+          - type: message
+            message: "<green>完成任务! 获得3倍基础奖励!"
+
+# =============================================================================
+# 四、配方 - 签到相关
+# =============================================================================
+recipes:
+  mydaily:daily_card_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:clock"
+    result:
+      id: mydaily:daily_card
+      count: 1
+
+  mydaily:monthly_card_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mydaily:daily_card"
+      B: "minecraft:nether_star"
+    result:
+      id: mydaily:monthly_card
+      count: 1
+
+  mydaily:weekly_reward_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "AAA"
+      - "ABA"
+      - "AAA"
+    ingredients:
+      A: "mydaily:daily_reward_basic"
+      B: "minecraft:chest"
+    result:
+      id: mydaily:weekly_reward_box
+      count: 1
+
+  mydaily:daily_reward_basic_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - " A "
+      - " A "
+      - " A "
+    ingredients:
+      A: "minecraft:gold_nugget"
+    result:
+      id: mydaily:daily_reward_basic
+      count: 3

@@ -1,0 +1,162 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 灵魂绑定与绑定系统产业链
+# =============================================================================
+# 展示灵魂绑定→死亡保留→绑定石→解绑物品完整系统
+# 包含keep_on_death、绑定事件、拾取绑定
+# 命名空间: mysoul (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 绑定材料
+# =============================================================================
+items:
+  # 1a. 灵魂绑定石(让物品绑定玩家)
+  mysoul:soul_bind_stone:
+    material: ender_eye
+    custom_model_data: 50001
+    data:
+      item_name: "<!i><#4B0082>灵魂绑定石"
+      lore:
+        - "<gray>将物品绑定至当前玩家"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<#4B0082>在锻造台与物品结合可绑定!"
+
+  # 1b. 解绑卷轴(解除绑定)
+  mysoul:unbind_scroll:
+    material: paper
+    custom_model_data: 50002
+    data:
+      item_name: "<!i><#FF8C00>解绑卷轴"
+      lore:
+        - "<gray>解除物品的灵魂绑定"
+
+
+# =============================================================================
+# 二、物品 - 绑定装备
+# =============================================================================
+  # 2a. 灵魂绑定剑(死亡不丢失)
+  mysoul:soul_sword:
+    material: diamond_sword
+    custom_model_data: 50010
+    data:
+      item_name: "<!i><#4B0082>灵魂绑定之剑"
+      lore:
+        - "<#4B0082>灵魂绑定 - 死亡不丢失"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 8.0
+          operation: add_value
+          slot: mainhand
+    settings:
+      keep_on_death_chance: 1.0
+      tags:
+        - "mysoul:soulbound_items"
+
+  # 2b. 部分绑定护甲(80%保留)
+  mysoul:soul_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 50011
+    data:
+      item_name: "<!i><#4B0082>灵魂绑定胸甲"
+      lore:
+        - "<#4B0082>灵魂绑定(80%)"
+    settings:
+      keep_on_death_chance: 0.8
+
+  # 2c. 稀有掉落绑定(拾取绑定+保留)
+  mysoul:rare_drop_sword:
+    material: diamond_sword
+    custom_model_data: 50012
+    data:
+      item_name: "<!i><#FF4500>稀有掉落之剑"
+      lore:
+        - "<red>拾取绑定 - 无法交易"
+        - "<gray>死亡保留"
+    settings:
+      keep_on_death_chance: 1.0
+      destroy_on_death_chance: 0.0
+
+  # 2d. 死亡损毁物品(高概率损毁)
+  mysoul:fragile_staff:
+    material: stick
+    custom_model_data: 50013
+    data:
+      item_name: "<!i><#FF4500>脆弱法杖"
+      lore:
+        - "<red>死亡时有概率损毁"
+    settings:
+      destroy_on_death_chance: 0.5
+
+# =============================================================================
+# 三、绑定卷轴类
+# =============================================================================
+  mysoul:bind_scroll:
+    material: paper
+    custom_model_data: 50020
+    data:
+      item_name: "<!i><#4B0082>绑定卷轴"
+    events:
+      - on: right_click
+        functions:
+          - type: if_else
+            rules:
+              - conditions:
+                  - type: random
+                    value: 0.7
+                functions:
+                  - type: message
+                    message: "<green>绑定成功! 物品已绑定至你!"
+              - functions:
+                  - type: message
+                    message: "<red>绑定失败! 尝试使用更强的绑定石!"
+
+  mysoul:unbind_scroll_activate:
+    material: paper
+    custom_model_data: 50021
+    data:
+      item_name: "<!i><#FF8C00>解绑卷轴(激活)"
+    events:
+      - on: right_click
+        functions:
+          - type: message
+            message: "<green>物品已解除绑定!"
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mysoul:soul_bind_stone_recipe:
+    type: shaped
+    category: misc
+    pattern:
+      - "ABA"
+      - "BCB"
+      - "ABA"
+    ingredients:
+      A: "minecraft:obsidian"
+      B: "minecraft:ender_pearl"
+      C: "minecraft:nether_star"
+    result:
+      id: mysoul:soul_bind_stone
+      count: 1
+
+  mysoul:unbind_scroll_recipe:
+    type: shapeless
+    category: misc
+    ingredients:
+      - "minecraft:paper"
+      - "minecraft:redstone"
+    result:
+      id: mysoul:unbind_scroll
+      count: 1
+
+  mysoul:soul_bind_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_sword"
+    addition: "mysoul:soul_bind_stone"
+    result:
+      id: mysoul:soul_sword
+      count: 1

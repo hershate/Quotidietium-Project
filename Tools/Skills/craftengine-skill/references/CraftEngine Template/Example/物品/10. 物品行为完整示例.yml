@@ -146,7 +146,7 @@ items:
   # -- 11a. 十字形范围 (3 格 + 自身) --
   qtiet:topaz_hammer:
     material: golden_pickaxe                   # << CHANGE THIS: 物品材质
-    conditions: []                             # << CHANGE THIS: 使用条件
+
     behavior:
       - type: range_mining_item
         range:                                 # << CHANGE THIS: 宽度,高度,深度
@@ -158,7 +158,7 @@ items:
   # -- 11b. 3x3 范围 (9 格完整区域) --
   qtiet:topaz_wide_hammer:
     material: diamond_pickaxe                  # << CHANGE THIS: 物品材质
-    conditions: []                             # << CHANGE THIS: 使用条件
+
     behavior:
       - type: range_mining_item
         range:                                 # << CHANGE THIS: 宽度,高度,深度

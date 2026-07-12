@@ -1,0 +1,232 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 世界生成与树木产业链
+# =============================================================================
+# 展示从树苗→树木地物→世界生成的完整端到端配置
+# 命名空间: myworld (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 自定义树木方块
+# =============================================================================
+blocks:
+  # 1a. 魔法橡木原木 (多轴向+可剥离)
+  myworld:magic_oak_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "myworld:block/magic_oak_log_top"
+                side: "myworld:block/magic_oak_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "myworld:block/magic_oak_log_top"
+                side: "myworld:block/magic_oak_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "myworld:block/magic_oak_log_top"
+                side: "myworld:block/magic_oak_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:logs
+    behavior:
+      type: strippable_block
+      stripped: myworld:stripped_magic_oak_log
+
+  # 1b. 去皮魔法橡木
+  myworld:stripped_magic_oak_log:
+    states:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          auto_state: note_block
+          model:
+            generation:
+              parent: "minecraft:block/cube_column"
+              textures:
+                end: "myworld:block/stripped_magic_oak_log_top"
+                side: "myworld:block/stripped_magic_oak_log_side"
+        axisX:
+          auto_state: note_block
+          model:
+            x: 90
+            y: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "myworld:block/stripped_magic_oak_log_top"
+                side: "myworld:block/stripped_magic_oak_log_side"
+        axisZ:
+          auto_state: note_block
+          model:
+            x: 90
+            generation:
+              parent: "minecraft:block/cube_column_horizontal"
+              textures:
+                end: "myworld:block/stripped_magic_oak_log_top"
+                side: "myworld:block/stripped_magic_oak_log_side"
+      variants:
+        axis=y: { appearance: axisY }
+        axis=x: { appearance: axisX }
+        axis=z: { appearance: axisZ }
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+
+  # 1c. 魔法橡木树叶 (含distance/persistent)
+  myworld:magic_oak_leaves:
+    states:
+      properties:
+        distance:
+          type: int
+          default: 7
+          range: 1~7
+        persistent:
+          type: boolean
+          default: true
+        waterlogged:
+          type: boolean
+          default: false
+      appearances:
+        default:
+          auto_state: leaves
+          model:
+            texture: "myworld:block/magic_oak_leaves"
+        waterlogged:
+          auto_state: waterlogged_leaves
+          model:
+            texture: "myworld:block/magic_oak_leaves"
+      variants:
+        waterlogged=false: { appearance: default }
+        waterlogged=true:
+          appearance: waterlogged
+          settings:
+            fluid_state: water
+    behavior:
+      type: leaves_block
+    settings:
+      hardness: 0.2
+      burnable: true
+      tags:
+        - minecraft:mineable/hoe
+        - minecraft:leaves
+
+  # 1d. 魔法橡木树苗
+  myworld:magic_oak_sapling:
+    state:
+      properties:
+        stage:
+          type: int
+          default: 0
+          range: 0~2
+    behavior:
+      type: sapling_block
+      feature: "myworld:magic_oak_tree"
+      grow_speed: 0.143
+      bone_meal_success_chance: 0.45
+    loot:
+      pools:
+        - rolls: 1
+          entries:
+            - type: item
+              item: myworld:magic_oak_sapling_item
+
+  # 1e. 魔法橡木木板
+  myworld:magic_oak_planks:
+    state:
+      auto_state: note_block
+      model:
+        generation:
+          parent: "minecraft:block/cube_all"
+          textures:
+            all: "myworld:block/magic_oak_planks"
+    settings:
+      hardness: 2.0
+      tags:
+        - minecraft:mineable/axe
+        - minecraft:planks
+
+# =============================================================================
+# 二、物品 - 方块物品
+# =============================================================================
+items:
+  myworld:magic_oak_log_item:
+    material: stick
+    data:
+      item_name: "<!i>魔法橡木原木"
+    behavior:
+      type: block_item
+      block: myworld:magic_oak_log
+    settings:
+      fuel_time: 300
+      tags:
+        - "myworld:magic_oak_logs"
+
+  myworld:magic_oak_leaves_item:
+    material: stick
+    data:
+      item_name: "<!i><#228B22>魔法橡木树叶"
+    behavior:
+      type: block_item
+      block: myworld:magic_oak_leaves
+
+  myworld:magic_oak_sapling_item:
+    material: stick
+    data:
+      item_name: "<!i><#228B22>魔法橡木树苗"
+      lore:
+        - "<gray>会长成参天大树"
+    behavior:
+      type: block_item
+      block: myworld:magic_oak_sapling
+
+  myworld:magic_oak_planks_item:
+    material: stick
+    data:
+      item_name: "<!i>魔法橡木木板"
+    behavior:
+      type: block_item
+      block: myworld:magic_oak_planks
+    settings:
+      fuel_time: 300
+
+# =============================================================================
+# 三、配方
+# =============================================================================
+recipes:
+  myworld:magic_oak_planks_recipe:
+    type: shapeless
+    category: building
+    ingredients:
+      - "#myworld:magic_oak_logs"
+    result:
+      id: myworld:magic_oak_planks_item
+      count: 4

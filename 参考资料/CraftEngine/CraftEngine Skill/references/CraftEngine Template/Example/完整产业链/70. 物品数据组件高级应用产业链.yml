@@ -1,0 +1,194 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 物品数据组件高级应用产业链
+# =============================================================================
+# 展示can_break/can_place_on/trim/profile/tooltip_style等高级组件
+# 命名空间: mycomp (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、物品 - 冒险模式工具(指定可挖掘/放置)
+# =============================================================================
+# 二、物品 - 盔甲纹饰(trim)
+# 三、物品 - 玩家头像(profile)
+# 四、物品 - 提示框样式(tooltip_style)
+# 五、物品 - 持久化数据(PDC)
+# 六、物品 - 配方书(knowledge book)
+# 七、物品 - 物品模型映射(item_model)
+# =============================================================================
+items:
+  # -- 一、冒险模式工具 --
+  mycomp:miner_hammer:
+    material: diamond_pickaxe
+    custom_model_data: 59001
+    data:
+      item_name: "<!i><#FF8C00>矿工之锤"
+      lore:
+        - "<gray>仅可挖掘矿石"
+      components:
+        minecraft:can_break:
+          blocks:
+            - "minecraft:stone"
+            - "minecraft:deepslate"
+            - "#minecraft:coal_ores"
+            - "#minecraft:iron_ores"
+            - "#minecraft:gold_ores"
+            - "#minecraft:diamond_ores"
+      attribute_modifiers:
+        - type: attack_damage
+          amount: 6.0
+          operation: add_value
+          slot: mainhand
+
+  mycomp:farmer_hoe:
+    material: diamond_hoe
+    custom_model_data: 59002
+    data:
+      item_name: "<!i><#55FF55>农民之锄"
+      components:
+        minecraft:can_break:
+          blocks:
+            - "minecraft:grass_block"
+            - "minecraft:dirt"
+            - "minecraft:farmland"
+        minecraft:can_place_on:
+          blocks:
+            - "minecraft:dirt"
+            - "minecraft:grass_block"
+
+  # -- 二、盔甲纹饰 --
+  mycomp:trimmed_helmet:
+    material: diamond_helmet
+    custom_model_data: 59010
+    data:
+      item_name: "<!i><#FFD700>纹饰头盔"
+      lore:
+        - "<gray>具有精美纹饰"
+      trim:
+        pattern: eye
+        material: diamond
+
+  mycomp:trimmed_chestplate:
+    material: diamond_chestplate
+    custom_model_data: 59011
+    data:
+      item_name: "<!i><#FFD700>纹饰胸甲"
+      trim:
+        pattern: coast
+        material: emerald
+
+  mycomp:trimmed_boots:
+    material: diamond_boots
+    custom_model_data: 59012
+    data:
+      item_name: "<!i><#FFD700>纹饰靴子"
+      trim:
+        pattern: rib
+        material: netherite
+
+  # -- 三、玩家头像 --
+  mycomp:player_head_item:
+    material: player_head
+    custom_model_data: 59020
+    data:
+      item_name: "<!i><#FFD700>自定义头颅"
+      profile: "XiaoMoMi"
+
+  mycomp:dynamic_head:
+    material: player_head
+    custom_model_data: 59021
+    data:
+      item_name: "<!i><#FFD700>动态头颅"
+      profile: "<arg:player.name>"
+
+  # -- 四、提示框样式 --
+  mycomp:fancy_sword:
+    material: netherite_sword
+    custom_model_data: 59030
+    data:
+      item_name: "<!i><#FFD700>华丽之剑"
+      lore:
+        - "<gray>具有特殊提示框样式"
+      tooltip_style: "minecraft:netherite"
+
+  mycomp:quest_item:
+    material: paper
+    custom_model_data: 59031
+    data:
+      item_name: "<!i><#AA00FF>任务物品"
+      lore:
+        - "<gray>不可交易，任务相关"
+      tooltip_style: "minecraft:enchanting_table"
+
+  # -- 五、持久化数据 --
+  mycomp:custom_data_item:
+    material: stick
+    custom_model_data: 59040
+    data:
+      item_name: "<!i><#FF8C00>数据物品"
+      pdc:
+        custom_string: "example_value"
+        custom_int: 42
+        custom_list:
+          - value1
+          - value2
+        custom_map:
+          key: "nested_value"
+          tier: 3
+
+  # -- 六、配方书 --
+  mycomp:recipe_unlock:
+    material: knowledge_book
+    custom_model_data: 59050
+    data:
+      item_name: "<!i><#FFD700>配方解锁书"
+      lore:
+        - "<gray>右键查看可解锁的配方"
+    events:
+      - on: right_click
+        functions:
+          - type: toast
+            toast: "配方书已打开!"
+            icon: minecraft:knowledge_book
+          - type: play_sound
+            sound: minecraft:item.book.page_turn
+
+  mycomp:written_guide:
+    material: written_book
+    custom_model_data: 59051
+    data:
+      item_name: "<!i><#FFD700>服务器指南"
+      lore:
+        - "<gray>包含服务器的基础信息"
+
+  # -- 七、物品模型映射 --
+  mycomp:model_mapped_item:
+    material: stick
+    custom_model_data: 59060
+    item_model: "mycomp:special_model"
+    data:
+      item_name: "<!i><#AA00FF>模型映射物品"
+
+# =============================================================================
+# 八、配方
+# =============================================================================
+recipes:
+  mycomp:trimmed_helmet_recipe:
+    type: smithing_trim
+    template_type: "minecraft:eye_armor_trim_smithing_template"
+    base: "minecraft:diamond_helmet"
+    addition: "minecraft:diamond"
+    pattern: minecraft:eye
+
+  mycomp:trimmed_chestplate_recipe:
+    type: smithing_trim
+    template_type: "minecraft:coast_armor_trim_smithing_template"
+    base: "minecraft:diamond_chestplate"
+    addition: "minecraft:emerald"
+
+  mycomp:miner_hammer_recipe:
+    type: smithing_transform
+    base: "minecraft:diamond_pickaxe"
+    addition: "minecraft:netherite_ingot"
+    result:
+      id: mycomp:miner_hammer
+      count: 1

@@ -1,0 +1,142 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 液体交互与放置产业链
+# =============================================================================
+# 展示在液面上放置方块/家具的完整配置
+# 包含liquid_collision_block_item/furniture_item/on_liquid_block/near_liquid
+# 命名空间: myliq (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、方块 - 液面/液体交互
+# =============================================================================
+blocks:
+  # 1a. 浮萍方块(液面上)
+  myliq:duckweed:
+    behaviors:
+      - type: on_liquid_block
+        liquid_type:
+          - water
+        stackable: true
+    settings:
+      hardness: 0.1
+
+  # 1b. 水下火把(邻液)
+  myliq:underwater_torch:
+    behaviors:
+      - type: directional_attached_block
+      - type: near_liquid_block
+        liquid_type:
+          - water
+    settings:
+      hardness: 0.1
+      luminance: 10
+
+  # 1c. 熔岩花(仅熔岩)
+  myliq:lava_flower:
+    behaviors:
+      - type: on_liquid_block
+        liquid_type:
+          - lava
+    settings:
+      hardness: 0.1
+      luminance: 12
+
+# =============================================================================
+# 二、物品 - 液面放置item behaviors
+# =============================================================================
+items:
+  # 2a. 浮萍物品(液面方块放置)
+  myliq:duckweed_item:
+    material: lily_pad
+    data:
+      item_name: "<!i><#228B22>浮萍"
+    behavior:
+      type: liquid_collision_block_item
+      block: myliq:duckweed
+
+  # 2b. 水下装饰(液面放置+碰撞)
+  myliq:underwater_torch_item:
+    material: torch
+    data:
+      item_name: "<!i><#00CED1>水下火把"
+    behavior:
+      type: liquid_collision_block_item
+      block: myliq:underwater_torch
+
+  # 2c. 熔岩花物品
+  myliq:lava_flower_item:
+    material: red_tulip
+    data:
+      item_name: "<!i><#FF4500>熔岩花"
+    behavior:
+      type: liquid_collision_block_item
+      block: myliq:lava_flower
+
+# =============================================================================
+# 三、家具 - 液面家具
+# =============================================================================
+  myliq:floating_lantern_item:
+    material: lantern
+    data:
+      item_name: "<!i><#FFD700>水上灯笼"
+    behavior:
+      type: liquid_collision_furniture_item
+      furniture: myliq:floating_lantern
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+furniture:
+  # 3a. 水上灯笼(液面家具)
+  myliq:floating_lantern:
+    settings:
+      item: myliq:floating_lantern_item
+    variants:
+      ground:
+        elements:
+          - type: item_display
+            item: myliq:floating_lantern_item
+            translation: 0.5,0.2,0.5
+        hitboxes:
+          - type: interaction
+            position: 0.5,0.1,0.5
+            width: 0.4
+            height: 0.2
+
+recipes:
+  myliq:duckweed_recipe:
+    type: shapeless
+    category: building
+    ingredients:
+      - "minecraft:lily_pad"
+      - "minecraft:vine"
+    result:
+      id: myliq:duckweed_item
+      count: 2
+
+  myliq:underwater_torch_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - "A"
+      - "B"
+    ingredients:
+      A: "minecraft:prismarine_crystals"
+      B: "minecraft:stick"
+    result:
+      id: myliq:underwater_torch_item
+      count: 4
+
+  myliq:floating_lantern_recipe:
+    type: shaped
+    category: building
+    pattern:
+      - " A "
+      - " B "
+      - " B "
+    ingredients:
+      A: "minecraft:torch"
+      B: "minecraft:stick"
+    result:
+      id: myliq:floating_lantern_item
+      count: 1

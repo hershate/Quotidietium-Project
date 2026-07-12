@@ -1,0 +1,100 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 语言与国际化产业链
+# =============================================================================
+# 展示lang/i18n/l10n多语言翻译系统完整配置
+# 命名空间: mylang (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、语言 - lang客户端翻译
+# =============================================================================
+lang:
+  zh_cn:
+    item.mylang.magic_sword: "魔法之剑"
+    item.mylang.magic_pickaxe: "魔法镐"
+    item.mylang.magic_apple: "魔法苹果"
+    block.mylang.magic_ore: "魔法矿石"
+    category.mylang.weapons: "武器"
+    category.mylang.tools: "工具"
+  en_us:
+    item.mylang.magic_sword: "Magic Sword"
+    item.mylang.magic_pickaxe: "Magic Pickaxe"
+    item.mylang.magic_apple: "Magic Apple"
+    block.mylang.magic_ore: "Magic Ore"
+  all:
+    item.mylang.magic_sword.lore.1: "一把蕴含魔力的武器"
+
+# =============================================================================
+# 二、翻译 - i18n服务端/l10n客户端
+# =============================================================================
+translations:
+  zh_cn:
+    item.mylang.magic_sword: "魔法之剑"
+    item.mylang.magic_pickaxe: "魔法镐"
+    ui.mylang.welcome: "欢迎来到服务器!"
+  en:
+    item.mylang.magic_sword: "Magic Sword"
+    item.mylang.magic_pickaxe: "Magic Pickaxe"
+    ui.mylang.welcome: "Welcome to the server!"
+
+# =============================================================================
+# 三、方块
+# =============================================================================
+blocks:
+  mylang:magic_ore:
+    state:
+      auto_state: note_block
+      model:
+        texture: "mylang:block/magic_ore"
+
+# =============================================================================
+# 四、物品+分类
+# =============================================================================
+items:
+  mylang:magic_sword:
+    material: diamond_sword
+    custom_model_data: 39001
+    data:
+      item_name: "<!i><lang:item.mylang.magic_sword>"
+      lore:
+        - "<lang:item.mylang.magic_sword.lore.1>"
+
+  mylang:magic_pickaxe:
+    material: diamond_pickaxe
+    custom_model_data: 39002
+    data:
+      item_name: "<!i><i18n:item.mylang.magic_pickaxe>"
+
+  mylang:magic_apple:
+    material: apple
+    custom_model_data: 39003
+    data:
+      item_name: "<!i><l10n:item.mylang.magic_apple>"
+
+  mylang:welcome_book:
+    material: book
+    data:
+      item_name: "<!i><i18n:ui.mylang.welcome>"
+
+  mylang:magic_ore_item:
+    material: diamond_ore
+    data:
+      item_name: "<!i><lang:block.mylang.magic_ore>"
+    behavior:
+      type: block_item
+      block: mylang:magic_ore
+
+categories:
+  mylang:weapons:
+    priority: 1
+    name: "<!i><#FF4500><lang:category.mylang.weapons>"
+    icon: mylang:magic_sword
+    list:
+      - mylang:magic_sword
+
+  mylang:tools:
+    priority: 2
+    name: "<!i><#FF8C00><lang:category.mylang.tools>"
+    icon: mylang:magic_pickaxe
+    list:
+      - mylang:magic_pickaxe

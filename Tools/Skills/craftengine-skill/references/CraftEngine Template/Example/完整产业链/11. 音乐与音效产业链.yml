@@ -1,0 +1,101 @@
+# =============================================================================
+# CraftEngine 完整产业链示例 - 音乐与音效产业链
+# =============================================================================
+# 展示从自定义音效→唱片曲目→唱片机播放的完整端到端配置
+# 注意: 修改后需重新进入服务器(Minecraft注册表不可变)
+# 命名空间: mysong (请替换为实际命名空间)
+# =============================================================================
+
+# =============================================================================
+# 一、音效 - 自定义声音事件
+# =============================================================================
+sounds:
+  # 1a. 简单音效
+  mysong:custom_harp:
+    replace: false
+    subtitle: "subtitles.mysong.custom_harp"
+    sounds:
+      - "custom/harp_1"
+      - "custom/harp_2"
+
+  # 1b. 复杂音效(权重随机+音量控制)
+  mysong:epic_orchestra:
+    replace: false
+    subtitle: "subtitles.mysong.epic_orchestra"
+    sounds:
+      - name: "music/epic_part_1"
+        volume: 0.8
+        weight: 5
+        stream: true
+      - name: "music/epic_part_2"
+        volume: 0.8
+        weight: 3
+        stream: true
+
+  # 1c. 覆盖原版音效
+  minecraft:block.note_block.harp:
+    replace: true
+    subtitle: "subtitles.block.note_block.harp"
+    sounds:
+      - name: "custom/harp_custom"
+        volume: 1.0
+
+# =============================================================================
+# 二、唱片 - 曲目定义
+# =============================================================================
+jukebox_songs:
+  mysong:ancient_melody:
+    sound: "mysong:epic_orchestra"
+    length: 180.0
+    description: "远古旋律"
+    comparator_output: 15
+    range: 48
+
+  mysong:gentle_breeze:
+    sound: "mysong:custom_harp"
+    length: 60.0
+    description: "微风轻语"
+    comparator_output: 7
+    range: 32
+
+# =============================================================================
+# 三、物品 - 唱片物品
+# =============================================================================
+items:
+  mysong:ancient_disc:
+    material: music_disc_13
+    custom_model_data: 10001
+    item_model: "mysong:ancient_disc"
+    data:
+      item_name: "<!i><#FFD700>远古唱片"
+      lore:
+        - "<gray>记录着远古旋律"
+      jukebox_playable: "mysong:ancient_melody"
+
+  mysong:breeze_disc:
+    material: music_disc_cat
+    custom_model_data: 10002
+    item_model: "mysong:breeze_disc"
+    data:
+      item_name: "<!i><#87CEEB>轻风唱片"
+      jukebox_playable: "mysong:gentle_breeze"
+
+# =============================================================================
+# 四、配方
+# =============================================================================
+recipes:
+  mysong:ancient_disc_recipe:
+    type: smithing_transform
+    base: "minecraft:music_disc_13"
+    addition: "minecraft:nether_star"
+    result:
+      id: mysong:ancient_disc
+      count: 1
+
+  mysong:breeze_disc_recipe:
+    type: smithing_transform
+    base: "minecraft:music_disc_cat"
+    addition: "minecraft:feather"
+    result:
+      id: mysong:breeze_disc
+      count: 1
