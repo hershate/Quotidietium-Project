@@ -824,7 +824,7 @@ furniture:
 - Wiki: `Furniture/Position & Rotation.md` — 位置和旋转设置
 - Wiki: `Items/Item Abilities/Click Actions.md` — 点击动作
 - Template: `references/Oraxen Template/General/基础家具.md` — table、chair、cart、turntable、shelf
-- Template: `references/Oraxen Template/customcrops/crops/` — 作物示例
+- Template: `references/Oraxen Template/Example/家具/进化植物.md` - 作物/植物进化示例
 
 ##### 盔甲 (Armor) — Components 方法（1.21.2+）
 
@@ -907,7 +907,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Components.md` — jukebox_playable
 - Wiki: `Configuration Reference/sound.yml.md` — 自定义音效配置
-- Template: `references/Oraxen Template/General/基础物品.md` — welcome_disk 示例
+- Template: `references/Oraxen Template/Example/物品/6. 音乐唱片.md` - welcome_disk 示例
 
 ##### 背包 (Backpack)
 
@@ -942,7 +942,7 @@ furniture:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Backpack mechanic
 - Wiki: `Items/Item Abilities/Backpack Cosmetic.md` — 背包外观
-- Template: `references/Oraxen Template/General/基础物品.md` — leather_backpack 示例
+- Template: `references/Oraxen Template/Example/物品/7. 背包.md` - leather_backpack 示例
 
 ##### 战斗 Mechanics 配置
 
