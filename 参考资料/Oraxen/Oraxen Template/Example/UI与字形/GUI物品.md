@@ -32,7 +32,7 @@
 # --- 下页箭头按钮 ---
 arrow_next_icon:                            # 【必填】物品 ID，全局唯一
                                             #         在其他插件中引用: oraxen:arrow_next_icon
-  itemname: <#D5D6D8>Next page              # 【必填】物品显示名称
+  displayname: <#D5D6D8>Next page              # 【必填】物品显示名称
                                             #         可使用 MiniMessage 颜色标签
                                             #         <#D5D6D8> = 十六进制颜色（浅灰白）
   material: PAPER                           # 【必填】Minecraft 基础物品材质
@@ -55,7 +55,7 @@ arrow_next_icon:                            # 【必填】物品 ID，全局唯�
 
 # --- 上页箭头按钮 ---
 arrow_previous_icon:                        # 上一页箭头，与下页成对使用
-  itemname: <#D5D6D8>Previous page
+  displayname: <#D5D6D8>Previous page
   material: PAPER
   excludeFromInventory: true
   Pack:
@@ -66,7 +66,7 @@ arrow_previous_icon:                        # 上一页箭头，与下页成对�
 
 # --- 退出/返回主菜单按钮 ---
 exit_icon:                                  # 退出按钮，通常放在菜单右下角
-  itemname: <gradient:#FA7CBB:#F14658>Back to main menu
+  displayname: <gradient:#FA7CBB:#F14658>Back to main menu
                                             # 渐变色名称: 粉色 → 红色
                                             # <gradient:起始色:结束色>文字</gradient>
   material: PAPER
@@ -128,7 +128,7 @@ excludeFromInventory: true 的作用和原理:
 
 # --- 完全透明的隐形物品 ---
 invisible_button:                           # 用于 GUI 背景层的不互动物品
-  itemname: " "                             # 空格作为名称（不可见的名称）
+  displayname: " "                             # 空格作为名称（不可见的名称）
   material: PAPER                           # PAPER 是最轻量的基础材质
   excludeFromInventory: true                # 隐藏（玩家不应获取）
   Pack:
@@ -142,7 +142,7 @@ invisible_button:                           # 用于 GUI 背景层的不互动�
 
 # --- 带半透明边框的隐形物品（调试用）---
 debug_button:                               # 调试用，开发时查看按钮位置
-  itemname: "<red>[DEV] Button Slot"        # 调试名称
+  displayname: "<red>[DEV] Button Slot"        # 调试名称
   material: PAPER
   excludeFromInventory: true
   Pack:
@@ -155,7 +155,7 @@ debug_button:                               # 调试用，开发时查看按钮�
 
 # --- 使用 CUSTOM_MODEL_DATA 的替代方案 ---
 invisible_clickable_cmd:
-  itemname: " "
+  displayname: " "
   material: IRON_NUGGET
   excludeFromInventory: true
   Pack:
@@ -204,7 +204,7 @@ invisible_clickable_cmd:
 
 # -------------------- 翻页系统 --------------------
 next_page:
-  itemname: "<#D5D6D8>下一页 →"
+  displayname: "<#D5D6D8>下一页 →"
   material: PAPER
   excludeFromInventory: true
   Pack:
@@ -216,7 +216,7 @@ next_page:
     - "<gray>点击查看下一页</gray>"
 
 previous_page:
-  itemname: "<#D5D6D8>← 上一页"
+  displayname: "<#D5D6D8>← 上一页"
   material: PAPER
   excludeFromInventory: true
   Pack:
@@ -229,7 +229,7 @@ previous_page:
 
 # -------------------- 导航按钮 --------------------
 back_button:
-  itemname: "<gradient:#FA7CBB:#F14658>← 返回主菜单</gradient>"
+  displayname: "<gradient:#FA7CBB:#F14658>← 返回主菜单</gradient>"
   material: PAPER
   excludeFromInventory: true
   Pack:
@@ -241,7 +241,7 @@ back_button:
     - "<gray>返回到主菜单</gray>"
 
 close_button:
-  itemname: "<red>✕ 关闭</red>"
+  displayname: "<red>✕ 关闭</red>"
   material: BARRIER                         # BARRIER 材质自带禁止符号外观
   excludeFromInventory: true
   Pack:
@@ -254,7 +254,7 @@ close_button:
 
 # -------------------- 确认/取消按钮 --------------------
 confirm_button:
-  itemname: "<green>✓ 确认</green>"
+  displayname: "<green>✓ 确认</green>"
   material: LIME_DYE                        # 绿色染料（天然绿色图标）
   excludeFromInventory: true
   Pack:
@@ -266,7 +266,7 @@ confirm_button:
     - "<gray>确认操作</gray>"
 
 cancel_button:
-  itemname: "<red>✕ 取消</red>"
+  displayname: "<red>✕ 取消</red>"
   material: RED_DYE                         # 红色染料（天然红色图标）
   excludeFromInventory: true
   Pack:
@@ -279,7 +279,7 @@ cancel_button:
 
 # -------------------- 特殊功能按钮 --------------------
 info_button:
-  itemname: "<yellow>ℹ 信息</yellow>"
+  displayname: "<yellow>ℹ 信息</yellow>"
   material: BOOK                            # 书本材质（天然信息图标）
   excludeFromInventory: true
   Pack:
@@ -291,7 +291,7 @@ info_button:
     - "<gray>查看详细信息</gray>"
 
 settings_button:
-  itemname: "<gray>⚙ 设置</gray>"
+  displayname: "<gray>⚙ 设置</gray>"
   material: COMPARATOR                      # 比较器材质（天然设置/齿轮感）
   excludeFromInventory: true
   Pack:
@@ -304,7 +304,7 @@ settings_button:
 
 # -------------------- 空白填充按钮 --------------------
 filler_pane:
-  itemname: " "
+  displayname: " "
   material: GRAY_STAINED_GLASS_PANE         # 灰色染色玻璃板（半透明背景感）
   excludeFromInventory: true
   Pack:
@@ -350,7 +350,7 @@ items:
   next_page_button:
     material: "oraxen:next_page"             # 引用 Oraxen 下页按钮
     slot: 50                                 # 第 6 行第 6 列（从 0 开始）
-    # display_name 自动从 items/guis.yml 的 itemname 继承
+    # display_name 自动从 items/guis.yml 的 displayname 继承
     # 如需覆盖:
     # display_name: "自定义名称"
     left_click_commands:
