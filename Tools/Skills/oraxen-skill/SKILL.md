@@ -596,7 +596,7 @@ Mechanics:
 - Wiki: `Items/Components.md` — Food & Consumable Components（1.21.2+/1.20.5-1.21）
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Custom Food（旧版）
 - Template: `references/Oraxen Template/Example/物品/4. 食物.md` - 食物完整示例
-- Template: `references/Oraxen Template/General/食物.md` — 食物完整示例
+- Template: `references/Oraxen Template/General/食物.md` - 食物模板结构
 - 速查: `references/Oraxen_food_template.md`
 
 ##### 方块 (Block) — NoteBlock 机制
