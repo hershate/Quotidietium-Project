@@ -924,14 +924,16 @@ furniture:
       title: "<颜色>背包标题"         # GUI 标题
       open_sound: entity.shulker.open       # 可选，默认值如上
       close_sound: entity.shulker.close     # 可选，默认值如上
-  # Mechanics:                       # 可选：背包外观
-  #   backpack_cosmetic:             # 在玩家背上显示背包模型
-  #     slot: INVENTORY
-  #     offset:
-  #       x: 0.0
-  #       y: 0.0
-  #       z: 0.0
-  #     scale: 1.0
+  # ⚠️ backpack_cosmetic（背部装饰）不可与 backpack 共存于同一物品
+  #    （mechanics.yml 标注为不兼容组合）。如需背部显示，请配置在独立物品上：
+  #  leather_backpack_visual:
+  #    displayname: "<颜色>背包（装饰版）"
+  #    material: PAPER
+  #    Mechanics:
+  #      backpack_cosmetic:
+  #        slot: INVENTORY
+  #        offset: { x: 0.0, y: 0.0, z: 0.0 }
+  #        scale: 1.0
   Pack:
     generate_model: false
     model: default/<模型路径>

@@ -228,7 +228,7 @@ Skill 内置的 Oraxen Template 位于 `references/Oraxen Template/`，分为 `G
 | `Example/物品/4. 食物.md` | 食物 | 完整 food + consumable 配置 |
 | `Example/物品/5. 消耗品与药水.md` | 消耗品/药水 | on_consume_effects 示例 |
 | `Example/物品/6. 音乐唱片.md` | 唱片 | jukebox_playable + sound.yml |
-| `Example/物品/7. 背包.md` | 背包 | backpack + backpack_cosmetic |
+| `Example/物品/7. 背包.md` | 背包 | backpack（存储）+ backpack_cosmetic（装饰，独立物品，二者不兼容） |
 | `Example/物品/8. 皮肤系统.md` | 皮肤系统 | skin + skinnable 示例 |
 | `Example/物品/9. 帽子与头部装备.md` | 帽子 | hat mechanic 示例 |
 | `Example/方块/音符盒矿石.md` | 矿石方块 | 完整 ore 配置 + drop loot |
