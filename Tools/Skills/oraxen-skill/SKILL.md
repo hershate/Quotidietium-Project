@@ -376,7 +376,7 @@ Oraxen 配置的基本结构：
 **参考来源：**
 - Wiki: `Items/Getting Started.md` — 基本结构和 Pack 配置
 - Wiki: `Items/Appearance & Models.md` — 纹理和模型详解
-- Template: `references/Oraxen Template/General/基础物品.md` — amethyst、ruby 等示例
+- Template: `references/Oraxen Template/Example/物品/1. 基础材料与宝石.md` - amethyst、ruby 等示例
 
 ##### 武器 (Weapon)
 
@@ -1143,7 +1143,7 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — 全部杂项 Mechanics
-- Template: `references/Oraxen Template/General/基础物品.md` — example_efficient_pickaxe 等
+- Template: `references/Oraxen Template/General/工具.md` - efficiency 工具示例
 - Template: `references/Oraxen Template/Example/物品/8. 皮肤系统.md` — 皮肤相关
 
 ##### 点击动作 (Click Actions)
