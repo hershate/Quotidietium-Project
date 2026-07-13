@@ -1,7 +1,7 @@
 
 ```yml
 miner_sandwich:
-  itemname: <gradient:#F69D84:#FAD98D>Miner's Sandwich
+  displayname: <gradient:#F69D84:#FAD98D>Miner's Sandwich
   material: PAPER
   Components:
     food:
