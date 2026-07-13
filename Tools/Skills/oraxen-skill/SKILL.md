@@ -1216,6 +1216,51 @@ Mechanics:
 
 如果发现问题，立即修正配置，然后重新执行 Step 5a-5b 直到全部通过。
 
+#### 5d. 自动化校验脚本
+
+使用 `scripts/oraxen_validator.py` 进行自动化校验。该脚本严格基于 Oraxen Docs Origin 构建字段 Schema，支持深层校验与精确错误定位。
+
+**环境准备**（需 Python + PyYAML）：
+```bash
+python -c "import yaml; print('PyYAML OK')" 2>&1 || pip install pyyaml
+```
+
+**执行校验**：
+```bash
+# 校验单个配置文件（.yml/.yaml 直接解析；.md 自动提取 ```yaml 代码块）
+python scripts/oraxen_validator.py <config.yml>
+python scripts/oraxen_validator.py <template.md>
+
+# JSON 输出（便于程序化处理）
+python scripts/oraxen_validator.py <config.yml> --json
+
+# 配方文件专用模式（检查 recipe type 是否为 docs 支持的 shaped）
+python scripts/oraxen_validator.py recipes/shaped.yml --recipe
+```
+
+**校验维度**：
+
+| 维度 | 覆盖内容 |
+|------|---------|
+| YAML 语法 | 解析错误捕获（错误码 4） |
+| 废弃字段 | `itemname` -> `displayname` 等（error） |
+| 物品根字段 | 对照 Getting Started.md / Components.md 检查未知字段 |
+| Pack 字段 | generate_model/parent_model/textures 等（Appearance & Models.md） |
+| Components | durability/food/consumable/tool/equippable/jukebox_playable 等 |
+| Mechanics | 44 个机制合法性 + 各机制子字段（Item Abilities docs） |
+| 不兼容组合 | backpack+backpack_cosmetic、多方块机制共存（mechanics.yml.md） |
+| 方块机制 | noteblock/stringblock/chorusblock/shaped_block 枚举与 custom_variation(>=1) |
+| 家具 | type/storage type 枚举、light(1-15) 范围 |
+| 配方类型 | Recipes.md 仅 shaped 受支持（--recipe 模式） |
+| 可染色材质 | Dyeable Items.md 仅 POTION/LEATHER_HORSE_ARMOR |
+| 枚举值 | furniture type(4种)/storage type(5种)/slot(7种)/tool_types/aura type 等 |
+
+**结果解读**：
+- `error` 级别：明确违规（废弃字段、不兼容组合、无效枚举、越界值），退出码 1
+- `warning` 级别：可疑但可能是 docs 未详述的特性（未知字段、非 shaped 配方），退出码 0
+
+校验通过（退出码 0）后再进入 Step 6 输出。
+
 ---
 
 ### Step 6: 输出结果
