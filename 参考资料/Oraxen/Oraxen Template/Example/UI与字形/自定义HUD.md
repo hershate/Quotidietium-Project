@@ -375,7 +375,7 @@ HUD 权限:
   oraxen.command.hud             使用 /oraxen hud 命令的权限
 
 HUD 管理员命令:
-  /oraxen reload hud             重新加载 HUD 配置（热重载）
+  /oraxen reload all             完全重载 Oraxen（包括 HUD；docs 仅记载 all/items/pack/recipes 子命令，无独立 reload hud）
   /oraxen reload all             完全重载 Oraxen（包括 HUD）
 
 注意事项:
