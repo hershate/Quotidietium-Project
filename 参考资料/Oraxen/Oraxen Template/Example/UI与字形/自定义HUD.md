@@ -174,6 +174,7 @@ HUD 中的 shift:
 # ============================================================
 
 # 方式一: 使用 TTF 字体（1.21.4+）
+# ⚠️ docs（Glyphs.md）仅记载 fonts.yml 的 bitmaps 段；以下 TTF 字体段为 Minecraft 1.21.4+ 原生功能，Oraxen 应支持但 docs 未详述，使用前请按实际版本验证。
 fonts:
   balance_hud:                          # 字体 ID（在 display_text 中引用）
     type: "ttf"                         # TrueType 字体类型
