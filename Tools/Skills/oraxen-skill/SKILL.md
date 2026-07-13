@@ -467,7 +467,7 @@ Pack:
 - Wiki: `Items/Components.md` — durability、AttributeModifiers
 - Wiki: `Items/Appearance & Models.md` — 特殊武器模型
 - Wiki: `Items/Item Abilities/Combat.md` — 战斗 Mechanics
-- Template: `references/Oraxen Template/General/武器.md` — glass_sword、storm_sword 等
+- Template: `references/Oraxen Template/Example/物品/2. 武器.md` - glass_sword、storm_sword 等
 - Template: `references/Oraxen Template/General/工具.md` — 锤子系列
 
 ##### 工具 (Tool)
@@ -511,7 +511,7 @@ Pack:
 **参考来源：**
 - Wiki: `Items/Components.md` — Tool Component
 - Wiki: `Items/Item Abilities/Farming.md` — bigmining、smelting、harvesting
-- Template: `references/Oraxen Template/General/工具.md` — emerald_hammer、iron_serpe 等
+- Template: `references/Oraxen Template/Example/物品/3. 工具.md` - emerald_hammer、iron_serpe 等
 
 ##### 食物 (Food) — 1.21.2+ 版本
 
@@ -595,7 +595,7 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Components.md` — Food & Consumable Components（1.21.2+/1.20.5-1.21）
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — Custom Food（旧版）
-- Template: `references/Oraxen Template/General/食物.md` — 100+ 食物完整示例
+- Template: `references/Oraxen Template/Example/物品/4. 食物.md` - 食物完整示例
 - Template: `references/Oraxen Template/General/食物.md` — 食物完整示例
 - 速查: `references/Oraxen_food_template.md`
 
@@ -823,7 +823,7 @@ furniture:
 - Wiki: `Furniture/Display Entities.md` — DISPLAY_ENTITY 特性
 - Wiki: `Furniture/Position & Rotation.md` — 位置和旋转设置
 - Wiki: `Items/Item Abilities/Click Actions.md` — 点击动作
-- Template: `references/Oraxen Template/General/基础家具.md` — table、chair、cart、turntable、shelf
+- Template: `references/Oraxen Template/Example/家具/基础家具.md` - table、chair、cart、shelf 等
 - Template: `references/Oraxen Template/Example/家具/进化植物.md` - 作物/植物进化示例
 
 ##### 盔甲 (Armor) — Components 方法（1.21.2+）
@@ -878,7 +878,7 @@ furniture:
 - Wiki: `Armors/Overview.md` — 盔甲方法选择
 - Wiki: `Armors/Components(1.21.2+).md` — Components 方法
 - Wiki: `Items/Components.md` — equippable、durability、AttributeModifiers
-- Template: `references/Oraxen Template/General/盔甲_组件_1.21.2+.md` — emerald/obsidian/ruby 全套
+- Template: `references/Oraxen Template/Example/盔甲/` - emerald/obsidian/ruby 全套装示例
 
 ##### 唱片 (Music Disc) — 1.21+
 
@@ -1018,7 +1018,7 @@ Mechanics:
 
 **参考来源：**
 - Wiki: `Items/Item Abilities/Combat.md` — 全部战斗 Mechanics
-- Template: `references/Oraxen Template/General/武器.md` — storm_sword、blood_sword 等
+- Template: `references/Oraxen Template/Example/物品/2. 武器.md` - storm_sword、blood_sword 等
 
 ##### 农耕 Mechanics 配置
 
@@ -1076,7 +1076,7 @@ Mechanics:
 **参考来源：**
 - Wiki: `Items/Item Abilities/Farming.md` — 全部农耕 Mechanics
 - Wiki: `Items/Item Abilities/Miscellaneous.md` — repair、efficiency、durability
-- Template: `references/Oraxen Template/General/工具.md` — iron_cog、gold_cog、diamond_cog（repair 示例）
+- Template: `references/Oraxen Template/Example/物品/3. 工具.md` - iron_cog、gold_cog、diamond_cog（repair 示例）
 
 ##### 杂项 Mechanics 配置
 
