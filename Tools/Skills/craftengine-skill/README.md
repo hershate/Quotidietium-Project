@@ -8,6 +8,8 @@
 
 每次只生成一个完整的配置（物品/方块/家具/配方等），生成后校验 YAML 语法，并对照 Wiki 验证是否存在虚构内容。对于不确定的配置项会主动向用户提问，不会擅自假设。
 
+本项目使用 [Meta-skill](https://github.com/hershate/Meta-skill) 项目构建。
+
 ## 目录结构
 
 ```text
