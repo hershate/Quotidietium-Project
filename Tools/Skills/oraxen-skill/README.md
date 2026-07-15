@@ -6,6 +6,8 @@
 
 每次只生成一个完整的配置（一个物品、一个方块、一个家具等），生成后校验 YAML 语法，并对照 Wiki 验证是否存在虚构内容。
 
+本项目使用 [Meta-skill](https://github.com/hershate/Meta-skill) 项目构建。
+
 ## 作者信息
 
 本 Skill 由 **正版 ID 为 `ZTF3` 的玩家** 根据 Oraxen Docs Origin 和 Oraxen Template 的内容整理和撰写。
