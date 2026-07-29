@@ -1,92 +1,92 @@
-'id': '商店'
-'type': 'chest'
-'rows': 1
-'title': '商店'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: shop
+type: chest
+rows: 1
+title: 商店
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'GOLD_INGOT'
-        'amount': 1
-        'item-name': '&e回收价格公示'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '2cdb65c6-644c-4c48-93c3-c4cfcce82e12':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '8e29db72-50d9-4780-b29d-87a656d995d0':
-            'type': 'command'
-            'commands':
-            - 'worthlist'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 0
+        item: GOLD_INGOT
+        amount: 1
+        item-name: '&e回收价格公示'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          2cdb65c6-644c-4c48-93c3-c4cfcce82e12:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+          8e29db72-50d9-4780-b29d-87a656d995d0:
+            type: command
+            commands:
+            - worthlist
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '2':
-        'slot': 1
-        'item': 'COMPASS'
-        'amount': 1
-        'item-name': '&7查询物品价格'
-        'item-lore':
-        - '§a将物品拿在手上，输入/worth即可查看物品回收价格'
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: COMPASS
+        amount: 1
+        item-name: '&7查询物品价格'
+        item-lore:
+        - §a将物品拿在手上，输入/worth即可查看物品回收价格
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'SPRUCE_HANGING_SIGN'
-        'amount': 1
-        'item-name': '&4卖出手持物品'
-        'item-lore':
-        - '§4注意：手持的那一格堆叠的所有物品均会出售，而不是只出售一个！！'
-        - '§7手持物品使用/sell即可出售'
-        - '§a或者点击我实现批量回收'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'c534cb35-40b6-4744-bad3-af2715783aa9':
-            'type': 'command'
-            'commands':
-            - 'cmi sell gui'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 2
+        item: SPRUCE_HANGING_SIGN
+        amount: 1
+        item-name: '&4卖出手持物品'
+        item-lore:
+        - §4注意：手持的那一格堆叠的所有物品均会出售，而不是只出售一个！！
+        - §7手持物品使用/sell即可出售
+        - §a或者点击我实现批量回收
+        item-flags: []
+        unbreakable: false
+        click-events:
+          c534cb35-40b6-4744-bad3-af2715783aa9:
+            type: command
+            commands:
+            - cmi sell gui
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '4':
-        'slot': 3
-        'item': 'AIR'
-        'amount': 0
+        slot: 3
+        item: AIR
+        amount: 0
       '5':
-        'slot': 4
-        'item': 'AIR'
-        'amount': 0
+        slot: 4
+        item: AIR
+        amount: 0
       '6':
-        'slot': 5
-        'item': 'AIR'
-        'amount': 0
+        slot: 5
+        item: AIR
+        amount: 0
       '7':
-        'slot': 6
-        'item': 'AIR'
-        'amount': 0
+        slot: 6
+        item: AIR
+        amount: 0
       '8':
-        'slot': 7
-        'item': 'AIR'
-        'amount': 0
+        slot: 7
+        item: AIR
+        amount: 0
       '9':
-        'slot': 8
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '30fa97b5-833d-4a5c-b533-f03120abcaac':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 8
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          30fa97b5-833d-4a5c-b533-f03120abcaac:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0

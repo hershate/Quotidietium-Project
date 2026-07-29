@@ -1,572 +1,572 @@
-'id': '菜单'
-'type': 'chest'
-'rows': 6
-'title': '菜单'
-'commandAlias': 'cd'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: mainmenu
+type: chest
+rows: 6
+title: 菜单
+commandAlias: cd
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'open-conditions':
-      '80083943-9f72-4644-8e46-e10f2cf2b53c':
-        'condition': 'cooldown'
-        'cooldown': 1
-        'id': 'b01ab654-f35d-4552-8162-0ff3c038bfd2'
-        'inverted': false
-    'items':
+    delay: 0
+    open-conditions:
+      80083943-9f72-4644-8e46-e10f2cf2b53c:
+        condition: cooldown
+        cooldown: 1
+        id: b01ab654-f35d-4552-8162-0ff3c038bfd2
+        inverted: false
+    items:
       '1':
-        'slot': 0
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 0
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 3
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '5':
-        'slot': 4
-        'item': 'PLAYER_HEAD'
-        'amount': 1
-        'item-name': '&a玩家信息'
-        'item-lore':
-        - '§f用户名：%player_name%'
-        - '§f金币数：%xconomy_balance%'
-        - '§f活动点数：%playerpoints_points_formatted%'
-        - '§9菜单初版设计由ONEXHS提供'
-        - '§a注意:本服务器非MINECRAFT官方服务'
-        - '§a未经MOJANG或MICROSOFT批准'
-        - '§a也不与MOJANG或MICROSOFT关联'
-        'item-flags': []
-        'unbreakable': false
-        'skullBase64': 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBjZTk3ZDY0Y2UwMTcxNzJmODI0Zjg1NjRmMjY0YTliZDQ0NWU1YTIxZDU2MDY1MjQwY2UzMmJhNzk2NzAwYyJ9fX0='
+        slot: 4
+        item: PLAYER_HEAD
+        amount: 1
+        item-name: '&a玩家信息'
+        item-lore:
+        - §f用户名：%player_name%
+        - §f金币数：%xconomy_balance%
+        - §f活动点数：%playerpoints_points_formatted%
+        - §9菜单初版设计由ONEXHS提供
+        - §a注意:本服务器非MINECRAFT官方服务
+        - §a未经MOJANG或MICROSOFT批准
+        - §a也不与MOJANG或MICROSOFT关联
+        item-flags: []
+        unbreakable: false
+        skullBase64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBjZTk3ZDY0Y2UwMTcxNzJmODI0Zjg1NjRmMjY0YTliZDQ0NWU1YTIxZDU2MDY1MjQwY2UzMmJhNzk2NzAwYyJ9fX0=
       '6':
-        'slot': 5
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 5
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '7':
-        'slot': 6
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 6
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '8':
-        'slot': 7
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 7
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '9':
-        'slot': 8
-        'item': 'RED_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': '&4关闭菜单'
-        'item-lore':
-        - '§8关闭菜单按ESC即可'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '0c3edad0-a3e5-499a-b814-17132a98209e':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 8
+        item: RED_STAINED_GLASS_PANE
+        amount: 1
+        item-name: '&4关闭菜单'
+        item-lore:
+        - §8关闭菜单按ESC即可
+        item-flags: []
+        unbreakable: false
+        click-events:
+          0c3edad0-a3e5-499a-b814-17132a98209e:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '10':
-        'slot': 9
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 9
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '11':
-        'slot': 10
-        'item': 'PLAYER_HEAD'
-        'amount': 1
-        'item-name': '&e开发者名单'
-        'item-lore':
-        - '§a以下排名不分先后'
-        - '§4注意开发者不是管理！'
-        - '§4管理和开发者独立！'
-        - '§9只要为服务器开发做出贡献均可记录在此'
-        'item-flags': []
-        'unbreakable': false
-        'skullBase64': 'ZTF3'
-        'click-events':
-          '47eedac9-9daf-4398-86a8-f43edf9338d1':
-            'type': 'command'
-            'commands':
-            - 'gui open 开发者'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 10
+        item: PLAYER_HEAD
+        amount: 1
+        item-name: '&e开发者名单'
+        item-lore:
+        - §a以下排名不分先后
+        - §4注意开发者不是管理！
+        - §4管理和开发者独立！
+        - §9只要为服务器开发做出贡献均可记录在此
+        item-flags: []
+        unbreakable: false
+        skullBase64: ZTF3
+        click-events:
+          47eedac9-9daf-4398-86a8-f43edf9338d1:
+            type: command
+            commands:
+            - gui open developers
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '12':
-        'slot': 11
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 11
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '13':
-        'slot': 12
-        'item': 'WOODEN_HOE'
-        'amount': 1
-        'item-name': '&a领地系统'
-        'item-lore':
-        - '§a一些问题与解答'
-        - '§c只有划分了领地，家才是安全的'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'b17272f7-567c-46d2-b440-af09cb4abd8d':
-            'type': 'command'
-            'commands':
-            - 'gui open 圈地'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 12
+        item: WOODEN_HOE
+        amount: 1
+        item-name: '&a领地系统'
+        item-lore:
+        - §a一些问题与解答
+        - §c只有划分了领地，家才是安全的
+        item-flags: []
+        unbreakable: false
+        click-events:
+          b17272f7-567c-46d2-b440-af09cb4abd8d:
+            type: command
+            commands:
+            - gui open claim
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '14':
-        'slot': 13
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 13
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '15':
-        'slot': 14
-        'item': 'BEACON'
-        'amount': 1
-        'item-name': '&e传送菜单'
-        'item-lore':
-        - '§a可以在各个世界随机传送哦'
-        - '§e所有人都可以申请建造公共点'
-        - '§e只是审核会比较严格哦~'
-        - '§9申请请到服务器群'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '0b8d6ff9-653c-4850-a6fb-b4c55fc14b5c':
-            'type': 'command'
-            'commands':
-            - 'guiplus open 传送'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 14
+        item: BEACON
+        amount: 1
+        item-name: '&e传送菜单'
+        item-lore:
+        - §a可以在各个世界随机传送哦
+        - §e所有人都可以申请建造公共点
+        - §e只是审核会比较严格哦~
+        - §9申请请到服务器群
+        item-flags: []
+        unbreakable: false
+        click-events:
+          0b8d6ff9-653c-4850-a6fb-b4c55fc14b5c:
+            type: command
+            commands:
+            - guiplus open teleport
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '16':
-        'slot': 15
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 15
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '17':
-        'slot': 16
-        'item': 'DIAMOND_HORSE_ARMOR'
-        'amount': 1
-        'item-name': '&b宠物系统'
-        'item-lore':
-        - '§e谁会不喜欢一只可爱的宠物呢？'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'd008ee3e-7825-4e2b-9e9f-7b91f7ad8fce':
-            'type': 'command'
-            'commands':
-            - 'gui open 宠物'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 16
+        item: DIAMOND_HORSE_ARMOR
+        amount: 1
+        item-name: '&b宠物系统'
+        item-lore:
+        - §e谁会不喜欢一只可爱的宠物呢？
+        item-flags: []
+        unbreakable: false
+        click-events:
+          d008ee3e-7825-4e2b-9e9f-7b91f7ad8fce:
+            type: command
+            commands:
+            - gui open pet
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '18':
-        'slot': 17
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 17
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '19':
-        'slot': 18
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 18
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '20':
-        'slot': 19
-        'item': 'EXPERIENCE_BOTTLE'
-        'amount': 1
-        'item-name': '&e技能系统'
-        'item-lore':
-        - '§a看看你的实力'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'cdcb881e-44c8-43ef-b43c-cfc8fd1d47d3':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'c87d12d8-1184-49b0-b2e0-e341beb49cac':
-            'type': 'command'
-            'commands':
-            - 'sk'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 19
+        item: EXPERIENCE_BOTTLE
+        amount: 1
+        item-name: '&e技能系统'
+        item-lore:
+        - §a看看你的实力
+        item-flags: []
+        unbreakable: false
+        click-events:
+          cdcb881e-44c8-43ef-b43c-cfc8fd1d47d3:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+          c87d12d8-1184-49b0-b2e0-e341beb49cac:
+            type: command
+            commands:
+            - sk
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '21':
-        'slot': 20
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 20
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '22':
-        'slot': 21
-        'item': 'CRAFTING_TABLE'
-        'amount': 1
-        'item-name': '&a实用功能'
-        'item-lore':
-        - '§6如果你真的付不起钱的话，我们会让你免费用的'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '5899301d-2f86-4d5f-85ed-89f1e0889958':
-            'type': 'command'
-            'commands':
-            - 'gui open 实用功能'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 21
+        item: CRAFTING_TABLE
+        amount: 1
+        item-name: '&a实用功能'
+        item-lore:
+        - §6如果你真的付不起钱的话，我们会让你免费用的
+        item-flags: []
+        unbreakable: false
+        click-events:
+          5899301d-2f86-4d5f-85ed-89f1e0889958:
+            type: command
+            commands:
+            - gui open utility
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '23':
-        'slot': 22
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 22
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '24':
-        'slot': 23
-        'item': 'ITEM_FRAME'
-        'amount': 1
-        'item-name': '&6活动公示'
-        'item-lore':
-        - '§2服务器过去活动的记录'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '47de550b-5363-499c-9ee2-b17d75b127cd':
-            'type': 'command'
-            'commands':
-            - 'gui open 活动'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 23
+        item: ITEM_FRAME
+        amount: 1
+        item-name: '&6活动公示'
+        item-lore:
+        - §2服务器过去活动的记录
+        item-flags: []
+        unbreakable: false
+        click-events:
+          47de550b-5363-499c-9ee2-b17d75b127cd:
+            type: command
+            commands:
+            - gui open events
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '25':
-        'slot': 24
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 24
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '26':
-        'slot': 25
-        'item': 'GOLD_BLOCK'
-        'amount': 1
-        'item-name': '&e赞助者名单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'ccac100e-27fb-4930-b573-a3a9321c5b9a':
-            'type': 'command'
-            'commands':
-            - 'gui open 赞助者'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 25
+        item: GOLD_BLOCK
+        amount: 1
+        item-name: '&e赞助者名单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          ccac100e-27fb-4930-b573-a3a9321c5b9a:
+            type: command
+            commands:
+            - gui open sponsors
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '27':
-        'slot': 26
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 26
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '28':
-        'slot': 27
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 27
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '29':
-        'slot': 28
-        'item': 'EMERALD'
-        'amount': 1
-        'item-name': '&a交易系统'
-        'item-lore':
-        - '§6点我查看说明ヾ(≧▽≦*)o'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'b3ed3b7d-9406-4a46-a64d-6379ce11f2a0':
-            'type': 'command'
-            'commands':
-            - 'gui open Trade'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 28
+        item: EMERALD
+        amount: 1
+        item-name: '&a交易系统'
+        item-lore:
+        - §6点我查看说明ヾ(≧▽≦*)o
+        item-flags: []
+        unbreakable: false
+        click-events:
+          b3ed3b7d-9406-4a46-a64d-6379ce11f2a0:
+            type: command
+            commands:
+            - gui open Trade
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '30':
-        'slot': 29
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 29
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '31':
-        'slot': 30
-        'item': 'LECTERN'
-        'amount': 1
-        'item-name': '&a小贴士'
-        'item-lore':
-        - '§a在这里可以看到玩家们给出的各种Tips'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '8e5f20e5-1927-4c3c-a62c-9609ded8d991':
-            'type': 'command'
-            'commands':
-            - 'gui open 小贴士'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 30
+        item: LECTERN
+        amount: 1
+        item-name: '&a小贴士'
+        item-lore:
+        - §a在这里可以看到玩家们给出的各种Tips
+        item-flags: []
+        unbreakable: false
+        click-events:
+          8e5f20e5-1927-4c3c-a62c-9609ded8d991:
+            type: command
+            commands:
+            - gui open tips
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '32':
-        'slot': 31
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 31
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '33':
-        'slot': 32
-        'item': 'NAME_TAG'
-        'amount': 1
-        'item-lore':
-        - '§4注意一次只能拥有一个称号'
-        - '§4购买新的称号将会自行放弃原有称号'
-        'item-flags': []
-        'unbreakable': false
-        'item-name': '&e称号系统'
-        'click-events':
-          '310b1a7d-5ae3-4822-a116-de6138f31fc5':
-            'type': 'command'
-            'commands':
-            - 'gui open 称号系统'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 32
+        item: NAME_TAG
+        amount: 1
+        item-lore:
+        - §4注意一次只能拥有一个称号
+        - §4购买新的称号将会自行放弃原有称号
+        item-flags: []
+        unbreakable: false
+        item-name: '&e称号系统'
+        click-events:
+          310b1a7d-5ae3-4822-a116-de6138f31fc5:
+            type: command
+            commands:
+            - gui open titles
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '34':
-        'slot': 33
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 33
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '35':
-        'slot': 34
-        'item': 'BAMBOO_HANGING_SIGN'
-        'amount': 1
-        'item-name': '&7服务器悬赏'
-        'item-lore':
-        - '§9所有人都可以成为服务器的开发者'
-        - '§9这里列出了服务器需要解决的一些问题'
-        - '§9有意向者请到服务器Q群帮助解决'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '570722ea-1f56-4656-a756-10a9aec6ffc9':
-            'type': 'command'
-            'commands':
-            - 'gui open 征求'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 34
+        item: BAMBOO_HANGING_SIGN
+        amount: 1
+        item-name: '&7服务器悬赏'
+        item-lore:
+        - §9所有人都可以成为服务器的开发者
+        - §9这里列出了服务器需要解决的一些问题
+        - §9有意向者请到服务器Q群帮助解决
+        item-flags: []
+        unbreakable: false
+        click-events:
+          570722ea-1f56-4656-a756-10a9aec6ffc9:
+            type: command
+            commands:
+            - gui open requests
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '36':
-        'slot': 35
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 35
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '37':
-        'slot': 36
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 36
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '38':
-        'slot': 37
-        'item': 'GOLD_INGOT'
-        'amount': 1
-        'item-name': '&e服务器商店'
-        'item-lore':
-        - '§e服务器可是奸商哦'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'a7a1b669-f09f-44c7-a9df-e234eeccf690':
-            'type': 'command'
-            'commands':
-            - 'gui open 商店'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 37
+        item: GOLD_INGOT
+        amount: 1
+        item-name: '&e服务器商店'
+        item-lore:
+        - §e服务器可是奸商哦
+        item-flags: []
+        unbreakable: false
+        click-events:
+          a7a1b669-f09f-44c7-a9df-e234eeccf690:
+            type: command
+            commands:
+            - gui open shop
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '39':
-        'slot': 38
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 38
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '40':
-        'slot': 39
-        'item': 'BOOKSHELF'
-        'amount': 1
-        'item-name': '&a服务器基本规则'
-        'item-lore':
-        - '§4务必阅读！'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'd771661a-e099-4525-ad61-85b9e397228e':
-            'type': 'command'
-            'commands':
-            - 'gui open 规则'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 39
+        item: BOOKSHELF
+        amount: 1
+        item-name: '&a服务器基本规则'
+        item-lore:
+        - §4务必阅读！
+        item-flags: []
+        unbreakable: false
+        click-events:
+          d771661a-e099-4525-ad61-85b9e397228e:
+            type: command
+            commands:
+            - gui open rules
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '41':
-        'slot': 40
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 40
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '42':
-        'slot': 41
-        'item': 'MUSIC_DISC_11'
-        'amount': 1
-        'item-name': '&e纪念品公示'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'eb040dde-0862-46a7-b62f-0a816e8dbd27':
-            'type': 'command'
-            'commands':
-            - 'gui open 纪念品'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 41
+        item: MUSIC_DISC_11
+        amount: 1
+        item-name: '&e纪念品公示'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          eb040dde-0862-46a7-b62f-0a816e8dbd27:
+            type: command
+            commands:
+            - gui open souvenirs
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '43':
-        'slot': 42
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 42
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '44':
-        'slot': 43
-        'item': 'IRON_BARS'
-        'amount': 1
-        'item-name': '&4封禁/惩罚名单公示'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'dd4064ff-a058-4d14-b3ff-215de691f93c':
-            'type': 'command'
-            'commands':
-            - 'gui open 封禁'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 43
+        item: IRON_BARS
+        amount: 1
+        item-name: '&4封禁/惩罚名单公示'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          dd4064ff-a058-4d14-b3ff-215de691f93c:
+            type: command
+            commands:
+            - gui open bans
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '45':
-        'slot': 44
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 44
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '46':
-        'slot': 45
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 45
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '47':
-        'slot': 46
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 46
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '48':
-        'slot': 47
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 47
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '49':
-        'slot': 48
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 48
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '50':
-        'slot': 49
-        'item': 'BELL'
-        'amount': 1
-        'item-name': '&9通知'
-        'item-lore':
-        - '§9服务器的通知'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '64502b43-18db-4f3c-b626-e6e6a49931d9':
-            'type': 'command'
-            'commands':
-            - 'gui open 通知'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 49
+        item: BELL
+        amount: 1
+        item-name: '&9通知'
+        item-lore:
+        - §9服务器的通知
+        item-flags: []
+        unbreakable: false
+        click-events:
+          64502b43-18db-4f3c-b626-e6e6a49931d9:
+            type: command
+            commands:
+            - gui open notices
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '51':
-        'slot': 50
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 50
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '52':
-        'slot': 51
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 51
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '53':
-        'slot': 52
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 52
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '54':
-        'slot': 53
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f下一页'
-        'item-flags': []
-        'unbreakable': false
+        slot: 53
+        item: PAPER
+        amount: 1
+        item-name: '&f下一页'
+        item-flags: []
+        unbreakable: false

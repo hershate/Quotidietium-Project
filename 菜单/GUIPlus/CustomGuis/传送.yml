@@ -1,513 +1,513 @@
-'id': '传送'
-'type': 'chest'
-'rows': 6
-'title': '传送'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: teleport
+type: chest
+rows: 6
+title: 传送
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 0
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 3
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '5':
-        'slot': 4
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 4
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '6':
-        'slot': 5
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 5
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '7':
-        'slot': 6
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 6
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '8':
-        'slot': 7
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 7
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '9':
-        'slot': 8
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 8
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '10':
-        'slot': 9
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 9
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '11':
-        'slot': 10
-        'item': 'GRASS_BLOCK'
-        'amount': 1
-        'item-name': '&a主世界传送'
-        'item-lore':
-        - '§f点击传送到主世界'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '3e984b8a-9ce2-4ca3-9e33-348c6b78829c':
-            'type': 'command'
-            'commands':
-            - 'rt %player_name% IrisWorld'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '27b32637-ce88-4d2c-984a-a39afd896f6f':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 10
+        item: GRASS_BLOCK
+        amount: 1
+        item-name: '&a主世界传送'
+        item-lore:
+        - §f点击传送到主世界
+        item-flags: []
+        unbreakable: false
+        click-events:
+          3e984b8a-9ce2-4ca3-9e33-348c6b78829c:
+            type: command
+            commands:
+            - rt %player_name% IrisWorld
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          27b32637-ce88-4d2c-984a-a39afd896f6f:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '12':
-        'slot': 11
-        'item': 'MAGMA_BLOCK'
-        'amount': 1
-        'item-name': '&4生存下界'
-        'item-lore':
-        - '§c点击传送到下界'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '94e479f0-a7ed-4740-83a4-f12de9ddb1ff':
-            'type': 'command'
-            'commands':
-            - 'rt %player_name% IrisWorld_nether'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '04303322-ddd8-4dab-8190-0aedcadc0588':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 11
+        item: MAGMA_BLOCK
+        amount: 1
+        item-name: '&4生存下界'
+        item-lore:
+        - §c点击传送到下界
+        item-flags: []
+        unbreakable: false
+        click-events:
+          94e479f0-a7ed-4740-83a4-f12de9ddb1ff:
+            type: command
+            commands:
+            - rt %player_name% IrisWorld_nether
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          04303322-ddd8-4dab-8190-0aedcadc0588:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '13':
-        'slot': 12
-        'item': 'END_STONE'
-        'amount': 1
-        'item-name': '&e生存末地'
-        'item-lore':
-        - '§6点击传送到末地'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '8be0ba64-f505-4081-85ff-4f48f0dced9b':
-            'type': 'command'
-            'commands':
-            - 'rt %player_name% IrisWorld_the_end'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'f6ca3e7d-e1d3-4f62-9ef4-8e7167926724':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 12
+        item: END_STONE
+        amount: 1
+        item-name: '&e生存末地'
+        item-lore:
+        - §6点击传送到末地
+        item-flags: []
+        unbreakable: false
+        click-events:
+          8be0ba64-f505-4081-85ff-4f48f0dced9b:
+            type: command
+            commands:
+            - rt %player_name% IrisWorld_the_end
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          f6ca3e7d-e1d3-4f62-9ef4-8e7167926724:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '14':
-        'slot': 13
-        'item': 'RECOVERY_COMPASS'
-        'amount': 1
-        'item-name': '&e主城'
-        'item-lore':
-        - '§a点击传送到主城'
-        - '§9地图信息公示'
-        - '§9地图名称：Horizons'
-        - '§9地图作者：OriginBuilds'
-        - '§a该地图使用已获许可'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'ac72d790-4bc3-46c3-9c78-cef58b2a0d02':
-            'type': 'command'
-            'commands':
-            - 'res tp ZC'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'f7c5f19d-34ea-4fdb-b478-44c7428d779b':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 13
+        item: RECOVERY_COMPASS
+        amount: 1
+        item-name: '&e主城'
+        item-lore:
+        - §a点击传送到主城
+        - §9地图信息公示
+        - §9地图名称：Horizons
+        - §9地图作者：OriginBuilds
+        - §a该地图使用已获许可
+        item-flags: []
+        unbreakable: false
+        click-events:
+          ac72d790-4bc3-46c3-9c78-cef58b2a0d02:
+            type: command
+            commands:
+            - res tp ZC
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          f7c5f19d-34ea-4fdb-b478-44c7428d779b:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '15':
-        'slot': 14
-        'item': 'GRASS_BLOCK'
-        'amount': 1
-        'item-name': '&a资源世界'
-        'item-lore':
-        - '§4生存世界每周删档，禁止建家'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'cc7867c9-9480-45dc-a65d-2d8cd54b332e':
-            'type': 'command'
-            'commands':
-            - 'resource tp'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'd776382b-aa69-4b24-8356-0a5e3b0f5801':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 14
+        item: GRASS_BLOCK
+        amount: 1
+        item-name: '&a资源世界'
+        item-lore:
+        - §4生存世界每周删档，禁止建家
+        item-flags: []
+        unbreakable: false
+        click-events:
+          cc7867c9-9480-45dc-a65d-2d8cd54b332e:
+            type: command
+            commands:
+            - resource tp
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          d776382b-aa69-4b24-8356-0a5e3b0f5801:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '16':
-        'slot': 15
-        'item': 'MAGMA_BLOCK'
-        'amount': 1
-        'item-name': '&4资源下界'
-        'item-lore':
-        - '§4生存世界每周删档，禁止建家'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'd33add7d-8751-4b3c-85a7-f79fddef7b3a':
-            'type': 'command'
-            'commands':
-            - 'resource tp nether'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '640d0b89-42a9-436e-84d1-6c0770374cc1':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 15
+        item: MAGMA_BLOCK
+        amount: 1
+        item-name: '&4资源下界'
+        item-lore:
+        - §4生存世界每周删档，禁止建家
+        item-flags: []
+        unbreakable: false
+        click-events:
+          d33add7d-8751-4b3c-85a7-f79fddef7b3a:
+            type: command
+            commands:
+            - resource tp nether
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          640d0b89-42a9-436e-84d1-6c0770374cc1:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '17':
-        'slot': 16
-        'item': 'END_STONE'
-        'amount': 1
-        'item-name': '&e资源末地'
-        'item-lore':
-        - '§4生存世界每周删档，禁止建家'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'b5fb33b9-2692-4c6d-bb81-1affba05b45d':
-            'type': 'command'
-            'commands':
-            - 'resource tp end'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'acac5231-884c-47b4-8c3e-3e9e1f956195':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 16
+        item: END_STONE
+        amount: 1
+        item-name: '&e资源末地'
+        item-lore:
+        - §4生存世界每周删档，禁止建家
+        item-flags: []
+        unbreakable: false
+        click-events:
+          b5fb33b9-2692-4c6d-bb81-1affba05b45d:
+            type: command
+            commands:
+            - resource tp end
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          acac5231-884c-47b4-8c3e-3e9e1f956195:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '18':
-        'slot': 17
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 17
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '19':
-        'slot': 18
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 18
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '20':
-        'slot': 19
-        'item': 'GRASS_BLOCK'
-        'amount': 1
-        'item-name': '&a生存主世界'
-        'item-lore':
-        - '§a这是不删档的原版主世界'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '9362be97-f499-4eb9-9c2f-7023041d701e':
-            'type': 'command'
-            'commands':
-            - 'rt %player_name% WORLD'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '517a255d-4b9b-4a7b-b0fe-a3fd36fe056f':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 19
+        item: GRASS_BLOCK
+        amount: 1
+        item-name: '&a生存主世界'
+        item-lore:
+        - §a这是不删档的原版主世界
+        item-flags: []
+        unbreakable: false
+        click-events:
+          9362be97-f499-4eb9-9c2f-7023041d701e:
+            type: command
+            commands:
+            - rt %player_name% WORLD
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          517a255d-4b9b-4a7b-b0fe-a3fd36fe056f:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '21':
-        'slot': 20
-        'item': 'AIR'
-        'amount': 0
+        slot: 20
+        item: AIR
+        amount: 0
       '22':
-        'slot': 21
-        'item': 'END_STONE'
-        'amount': 1
-        'item-name': '&e原版生存末地'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'f212965d-e19c-4fff-b84a-b60f565cf652':
-            'type': 'command'
-            'commands':
-            - 'rt %player_name% END'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '1dd69067-ae6a-4a0b-9225-660afb585bcc':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 21
+        item: END_STONE
+        amount: 1
+        item-name: '&e原版生存末地'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          f212965d-e19c-4fff-b84a-b60f565cf652:
+            type: command
+            commands:
+            - rt %player_name% END
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          1dd69067-ae6a-4a0b-9225-660afb585bcc:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '23':
-        'slot': 22
-        'item': 'DIAMOND_SWORD'
-        'amount': 1
-        'item-name': '&9PVP场地'
-        'item-lore':
-        - '§a点我传送到PVP场'
-        - '§9地图信息公示'
-        - '§9地图名称：PvP Arena - Natural look'
-        - '§9地图作者：Stormblock'
-        - '§a该地图使用已取得相关授权'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '2a898a87-3b5f-4235-8261-3ce3978839e3':
-            'type': 'command'
-            'commands':
-            - 'res tp PVP'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          'ae32415d-3e7a-4031-983c-93f677e73cb9':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 22
+        item: DIAMOND_SWORD
+        amount: 1
+        item-name: '&9PVP场地'
+        item-lore:
+        - §a点我传送到PVP场
+        - §9地图信息公示
+        - §9地图名称：PvP Arena - Natural look
+        - §9地图作者：Stormblock
+        - §a该地图使用已取得相关授权
+        item-flags: []
+        unbreakable: false
+        click-events:
+          2a898a87-3b5f-4235-8261-3ce3978839e3:
+            type: command
+            commands:
+            - res tp PVP
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          ae32415d-3e7a-4031-983c-93f677e73cb9:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '24':
-        'slot': 23
-        'item': 'AIR'
-        'amount': 0
+        slot: 23
+        item: AIR
+        amount: 0
       '25':
-        'slot': 24
-        'item': 'AIR'
-        'amount': 0
+        slot: 24
+        item: AIR
+        amount: 0
       '26':
-        'slot': 25
-        'item': 'AIR'
-        'amount': 0
+        slot: 25
+        item: AIR
+        amount: 0
       '27':
-        'slot': 26
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 26
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '28':
-        'slot': 27
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 27
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '29':
-        'slot': 28
-        'item': 'AIR'
-        'amount': 0
+        slot: 28
+        item: AIR
+        amount: 0
       '30':
-        'slot': 29
-        'item': 'AIR'
-        'amount': 0
+        slot: 29
+        item: AIR
+        amount: 0
       '31':
-        'slot': 30
-        'item': 'AIR'
-        'amount': 0
+        slot: 30
+        item: AIR
+        amount: 0
       '32':
-        'slot': 31
-        'item': 'BRICKS'
-        'amount': 1
-        'item-name': '&6建材商店'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '14d5b4b1-cdd5-4ac9-b9a0-55d599062fc2':
-            'type': 'command'
-            'commands':
-            - 'warp build'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '82e9def1-067e-42f2-8241-db3585fc1094':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 31
+        item: BRICKS
+        amount: 1
+        item-name: '&6建材商店'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          14d5b4b1-cdd5-4ac9-b9a0-55d599062fc2:
+            type: command
+            commands:
+            - warp build
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          82e9def1-067e-42f2-8241-db3585fc1094:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '33':
-        'slot': 32
-        'item': 'AIR'
-        'amount': 0
+        slot: 32
+        item: AIR
+        amount: 0
       '34':
-        'slot': 33
-        'item': 'AIR'
-        'amount': 0
+        slot: 33
+        item: AIR
+        amount: 0
       '35':
-        'slot': 34
-        'item': 'AIR'
-        'amount': 0
+        slot: 34
+        item: AIR
+        amount: 0
       '36':
-        'slot': 35
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 35
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '37':
-        'slot': 36
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 36
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '38':
-        'slot': 37
-        'item': 'AIR'
-        'amount': 0
+        slot: 37
+        item: AIR
+        amount: 0
       '39':
-        'slot': 38
-        'item': 'AIR'
-        'amount': 0
+        slot: 38
+        item: AIR
+        amount: 0
       '40':
-        'slot': 39
-        'item': 'AIR'
-        'amount': 0
+        slot: 39
+        item: AIR
+        amount: 0
       '41':
-        'slot': 40
-        'item': 'RED_BED'
-        'amount': 1
-        'item-name': '&6家'
-        'item-lore':
-        - '§a点击查看自己设置的家'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'a0e1fd30-a7fb-4c43-ab9b-0c4c4c89185a':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '90051309-3143-44fd-a7a1-60f8c886393b':
-            'type': 'command'
-            'commands':
-            - 'homes'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 40
+        item: RED_BED
+        amount: 1
+        item-name: '&6家'
+        item-lore:
+        - §a点击查看自己设置的家
+        item-flags: []
+        unbreakable: false
+        click-events:
+          a0e1fd30-a7fb-4c43-ab9b-0c4c4c89185a:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
+          90051309-3143-44fd-a7a1-60f8c886393b:
+            type: command
+            commands:
+            - homes
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '42':
-        'slot': 41
-        'item': 'AIR'
-        'amount': 0
+        slot: 41
+        item: AIR
+        amount: 0
       '43':
-        'slot': 42
-        'item': 'AIR'
-        'amount': 0
+        slot: 42
+        item: AIR
+        amount: 0
       '44':
-        'slot': 43
-        'item': 'AIR'
-        'amount': 0
+        slot: 43
+        item: AIR
+        amount: 0
       '45':
-        'slot': 44
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 44
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '46':
-        'slot': 45
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 45
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '47':
-        'slot': 46
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 46
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '48':
-        'slot': 47
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 47
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '49':
-        'slot': 48
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 48
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '50':
-        'slot': 49
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 49
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '51':
-        'slot': 50
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 50
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '52':
-        'slot': 51
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 51
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '53':
-        'slot': 52
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 52
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '54':
-        'slot': 53
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'e946a13f-da52-40d5-a9ae-bb3d29ff9642':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 53
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          e946a13f-da52-40d5-a9ae-bb3d29ff9642:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0

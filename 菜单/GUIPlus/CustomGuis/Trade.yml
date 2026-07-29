@@ -1,77 +1,77 @@
-'id': 'Trade'
-'type': 'chest'
-'rows': 1
-'title': 'Trade'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: Trade
+type: chest
+rows: 1
+title: Trade
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a交易系统说明'
-        'item-lore':
-        - '§a服务器的交易系统分为两种'
+        slot: 0
+        item: PAPER
+        amount: 1
+        item-name: '&a交易系统说明'
+        item-lore:
+        - §a服务器的交易系统分为两种
         - '§61: Trade交易，公开透明'
         - '§62: 箱子商店，无需当面'
-        'item-flags': []
-        'unbreakable': false
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'EMERALD'
-        'amount': 1
-        'item-name': '&aTrade交易'
-        'item-lore':
-        - '§e通过/trade <玩家>来进行交易'
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: EMERALD
+        amount: 1
+        item-name: '&aTrade交易'
+        item-lore:
+        - §e通过/trade <玩家>来进行交易
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'CHEST'
-        'amount': 1
-        'item-name': '&a箱子商店'
-        'item-lore':
-        - '§e通过手持出售物品左键箱子创建'
-        - '§e或者手持出售物品面对箱子使用/qs create'
-        - '§e购买时左键箱子的告示牌即可'
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: CHEST
+        amount: 1
+        item-name: '&a箱子商店'
+        item-lore:
+        - §e通过手持出售物品左键箱子创建
+        - §e或者手持出售物品面对箱子使用/qs create
+        - §e购买时左键箱子的告示牌即可
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'AIR'
-        'amount': 0
+        slot: 3
+        item: AIR
+        amount: 0
       '5':
-        'slot': 4
-        'item': 'AIR'
-        'amount': 0
+        slot: 4
+        item: AIR
+        amount: 0
       '6':
-        'slot': 5
-        'item': 'AIR'
-        'amount': 0
+        slot: 5
+        item: AIR
+        amount: 0
       '7':
-        'slot': 6
-        'item': 'AIR'
-        'amount': 0
+        slot: 6
+        item: AIR
+        amount: 0
       '8':
-        'slot': 7
-        'item': 'AIR'
-        'amount': 0
+        slot: 7
+        item: AIR
+        amount: 0
       '9':
-        'slot': 8
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'acd87207-d939-4dfb-a705-418bbcf7f9c4':
-            'type': 'command'
-            'commands':
-            - 'cd'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-            'waitForCompletion': true
+        slot: 8
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          acd87207-d939-4dfb-a705-418bbcf7f9c4:
+            type: command
+            commands:
+            - cd
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+            waitForCompletion: true

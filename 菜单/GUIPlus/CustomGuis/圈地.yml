@@ -1,106 +1,106 @@
-'id': '圈地'
-'type': 'chest'
-'rows': 1
-'title': '圈地'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: claim
+type: chest
+rows: 1
+title: 圈地
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'PAPER'
-        'amount': 1
-        'item-lore':
-        - '§3手持木锄，左键点击一个位置'
-        - '§3然后右击再选择一个位置'
-        - '§3这两个点围起来的范围就是选中的区域'
-        'item-flags': []
-        'unbreakable': false
+        slot: 0
+        item: PAPER
+        amount: 1
+        item-lore:
+        - §3手持木锄，左键点击一个位置
+        - §3然后右击再选择一个位置
+        - §3这两个点围起来的范围就是选中的区域
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'PAPER'
-        'amount': 1
-        'item-lore':
-        - '§e在已经选择一块区域之后'
-        - '§e使用§n/res create <你的领地名称>§e 即可'
-        - '§e比如执行/res create Example'
-        - '§e就会创建一个名叫Example的领地'
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: PAPER
+        amount: 1
+        item-lore:
+        - §e在已经选择一块区域之后
+        - §e使用§n/res create <你的领地名称>§e 即可
+        - §e比如执行/res create Example
+        - §e就会创建一个名叫Example的领地
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a如何让你的朋友获得领地权限？'
-        'item-lore':
-        - '§9输入§n/res padd <领地名称> <朋友名称>§9即可'
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: PAPER
+        amount: 1
+        item-name: '&a如何让你的朋友获得领地权限？'
+        item-lore:
+        - §9输入§n/res padd <领地名称> <朋友名称>§9即可
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a我能有几个领地？'
-        'item-lore':
-        - '§e一个人最多能圈5块领地'
-        'item-flags': []
-        'unbreakable': false
+        slot: 3
+        item: PAPER
+        amount: 1
+        item-name: '&a我能有几个领地？'
+        item-lore:
+        - §e一个人最多能圈5块领地
+        item-flags: []
+        unbreakable: false
       '5':
-        'slot': 4
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a圈地要不要花钱？'
-        'item-lore':
-        - '§e圈地的价格是一格方块0.01金币'
-        'item-flags': []
-        'unbreakable': false
+        slot: 4
+        item: PAPER
+        amount: 1
+        item-name: '&a圈地要不要花钱？'
+        item-lore:
+        - §e圈地的价格是一格方块0.01金币
+        item-flags: []
+        unbreakable: false
       '6':
-        'slot': 5
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a我的领地面积最大是多少？'
-        'item-lore':
-        - '§e领地面积最大可以达到100*100'
-        - '§e如果因参与公共点建设需要更大的领地可以额外协商'
-        'item-flags': []
-        'unbreakable': false
+        slot: 5
+        item: PAPER
+        amount: 1
+        item-name: '&a我的领地面积最大是多少？'
+        item-lore:
+        - §e领地面积最大可以达到100*100
+        - §e如果因参与公共点建设需要更大的领地可以额外协商
+        item-flags: []
+        unbreakable: false
       '7':
-        'slot': 6
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a想知道更多用法？请点击我'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'f0202bdf-8dc1-418a-9bbe-d3ba40896cf4':
-            'type': 'command'
-            'commands':
-            - 'res'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '7e82eb94-890a-41d6-b212-4ea0fb04d2ca':
-            'type': 'close-inventory'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 6
+        item: PAPER
+        amount: 1
+        item-name: '&a想知道更多用法？请点击我'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          f0202bdf-8dc1-418a-9bbe-d3ba40896cf4:
+            type: command
+            commands:
+            - res
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
+          7e82eb94-890a-41d6-b212-4ea0fb04d2ca:
+            type: close-inventory
+            clickType: NONE
+            executionDelay: 0.0
       '8':
-        'slot': 7
-        'item': 'AIR'
-        'amount': 0
+        slot: 7
+        item: AIR
+        amount: 0
       '9':
-        'slot': 8
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'eaa31273-cf1b-4235-a189-418fdc888b1d':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 8
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          eaa31273-cf1b-4235-a189-418fdc888b1d:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0

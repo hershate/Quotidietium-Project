@@ -1,95 +1,95 @@
-'id': '实用功能'
-'type': 'chest'
-'rows': 1
-'title': '实用功能'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: utility
+type: chest
+rows: 1
+title: 实用功能
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'CRAFTING_TABLE'
-        'amount': 1
-        'item-name': '&a随身工作台'
-        'item-lore':
-        - '§f点击花费20金币打开工作台'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '85d95af2-08ce-43b5-b715-b199ba9f05f3':
-            'type': 'money-remove'
-            'amount': '20'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '61368202-07f8-4894-ad5f-dca7f8469072':
-            'type': 'console_command'
-            'commands':
-            - 'workbench %player_name%'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 0
+        item: CRAFTING_TABLE
+        amount: 1
+        item-name: '&a随身工作台'
+        item-lore:
+        - §f点击花费20金币打开工作台
+        item-flags: []
+        unbreakable: false
+        click-events:
+          85d95af2-08ce-43b5-b715-b199ba9f05f3:
+            type: money-remove
+            amount: '20'
+            clickType: NONE
+            executionDelay: 0.0
+          61368202-07f8-4894-ad5f-dca7f8469072:
+            type: console_command
+            commands:
+            - workbench %player_name%
+            clickType: NONE
+            executionDelay: 0.0
       '2':
-        'slot': 1
-        'item': 'ANVIL'
-        'amount': 1
-        'item-name': '&a随身铁砧'
-        'item-lore':
-        - '§f点击花费50金币打开铁砧'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'e216d737-752a-43ce-9072-c5d24ac6a3f4':
-            'type': 'money-remove'
-            'amount': '50'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
-          '0ddf7f42-23b1-4692-a8a4-9b18d0c64d77':
-            'type': 'console_command'
-            'commands':
-            - 'anvil %player_name%'
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 1
+        item: ANVIL
+        amount: 1
+        item-name: '&a随身铁砧'
+        item-lore:
+        - §f点击花费50金币打开铁砧
+        item-flags: []
+        unbreakable: false
+        click-events:
+          e216d737-752a-43ce-9072-c5d24ac6a3f4:
+            type: money-remove
+            amount: '50'
+            clickType: NONE
+            executionDelay: 0.0
+          0ddf7f42-23b1-4692-a8a4-9b18d0c64d77:
+            type: console_command
+            commands:
+            - anvil %player_name%
+            clickType: NONE
+            executionDelay: 0.0
       '3':
-        'slot': 2
-        'item': 'CRAFTING_TABLE'
-        'amount': 1
-        'item-lore':
-        - '§a点击查看服务器的自定义合成表'
-        - '§a正在维护，暂不开放'
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: CRAFTING_TABLE
+        amount: 1
+        item-lore:
+        - §a点击查看服务器的自定义合成表
+        - §a正在维护，暂不开放
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'AIR'
-        'amount': 0
+        slot: 3
+        item: AIR
+        amount: 0
       '5':
-        'slot': 4
-        'item': 'AIR'
-        'amount': 0
+        slot: 4
+        item: AIR
+        amount: 0
       '6':
-        'slot': 5
-        'item': 'AIR'
-        'amount': 0
+        slot: 5
+        item: AIR
+        amount: 0
       '7':
-        'slot': 6
-        'item': 'AIR'
-        'amount': 0
+        slot: 6
+        item: AIR
+        amount: 0
       '8':
-        'slot': 7
-        'item': 'AIR'
-        'amount': 0
+        slot: 7
+        item: AIR
+        amount: 0
       '9':
-        'slot': 8
-        'item': 'PAPER'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '9f454366-29f7-4197-9e80-2f5e97744826':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 8
+        item: PAPER
+        amount: 1
+        item-flags: []
+        unbreakable: false
+        click-events:
+          9f454366-29f7-4197-9e80-2f5e97744826:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0

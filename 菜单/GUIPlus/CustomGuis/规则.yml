@@ -1,380 +1,380 @@
-'id': '规则'
-'type': 'chest'
-'rows': 6
-'title': '规则'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: rules
+type: chest
+rows: 6
+title: 规则
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-flags': []
-        'unbreakable': false
+        slot: 0
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 3
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '5':
-        'slot': 4
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 4
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '6':
-        'slot': 5
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 5
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '7':
-        'slot': 6
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 6
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '8':
-        'slot': 7
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 7
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '9':
-        'slot': 8
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 8
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '10':
-        'slot': 9
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 9
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '11':
-        'slot': 10
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&e玩的开心'
-        'item-lore':
-        - '§a服务器的初心就是让大家玩的开心'
-        'item-flags': []
-        'unbreakable': false
+        slot: 10
+        item: PAPER
+        amount: 1
+        item-name: '&e玩的开心'
+        item-lore:
+        - §a服务器的初心就是让大家玩的开心
+        item-flags: []
+        unbreakable: false
       '12':
-        'slot': 11
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f本服为生存服务器'
-        'item-lore':
-        - '§a因此与生存无关的内容'
-        - '§a如起床战争等小游戏不会添加'
-        - '§a§n可能会破坏生存与娱乐体验的请求不会被通过'
-        - '§a望见谅'
-        'item-flags': []
-        'unbreakable': false
+        slot: 11
+        item: PAPER
+        amount: 1
+        item-name: '&f本服为生存服务器'
+        item-lore:
+        - §a因此与生存无关的内容
+        - §a如起床战争等小游戏不会添加
+        - §a§n可能会破坏生存与娱乐体验的请求不会被通过
+        - §a望见谅
+        item-flags: []
+        unbreakable: false
       '13':
-        'slot': 12
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4禁止随意破坏他人成果'
-        'item-lore':
-        - '§4违反者经讨论后给予不同程度惩罚'
-        'item-flags': []
-        'unbreakable': false
+        slot: 12
+        item: PAPER
+        amount: 1
+        item-name: '&4禁止随意破坏他人成果'
+        item-lore:
+        - §4违反者经讨论后给予不同程度惩罚
+        item-flags: []
+        unbreakable: false
       '14':
-        'slot': 13
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4禁止进行任何违法活动'
-        'item-lore':
-        - '§4违者封禁，永不解封'
-        'item-flags': []
-        'unbreakable': false
+        slot: 13
+        item: PAPER
+        amount: 1
+        item-name: '&4禁止进行任何违法活动'
+        item-lore:
+        - §4违者封禁，永不解封
+        item-flags: []
+        unbreakable: false
       '15':
-        'slot': 14
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4禁止通过任何手段影响服务器正常运行'
-        'item-lore':
-        - '§4如高频红石、生电'
-        - '§4恶意利用BUG以获取超出其他玩家的优势'
-        'item-flags': []
-        'unbreakable': false
+        slot: 14
+        item: PAPER
+        amount: 1
+        item-name: '&4禁止通过任何手段影响服务器正常运行'
+        item-lore:
+        - §4如高频红石、生电
+        - §4恶意利用BUG以获取超出其他玩家的优势
+        item-flags: []
+        unbreakable: false
       '16':
-        'slot': 15
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4禁止开挂'
-        'item-lore':
-        - '§e这点很难禁止，但希望大家能具有较高的道德素质'
-        - '§e不要使用外挂取得超出其他玩家的优势'
-        - '§4违者经讨论作出处罚'
-        'item-flags': []
-        'unbreakable': false
+        slot: 15
+        item: PAPER
+        amount: 1
+        item-name: '&4禁止开挂'
+        item-lore:
+        - §e这点很难禁止，但希望大家能具有较高的道德素质
+        - §e不要使用外挂取得超出其他玩家的优势
+        - §4违者经讨论作出处罚
+        item-flags: []
+        unbreakable: false
       '17':
-        'slot': 16
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4禁止恶意圈地，影响他人正常游玩'
-        'item-lore':
-        - '§4如末地龙等公共区域圈地'
-        - '§4违者经讨论后处理'
-        'item-flags': []
-        'unbreakable': false
+        slot: 16
+        item: PAPER
+        amount: 1
+        item-name: '&4禁止恶意圈地，影响他人正常游玩'
+        item-lore:
+        - §4如末地龙等公共区域圈地
+        - §4违者经讨论后处理
+        item-flags: []
+        unbreakable: false
       '18':
-        'slot': 17
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 17
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '19':
-        'slot': 18
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 18
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '20':
-        'slot': 19
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&4再次强调禁止跑图'
-        'item-lore':
-        - '§4禁止生电'
-        - '§4禁止建造卡服机'
-        - '§4禁止恶意破坏服务器运行'
-        'item-flags': []
-        'unbreakable': false
+        slot: 19
+        item: PAPER
+        amount: 1
+        item-name: '&4再次强调禁止跑图'
+        item-lore:
+        - §4禁止生电
+        - §4禁止建造卡服机
+        - §4禁止恶意破坏服务器运行
+        item-flags: []
+        unbreakable: false
       '21':
-        'slot': 20
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a任何没有违规的玩家都可以参与服务器建设'
-        'item-lore':
-        - '§e任何玩家都可以参与服务器建设'
-        - '§e服务器哪里体验不佳，如哪些功能不合理'
-        - '§e希望自己的建筑能变成服务器公共点，比如主城、商店'
-        - '§e都可以在服务器Q群内反馈'
-        - '§e经审核确认后，做出贡献的玩家会被添加到开发者名单'
-        - '§e并对其贡献加以说明'
-        'item-flags': []
-        'unbreakable': false
+        slot: 20
+        item: PAPER
+        amount: 1
+        item-name: '&a任何没有违规的玩家都可以参与服务器建设'
+        item-lore:
+        - §e任何玩家都可以参与服务器建设
+        - §e服务器哪里体验不佳，如哪些功能不合理
+        - §e希望自己的建筑能变成服务器公共点，比如主城、商店
+        - §e都可以在服务器Q群内反馈
+        - §e经审核确认后，做出贡献的玩家会被添加到开发者名单
+        - §e并对其贡献加以说明
+        item-flags: []
+        unbreakable: false
       '22':
-        'slot': 21
-        'item': 'AIR'
-        'amount': 0
+        slot: 21
+        item: AIR
+        amount: 0
       '23':
-        'slot': 22
-        'item': 'AIR'
-        'amount': 0
+        slot: 22
+        item: AIR
+        amount: 0
       '24':
-        'slot': 23
-        'item': 'AIR'
-        'amount': 0
+        slot: 23
+        item: AIR
+        amount: 0
       '25':
-        'slot': 24
-        'item': 'AIR'
-        'amount': 0
+        slot: 24
+        item: AIR
+        amount: 0
       '26':
-        'slot': 25
-        'item': 'AIR'
-        'amount': 0
+        slot: 25
+        item: AIR
+        amount: 0
       '27':
-        'slot': 26
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 26
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '28':
-        'slot': 27
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 27
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '29':
-        'slot': 28
-        'item': 'AIR'
-        'amount': 0
+        slot: 28
+        item: AIR
+        amount: 0
       '30':
-        'slot': 29
-        'item': 'AIR'
-        'amount': 0
+        slot: 29
+        item: AIR
+        amount: 0
       '31':
-        'slot': 30
-        'item': 'AIR'
-        'amount': 0
+        slot: 30
+        item: AIR
+        amount: 0
       '32':
-        'slot': 31
-        'item': 'AIR'
-        'amount': 0
+        slot: 31
+        item: AIR
+        amount: 0
       '33':
-        'slot': 32
-        'item': 'AIR'
-        'amount': 0
+        slot: 32
+        item: AIR
+        amount: 0
       '34':
-        'slot': 33
-        'item': 'AIR'
-        'amount': 0
+        slot: 33
+        item: AIR
+        amount: 0
       '35':
-        'slot': 34
-        'item': 'AIR'
-        'amount': 0
+        slot: 34
+        item: AIR
+        amount: 0
       '36':
-        'slot': 35
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 35
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '37':
-        'slot': 36
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 36
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '38':
-        'slot': 37
-        'item': 'AIR'
-        'amount': 0
+        slot: 37
+        item: AIR
+        amount: 0
       '39':
-        'slot': 38
-        'item': 'AIR'
-        'amount': 0
+        slot: 38
+        item: AIR
+        amount: 0
       '40':
-        'slot': 39
-        'item': 'AIR'
-        'amount': 0
+        slot: 39
+        item: AIR
+        amount: 0
       '41':
-        'slot': 40
-        'item': 'AIR'
-        'amount': 0
+        slot: 40
+        item: AIR
+        amount: 0
       '42':
-        'slot': 41
-        'item': 'AIR'
-        'amount': 0
+        slot: 41
+        item: AIR
+        amount: 0
       '43':
-        'slot': 42
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&9本服目前与kenkin服务器合作'
-        'item-lore':
-        - '§9有任何问题请到kenkin服务器群内反馈'
-        - '§akenkin服Q群号967380792'
-        - '§e服务器Q群号：1087253000'
-        'item-flags': []
-        'unbreakable': false
+        slot: 42
+        item: PAPER
+        amount: 1
+        item-name: '&9本服目前与kenkin服务器合作'
+        item-lore:
+        - §9有任何问题请到kenkin服务器群内反馈
+        - §akenkin服Q群号967380792
+        - §e服务器Q群号：1087253000
+        item-flags: []
+        unbreakable: false
       '44':
-        'slot': 43
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a规则经过讨论后可能增加'
-        'item-flags': []
-        'unbreakable': false
+        slot: 43
+        item: PAPER
+        amount: 1
+        item-name: '&a规则经过讨论后可能增加'
+        item-flags: []
+        unbreakable: false
       '45':
-        'slot': 44
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 44
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '46':
-        'slot': 45
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 45
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '47':
-        'slot': 46
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 46
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '48':
-        'slot': 47
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 47
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '49':
-        'slot': 48
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 48
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '50':
-        'slot': 49
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 49
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '51':
-        'slot': 50
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 50
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '52':
-        'slot': 51
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 51
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '53':
-        'slot': 52
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 52
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '54':
-        'slot': 53
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          'e310a627-df7b-4d20-b07c-341d2c24b08b':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 53
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          e310a627-df7b-4d20-b07c-341d2c24b08b:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0

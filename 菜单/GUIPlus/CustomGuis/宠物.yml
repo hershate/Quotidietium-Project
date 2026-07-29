@@ -1,186 +1,186 @@
-'id': '宠物'
-'type': 'chest'
-'rows': 1
-'title': '宠物'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: pet
+type: chest
+rows: 1
+title: 宠物
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'GOLD_INGOT'
-        'amount': 1
-        'item-name': '&e点击打开宠物商店'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '3e1bb292-7fa4-4b20-aebc-2aeddfbbc2f4':
-            'type': 'command'
-            'commands':
-            - 'mypet:petshop'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 0
+        item: GOLD_INGOT
+        amount: 1
+        item-name: '&e点击打开宠物商店'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          3e1bb292-7fa4-4b20-aebc-2aeddfbbc2f4:
+            type: command
+            commands:
+            - mypet:petshop
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '2':
-        'slot': 1
-        'item': 'NAME_TAG'
-        'amount': 1
-        'item-name': '&a重命名宠物'
-        'item-lore':
-        - '§f注意：只有你将宠物召唤出来时才能重命名该宠物'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '0d1090bb-a17b-484c-b1ff-e9842b75ffae':
-            'type': 'command'
-            'commands':
-            - 'petname'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 1
+        item: NAME_TAG
+        amount: 1
+        item-name: '&a重命名宠物'
+        item-lore:
+        - §f注意：只有你将宠物召唤出来时才能重命名该宠物
+        item-flags: []
+        unbreakable: false
+        click-events:
+          0d1090bb-a17b-484c-b1ff-e9842b75ffae:
+            type: command
+            commands:
+            - petname
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '3':
-        'slot': 2
-        'item': 'CHEST_MINECART'
-        'amount': 1
-        'item-name': '&6存储当前宠物'
-        'item-lore':
-        - '§f会将当前宠物放至仓库'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '46915e06-06c9-460d-9e0c-73bb1cb21de8':
-            'type': 'command'
-            'commands':
-            - 'petstore'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 2
+        item: CHEST_MINECART
+        amount: 1
+        item-name: '&6存储当前宠物'
+        item-lore:
+        - §f会将当前宠物放至仓库
+        item-flags: []
+        unbreakable: false
+        click-events:
+          46915e06-06c9-460d-9e0c-73bb1cb21de8:
+            type: command
+            commands:
+            - petstore
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '4':
-        'slot': 3
-        'item': 'CHEST'
-        'amount': 1
-        'item-name': '&2查看/取出仓库内宠物'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '52fb0f15-489f-41f5-a194-0dc2fef8b64c':
-            'type': 'command'
-            'commands':
-            - 'petswitch'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 3
+        item: CHEST
+        amount: 1
+        item-name: '&2查看/取出仓库内宠物'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          52fb0f15-489f-41f5-a194-0dc2fef8b64c:
+            type: command
+            commands:
+            - petswitch
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '5':
-        'slot': 4
-        'item': 'LEAD'
-        'amount': 1
-        'item-name': '&b召唤宠物到身边'
-        'item-lore':
-        - '§f点击会将宠物传送到身边'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '0350d90e-90a5-4d24-8b02-faa701f6d998':
-            'type': 'command'
-            'commands':
-            - 'petcall'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 4
+        item: LEAD
+        amount: 1
+        item-name: '&b召唤宠物到身边'
+        item-lore:
+        - §f点击会将宠物传送到身边
+        item-flags: []
+        unbreakable: false
+        click-events:
+          0350d90e-90a5-4d24-8b02-faa701f6d998:
+            type: command
+            commands:
+            - petcall
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '6':
-        'slot': 5
-        'item': 'WRITABLE_BOOK'
-        'amount': 1
-        'item-name': '&e修改宠物技能树'
-        'item-lore':
-        - '§f修改当前宠物的技能树'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '828308dc-ca09-4bf2-a64a-b01b966304ea':
-            'type': 'command'
-            'commands':
-            - 'petchooseskilltree'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 5
+        item: WRITABLE_BOOK
+        amount: 1
+        item-name: '&e修改宠物技能树'
+        item-lore:
+        - §f修改当前宠物的技能树
+        item-flags: []
+        unbreakable: false
+        click-events:
+          828308dc-ca09-4bf2-a64a-b01b966304ea:
+            type: command
+            commands:
+            - petchooseskilltree
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '7':
-        'slot': 6
-        'item': 'BOOK'
-        'amount': 1
-        'item-name': '&f查看宠物信息'
-        'item-lore':
-        - '§f查看当前宠物的信息'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '21127eb8-40e7-4d0e-85f6-c7a33188a76c':
-            'type': 'command'
-            'commands':
-            - 'petinfo'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 6
+        item: BOOK
+        amount: 1
+        item-name: '&f查看宠物信息'
+        item-lore:
+        - §f查看当前宠物的信息
+        item-flags: []
+        unbreakable: false
+        click-events:
+          21127eb8-40e7-4d0e-85f6-c7a33188a76c:
+            type: command
+            commands:
+            - petinfo
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '8':
-        'slot': 7
-        'item': 'TNT'
-        'amount': 1
-        'item-name': '&4放生当前宠物'
-        'item-lore':
-        - '§4会放生召唤出来的宠物，宠物将消失！'
-        - '§4§n请自行输入/petrelease以删除宠物'
-        'item-flags': []
-        'unbreakable': false
+        slot: 7
+        item: TNT
+        amount: 1
+        item-name: '&4放生当前宠物'
+        item-lore:
+        - §4会放生召唤出来的宠物，宠物将消失！
+        - §4§n请自行输入/petrelease以删除宠物
+        item-flags: []
+        unbreakable: false
       '9':
-        'slot': 8
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '1a6d1281-363b-4b6c-b91a-3b1803bcaba5':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 8
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          1a6d1281-363b-4b6c-b91a-3b1803bcaba5:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
       '10':
-        'slot': 9
-        'item': 'AIR'
-        'amount': 0
+        slot: 9
+        item: AIR
+        amount: 0
       '11':
-        'slot': 10
-        'item': 'AIR'
-        'amount': 0
+        slot: 10
+        item: AIR
+        amount: 0
       '12':
-        'slot': 11
-        'item': 'AIR'
-        'amount': 0
+        slot: 11
+        item: AIR
+        amount: 0
       '13':
-        'slot': 12
-        'item': 'AIR'
-        'amount': 0
+        slot: 12
+        item: AIR
+        amount: 0
       '14':
-        'slot': 13
-        'item': 'AIR'
-        'amount': 0
+        slot: 13
+        item: AIR
+        amount: 0
       '15':
-        'slot': 14
-        'item': 'AIR'
-        'amount': 0
+        slot: 14
+        item: AIR
+        amount: 0
       '16':
-        'slot': 15
-        'item': 'AIR'
-        'amount': 0
+        slot: 15
+        item: AIR
+        amount: 0
       '17':
-        'slot': 16
-        'item': 'AIR'
-        'amount': 0
+        slot: 16
+        item: AIR
+        amount: 0
       '18':
-        'slot': 17
-        'item': 'AIR'
-        'amount': 0
+        slot: 17
+        item: AIR
+        amount: 0

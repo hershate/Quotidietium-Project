@@ -1,347 +1,347 @@
-'id': '征求'
-'type': 'chest'
-'rows': 6
-'title': '征求'
-'commandAliasTarget': 'DISABLED'
-'disable-scene-animation': false
-'scenes':
+id: requests
+type: chest
+rows: 6
+title: 征求
+commandAliasTarget: DISABLED
+disable-scene-animation: false
+scenes:
   '0':
-    'delay': 0
-    'items':
+    delay: 0
+    items:
       '1':
-        'slot': 0
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 0
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '2':
-        'slot': 1
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 1
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '3':
-        'slot': 2
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 2
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '4':
-        'slot': 3
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 3
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '5':
-        'slot': 4
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 4
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '6':
-        'slot': 5
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 5
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '7':
-        'slot': 6
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 6
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '8':
-        'slot': 7
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 7
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '9':
-        'slot': 8
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 8
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '10':
-        'slot': 9
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 9
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '11':
-        'slot': 10
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f小贴士'
-        'item-flags': []
-        'unbreakable': false
+        slot: 10
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f小贴士'
+        item-flags: []
+        unbreakable: false
       '12':
-        'slot': 11
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&fBUG反馈'
-        'item-flags': []
-        'unbreakable': false
+        slot: 11
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&fBUG反馈'
+        item-flags: []
+        unbreakable: false
       '13':
-        'slot': 12
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f玩法建议'
-        'item-flags': []
-        'unbreakable': false
+        slot: 12
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f玩法建议'
+        item-flags: []
+        unbreakable: false
       '14':
-        'slot': 13
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f监督是否有人卡服'
-        'item-flags': []
-        'unbreakable': false
+        slot: 13
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f监督是否有人卡服'
+        item-flags: []
+        unbreakable: false
       '15':
-        'slot': 14
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f道具小巧思'
-        'item-flags': []
-        'unbreakable': false
+        slot: 14
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f道具小巧思'
+        item-flags: []
+        unbreakable: false
       '16':
-        'slot': 15
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f公共点建造'
-        'item-flags': []
-        'unbreakable': false
+        slot: 15
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f公共点建造'
+        item-flags: []
+        unbreakable: false
       '17':
-        'slot': 16
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f各项功能优化反馈'
-        'item-flags': []
-        'unbreakable': false
+        slot: 16
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f各项功能优化反馈'
+        item-flags: []
+        unbreakable: false
       '18':
-        'slot': 17
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 17
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '19':
-        'slot': 18
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 18
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '20':
-        'slot': 19
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&a[长期]&f成就设计'
-        'item-lore':
-        - '§a设计各种奇奇怪怪的新成就'
-        'item-flags': []
-        'unbreakable': false
+        slot: 19
+        item: PAPER
+        amount: 1
+        item-name: '&a[长期]&f成就设计'
+        item-lore:
+        - §a设计各种奇奇怪怪的新成就
+        item-flags: []
+        unbreakable: false
       '21':
-        'slot': 20
-        'item': 'AIR'
-        'amount': 0
+        slot: 20
+        item: AIR
+        amount: 0
       '22':
-        'slot': 21
-        'item': 'AIR'
-        'amount': 0
+        slot: 21
+        item: AIR
+        amount: 0
       '23':
-        'slot': 22
-        'item': 'AIR'
-        'amount': 0
+        slot: 22
+        item: AIR
+        amount: 0
       '24':
-        'slot': 23
-        'item': 'AIR'
-        'amount': 0
+        slot: 23
+        item: AIR
+        amount: 0
       '25':
-        'slot': 24
-        'item': 'AIR'
-        'amount': 0
+        slot: 24
+        item: AIR
+        amount: 0
       '26':
-        'slot': 25
-        'item': 'AIR'
-        'amount': 0
+        slot: 25
+        item: AIR
+        amount: 0
       '27':
-        'slot': 26
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 26
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '28':
-        'slot': 27
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 27
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '29':
-        'slot': 28
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f宠物商店汉化'
-        'item-flags': []
-        'unbreakable': false
+        slot: 28
+        item: PAPER
+        amount: 1
+        item-name: '&f宠物商店汉化'
+        item-flags: []
+        unbreakable: false
       '30':
-        'slot': 29
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f宠物技能树汉化'
-        'item-flags': []
-        'unbreakable': false
+        slot: 29
+        item: PAPER
+        amount: 1
+        item-name: '&f宠物技能树汉化'
+        item-flags: []
+        unbreakable: false
       '31':
-        'slot': 30
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f成就系统汉化'
-        'item-flags': []
-        'unbreakable': false
+        slot: 30
+        item: PAPER
+        amount: 1
+        item-name: '&f成就系统汉化'
+        item-flags: []
+        unbreakable: false
       '32':
-        'slot': 31
-        'item': 'AIR'
-        'amount': 0
+        slot: 31
+        item: AIR
+        amount: 0
       '33':
-        'slot': 32
-        'item': 'AIR'
-        'amount': 0
+        slot: 32
+        item: AIR
+        amount: 0
       '34':
-        'slot': 33
-        'item': 'AIR'
-        'amount': 0
+        slot: 33
+        item: AIR
+        amount: 0
       '35':
-        'slot': 34
-        'item': 'AIR'
-        'amount': 0
+        slot: 34
+        item: AIR
+        amount: 0
       '36':
-        'slot': 35
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 35
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '37':
-        'slot': 36
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 36
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '38':
-        'slot': 37
-        'item': 'AIR'
-        'amount': 0
+        slot: 37
+        item: AIR
+        amount: 0
       '39':
-        'slot': 38
-        'item': 'AIR'
-        'amount': 0
+        slot: 38
+        item: AIR
+        amount: 0
       '40':
-        'slot': 39
-        'item': 'AIR'
-        'amount': 0
+        slot: 39
+        item: AIR
+        amount: 0
       '41':
-        'slot': 40
-        'item': 'AIR'
-        'amount': 0
+        slot: 40
+        item: AIR
+        amount: 0
       '42':
-        'slot': 41
-        'item': 'AIR'
-        'amount': 0
+        slot: 41
+        item: AIR
+        amount: 0
       '43':
-        'slot': 42
-        'item': 'AIR'
-        'amount': 0
+        slot: 42
+        item: AIR
+        amount: 0
       '44':
-        'slot': 43
-        'item': 'AIR'
-        'amount': 0
+        slot: 43
+        item: AIR
+        amount: 0
       '45':
-        'slot': 44
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 44
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '46':
-        'slot': 45
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 45
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '47':
-        'slot': 46
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 46
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '48':
-        'slot': 47
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 47
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '49':
-        'slot': 48
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 48
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '50':
-        'slot': 49
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 49
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '51':
-        'slot': 50
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 50
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '52':
-        'slot': 51
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 51
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '53':
-        'slot': 52
-        'item': 'GRAY_STAINED_GLASS_PANE'
-        'amount': 1
-        'item-name': ' '
-        'item-flags': []
-        'unbreakable': false
+        slot: 52
+        item: GRAY_STAINED_GLASS_PANE
+        amount: 1
+        item-name: ' '
+        item-flags: []
+        unbreakable: false
       '54':
-        'slot': 53
-        'item': 'PAPER'
-        'amount': 1
-        'item-name': '&f返回主菜单'
-        'item-flags': []
-        'unbreakable': false
-        'click-events':
-          '3d6f1335-5caf-493b-a701-042e4509599f':
-            'type': 'command'
-            'commands':
-            - 'gui open 菜单'
-            'setOp': false
-            'clickType': 'NONE'
-            'executionDelay': 0.0
+        slot: 53
+        item: PAPER
+        amount: 1
+        item-name: '&f返回主菜单'
+        item-flags: []
+        unbreakable: false
+        click-events:
+          3d6f1335-5caf-493b-a701-042e4509599f:
+            type: command
+            commands:
+            - gui open mainmenu
+            setOp: false
+            clickType: NONE
+            executionDelay: 0.0
